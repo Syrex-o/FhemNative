@@ -4,7 +4,9 @@
       "VERSION": "2.0",
       "DATE": "03.09.2019",
       "CHANGES":[
-        {"TYPE": "NEW", "CHANGE": "Complete Rebuild"}
+        {"TYPE": "NEW", "CHANGE": "Complete Rebuild"},
+        {"TYPE": "FIX", "CHANGE": "Fixed Room Handler"},
+        {"TYPE": "DEL", "CHANGE": "Old Component Container"}
       ]
     }
   ]
