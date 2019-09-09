@@ -15,6 +15,7 @@
         {"TYPE": "NEW", "CHANGE": "Added Desktop Compatibility"},
         {"TYPE": "NEW", "CHANGE": "Added Swiper component"},
         {"TYPE": "NEW", "CHANGE": "Added New fhem-container to clearly identify current state"},
+        {"TYPE": "NEW", "CHANGE": "Added Component Name to Edit-Menu"},
         {"TYPE": "FIX", "CHANGE": "Fixed Room Handler"},
         {"TYPE": "FIX", "CHANGE": "Fixed Swiper Component copy/paste"},
         {"TYPE": "DEL", "CHANGE": "Old Component Container"}
