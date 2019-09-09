@@ -2,10 +2,13 @@
   "VERSIONS":[
     {
       "VERSION": "2.0",
-      "DATE": "03.09.2019",
+      "DATE": "09.09.2019",
       "CHANGES":[
         {"TYPE": "NEW", "CHANGE": "Complete Rebuild"},
+        {"TYPE": "NEW", "CHANGE": "Added Swiper component"},
+        {"TYPE": "NEW", "CHANGE": "Added New fhem-container to clearly identify current state"},
         {"TYPE": "FIX", "CHANGE": "Fixed Room Handler"},
+        {"TYPE": "FIX", "CHANGE": "Fixed Swiper Component copy/paste"},
         {"TYPE": "DEL", "CHANGE": "Old Component Container"}
       ]
     }
