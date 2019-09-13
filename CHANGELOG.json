@@ -16,6 +16,8 @@
         {"TYPE": "NEW", "CHANGE": "Added custom ripple library"},
         {"TYPE": "NEW", "CHANGE": "Added Desktop Compatibility"},
         {"TYPE": "NEW", "CHANGE": "Added Swiper component"},
+        {"TYPE": "NEW", "CHANGE": "Added brightness value calculation to color picker (if brightness reading is present)"},
+        {"TYPE": "NEW", "CHANGE": "Added brightness dependant color picker circle (if brightness reading is present)"},
         {"TYPE": "NEW", "CHANGE": "Added New fhem-container to clearly identify current state"},
         {"TYPE": "NEW", "CHANGE": "Added Component Name to Edit-Menu"},
         {"TYPE": "NEW", "CHANGE": "Moved Changelog to GitHub"},
