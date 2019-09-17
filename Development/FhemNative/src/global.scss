@@ -1,0 +1,181 @@
+/* Core CSS required for Ionic components to work properly */
+
+@import "~@ionic/angular/css/core.css";
+/* Basic CSS for apps built with Ionic */
+
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+/* Optional CSS utils that can be commented out */
+
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~ngx-toastr/toastr';
+// Directive styles
+[ripple] {
+    .base {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        border-radius: inherit;
+        .ink {
+            display: block;
+            position: absolute;
+            border-radius: 100%;
+            transform: scale(0);
+        }
+        &.animate .ink {
+            animation: ripple 0.65s linear;
+        }
+    }
+    @keyframes ripple {
+        100% {
+            opacity: 0;
+            transform: scale(2.5);
+        }
+    }
+}
+[resize] {
+    .movable {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 100;
+        .rect {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            z-index: 1;
+            transition: all .2s ease;
+            &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width: 15px;
+                height: 15px;
+                background-color: #14a9d5;
+            }
+            &.top-left, &.top-right, &.bottom-left, &.bottom-right, &.center-top, &.center-bottom, &.center-right, &.center-left {
+                cursor: nw-resize;
+            }
+            &.top-left, &.top-right, &.center-top {
+                top: -10px;
+            }
+            &.top-left, &.bottom-left, &.center-left {
+                left: -10px;
+            }
+            &.top-right, &.bottom-right, &.center-right {
+                right: -10px;
+            }
+            &.bottom-left, &.bottom-right, &.center-bottom {
+                bottom: -10px;
+            }
+            &.center-top, &.center-bottom {
+                left: 50%;
+                transform: translate3d(-50%, 0, 0);
+            }
+            &.center-right, &.center-left {
+                top: 50%;
+                transform: translate3d(0, -50%, 0);
+            }
+        }
+        .overlay-move {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(157, 226, 246, 1);
+            background: rgba(157, 226, 246, 0.2);
+        }
+    }
+}
+// Global Styles
+.swiper-pagination {
+    top: 0px;
+    height: 0;
+}
+// Toast messages
+.notify, .toast {
+    font-family: "Roboto", sans-serif;
+    min-height: 45px;
+    max-width: 150px;
+    min-width: 100px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 5px;
+    margin-top: 3px;
+    &.toast-success {
+        background-color: var(--btn-green);
+    }
+    &.toast-info {
+        background-color: var(--btn-blue);
+        background-image: none;
+    }
+    &.toast-error {
+        background-color: var(--btn-red);
+    }
+    .toast-title {
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .toast-message {
+        font-weight: 300;
+        font-size: 12px;
+    }
+}
+#toast-container.toast-top-center {
+    pointer-events: all;
+    .toast-info {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+//Ionic Modal config
+.modal-fullscreen {
+    .modal-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+.dark {
+    .ng-select-container, .ng-option {
+        background: var(--dark-bg) !important;
+    }
+    .color-label, .label, .ng-value-label, ion-title {
+        --color: var(--dark-p);
+        color: var(--dark-p);
+    }
+    .ng-select-multiple .ng-value-label {
+        background: var(--dark-bg);
+    }
+    .ng-select .ng-select-container, .ng-select-multiple .ng-value-label {
+        border: var(--dark-border-full);
+    }
+}

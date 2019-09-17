@@ -1,0 +1,155 @@
+.box {
+	padding: 10px 10px;
+	border-bottom: solid 1px #ccc;
+	color: rgba(0, 0, 0, 0.87);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	box-sizing: border-box;
+	background: white;
+	font-size: 14px;
+}
+
+.editing {
+	transform-origin: center;
+	animation: wiggle .5s linear infinite;
+}
+
+.cdk-drag-preview {
+	box-sizing: border-box;
+	border-radius: 4px;
+	box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.list.cdk-drop-list-dragging .box:not(.cdk-drag-placeholder) {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.custom-placeholder {
+	border: dotted 1px #999;
+	min-height: 60px;
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.trash {
+	font-size: 30px;
+}
+
+.pen {
+	font-size: 26px;
+	margin-right: 10px;
+}
+
+.btn {
+	font-family: "Roboto", sans-serif;
+	text-transform: uppercase;
+	outline: 0;
+	width: 90%;
+	border: 0;
+	padding: 15px;
+	color: #FFFFFF;
+	font-size: 14px;
+	-webkit-transition: all 0.3 ease;
+	transition: all 0.3 ease;
+	cursor: pointer;
+	margin-top: 10px;
+	margin-left: 5%;
+}
+
+.page{
+	padding: 30px;
+	input{
+		position: relative;
+		font-size:18px;
+		padding:10px 10px 10px 5px;
+		display:block;
+		width:100%;
+		border:none;
+		border-bottom:1px solid #757575;
+		color: #757575;
+	}
+	input:focus{ outline:none; }
+	.bar{ 
+		position:relative; 
+		display:block; 
+		width:100%; 
+		left: 0%;
+	}
+	.bar:before, .bar:after{
+	  	content:'';
+		height:2px;
+		width:0;
+		bottom:1px; 
+		position:absolute;
+		background: var(--btn-blue); 
+		transition:0.2s ease all;
+	}
+	.bar:before {
+		left:50%;
+	}
+	.bar:after {
+		right:50%; 
+	}
+	input:focus ~ .bar:before, input:focus ~ .bar:after {
+		width:50%;
+	}
+}
+
+.btn.save {
+	background: #4CAF50;
+}
+
+.btn.cancel {
+	background: #d62121;
+}
+
+ion-item {
+	width: 100%;
+}
+
+.dark ion-label,
+.dark ion-title {
+	--color: var(--dark-p);
+}
+
+.dark ion-icon,
+.dark p,
+.dark h2 {
+	color: var(--dark-p);
+}
+
+.dark ion-toolbar,
+.dark ion-content,
+.dark ion-item {
+	--background: var(--dark-bg);
+}
+
+.dark .box,
+.dark .custom-placeholder,
+.dark .list,
+.dark input{
+	background: var(--dark-bg);
+}
+
+@keyframes wiggle {
+	0% {
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(-.5deg);
+	}
+	50% {
+		transform: rotate(.5deg);
+	}
+	75% {
+		transform: rotate(-.5deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}

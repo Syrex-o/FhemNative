@@ -1,0 +1,75 @@
+<ion-app>
+    <ion-split-pane [disabled]="true">
+        <ion-menu [ngClass]="settings.app.theme">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>Menu</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <div cdkDropList class="list" (cdkDropListDropped)="drop($event)" [ngClass]="{'editing': settings.modes.menuEdit}">
+                    <ng-container *ngIf="settings.modes.menuEdit">
+                        <div class="box" *ngFor="let room of structure.rooms" cdkDrag>
+                            <div class="custom-placeholder" *cdkDragPlaceholder></div>
+                            <ion-item>
+                                <ion-icon slot="start" [name]="room.icon"></ion-icon>
+                                <ion-label>{{room.name}}</ion-label>
+                            </ion-item>
+                            <ion-icon class="pen" name="create" *ngIf="this.settings.modes.menuEdit && room.name !== structure.currentRoom.name" (click)="editRoom(room)"></ion-icon>
+                            <ion-icon class="trash" name="trash" *ngIf="this.settings.modes.menuEdit && room.name !== structure.currentRoom.name" (click)="removeRoom(room)"></ion-icon>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!settings.modes.menuEdit">
+                        <div class="box" *ngFor="let room of structure.rooms" cdkDrag [cdkDragDisabled]="!settings.modes.menuEdit" long-press (onLongPress)="enableDrag()">
+                            <div class="custom-placeholder" *cdkDragPlaceholder></div>
+                            <ion-item (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[room.name+'_'+room.ID]">
+                                <ion-icon slot="start" [name]="room.icon"></ion-icon>
+                                <ion-label>{{room.name}}</ion-label>
+                            </ion-item>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="box settings">
+                    <ion-item (click)="openSettings()">
+                        <ion-icon slot="start" name="cog"></ion-icon>
+                        <ion-label>{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-label>
+                    </ion-item>
+                </div>
+                <button class="btn save" *ngIf="settings.modes.menuEdit" (click)="saveChanges()">
+                    <ion-label>{{ 'GENERAL.BUTTONS.SAVE' | translate }}</ion-label>
+                </button>
+                <button class="btn cancel" *ngIf="settings.modes.menuEdit" (click)="cancelChanges()">
+                    <ion-label>{{ 'GENERAL.BUTTONS.CANCEL' | translate }}</ion-label>
+                </button>
+            </ion-content>
+        </ion-menu>
+        <ion-router-outlet main></ion-router-outlet>
+    </ion-split-pane>
+    <fhem-menu *ngIf="settings.modes.fhemMenuMode !== ''"></fhem-menu>
+    <picker *ngIf="selectedRoom"
+        [ngClass]="settings.app.theme"
+        [height]="'70%'"
+        [confirmBtn]="'Okay'"
+        [cancelBtn]="'Schließen'"
+        [(ngModel)]="showPicker"
+        (onConfirm)="checkInput()"
+        (onCancel)="checkInput()">
+        <div class="page">
+            <h2>Raum bearbeiten:</h2>
+            <p>Raum Name:</p>
+            <input [(ngModel)]="selectedRoom.name" placeholder="Raum Name">
+            <span class="bar"></span>
+            <p>Raum Icon:</p>
+            <ng-select [items]="settings.icons"
+                [searchable]="false"
+                placeholder="selectedRoom.icon"
+                [(ngModel)]="selectedRoom.icon">
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <ion-icon [name]="item"></ion-icon>
+                    <span class="label">{{item}}</span>
+                </ng-template>
+            </ng-select>
+            <p class="error" *ngIf="wrongInput">Bitte geben Sie einen Raum-Namen ein.</p>
+        </div>
+    </picker>
+</ion-app>
