@@ -1,0 +1,10 @@
+{
+    "WebKit.framework": 1,
+    "Accelerate.framework": 1,
+    "Security.framework": 1,
+    "Photos.framework": 1,
+    "SystemConfiguration.framework": 1,
+    "QuartzCore.framework": 1,
+    "Social.framework": 1,
+    "MessageUI.framework": 1
+}
