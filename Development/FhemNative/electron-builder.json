@@ -1,0 +1,66 @@
+{
+	"productName": "FhemNative",
+	"directories": {
+		"buildResources": "./resources/electron",
+		"output": "release/"
+	},
+	"files": [
+		"**/*",
+		"!*.ts",
+		"!*.code-workspace",
+		"!LICENSE.md",
+		"!package.json",
+		"!package-lock.json",
+		"!config/",
+		"!platforms/",
+		"!plugins/",
+		"!src/",
+		"!e2e/",
+		"!hooks/",
+		"!.angular-cli.json",
+		"!_config.yml",
+		"!karma.conf.js",
+		"!tsconfig.json",
+		"!tslint.json",
+		"!app.db/",
+		"!release/",
+		"!resources/"
+	],
+	"extraResources":[
+		{
+			"from": "src/assets/i18n/",
+			"to": "assets/i18n"
+		}
+	],
+	"win": {
+		"icon": "resources/electron/windows/icon.ico",
+		"target": [
+			"portable"
+		]
+	},
+	"squirrelWindows": {
+		"msi":"true"
+	},
+	"msi" : {
+		"warningsAsErrors": false
+	},
+	"nsis" : {
+		"oneClick": false,
+		"allowToChangeInstallationDirectory": true
+	},
+	"appx": {
+		"publisherDisplayName":"FhemNative"
+	},
+	"mac": {
+		"icon": "resources/electron/osx/icon.icns",
+		"target": [
+			"dmg"
+		]
+	},
+	"linux": {
+		"icon": "dist",
+		"target": [
+			"AppImage"
+		]
+	}
+}
