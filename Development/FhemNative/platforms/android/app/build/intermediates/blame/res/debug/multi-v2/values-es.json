@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/macos/Desktop/FhemNative/FhemNative/Development/FhemNative/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-es/values-es.xml",
+            "map": [
+                {
+                    "source": "/Users/macos/Desktop/FhemNative/FhemNative/Development/FhemNative/platforms/android/app/src/main/res/values-es/multiimagechooser_strings_es.xml",
+                    "from": {
+                        "startLines": "8,9,5,4,2,7,6,3",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "578,623,298,209,55,477,386,116",
+                        "endColumns": "44,35,87,88,60,100,90,92",
+                        "endOffsets": "618,654,381,293,111,573,472,204"
+                    },
+                    "to": {
+                        "startLines": "21,22,23,24,25,26,27,28",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "2022,2067,2103,2191,2280,2341,2442,2533",
+                        "endColumns": "44,35,87,88,60,100,90,92",
+                        "endOffsets": "2062,2098,2186,2275,2336,2437,2528,2621"
+                    }
+                },
+                {
+                    "source": "/Users/macos/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.4.0.aar/8ef4d57521975fa71d1d5d1a28c35a5e/res/values-es/values-es.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,172,280,403,516,624,709,810,938,1014,1090,1172,1279,1379,1478,1586,1693,1800,1922,2022",
+                        "endColumns": "116,107,122,112,107,84,100,127,75,75,81,106,99,98,107,106,106,121,99,100",
+                        "endOffsets": "167,275,398,511,619,704,805,933,1009,1085,1167,1274,1374,1473,1581,1688,1795,1917,2017,2118"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,29",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,172,280,403,516,624,709,810,938,1014,1090,1172,1279,1379,1478,1586,1693,1800,1922,2626",
+                        "endColumns": "116,107,122,112,107,84,100,127,75,75,81,106,99,98,107,106,106,121,99,100",
+                        "endOffsets": "167,275,398,511,619,704,805,933,1009,1085,1167,1274,1374,1473,1581,1688,1795,1917,2017,2722"
+                    }
+                }
+            ]
+        }
+    ]
+}
