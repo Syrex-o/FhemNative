@@ -1,0 +1,1305 @@
+{
+	"COMPONENTS":{
+		"Box":{
+			"NAME": "Box",
+			"INPUTS":{
+				"data_headline": {
+					"name": "Headline",
+					"info": "Header label"
+				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border Radius of the box"
+				},
+				"style_headerColor":{
+					"name": "Header color",
+					"info": "Header background color"
+				},
+				"style_backgroundColor":{
+					"name": "Background color",
+					"info": "Content background color"
+				},
+				"bool_data_showHeader":{
+					"name": "Show header",
+					"info": "Show/hide box header"
+				},
+				"bool_data_showShadow":{
+					"name": "Show shadow",
+					"info": "Show/hide box shadow"
+				}
+			}
+		},
+		"Button":{
+			"NAME": "Button",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "State of the reading in ON state"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "State of the reading in OFF state"
+				},
+				"data_setOn":{
+					"name": "Set on",
+					"info": "ON value that should be sended"
+				},
+				"data_setOff":{
+					"name": "Set off",
+					"info": "OFF value that should be sended"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label to display in the button (default: Fhem device name)"
+				},
+				"data_sendCommand":{
+					"name": "Send command",
+					"info": "A single command that should be send to Fhem"
+				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border Radius of the button"
+				},
+				"data_iconSize":{
+					"name": "Icon size",
+					"info": "Size of the icon in the button"
+				},
+				"icon_iconOn":{
+					"name": "Icon on",
+					"info": "Desired Icon for ON state"
+				},
+				"icon_iconOff":{
+					"name": "Icon off",
+					"info": "Desired Icon for OFF state"
+				},
+				"bool_data_iconOnly":{
+					"name": "Show icon only",
+					"info": "Enable/disable to display icon only"
+				},
+				"style_iconColorOn":{
+					"name": "Icon color on",
+					"info": "Icon color for ON state"
+				},
+				"style_iconColorOff":{
+					"name": "Icon color off",
+					"info": "Icon color for OFF state"
+				},
+				"style_buttonColor":{
+					"name": "Background color",
+					"info": "Button background color"
+				},
+				"style_labelColor":{
+					"name": "Label color",
+					"info": "Color of the label"
+				}
+			}
+		},
+		"Chart":{
+			"NAME": "Chart",
+			"INPUTS":{
+				"data_device": {
+					"name": "Log device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_logFile":{
+					"name": "Log file name",
+					"info": "Name of a specific log file to choose (if needed)"
+				},
+				"data_reading":{
+					"name": "Log reading 1",
+					"info": "Name of the reading in the log file"
+				},
+				"data_reading2":{
+					"name": "Log reading 2",
+					"info": "Name of the second reading in the log file (if needed)"
+				},
+				"data_maxY":{
+					"name": "Max Y",
+					"info": "max. Y-axis value, to fix the axis (default: max value of the Y-axis data)"
+				},
+				"data_labelExtension":{
+					"name": "Label extension",
+					"info": "Ending for the Y-Axis label (Exp. %)"
+				},
+				"bool_data_getCurrent":{
+					"name": "Get current log",
+					"info": "Read the current log file from the device (otherwise a log file has to be defined)"
+				},
+				"bool_data_zoomBothAxis":{
+					"name": "Zoom both axis",
+					"info": "Enable/disable zooming in both axis of the chart"
+				},
+				"arr_data_chartType":{
+					"name": "Chart type 1",
+					"info": "Style of the chart for the first reading"
+				},
+				"arr_data_chartType2":{
+					"name": "Chart type 2",
+					"info": "Style of the chart for the second reading"
+				},
+				"arr_data_timeFormat":{
+					"name": "Time format",
+					"info": "Time format of the X-Axis"
+				},
+				"arr_data_colorSet":{
+					"name": "Color set",
+					"info": "Color sheme of the charts"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_DATA": "No data was found."
+			}
+		},
+		"Circle Menu":{
+			"NAME": "Circle Menu",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_value1":{
+					"name": "Value 1",
+					"info": "1. value of the multi menu"
+				},
+				"data_value2":{
+					"name": "Value 2",
+					"info": "2. value of the multi menu (optional)"
+				},
+				"data_value3":{
+					"name": "Value 3",
+					"info": "3. value of the multi menu (optional)"
+				},
+				"data_value4":{
+					"name": "Value 4",
+					"info": "4. value of the multi menu (optional)"
+				},
+				"data_value5":{
+					"name": "Value 5",
+					"info": "5. value of the multi menu (optional)"
+				},
+				"data_value6":{
+					"name": "Value 6",
+					"info": "6. value of the multi menu (optional)"
+				},
+				"arr_data_expandStyle":{
+					"name": "Expand style",
+					"info": "Direction where the menu should unfold"
+				},
+				"icon_icon":{
+					"name": "Icon",
+					"info": "Desired icon of the menu"
+				}
+			}
+		},
+		"Circle Slider":{
+			"NAME": "Circle Slider",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_threshold":{
+					"name": "Threshold",
+					"info": "Event reduction. Only send every n command to FHEM (in combination with updateOnMove)"
+				},
+				"data_textSize":{
+					"name": "Text size",
+					"info": "Size of the value label in the slider"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Subline label in the slider"
+				},
+				"data_labelExtension":{
+					"name": "Label extension",
+					"info": "Ending of the value label (Exp. %)"
+				},
+				"data_bottomAngle":{
+					"name": "Bottom angle",
+					"info": "Angle of the circle opening on the bottom of the slider"
+				},
+				"data_arcThickness":{
+					"name": "Arc thickness",
+					"info": "Width of the slider arc"
+				},
+				"data_thumbRadius":{
+					"name": "Thumb radius",
+					"info": "Radius of the slider thumb"
+				},
+				"data_thumbBorder":{
+					"name": "Thumb border",
+					"info": "Width of the border of the thumb"
+				},
+				"data_step":{
+					"name": "Steps",
+					"info": "Steps for the slider to move and set values"
+				},
+				"data_min":{
+					"name": "Min value",
+					"info": "Min. value of the slider"
+				},
+				"data_max":{
+					"name": "Max value",
+					"info": "Max. value of the slider"
+				},
+				"bool_data_updateOnMove":{
+					"name": "Update on move",
+					"info": "Activate/deactivate sending of values continiously on move"
+				},
+				"style_backgroundColor":{
+					"name": "background color",
+					"info": "Background color of the inner circle"
+				},
+				"style_thumbColor":{
+					"name": "Thumb color",
+					"info": "Background color of the slider thumb"
+				},
+				"arr_style_fillColors":{
+					"name": "Fill colors",
+					"info": "Background color of the slider arc (multi selection will draw a gradient)"
+				}
+			}
+		},
+		"Color Picker":{
+			"NAME": "Color Picker",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_sliderReading":{
+					"name": "Slider reading",
+					"info": "Name of the slider reading in the same device (if needed)"
+				},
+				"data_setSliderReading":{
+					"name": "Set slider reading",
+					"info": "name des Set Befehls vom sliderReading (if needed)"
+				},
+				"data_headline":{
+					"name": "Headline",
+					"info": "Headline of the popup"
+				},
+				"data_threshold":{
+					"name": "Threshold",
+					"info": "Event reduction. Only send every n command to FHEM (in combination with updateOnMove)"
+				},
+				"arr_data_colorInput":{
+					"name": "Color input",
+					"info": "Definition of the color input"
+				},
+				"arr_data_colorOutput":{
+					"name": "Color output",
+					"info": "Definition of the color output"
+				},
+				"bool_data_showSlider":{
+					"name": "Show slider",
+					"info": "Show/hide slider (Slider reading needed)"
+				},
+				"bool_data_updateOnMove":{
+					"name": "Update on move",
+					"info": "Activate/deactivate sending of values continiously on move"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_FAVOURITES": "No favourite colors found."
+			}
+		},
+		"IFrame":{
+			"NAME": "I Frame",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_url":{
+					"name": "Url",
+					"info": "External URL (otherwise IFrame tries to find the URL in the reading)"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_URL": "No URL found."
+			}
+		},
+		"Icon":{
+			"NAME": "Icon",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "State of the reading in ON state"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "State of the reading in OFF state"
+				},
+				"icon_iconOn":{
+					"name": "Icon on",
+					"info": "Desired Icon for ON state"
+				},
+				"icon_iconOff":{
+					"name": "Icon off",
+					"info": "Desired Icon for OFF state"
+				},
+				"style_iconColorOn":{
+					"name": "Icon color on",
+					"info": "Icon color for ON state"
+				},
+				"style_iconColorOff":{
+					"name": "Icon color off",
+					"info": "Icon color for OFF state"
+				}
+			}
+		},
+		"Image":{
+			"NAME": "Image",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_url":{
+					"name": "Url",
+					"info": "External URL (otherwise it tries to find the URL in the reading) (if no url and reading is selected, a button for device image selection will be created)"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_URL": "No URL found."
+			}
+		},
+		"Kodi Remote":{
+			"NAME": "Kodi Remote",
+			"INPUTS":{
+				"data_ip":{
+					"name": "IP",
+					"info": "IP of the Kodi device"
+				},
+				"data_port":{
+					"name": "Port",
+					"info": "Port of the Kodi device"
+				}
+			}
+		},
+		"Label":{
+			"NAME": "Label",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label to display (if needed)"
+				},
+				"data_size":{
+					"name": "Size",
+					"info": "Size of the label"
+				},
+				"data_fontWeight":{
+					"name": "Font weight",
+					"info": "Font weight of the label"
+				},
+				"style_color":{
+					"name": "Color",
+					"info": "Color of the label"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_LABEL": "No label found."
+			}
+		},
+		"Line":{
+			"NAME": "Line",
+			"INPUTS":{
+				"arr_data_orientation":{
+					"name": "Orientation",
+					"info": "Orientation of the line"
+				},
+				"data_height":{
+					"name": "Width/Height",
+					"info": "Width/Height  of the line"
+				},
+				"style_color":{
+					"name": "Color",
+					"info": "Color of the line"
+				}
+			}
+		},
+		"Pinpad":{
+			"NAME": "Pinpad",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_pin":{
+					"name": "Pin",
+					"info": "Name of the reading, that contains the pin"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "State of the reading in ON state"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "State of the reading in OFF state"
+				},
+				"data_setOn":{
+					"name": "Set on",
+					"info": "ON value that should be sended"
+				},
+				"data_setOff":{
+					"name": "Set off",
+					"info": "OFF value that should be sended"
+				},
+				"data_labelOnText":{
+					"name": "Label on text",
+					"info": "Alarm text in ON state"
+				},
+				"data_labelOffText":{
+					"name": "Label off text",
+					"info": "Alarm text in OFF state"
+				},
+				"data_tries":{
+					"name": "Tries",
+					"info": "Available pin tries, before the pinpad gets locked"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_PIN_READING": "No reading for pin found."
+			}
+		},
+		"Popup":{
+			"NAME": "Popup",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "State of the reading in ON state"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "State of the reading in OFF state"
+				},
+				"data_headline":{
+					"name": "Headline",
+					"info": "Headline of the popup"
+				},
+				"bool_data_openOnReading":{
+					"name": "Open on reading",
+					"info": "Enable/disable to open popup on reading"
+				},
+				"icon_iconOn":{
+					"name": "Icon on",
+					"info": "Desired Icon for ON state"
+				},
+				"icon_iconOff":{
+					"name": "Icon off",
+					"info": "Desired Icon for OFF state"
+				},
+				"style_iconColorOn":{
+					"name": "Icon color on",
+					"info": "Icon color for ON state"
+				},
+				"style_iconColorOff":{
+					"name": "Icon color off",
+					"info": "Icon color for OFF state"
+				}
+			}
+		},
+		"Select":{
+			"NAME": "Select",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_currentState":{
+					"name": "Current state",
+					"info": "Reading for the current state"
+				},
+				"data_seperator":{
+					"name": "Seperator",
+					"info": "List seperator of the reading"
+				},
+				"data_items":{
+					"name": "Items",
+					"info": "Manual list of selectable items"
+				},
+				"data_alias":{
+					"name": "Alias",
+					"info": "List of alias values"
+				},
+				"data_placehoder":{
+					"name": "Placeholder",
+					"info": "Placeholder. if no current value is available"
+				}
+			}
+		},
+		"Slider":{
+			"NAME": "Slider",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_threshold":{
+					"name": "Threshold",
+					"info": "Event reduction. Only send every n command to FHEM (in combination with updateOnMove)"
+				},
+				"data_labelExtension":{
+					"name": "Label extension",
+					"info": "Ending of the value label (Exp. %)"
+				},
+				"data_ticks":{
+					"name": "Ticks",
+					"info": "Amount of ticks on the slider"
+				},
+				"data_min":{
+					"name": "Min value",
+					"info": "Min. value of the slider"
+				},
+				"data_max":{
+					"name": "Max value",
+					"info": "Max. value of the slider"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the slider"
+				},
+				"arr_data_orientation":{
+					"name": "Orientation",
+					"info": "Orientation of the slider"
+				},
+				"data_sliderHeight":{
+					"name": "Slider height/width",
+					"info": "Slider height/width based on the orientation"
+				},
+				"data_thumbWidth":{
+					"name": "Thumb width",
+					"info": "Width of the slider thumb"
+				},
+				"data_steps":{
+					"name": "Steps",
+					"info": "Steps for the slider to move and set values"
+				},
+				"bool_data_showPin":{
+					"name": "Show pin",
+					"info": "Show/hide value pin on move"
+				},
+				"bool_data_showTicks":{
+					"name": "Show ticks",
+					"info": "Show/hide ticks on the slider"
+				},
+				"bool_data_updateOnMove":{
+					"name": "Update on move",
+					"info": "Activate/deactivate sending of values continiously on move"
+				},
+				"style_thumbColor":{
+					"name": "Thumb color",
+					"info": "Background color of the slider thumb"
+				},
+				"style_fillColor":{
+					"name": "Fill color",
+					"info": "Fill color of the slider"
+				},
+				"style_tickColor":{
+					"name": "Tick color",
+					"info": "Color of the ticks"
+				}
+			}
+		},
+		"Sprinkler":{
+			"NAME": "Sprinkler",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "List of sprinkler devices"
+				},
+				"arr_data_settingsStyle":{
+					"name": "Settings style",
+					"info": "Style of the sprinkler settings"
+				},
+				"data_weather":{
+					"name": "Weather",
+					"info": "Weather device for sprinkler"
+				},
+				"data_smartSprinkler":{
+					"name": "Smart sprinkler",
+					"info": "Smart sprinkler device for sprinkler"
+				}
+			},
+			"TRANSLATOR":{
+				"RUN_INTERVAL": {
+					"TITLE": "Run interval",
+					"INFO": "Run all sprinklers for 30 minutes"
+				},
+				"RUNTIMES":{
+					"TITLE": "Sprinkler settings",
+					"INTERVAL":{
+						"TITLE": "Watering cycle ",
+						"START_TIME": "Start time:",
+						"RUNTIME": "Runtime: ",
+						"TOTAL_RUNTIME": "Total runtime:",
+						"WEEKDAYS": "Weekdays:",
+						"SUMMARY": "Summary: ",
+						"CYCLE": "Watering cycle:",
+						"CURRENT": "Current runtime: ",
+						"NEXT": "Next runtime: ",
+						"NOT_TODAY": "disabled for today."
+					},
+					"INTERVAL_2":{
+						"DISABLE": "Disable interval 2",
+						"ENABLE": "Enable interval 2"
+					},
+					"DEACTIVATED": "deactivated",
+					"CAN_NOT_START":{
+						"TITLE": "Start not possible",
+						"INFO": "A manual program is running right now."
+					}
+				},
+				"COLORS":{
+					"TITLE": "Color settings"
+				},
+				"SMART_SPRINKLER":{
+					"TITLE": "Smart sprinkler",
+					"INFO": "Smart sprinkler uses weather data to control the sprinkler runtimes automatically.",
+					"CONFIG":{
+						"ENABLE":{
+							"TITLE": "Smart sprinkler",
+							"INFO": "Activate/deactivate smart sprinkler"
+						},
+						"RAIN":{
+							"TITLE": "Rain",
+							"INFO": "Disable watering for precipitation above "
+						},
+						"RAIN_VALUE":{
+							"TITLE": "Thresholded rain",
+							"INFO": "Amount of rain, where watering should be disabled."
+						},
+						"WIND":{
+							"TITLE": "Wind",
+							"INFO": "Disable watering for wind speed above "
+						},
+						"WIND_VALUE":{
+							"TITLE": "Thresholded wind speed",
+							"INFO": "Wind speed, where watering should be disabled."
+						},
+						"MAX_TEMP":{
+							"TITLE": "Threshold Max temperature",
+							"INFO": "Watering will be longer for temperatures above: "
+						},
+						"MAX_TEMP_VALUE":{
+							"TITLE": "Extend watering by:",
+							"INFO": "Extend watering by the given value."
+						},
+						"MIN_TEMP":{
+							"TITLE": "Threshold Min temperature",
+							"INFO": "Watering will be shortened for temperatures below: "
+						},
+						"MIN_TEMP_VALUE":{
+							"TITLE": "Shorten watering by:",
+							"INFO": "Shorten watering by the given value."
+						},
+						"MAIL":{
+							"TITLE": "Winter warning",
+							"INFO": "Send e-mail notification for temperatures below: "
+						},
+						"MAIL_VALUE":{
+							"TITLE": "Send e-mail to:"
+						},
+						"WINTER":{
+							"TITLE": "Winter mode",
+							"INFO": "The winter mode disables all sprinkler runtimes. If this setting is enabled, no configurations can be made.",
+							"BUTTONS":{
+								"TITLE": "Winter mode",
+								"INFO": "Enable/disable winter mode"
+							}
+						},
+						"WEATHER": "Weather"
+					}
+				},
+				"WEATHER":{
+					"FORECAST": "Current weather forecast",
+					"MAX_TEMP_TODAY": "Max temperature today: ",
+					"MIN_TEMP_TODAY": "Min temperature today: ",
+					"WIND_TODAY": "Wind speed today: ",
+					"WIND_TODAY_OFF": "The watering for today is disabled, due to high wind speeds.",
+					"RAIN_TODAY": "Precipitation today: ",
+					"RAIN_TODAY_OFF": "The watering for today is disabled, due to high precipitation.",
+					"TOO_RAINY": "too rainy.",
+					"TOO_WINDY": "too windy."
+				},
+				"WINTER_MODE":{
+					"STATES":{
+						"ACTIVE":{
+							"TITLE": "The winter mode is active",
+							"INFO": "The watering is disabled.",
+							"CAN_NOT_START":{
+								"INFO": "Single sprinkler cycles can not be started"
+							}
+						}
+					}
+				},
+				"MAIL":{
+					"WRONG_FORMAT":{
+						"TITLE": "The given e-mail address is in a wrong format.",
+						"INFO": "Please insert a valid e-mail address."
+					},
+					"CHANGE": "Change e-mail address"
+				},
+				"NAME":{
+					"CHANGE": "Change name"
+				},
+				"WRONG_SORTING":{
+					"TITLE": "Error in interval order",
+					"INFO": "The start of interval 2 must be behind interval 1."
+				},
+				"COLLIDE":{
+					"TITLE": "Time collision",
+					"INFO": "Should this time be setted?",
+					"OPTIMAL":{
+						"INTERVAL_1": "Interval 1 should start at: ",
+						"INTERVAL_2": "Interval 2 should start at: "
+					},
+					"BUTTONS":{
+						"CONFIRM": "Set time"
+					}
+				}
+			}
+		},
+		"Swiper":{
+			"NAME": "Swiper",
+			"INPUTS":{
+				"data_headline": {
+					"name": "Headline",
+					"info": "Header label"
+				},
+				"data_pages": {
+					"name": "Pages",
+					"info": "Amount of pages for the Swiper"
+				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border Radius of the Swiper"
+				},
+				"bool_data_showBorder":{
+					"name": "Show border",
+					"info": "Show/hide switch border"
+				},
+				"bool_data_showPager":{
+					"name": "Show pager",
+					"info": "Show/hide swiper page indicator"
+				},
+				"arr_data_orientation":{
+					"name": "Orientation",
+					"info": "Orientation of the swiper"
+				},
+				"style_headerColor":{
+					"name": "Header color",
+					"info": "Header background color"
+				},
+				"style_backgroundColor":{
+					"name": "Background color",
+					"info": "Content background color"
+				}
+			}
+		},
+		"Switch":{
+			"NAME": "Switch",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "State of the reading in ON state"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "State of the reading in OFF state"
+				},
+				"data_setOn":{
+					"name": "Set on",
+					"info": "ON value that should be sended"
+				},
+				"data_setOff":{
+					"name": "Set off",
+					"info": "OFF value that should be sended"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label to display in the button (default: Fhem device name)"
+				},
+				"bool_data_showBorder":{
+					"name": "Show border",
+					"info": "Show/hide switch border"
+				},
+				"arr_data_buttonStyle":{
+					"name": "Switch style",
+					"info": "Style of the switch"
+				},
+				"style_colorOn":{
+					"name": "Color on",
+					"info": "Background color of the switch in ON state"
+				},
+				"style_colorOff":{
+					"name": "Color off",
+					"info": "Background color of the switch in OFF state"
+				},
+				"style_thumbColorOn":{
+					"name": "Thumb color on",
+					"info": "Color of the thumb in ON state"
+				},
+				"style_thumbColorOff":{
+					"name": "Thumb color off",
+					"info": "Color of the thumb in OFF state"
+				}
+			}
+		},
+		"Thermostat":{
+			"NAME": "Thermostat",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_min":{
+					"name": "Min value",
+					"info": "Min. value of the thermostat"
+				},
+				"data_max":{
+					"name": "Max value",
+					"info": "Max. value of the thermostat"
+				},
+				"data_threshold":{
+					"name": "Threshold",
+					"info": "Event reduction. Only send every n command to FHEM (in combination with updateOnMove)"
+				},
+				"bool_data_updateOnMove":{
+					"name": "Update on move",
+					"info": "Activate/deactivate sending of values continiously on move"
+				},
+				"style_gradientColor1":{
+					"name": "Gradient color 1",
+					"info": "Color of ther 1. gradient step"
+				},
+				"style_gradientColor2":{
+					"name": "Gradient color 2",
+					"info": "Color of ther 2. gradient step"
+				},
+				"style_gradientColor3":{
+					"name": "Gradient color 3",
+					"info": "Color of ther 3. gradient step"
+				},
+				"style_gradientColor4":{
+					"name": "Gradient color 4",
+					"info": "Color of ther 4. gradient step"
+				}
+			}
+		},
+		"Time Picker":{
+			"NAME": "Time Picker",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label to display in the timepicker (default: Fhem device name)"
+				},
+				"data_confirmBtn":{
+					"name": "Confirm Button",
+					"info": "Label for the confirm button"
+				},
+				"data_cancelBtn":{
+					"name": "Cancel Button",
+					"info": "Label for the cancel button"
+				},
+				"data_maxHours":{
+					"name": "Max hours",
+					"info": "Maximal hours for the timepicker"
+				},
+				"data_maxMinutes":{
+					"name": "Max minutes",
+					"info": "Maximal minutes for the timepicker"
+				},
+				"arr_data_format":{
+					"name": "Format",
+					"info": "Format of the timepicker"
+				},
+				"bool_data_showBorder":{
+					"name": "Show border",
+					"info": "Show/hide switch border"
+				}
+			}
+		}
+	},
+	"GENERAL":{
+		"BUTTONS":{
+			"CANCEL": "Cancel",
+			"CONFIRM": "Confirm",
+			"BACK": "Back",
+			"NEXT": "Next",
+			"SAVE": "Save",
+			"CLOSE": "Close",
+			"OKAY": "Okay"
+		},
+		"DICTIONARY":{
+			"ROOM": "Room",
+			"ROOMS": "Rooms",
+			"ADDED": "added",
+			"NO_ROOMS_ADDED_TITLE": "No rooms added:",
+			"NO_ROOMS_ADDED_INFO": "All rooms are already included in FhemNative.",
+			"SETTINGS_SAVED_TITLE": "Settings saved:",
+			"SETTINGS_SAVED_INFO": "Settings saved under: ",
+			"LOG_STARTED_TITLE": "A log file is going to be generated",
+			"LOG_STARTED_INFO": "Errors getting saved until the Logger is deactivated.",
+			"LOG_ENDED_TITLE": "Log file saved:",
+			"LOG_ENDED_INFO": "Log file saved under: ",
+			"NO_CHANGELOG_PRESENT": "No changelog available.",
+			"WEEKDAYS":{
+				"MONDAY": "Monday",
+				"TUESDAY": "Tuesday",
+				"WEDNESDAY": "Wednesday",
+				"THURSDAY": "Thursday",
+				"FRIDAY": "Friday",
+				"SATURDAY": "Saturday",
+				"SUNDAY": "Sunday",
+				"DAILY": "Daily"
+			},
+			"AS": "as",
+			"AND": "and"
+		},
+		"SETTINGS":{
+			"TITLE": "Settings",
+			"FHEM": {
+				"TITLE": "FHEM Settings",
+				"WEBSOCKET":{
+					"TITLE": "Websocket Settings",
+					"INFO": "Configure the websocket connection.",
+					"BUTTON": "Change IP Settings"
+				},
+				"EXPORT":{
+					"TITLE": "Export Settings",
+					"INFO": "Export of room-, component- and FHEM settings.",
+					"MESSAGES":{
+						"DIRECTORY": "Directory doesn´t exist.",
+						"SHARE": {
+							"TITLE": "FhemNative Settings",
+							"INFO": "Export of FhemNative Settings"
+						}
+					}
+				},
+				"IMPORT":{
+					"TITLE": "Import Settings",
+					"INFO": "Import of room-, component- and FHEM settings.",
+					"BUTTON": "Select JSON",
+					"MESSAGES":{
+						"SUCCESS": {
+							"TITLE": "Import was successful.",
+							"INFO": "FhemNative settings were imported successfully. A App restart is required."
+						},
+						"ERROR":{
+							"TITLE": "An error occured",
+							"INFO": "FhemNative settings were not imported."
+						}
+					}
+				},
+				"AUTO_ROOMS":{
+					"TITLE": "Auto generate rooms",
+					"INFO": "Automatically generate rooms from FHEM.",
+					"BUTTON": "Generate rooms"
+				}
+			},
+			"APP":{
+				"TITLE": "App Settings",
+				"THEME":{
+					"TITLE": "App Theme",
+					"INFO": "Change App theme.",
+					"OPTIONS":{
+						"DARK": "Dark",
+						"BRIGHT": "Bright"
+					}
+				},
+				"LANGUAGE":{
+					"TITLE": "Language",
+					"INFO": "Change App language.",
+					"OPTIONS":{
+						"EN": "English",
+						"DE": "German"
+					}
+				},
+				"TOAST":{
+					"TITLE": "Toast Messages",
+					"INFO": "Enable/disable toast messages."
+				},
+				"VERSION_CHECK":{
+					"TITLE": "Check updates",
+					"INFO": "Enable/disable to check for App updates."
+				},
+				"LOG":{
+					"TITLE": "Write Log-File",
+					"INFO": "Activate/deactivate logging."
+				}
+			},
+			"COMPONENTS":{
+				"TITLE": "Component Settings",
+				"GRID":{
+					"TITLE": "Grid Snapping",
+					"INFO": "Enable/disable to arrange components based on grid."
+				},
+				"GRID_SIZE":{
+					"TITLE": "Grid Size",
+					"INFO": "Size of the grid to arrange components."
+				},
+				"RESPONSIVE_RESIZE":{
+					"TITLE": "Responsive resize",
+					"INFO": "Enable/disable responsive resizing of components."
+				}
+			},
+			"CHANGELOG":{
+				"TITLE": "Changelog",
+				"LOG":{
+					"TITLE": "Recent changes in FhemNative",
+					"INFO": "Changelogs of FhemNative updates.",
+					"BUTTON": "Show"
+				},
+				"PICKER":{
+					"TITLE": "Current Changelog"
+				},
+				"SELECTOR":{
+					"TITLE": "Select version",
+					"INFO": "See the changes from other App versions"
+				}
+			},
+			"SOFTWARE":{
+				"TITLE": "Software",
+				"THIRD_PARTY":{
+					"TITLE": "Third party software",
+					"INFO": "FhemNative is thankfull for this software.",
+					"BUTTON": "Show"
+				},
+				"PICKER":{
+					"TITLE": "Thanks! Thanks! Thanks!",
+					"INFO": "Without this, FhemNative wouldn´t be possible.",
+					"ANGULAR": "For the giant amount of ressources and a wonderful framework.",
+					"IONIC": "For the native support and a cool community.",
+					"ELECTRON": "For the native desktop app support.",
+					"FHEM": "For the best home automation software",
+					"ntruchsess": "For a reliable and well structured websocket.",
+					"MORE":{
+						"TITLE": "Other software",
+						"IONIC":{
+							"TITLE": "Ionic plugins",
+							"STORAGE": "Native storage",
+							"FILE": "Native device file access",
+							"SOCIALSHARING": "Sharing of device files",
+							"CHOOSER": "Selecting device files",
+							"IMAGEPICKER": "Selecting images from device",
+							"WEBVIEW": "Access to webview functions"
+						},
+						"EXTERNAL":{
+							"TITLE": "External libraries:",
+							"D3": "SVG chart library",
+							"NGXTOASTER": "Implementation of toast messages"
+						},
+						"OTHERS":{
+							"TITLE": "Other sources:"
+						}
+					}
+				}
+			}
+		},
+		"CREATE_ROOM":{
+			"TITLE": "Create room:",
+			"ROOM_NAME": "Room name",
+			"ROOM_ICON": "Room icon:",
+			"NO_ROOM_NAME": "Please give the room a name,",
+			"ROOM_CREATED": "Room created."
+		},
+		"CREATE_COMPONENT":{
+			"POPUP_HEADER": "Add component:",
+			"PAGE_1_INFO": "Select component:",
+			"PAGE_2_INFO": "Configure Fhem Device:",
+			"PAGE_3_INFO": "Configure Style:",
+			"PAGE_4_INFO": "Test configuration:",
+			"PAGE_4_STYLE_COMPONENT": "Style component:",
+			"PAGE_4_NOT_FOUND": "not found.",
+			"NO_COMPONENT_SELECTED": "Please select a component first."
+		},
+		"EDIT_COMPONENT":{
+			"EDIT":{
+				"TITLE": "Settings of the device:",
+				"STYLE": "Style of the device:"
+			},
+			"MENU":{
+				"SETTINGS": "Settings",
+				"FOREGROUND": "Put in foreground",
+				"BACKGROUND": "Put in background",
+				"COPY": "Copy",
+				"PASTE": "Paste",
+				"DELETE": "Delete"
+			}
+		},
+		"FHEM_MENU":{
+			"CONNECTION":{
+				"TITLE": "IP settings",
+				"IP":{
+					"TITLE": "IP address",
+					"INFO": "IP address of the Fhem server"
+				},
+				"PORT":{
+					"TITLE": "Port",
+					"INFO": "Defined port"
+				},
+				"TYPE":{
+					"TITLE": "Connection type",
+					"INFO": "Which connection type should be chosen"
+				},
+				"SECURE":{
+					"TITLE": "Secure connection",
+					"INFO": "Enable/disable to establish a secure connection"
+				}
+			}
+		},
+		"ERRORS":{
+			"CONNECTION":{
+				"NO_CONNECTION": "No connection to Fhem.",
+				"NO_DEVICELIST": "Devicelist was not loaded.",
+				"CONNECTION_HELPER": "Please review your IP settings."
+			},
+			"NOT_FOUND":{
+				"DEVICE_NOT_FOUND": "Fhem device not found.",
+				"READING_NOT_FOUND": "Device reading not found.",
+				"COMPONENT_HELPER": "Please review your component configuration."
+			}
+		},
+		"FHEM":{
+			"TITLE": "Fhem",
+			"CONNECTED":"Connected to Fhem.",
+			"DISCONNECT": "Disconnected from Fhem",
+			"ERROR": "Connection error to Fhem.",
+			"TIMEOUT": "Connection timeout to Fhem.",
+			"FETCHED_ALL_DEVICES": "Fetched all devices.",
+			"DEVICE_UPDATE": "Updated values of: "
+		},
+		"VERSIONS":{
+			"NEW":{
+				"TITLE": "New version available",
+				"INFO": "New version of FhemNative is available on GitHub. Click here to visit GitHub."
+			}
+		}
+	}
+}
