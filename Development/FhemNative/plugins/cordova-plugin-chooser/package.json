@@ -1,0 +1,64 @@
+{
+  "_from": "cordova-plugin-chooser",
+  "_id": "cordova-plugin-chooser@1.2.5",
+  "_inBundle": false,
+  "_integrity": "sha512-md5ZT3Q3aIV/G0VJNWifsYc/aObNijlAO2reOh7ZOv0UvjqLPvbhapkDsKx7852nGUQeS0MFlhJ6SDNlNl7ftQ==",
+  "_location": "/cordova-plugin-chooser",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-chooser",
+    "name": "cordova-plugin-chooser",
+    "escapedName": "cordova-plugin-chooser",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-chooser/-/cordova-plugin-chooser-1.2.5.tgz",
+  "_shasum": "869c758857f660cc124193c261a0f130ba23e96b",
+  "_spec": "cordova-plugin-chooser",
+  "_where": "/Users/macos/Desktop/Ionic/FhemNative/FhemNative",
+  "author": {
+    "name": "Cyph, Inc.",
+    "email": "cordova-plugin-chooser@cyph.com",
+    "url": "https://github.com/cyph"
+  },
+  "bugs": {
+    "url": "https://github.com/cyph/cordova-plugin-chooser/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-chooser",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova file chooser plugin",
+  "homepage": "https://github.com/cyph/cordova-plugin-chooser#readme",
+  "keywords": [
+    "file",
+    "chooser",
+    "picker",
+    "file-chooser",
+    "android",
+    "ios"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "name": "cordova-plugin-chooser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyph/cordova-plugin-chooser.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.2.5"
+}
