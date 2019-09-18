@@ -5,6 +5,7 @@ import { FhemService } from '../../services/fhem.service';
 import { ToastService } from '../../services/toast.service';
 import { StorageService } from '../../services/storage.service';
 import { StructureService } from '../../services/structure.service';
+import { CreateComponentService } from '../../services/create-component.service';
 
 import { ModalController, Platform } from '@ionic/angular';
 
@@ -358,7 +359,8 @@ export class SettingsRoomComponent {
 		private storage: StorageService,
 		private platform: Platform,
 		private socialSharing: SocialSharing,
-		private chooser: Chooser) {
+		private chooser: Chooser,
+		private createComponent: CreateComponentService) {
 	}
 
 	public logWarning(event) {
@@ -391,10 +393,9 @@ export class SettingsRoomComponent {
 	private getDir() {
 		if (this.platform.is('mobile')) {
 			return (this.file.externalRootDirectory === null) ? this.file.externalDataDirectory : this.file.externalRootDirectory;
-
 		} else {
-			const process = (window as any).require('process');
-			return process.cwd();
+			const remote = (window as any).require('electron').remote;
+			return remote.app.getPath('home');
 		}
 	}
 
@@ -410,7 +411,7 @@ export class SettingsRoomComponent {
 					});
 				} else {
 					const fs = (window as any).require('fs');
-					fs.writeFile(name, data, (err) => {
+					fs.writeFile(dir+'/'+name, data, (err) => {
 						if (err) {reject(dir); }
 						resolve({dir, name});
 					});
@@ -421,6 +422,7 @@ export class SettingsRoomComponent {
 
 	public share(varaint) {
 		this.storage.getAllSettings().then((res: any) => {
+			console.log(res);
 			this.createFile('FhemNative_settings.json', JSON.stringify(res)).then((data: any) => {
 				if (varaint === 'local') {
 					this.toast.showAlert(
@@ -439,7 +441,7 @@ export class SettingsRoomComponent {
 						const mail = 'mailto:?subject=' +
 							this.translate.instant('GENERAL.SETTINGS.FHEM.EXPORT.MESSAGES.SHARE.TITLE') + '&body=' +
 							this.translate.instant('GENERAL.SETTINGS.FHEM.EXPORT.MESSAGES.SHARE.INFO') + '. ' + data.dir;
-    		window.location.href = mail;
+    					window.location.href = mail;
 					}
 				}
 			}).catch((err) => {
@@ -472,10 +474,7 @@ export class SettingsRoomComponent {
 		} else {
 			const remote = (window as any).require('electron').remote;
 			const dialog = remote.dialog;
-
-			dialog.showOpenDialog({
-		        properties: ['openFile']
-		    }, (path) => {
+			dialog.showOpenDialog({properties: ['openFile']}, (path) => {
 		        if (path !== undefined) {
 		        	if (path[0].indexOf('FhemNative_settings') !== -1) {
 		        		const fs = (window as any).require('fs');
@@ -505,6 +504,10 @@ export class SettingsRoomComponent {
 				}).then(() => {
 					i++;
 					if (i === len) {
+						this.structure.loadRooms(RoomComponent, true).then(()=>{
+							this.createComponent.loadRoomComponents(this.structure.getCurrentRoom().item.components, this.createComponent.currentRoomContainer, true);
+						});
+						this.modalCtrl.dismiss();
 						this.toast.showAlert(
 							this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.TITLE'),
 							this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.INFO'),
