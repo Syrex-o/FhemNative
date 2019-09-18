@@ -8,8 +8,8 @@
       ]
     },
     {
-      "VERSION": "2.0",
-      "DATE": "09.09.2019",
+      "VERSION": "2.0.0",
+      "DATE": "17.09.2019",
       "CHANGES":[
         {"TYPE": "NEW", "CHANGE": "Complete Rebuild"},
         {"TYPE": "NEW", "CHANGE": "Added new alert message provider in toast service"},
@@ -30,6 +30,13 @@
         {"TYPE": "FIX", "CHANGE": "Fixed Swiper Component copy/paste"},
         {"TYPE": "DEL", "CHANGE": "Old Component Container"},
         {"TYPE": "DEL", "CHANGE": "Removed Kodi component"}
+      ]
+    },
+    {
+      "VERSION": "2.0.1",
+      "DATE": "18.09.2019",
+      "CHANGES":[
+        {"TYPE": "FIX", "CHANGE": "Fixed Thermostat Dragger and initial value display"},
       ]
     }
   ]
