@@ -1,36 +1,46 @@
 {
-  "VERSIONS":[
-    {
-      "VERSION": "1.X.X",
-      "DATE": "X.X.2019",
-      "CHANGES":[
-        {"TYPE": "DEL", "CHANGE": "Removed Old GitHub Repo to enable new structure"}
-      ]
-    },
-    {
-      "VERSION": "2.0",
-      "DATE": "09.09.2019",
-      "CHANGES":[
-        {"TYPE": "NEW", "CHANGE": "Complete Rebuild"},
-        {"TYPE": "NEW", "CHANGE": "Added new alert message provider in toast service"},
-        {"TYPE": "NEW", "CHANGE": "Added custom ripple library"},
-        {"TYPE": "NEW", "CHANGE": "Added Desktop Compatibility"},
-        {"TYPE": "NEW", "CHANGE": "Added Swiper component"},
-        {"TYPE": "NEW", "CHANGE": "Added brightness value calculation to color picker (if brightness reading is present)"},
-        {"TYPE": "NEW", "CHANGE": "Added brightness dependant color picker circle (if brightness reading is present)"},
-        {"TYPE": "NEW", "CHANGE": "Added New fhem-container to clearly identify current state"},
-        {"TYPE": "NEW", "CHANGE": "Added Component Name to Edit-Menu"},
-        {"TYPE": "NEW", "CHANGE": "Moved Changelog to GitHub"},
-        {"TYPE": "NEW", "CHANGE": "Implemented Settings export to all platforms"},
-        {"TYPE": "FIX", "CHANGE": "Fixed Room Handler and room edit handler"},
-        {"TYPE": "FIX", "CHANGE": "Fixed Sprinkler Optimal time setter"},
-        {"TYPE": "FIX", "CHANGE": "Fixed Timepicker zero display"},
-        {"TYPE": "FIX", "CHANGE": "Fixed Colorpicker slider display and movement"},
-        {"TYPE": "FIX", "CHANGE": "Fixed Slider to recalculate value on resize and in containers"},
-        {"TYPE": "FIX", "CHANGE": "Fixed Swiper Component copy/paste"},
-        {"TYPE": "DEL", "CHANGE": "Old Component Container"},
-        {"TYPE": "DEL", "CHANGE": "Removed Kodi component"}
-      ]
-    }
-  ]
+	"VERSIONS":[
+		{
+			"VERSION": "1.X.X",
+			"DATE": "X.X.2019",
+			"CHANGES":[
+				{"TYPE": "DEL", "CHANGE": "Removed Old GitHub Repo to enable new structure"}
+			]
+		},
+		{
+			"VERSION": "2.0",
+			"DATE": "09.09.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Complete Rebuild"},
+				{"TYPE": "NEW", "CHANGE": "Added new alert message provider in toast service"},
+				{"TYPE": "NEW", "CHANGE": "Added custom ripple library"},
+				{"TYPE": "NEW", "CHANGE": "Added Desktop Compatibility"},
+				{"TYPE": "NEW", "CHANGE": "Added Swiper component"},
+				{"TYPE": "NEW", "CHANGE": "Added brightness value calculation to color picker (if brightness reading is present)"},
+				{"TYPE": "NEW", "CHANGE": "Added brightness dependant color picker circle (if brightness reading is present)"},
+				{"TYPE": "NEW", "CHANGE": "Added New fhem-container to clearly identify current state"},
+				{"TYPE": "NEW", "CHANGE": "Added Component Name to Edit-Menu"},
+				{"TYPE": "NEW", "CHANGE": "Moved Changelog to GitHub"},
+				{"TYPE": "NEW", "CHANGE": "Implemented Settings export to all platforms"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Room Handler and room edit handler"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Sprinkler Optimal time setter"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Timepicker zero display"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Colorpicker slider display and movement"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Slider to recalculate value on resize and in containers"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Swiper Component copy/paste"},
+				{"TYPE": "DEL", "CHANGE": "Old Component Container"},
+				{"TYPE": "DEL", "CHANGE": "Removed Kodi component"}
+			]
+		},
+		{
+      		"VERSION": "2.0.1",
+      		"DATE": "18.09.2019",
+      		"CHANGES":[
+        		{"TYPE": "NEW", "CHANGE": "App reload after settings import is not needed anymore"},
+        		{"TYPE": "FIX", "CHANGE": "Fixed Thermostat Dragger and initial value display"},
+        		{"TYPE": "FIX", "CHANGE": "Fixed undefined settings in export and import"},
+        		{"TYPE": "FIX", "CHANGE": "App ID back to de.FhemNative.FhemNative"},
+      		]
+    	}
+	]
 }
