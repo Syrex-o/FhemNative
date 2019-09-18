@@ -61,7 +61,9 @@ export class StorageService {
 			this.storage.keys().then((keys) => {
 				for (let i = 0; i < keys.length; i++) {
 					this.getSetting(keys[i]).then((result) => {
-						res[keys[i]] = JSON.stringify(result);
+						if(keys[i] !== 'undefined'){
+							res[keys[i]] = JSON.stringify(result);
+						}
 						if (i === keys.length - 1) {
 							resolve(res);
 						}
