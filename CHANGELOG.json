@@ -31,13 +31,6 @@
         {"TYPE": "DEL", "CHANGE": "Old Component Container"},
         {"TYPE": "DEL", "CHANGE": "Removed Kodi component"}
       ]
-    },
-    {
-      "VERSION": "2.0.1",
-      "DATE": "18.09.2019",
-      "CHANGES":[
-        {"TYPE": "FIX", "CHANGE": "Fixed Thermostat Dragger and initial value display"},
-      ]
     }
   ]
 }
