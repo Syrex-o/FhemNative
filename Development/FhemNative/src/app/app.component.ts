@@ -122,7 +122,6 @@ export class AppComponent {
 				});
 			}
 		});
-
 		this.initializeApp();
 	}
 
