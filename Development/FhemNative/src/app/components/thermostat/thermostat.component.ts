@@ -18,56 +18,52 @@ import { SettingsService } from '../../services/settings.service';
 				id="{{ID}}"
 				[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
 				<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
-					<ng-container
-						available
-						*ngIf="fhemDevice">
-						<svg #Thermostat xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 20 250 470">
-							<defs>
-						    	<linearGradient [attr.id]="LIQUIDGRAD_UID" x1="57" y1="150" x2="57" y2="546" gradientUnits="userSpaceOnUse">
-						      		<stop [attr.stop-color]="style_gradientColor1" offset="0"/>
-						      		<stop [attr.stop-color]="style_gradientColor2" offset="0.2"/>
-						      		<stop [attr.stop-color]="style_gradientColor3" offset="0.5"/>
-						      		<stop [attr.stop-color]="style_gradientColor4" offset="1"/>
-						    	</linearGradient>
-								<rect id="tube" x="110" y="150" width="86" height="400" rx="43" ry="43"/>
-						    		<clipPath id="liquidMask">
-						        		<use xlink:href="#tube" class="liquidMask" />
-						    		</clipPath>
-						   			<clipPath id="tubeMask">
-						        		<use xlink:href="#tube" class="liquidMask" />
-						    		</clipPath>
-						   			<path id="liquid" d="M757,552v490H357V552c50,0,50,20,100,20s50-20,100-20,50,20,100,20S707,552,757,552Z" />
-								<mask [attr.id]="GRADMASK_UID">
-						      		<use xlink:href="#liquid" class="liquid" x="0" fill="#FCEFD6" />
-						      		<use xlink:href="#liquid" class="liquid" x="0" fill="#EEE" opacity="0.7"/>
-						    	</mask>
-						  	</defs>
-						  	<g class="whole" transform="translate(0, -100)">
-						  		<use xlink:href="#tube" class="tubeBg" fill="#C8D9D3" opacity="0.61"/>
-						  		<g class="dragger">
-						  			<circle class="drag" cx="50" cy="160" r="36"/>
-				        			<path class="dragTip drag" d="M315.5,556.76,299.24,540.5l16.26-16.26,36.26,16.26Z"/>
-				        			<text class="label drag" x="50" y="170">{{fhemDevice.readings[data_reading].Value}}&#8451;</text>
-				        			<text class="labelReplace drag" x="50" y="170">{{fhemDevice.readings[data_reading].Value}}&#8451;</text>
-						  		</g>
-						  		<g [attr.mask]="'url(#'+GRADMASK_UID+')'">
-						        	<use xlink:href="#tube" [attr.fill]="'url(#'+LIQUIDGRAD_UID+')'" />
-						  		</g>
-						  		<line class="tubeShine" x1="130" y1="200" x2="130" y2="443" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="8" opacity="0.21" stroke-dasharray="153 30" stroke-dashoffset="-20"/>
-						  		<g class="measurements" fill="none" stroke-width="3" stroke-linecap="round" opacity="1">
-						  			<line x1="112" y1="196" x2="130" y2="196" />
-					        		<line x1="112" y1="234" x2="130" y2="234" />
-					        		<line x1="112" y1="273" x2="130" y2="273" />
-							        <line x1="112" y1="311" x2="130" y2="311" />
-							        <line x1="112" y1="350" x2="130" y2="350" />
-							        <line x1="112" y1="388" x2="130" y2="388" />
-							        <line x1="112" y1="426" x2="130" y2="426" />
-							        <line x1="112" y1="465" x2="130" y2="465" />
-							        <line x1="112" y1="503" x2="130" y2="503" />
-						  		</g>
-						  	</g>
-						</svg>
-					</ng-container>
+					<svg #Thermostat xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 20 250 470">
+						<defs>
+					    	<linearGradient [attr.id]="LIQUIDGRAD_UID" x1="57" y1="150" x2="57" y2="546" gradientUnits="userSpaceOnUse">
+					      		<stop [attr.stop-color]="style_gradientColor1" offset="0"/>
+					      		<stop [attr.stop-color]="style_gradientColor2" offset="0.2"/>
+					      		<stop [attr.stop-color]="style_gradientColor3" offset="0.5"/>
+					      		<stop [attr.stop-color]="style_gradientColor4" offset="1"/>
+					    	</linearGradient>
+							<rect id="tube" x="110" y="150" width="86" height="400" rx="43" ry="43"/>
+					    		<clipPath id="liquidMask">
+					        		<use xlink:href="#tube" class="liquidMask" />
+					    		</clipPath>
+					   			<clipPath id="tubeMask">
+					        		<use xlink:href="#tube" class="liquidMask" />
+					    		</clipPath>
+					   			<path id="liquid" d="M757,552v490H357V552c50,0,50,20,100,20s50-20,100-20,50,20,100,20S707,552,757,552Z" />
+							<mask [attr.id]="GRADMASK_UID">
+					      		<use xlink:href="#liquid" class="liquid" x="0" fill="#FCEFD6" />
+					      		<use xlink:href="#liquid" class="liquid" x="0" fill="#EEE" opacity="0.7"/>
+					    	</mask>
+					  	</defs>
+					  	<g class="whole" transform="translate(0, -100)">
+					  		<use xlink:href="#tube" class="tubeBg" fill="#C8D9D3" opacity="0.61"/>
+					  		<g class="dragger">
+					  			<circle class="drag" cx="50" cy="160" r="36"/>
+				       			<path class="dragTip drag" d="M315.5,556.76,299.24,540.5l16.26-16.26,36.26,16.26Z"/>
+				       			<text class="label drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value}}&#8451;</text>
+				       			<text class="labelReplace drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value}}&#8451;</text>
+					  		</g>
+					  		<g [attr.mask]="'url(#'+GRADMASK_UID+')'">
+					        	<use xlink:href="#tube" [attr.fill]="'url(#'+LIQUIDGRAD_UID+')'" />
+					  		</g>
+					  		<line class="tubeShine" x1="130" y1="200" x2="130" y2="443" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="8" opacity="0.21" stroke-dasharray="153 30" stroke-dashoffset="-20"/>
+					  		<g class="measurements" fill="none" stroke-width="3" stroke-linecap="round" opacity="1">
+					  			<line x1="112" y1="196" x2="130" y2="196" />
+					       		<line x1="112" y1="234" x2="130" y2="234" />
+					       		<line x1="112" y1="273" x2="130" y2="273" />
+						        <line x1="112" y1="311" x2="130" y2="311" />
+						        <line x1="112" y1="350" x2="130" y2="350" />
+						        <line x1="112" y1="388" x2="130" y2="388" />
+						        <line x1="112" y1="426" x2="130" y2="426" />
+						        <line x1="112" y1="465" x2="130" y2="465" />
+						        <line x1="112" y1="503" x2="130" y2="503" />
+					  		</g>
+					  	</g>
+					</svg>
 				</fhem-container>
 			</div>
 		</ng-container>
@@ -149,23 +145,23 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 	}
 	private Thermostat: ElementRef;
 	// Component ID
-	@Input() ID: number;
+	@Input() ID: string;
 
-	@Input() data_device = '';
-	@Input() data_reading = '';
-	@Input() data_setReading = '';
+	@Input() data_device: string;
+	@Input() data_reading: string;
+	@Input() data_setReading: string;
 
-	@Input() data_min = '0';
-	@Input() data_max = '100';
+	@Input() data_min: string = '0';
+	@Input() data_max: string = '100';
 
-	@Input() bool_data_updateOnMove = false;
-	@Input() data_threshold = '10';
+	@Input() bool_data_updateOnMove: boolean = false;
+	@Input() data_threshold: string = '10';
 
 	// Styling
-	@Input() style_gradientColor1 = '#FF0909';
-	@Input() style_gradientColor2 = '#F3481A';
-	@Input() style_gradientColor3 = '#FABA2C';
-	@Input() style_gradientColor4 = '#00BCF2';
+	@Input() style_gradientColor1: string = '#FF0909';
+	@Input() style_gradientColor2: string = '#F3481A';
+	@Input() style_gradientColor3: string = '#FABA2C';
+	@Input() style_gradientColor4: string = '#00BCF2';
 
 	// position information
 	@Input() width: number;
@@ -178,9 +174,9 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 	// fhem event subscribtions
     private deviceChange: Subscription;
 
-    private waitForThreshold = 0;
+    private waitForThreshold: number = 0;
 	// current value for updates
-	private value = 0;
+	private value: number = 0;
 
 	public LIQUIDGRAD_UID = '_' + Math.random().toString(36).substr(2, 9);
 	public GRADMASK_UID = '_' + Math.random().toString(36).substr(2, 9);
@@ -215,23 +211,23 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 				window.removeEventListener('mousemove', whileMove);
 				window.removeEventListener('touchmove', whileMove);
 
-	   window.removeEventListener('mouseup', endMove);
-	   window.removeEventListener('touchend', endMove);
+	   			window.removeEventListener('mouseup', endMove);
+	   			window.removeEventListener('touchend', endMove);
 
-	   if (parseInt(this.fhemDevice.readings[this.data_reading].Value) !== this.value) {
+	   			if (parseInt(this.fhemDevice.readings[this.data_reading].Value) !== this.value) {
 					this.sendValue(this.value);
 					const dragger = this.Thermostat.nativeElement.querySelector('.dragger');
 					this.pseudoLabel(dragger, false);
 				}
 	        };
-	  const whileMove = (e) => {
+	  		const whileMove = (e) => {
 				this.mover(e, target);
 	        };
 			window.addEventListener('mousemove', whileMove);
-	  window.addEventListener('mouseup', endMove);
+	  		window.addEventListener('mouseup', endMove);
 
-	  window.addEventListener('touchmove', whileMove);
-	  window.addEventListener('touchend', endMove);
+	  		window.addEventListener('touchmove', whileMove);
+	  		window.addEventListener('touchend', endMove);
 		}
 	}
 
@@ -241,8 +237,9 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 			if (device) {
 				this.value = parseInt(this.fhemDevice.readings[this.data_reading].Value);
 				this.deviceChange = this.fhem.devicesSub.subscribe(next => {
-				 		this.listen(next);
+				 	this.listen(next);
 				});
+				this.updateThermostat(83);
 			}
 		});
 	}

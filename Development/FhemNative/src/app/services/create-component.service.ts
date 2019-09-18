@@ -60,7 +60,10 @@ export class CreateComponentService {
 
 	public loadRoomComponents(components, container, clear) {
 		// only clear container if needed
-		if (clear) {this.containerComponents = []; }
+		if (clear) {
+			this.containerComponents = []; 
+			this.clearContainer(container);
+		}
 		for (let i = 0; i < components.length; i++) {
 			const ref = this.addFhemComponent(components[i].name, container);
 

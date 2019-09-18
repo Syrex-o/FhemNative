@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.0.0';
+	public appVersion: string = '2.0.1';
 	// building default storage
 	public app: any = {};
 

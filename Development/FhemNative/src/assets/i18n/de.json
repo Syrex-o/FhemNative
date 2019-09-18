@@ -1109,7 +1109,7 @@
 					"MESSAGES":{
 						"SUCCESS": {
 							"TITLE": "der Import war erfolgreich.",
-							"INFO": "FhemNative Einstellungen wurden erfolgreich importiert. Ein Neustart der App ist notwendig."
+							"INFO": "FhemNative Einstellungen wurden erfolgreich importiert."
 						},
 						"ERROR":{
 							"TITLE": "Ein Fehler ist aufgetreten",

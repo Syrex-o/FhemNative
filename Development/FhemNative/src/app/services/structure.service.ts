@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable, NgZone } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 // Services
 import { StorageService } from './storage.service';
@@ -13,7 +13,8 @@ export class StructureService {
 	constructor(
 		private router: Router,
 		private storage: StorageService,
-		private helper: HelperService) {
+		private helper: HelperService,
+		private zone: NgZone) {
 
 	}
 	// list of fhem components
@@ -47,17 +48,22 @@ export class StructureService {
 
 	// loading rooms for the router
 	public loadRooms(RoomComponent, navigate) {
-		this.storage.setAndGetSetting({
-			name: 'rooms',
-			default: this.roomDefaults
-		}).then((result: any) => {
-			this.rooms = result;
-			// loading storage rooms
-			this.resetRouter(RoomComponent);
-			// navigate to the first room if needed
-			if (navigate) {
-				this.router.navigate([this.rooms[0].name + '_' + this.rooms[0].ID]);
-			}
+		return new Promise((resolve) => {
+			this.zone.run(()=>{
+				this.storage.setAndGetSetting({
+					name: 'rooms',
+					default: this.roomDefaults
+				}).then((result: any) => {
+					this.rooms = result;
+					// loading storage rooms
+					this.resetRouter(RoomComponent);
+					// navigate to the first room if needed
+					if (navigate) {
+						this.router.navigate([this.rooms[0].name + '_' + this.rooms[0].ID]);
+					}
+					resolve(result);
+				});
+			});
 		});
 	}
 
