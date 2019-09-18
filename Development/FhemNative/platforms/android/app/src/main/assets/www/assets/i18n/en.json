@@ -1109,7 +1109,7 @@
 					"MESSAGES":{
 						"SUCCESS": {
 							"TITLE": "Import was successful.",
-							"INFO": "FhemNative settings were imported successfully. A App restart is required."
+							"INFO": "FhemNative settings were imported successfully."
 						},
 						"ERROR":{
 							"TITLE": "An error occured",
