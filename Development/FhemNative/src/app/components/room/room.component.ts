@@ -100,7 +100,9 @@ export class RoomComponent implements OnInit, OnDestroy {
 			this.onResumeSubscription = this.platform.resume.subscribe(() => {
 				this.fhem.noReconnect = false;
 				this.fhem.connectFhem();
-				this.loadRoomComponents();
+				if(!this.settings.modes.blockDefaultComponentLoader){
+					this.loadRoomComponents();
+				}
 			});
 	}
 

@@ -451,6 +451,7 @@ export class SettingsRoomComponent {
 	}
 
 	public importSettings() {
+		this.settings.modes.blockDefaultComponentLoader = true;
 		if (this.platform.is('mobile')) {
 			this.chooser.getFile('').then((file) => {
 				if (file.name.indexOf('FhemNative_settings') !== -1) {
@@ -513,6 +514,7 @@ export class SettingsRoomComponent {
 							this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.INFO'),
 							false
 						);
+						this.settings.modes.blockDefaultComponentLoader = false;
 					}
 				});
 			}

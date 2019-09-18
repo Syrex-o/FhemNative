@@ -25,6 +25,7 @@ export class SettingsService {
 		// editing mode
 		roomEdit: false,
 		menuEdit: false,
+		blockDefaultComponentLoader: false,
 		fhemMenuMode: ''
 	};
 	// subscriber for modes
