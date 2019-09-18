@@ -18,7 +18,7 @@ export class SettingsService {
 	public app: any = {};
 
 	// building ip settings
-	public IPsettings: any = {IP: '', PORT: '8080', WSS: false, type: 'Websocket'};
+	public IPsettings: any = {};
 
 	// app modes
 	public modes: any = {
@@ -36,6 +36,16 @@ export class SettingsService {
 		isActive: false,
 		events: []
 	};
+
+	private appDefaults:Array<any> = [
+		{name: 'theme', default: 'dark', toStorage: 'app'},
+		{name: 'showToastMessages', default: true, toStorage: 'app'},
+		{name: 'responsiveResize', default: true, toStorage: 'app'},
+		{name: 'checkUpdates', default: false, toStorage: 'app'},
+		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
+		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: 'app'},
+		{name: 'IPsettings', default: JSON.stringify({IP: '', PORT: '8080', WSS: false, type: 'Websocket'}), toStorage: false}
+	];
 
 	// Available Icons for FhemNative
 	public icons: Array<any> = [
@@ -68,29 +78,32 @@ export class SettingsService {
 				this.modes[key] = value;
 			}
 		});
-		// resetting app settings on start
-		this.app = {};
-		// generating app defaults and load them to app container
-		const defaults = [
-			{name: 'theme', default: 'dark'},
-			{name: 'showToastMessages', default: true},
-			{name: 'responsiveResize', default: false},
-			{name: 'checkUpdates', default: false},
-			{name: 'language', default: 'en'},
-			{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20})}
-		];
-		for (let i = 0; i < defaults.length; i++) {
-			this.storage.setAndGetSetting({
-				name: defaults[i].name,
-				default: defaults[i].default
-			}).then((value) => {
-				// assingning variables to defaults
-				this.app[defaults[i].name] = value;
-			});
-		}
-		// settings language
-		this.storage.getSetting('language').then((res: any) => {
-			this.translate.setDefaultLang(res || 'en');
+	}
+
+	// load default app settings
+	public loadDefaults(defaults){
+		return new Promise((resolve) => {
+			for (let i = 0; i < defaults.length; i++) {
+				this.storage.setAndGetSetting({
+					name: defaults[i].name,
+					default: defaults[i].default
+				}).then((res:any)=>{
+					if(defaults[i].toStorage){
+						// loading to desired storage
+						this[defaults[i].toStorage][defaults[i].name] = res;
+					}else{
+						// loading to dedicated variable
+						this[defaults[i].name] = res;
+					}
+					// determine callbacks
+					if(defaults[i].callback){
+						defaults[i].callback(res);
+					}
+					if(i === defaults.length -1){
+						resolve()
+					}
+				});
+			}
 		});
 	}
 

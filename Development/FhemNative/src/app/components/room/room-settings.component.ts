@@ -505,9 +505,8 @@ export class SettingsRoomComponent {
 				}).then(() => {
 					i++;
 					if (i === len) {
-						this.structure.loadRooms(RoomComponent, true).then(()=>{
-							this.createComponent.loadRoomComponents(this.structure.getCurrentRoom().item.components, this.createComponent.currentRoomContainer, true);
-						});
+						
+						this.structure.loadRooms(RoomComponent, true);
 						this.modalCtrl.dismiss();
 						this.toast.showAlert(
 							this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.TITLE'),

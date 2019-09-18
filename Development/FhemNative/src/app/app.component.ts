@@ -49,16 +49,19 @@ export class AppComponent {
 		private http: HttpClient,
 		private toast: ToastService,
 		private translate: TranslateService) {
+		this.initializeApp();
 		// loading fhem components to structure
 		this.structure.fhemComponents = FHEM_COMPONENT_REGISTRY;
-		// loading rooms from storage
-		this.structure.loadRooms(RoomComponent, true);
-		// getting ip information
-		this.storage.getSetting('IPsettings').then((res) => {
-			if (res) {
-				this.settings.IPsettings = res;
+		// load app App Defaults
+		this.settings.loadDefaults(this.settings.appDefaults).then(()=>{
+			// loading rooms from storage
+			this.structure.loadRooms(RoomComponent, true);
+			if(this.settings.IPsettings.IP === undefined || this.settings.IPsettings.IP === '' ){
+				this.settings.modes.fhemMenuMode = 'ip-config';
+			}else{
+				// connect to fhem
 				this.fhem.connectFhem().then((e) => {
-
+					
 				}).catch((e) => {
 					if (e.type === 'error') {
 						this.fhem.disconnect();
@@ -66,63 +69,58 @@ export class AppComponent {
 						this.settings.modes.fhemMenuMode = 'ip-config';
 					}
 				});
-			} else {
-				this.settings.modes.fhemMenuMode = 'ip-config';
+			}
+			if(this.settings.app.checkUpdates){
+				this.checkForUpdate();
 			}
 		});
-		// getting app updates
-		this.storage.getSetting('checkUpdates').then((res)=>{
-			if(res){
-				// searching for updates is enabled
-				const baseUrl = "https://api.github.com/repos/Syrex-o/FhemNative/git/trees/master";
-				this.http.get(baseUrl).subscribe((res:any)=>{
-					if(res){
-						const builds = res.tree.find(x=>x.path === 'Builds');
-						this.http.get(builds.url).subscribe((b:any)=>{
-							if(b){
-								// get current android version
-								if(this.platform.is('android')){
-									const androidPath = b.tree.find(x=>x.path === 'Android');
-									this.http.get(androidPath.url).subscribe((ver:any)=>{
-										if(ver){
-											this.evaluateVersions(ver.tree, 'Android');
-										}
-									});
-								}
-								if(this.platform.is('ios')){
-									const iosPath = b.tree.find(x=>x.path === 'IOS');
-									this.http.get(iosPath.url).subscribe((ver:any)=>{
-										if(ver){
-											this.evaluateVersions(ver.tree, 'IOS');
-										}
-									});
-								}
-								// get electron versions
-								else{
-									if(window.navigator.userAgent.indexOf("Mac") !== -1){
-										const macosPath = b.tree.find(x=>x.path === 'MacOS');
-										this.http.get(macosPath.url).subscribe((ver:any)=>{
-											if(ver){
-												this.evaluateVersions(ver.tree, 'MacOS');
-											}
-										});
-									}
-									if(window.navigator.userAgent.indexOf("Windows") !== -1){
-										const windowsPath = b.tree.find(x=>x.path === 'Windows');
-										this.http.get(windowsPath.url).subscribe((ver:any)=>{
-											if(ver){
-												this.evaluateVersions(ver.tree, 'Windows');
-											}
-										});
-									}
-								}
+	}
+
+	private checkForUpdate(){
+		const baseUrl = "https://api.github.com/repos/Syrex-o/FhemNative/git/trees/master";
+		this.http.get(baseUrl).subscribe((res:any)=>{
+			const builds = res.tree.find(x=>x.path === 'Builds');
+			this.http.get(builds.url).subscribe((b:any)=>{
+				if(b){
+					// get current android version
+					if(this.platform.is('android')){
+						const androidPath = b.tree.find(x=>x.path === 'Android');
+						this.http.get(androidPath.url).subscribe((ver:any)=>{
+							if(ver){
+								this.evaluateVersions(ver.tree, 'Android');
 							}
 						});
 					}
-				});
-			}
+					if(this.platform.is('ios')){
+						const iosPath = b.tree.find(x=>x.path === 'IOS');
+						this.http.get(iosPath.url).subscribe((ver:any)=>{
+							if(ver){
+								this.evaluateVersions(ver.tree, 'IOS');
+							}
+						});
+					}
+					// get electron versions
+					else{
+						if(window.navigator.userAgent.indexOf("Mac") !== -1){
+							const macosPath = b.tree.find(x=>x.path === 'MacOS');
+							this.http.get(macosPath.url).subscribe((ver:any)=>{
+								if(ver){
+									this.evaluateVersions(ver.tree, 'MacOS');
+								}
+							});
+						}
+						if(window.navigator.userAgent.indexOf("Windows") !== -1){
+							const windowsPath = b.tree.find(x=>x.path === 'Windows');
+							this.http.get(windowsPath.url).subscribe((ver:any)=>{
+								if(ver){
+									this.evaluateVersions(ver.tree, 'Windows');
+								}
+							});
+						}
+					}
+				}
+			});
 		});
-		this.initializeApp();
 	}
 
 	private evaluateVersions(versions: Array<any>, buildPlatform: string){

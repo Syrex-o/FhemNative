@@ -48,21 +48,18 @@ export class StructureService {
 
 	// loading rooms for the router
 	public loadRooms(RoomComponent, navigate) {
-		return new Promise((resolve) => {
-			this.zone.run(()=>{
-				this.storage.setAndGetSetting({
-					name: 'rooms',
-					default: this.roomDefaults
-				}).then((result: any) => {
-					this.rooms = result;
-					// loading storage rooms
-					this.resetRouter(RoomComponent);
-					// navigate to the first room if needed
-					if (navigate) {
-						this.router.navigate([this.rooms[0].name + '_' + this.rooms[0].ID]);
-					}
-					resolve(result);
-				});
+		this.zone.run(()=>{
+			this.storage.setAndGetSetting({
+				name: 'rooms',
+				default: this.roomDefaults
+			}).then((result: any) => {
+				this.rooms = result;
+				// loading storage rooms
+				this.resetRouter(RoomComponent);
+				// navigate to the first room if needed
+				if (navigate) {
+					this.router.navigate([this.rooms[0].name + '_' + this.rooms[0].ID]);
+				}
 			});
 		});
 	}
