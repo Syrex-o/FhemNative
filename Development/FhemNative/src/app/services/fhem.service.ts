@@ -402,7 +402,9 @@ export class FhemService {
     }
 
     public disconnect() {
-		this.socket.close();
+    	if(this.connected){
+    		this.socket.close();
+    	}
 	}
 
 	public setReading(device, reading, value) {

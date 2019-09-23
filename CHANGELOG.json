@@ -44,6 +44,13 @@
         		{"TYPE": "FIX", "CHANGE": "Responsive resize is ON by default"},
         		{"TYPE": "FIX", "CHANGE": "Fixed settings import for mobile"}
       		]
+    	},
+    	{
+      		"VERSION": "2.0.2",
+      		"DATE": "23.09.2019",
+      		"CHANGES":[
+        		{"TYPE": "NEW", "CHANGE": "New component loader to reduce storage and create components faster"}
+      		]
     	}
 	]
 }

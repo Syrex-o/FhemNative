@@ -580,49 +580,45 @@ export class SettingsRoomComponent {
 		let wrongSpecDevices = [];
 		this.fhem.devices.forEach((device)=>{
 			if(device.attributes.userattr && device.attributes.userattr.match(/FhemNative/)){
-				const attr = device.attributes.userattr.replace('FhemNative@', '');
+				let attr = device.attributes.userattr.replace('FhemNative@', '');
 				const component = attr.match(/\w+/g)[0];
 				if(this.createComponent.fhemComponents.find(x=> x.name === component)){
+					attr = attr.replace(component+';', '');
 					const creatorComponent = this.createComponent.fhemComponents.find(x=> x.name === component);
-					const attributes = {};
-
-					attr.match(/\w+:.*/g).forEach((singleAttr)=>{
+					attr.match(/[\w+:]+(?=;)/g).forEach((singleAttr)=>{
 						const reading = singleAttr.match(/\w+/g)[0];
-						const settedValue = singleAttr.match(/[^:]+(?=;)/g)[0];
+						const settedValue = singleAttr.match(/:.*/g)[0].slice(1);
 						for (const [key, value] of Object.entries(creatorComponent.component)) {
 							if(key.indexOf(reading) !== -1){
-								attributes[key] = settedValue;
+								creatorComponent.component[key] = settedValue;
 							}else{
-								attributes[key] = value;
+								creatorComponent.component[key] = value;
 							}
 						}
 					});
-					let t = this.createComponent.seperateComponentValues(creatorComponent.component);
-					console.log(t);
-					// console.log(creatorComponent)
-					let addableComponent = {
-						ID: this.helper.UIDgenerator(),
-						name: creatorComponent.name,
+					let pushComponent = {
+						attributes: this.createComponent.seperateComponentValues(creatorComponent.component),
+						comp: creatorComponent,
 						REF: creatorComponent.REF,
-						attributes: {
-							data: ''
-						},
-						position: {
-							top: 0,
-							left: 0,
-							width: creatorComponent.dimensions.minX,
-							height: creatorComponent.dimensions.minY,
-							zIndex: 1
-						},
-						createScaler: {
-							width: window.innerWidth,
-							height: window.innerHeight
-						}
+						dimensions: creatorComponent.dimensions
 					};
-					// console.log(addableComponent);
-					// console.log(device);
-
-					createdDevices.push({name: device.device, room: device.attributes.room || 'Unregistered'});
+					let room;
+					if(this.helper.find(this.structure.rooms, 'name', device.attributes.room || 'Unregistered')){
+						const found =  this.helper.find(this.structure.rooms, 'name', device.attributes.room || 'Unregistered');
+						room = found.item.name;
+						pushComponent.position = this.arrangeComponent(found.item.components, pushComponent);
+						this.createComponent.pushComponentToPlace(found.item.components, pushComponent);
+					}else{
+						room = device.attributes.room || 'Unregistered';
+						// this.structure.rooms.push({
+						// 	ID: this.structure.rooms.length,
+						// 	name: room,
+						// 	icon: 'home',
+						// 	components: []
+						// });
+					}
+					console.log(this.structure.rooms);
+					createdDevices.push({name: device.device, room: room});
 				}else{
 					wrongSpecDevices.push(device.device);
 				}
@@ -630,6 +626,17 @@ export class SettingsRoomComponent {
 		});
 		// console.log(createdDevices);
 		// console.log(wrongSpecDevices);
+	}
+
+	private arrangeComponent(place, component){
+		if(place.length > 0){
+			let position = {top: 0,left: 0};
+			const left = place[place.length - 1].position.left + place[place.length - 1].position.width;
+			console.log(left);
+			return position;
+		}else{
+			return {top: 0,left: 0}
+		}
 	}
 
 	// reading changelog from github

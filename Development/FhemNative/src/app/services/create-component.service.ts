@@ -226,8 +226,8 @@ export class CreateComponentService {
 			REF: component.REF,
 			attributes: component.attributes,
 			position: {
-				top: 0,
-				left: 0,
+				top: component.position ? component.position.top || 0 : 0,
+				left: component.position ? component.position.left || 0 : 0,
 				width: component.dimensions.minX,
 				height: component.dimensions.minY,
 				zIndex: 1
