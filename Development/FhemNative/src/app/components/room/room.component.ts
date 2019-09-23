@@ -108,7 +108,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 				}
 			});
 
-		this.routeSub = route.params.subscribe((val:any) => {
+		this.routeSub = route.params.subscribe(val => {
 	    	this.loadRoomComponents();
 	  	});
 	}
