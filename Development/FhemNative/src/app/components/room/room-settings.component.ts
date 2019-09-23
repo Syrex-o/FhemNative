@@ -606,7 +606,7 @@ export class SettingsRoomComponent {
 					if(this.helper.find(this.structure.rooms, 'name', device.attributes.room || 'Unregistered')){
 						const found =  this.helper.find(this.structure.rooms, 'name', device.attributes.room || 'Unregistered');
 						room = found.item.name;
-						pushComponent.position = this.arrangeComponent(found.item.components, pushComponent);
+						pushComponent['position'] = this.arrangeComponent(found.item.components, pushComponent);
 						this.createComponent.pushComponentToPlace(found.item.components, pushComponent);
 					}else{
 						room = device.attributes.room || 'Unregistered';
