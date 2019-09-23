@@ -1119,8 +1119,13 @@
 				},
 				"AUTO_ROOMS":{
 					"TITLE": "Automatisch Räume generieren",
-					"INFO": "Automatishch Räume aus FHEM kreieren.",
+					"INFO": "Automatisch Räume aus FHEM kreieren.",
 					"BUTTON": "Räume generieren"
+				},
+				"AUTO_DEVICES":{
+					"TITLE": "Automatisch Geräte generieren",
+					"INFO": "Automatisch Geräte aus FHEM kreieren und Räumen zuordnen.",
+					"BUTTON": "Geräte kreieren"
 				}
 			},
 			"APP":{

@@ -1121,6 +1121,11 @@
 					"TITLE": "Auto generate rooms",
 					"INFO": "Automatically generate rooms from FHEM.",
 					"BUTTON": "Generate rooms"
+				},
+				"AUTO_DEVICES":{
+					"TITLE": "Auto generate devices",
+					"INFO": "Automatically generate devices from FHEM to dedicated rooms.",
+					"BUTTON": "Generate devices"
 				}
 			},
 			"APP":{
