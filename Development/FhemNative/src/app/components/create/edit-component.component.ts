@@ -28,13 +28,13 @@ import { HelperService } from '../../services/helper.service';
 			<div class="create-container edit">
 				<h2>{{ 'GENERAL.CREATE_COMPONENT.PAGE_2_INFO' | translate }} {{'COMPONENTS.'+[component.name]+'.NAME' | translate}}</h2>
 				<p>{{ 'GENERAL.EDIT_COMPONENT.EDIT.TITLE' | translate }}</p>
-				<div class="config-data" *ngFor="let data of component.attributes.data">
+				<div class="config-data" *ngFor="let data of component.attributes.attr_data">
 					<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
 					<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
 					<input [(ngModel)]="data.value" placeholder="{{data.value}}">
 		      		<span class="bar"></span>
 				</div>
-				<div class="config-data toggle" *ngFor="let data of component.attributes.bool_data">
+				<div class="config-data toggle" *ngFor="let data of component.attributes.attr_bool_data">
 					<switch
 						[customMode]="true"
 						[(ngModel)]="data.value"
@@ -43,7 +43,7 @@ import { HelperService } from '../../services/helper.service';
 						[padding]="false">
 					</switch>
 				</div>
-				<div class="config-data" *ngFor="let data of component.attributes.arr_data">
+				<div class="config-data" *ngFor="let data of component.attributes.attr_arr_data">
 					<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
 					<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
 					<ng-select [items]="data.defaults"
@@ -54,7 +54,7 @@ import { HelperService } from '../../services/helper.service';
 					    </ng-template>
 					</ng-select>
 				</div>
-				<div class="config-data" *ngFor="let icon of component.attributes.icon">
+				<div class="config-data" *ngFor="let icon of component.attributes.attr_icon">
 					<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.name' | translate }}</p>
 					<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
 					<ng-select [items]="settings.icons"
@@ -67,9 +67,9 @@ import { HelperService } from '../../services/helper.service';
 					    </ng-template>
 					</ng-select>
 				</div>
-				<div class="style" *ngIf="component.attributes.style.length > 0">
+				<div class="style" *ngIf="component.attributes.attr_style?.length > 0">
 					<p>{{ 'GENERAL.EDIT_COMPONENT.EDIT.STYLE' | translate }}</p>
-					<div class="config-data" *ngFor="let style of component.attributes.style">
+					<div class="config-data" *ngFor="let style of component.attributes.attr_style">
 						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
 						<ng-select [items]="settings.componentColors" placeholder="style.value" [(ngModel)]="style.value" [searchable]="false">
@@ -79,7 +79,7 @@ import { HelperService } from '../../services/helper.service';
 					        </ng-template>
 					    </ng-select>
 					</div>
-					<div class="config-data" *ngFor="let style of component.attributes.arr_style">
+					<div class="config-data" *ngFor="let style of component.attributes.attr_arr_style">
 						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
 						<ng-select [items]="settings.componentColors" placeholder="style.value" [(ngModel)]="style.value" [multiple]="true" [searchable]="false">
@@ -139,9 +139,9 @@ export class EditComponentComponent implements AfterViewInit {
 			if (this.source === 'component') {
 				this.component = this.structure.selectedElement(this.componentID, this.container);
 				// fix for arr_data function calling --> getting defaults
-				if (this.component.attributes.arr_data.length > 0) {
-					for (let i = 0; i < this.component.attributes.arr_data.length; i++) {
-						this.component.attributes.arr_data[i].defaults = this.createComponent.getValues(this.component.REF, this.component.attributes.arr_data[i].attr);
+				if (this.component.attributes.attr_arr_data && this.component.attributes.attr_arr_data.length > 0) {
+					for (let i = 0; i < this.component.attributes.attr_arr_data.length; i++) {
+						this.component.attributes.attr_arr_data[i].defaults = this.createComponent.getValues(this.component.REF, this.component.attributes.attr_arr_data[i].attr);
 					}
 				}
 			}

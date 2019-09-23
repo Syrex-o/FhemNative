@@ -44,13 +44,13 @@ import { CreateComponentService } from '../../services/create-component.service'
 				<p>{{ 'GENERAL.CREATE_COMPONENT.PAGE_2_INFO' | translate }}</p>
 				<ng-template [ngIf]="componentSelection" [ngIfElse]="NO_COMP">
 					<div class="config-container">
-						<div class="config-data" *ngFor="let data of componentSelection.attr_data">
+						<div class="config-data" *ngFor="let data of componentSelection.attributes.attr_data">
 							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
 							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
 							<input [(ngModel)]="data.value" placeholder="{{data.value}}">
 		      				<span class="bar"></span>
 						</div>
-						<div class="config-data toggle" *ngFor="let data of componentSelection.attr_bool_data">
+						<div class="config-data toggle" *ngFor="let data of componentSelection.attributes.attr_bool_data">
 							<switch
 								[customMode]="true"
 								[(ngModel)]="data.value"
@@ -59,7 +59,7 @@ import { CreateComponentService } from '../../services/create-component.service'
 								[padding]="false">
 							</switch>
 						</div>
-						<div class="config-data" *ngFor="let data of componentSelection.attr_arr_data">
+						<div class="config-data" *ngFor="let data of componentSelection.attributes.attr_arr_data">
 							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
 							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
 							<ng-select [items]="data.value"
@@ -77,8 +77,8 @@ import { CreateComponentService } from '../../services/create-component.service'
 				<ng-template [ngIf]="componentSelection" [ngIfElse]="NO_COMP">
 					<p>{{ 'GENERAL.CREATE_COMPONENT.PAGE_3_INFO' | translate }}</p>
 					<div class="config-container">
-						<div *ngIf="componentSelection.attr_icon.length">
-							<div class="config-data" *ngFor="let icon of componentSelection.attr_icon">
+						<div *ngIf="componentSelection.attributes.attr_icon?.length">
+							<div class="config-data" *ngFor="let icon of componentSelection.attributes.attr_icon">
 								<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[icon.attr]+'.name' | translate }}</p>
 								<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
 								<ng-select [items]="settings.icons"
@@ -92,7 +92,7 @@ import { CreateComponentService } from '../../services/create-component.service'
 						        </ng-select>
 							</div>
 						</div>
-						<div class="config-data" *ngFor="let style of componentSelection.attr_style">
+						<div class="config-data" *ngFor="let style of componentSelection.attributes.attr_style">
 							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
 							<ng-select [items]="settings.componentColors"
@@ -105,7 +105,7 @@ import { CreateComponentService } from '../../services/create-component.service'
 					            </ng-template>
 					        </ng-select>
 						</div>
-						<div class="config-data" *ngFor="let style of componentSelection.attr_arr_style">
+						<div class="config-data" *ngFor="let style of componentSelection.attributes.attr_arr_style">
 							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
 							<ng-select [items]="settings.componentColors"
@@ -132,29 +132,29 @@ import { CreateComponentService } from '../../services/create-component.service'
 								<p>Device: {{attrFinder('device', 'data_device').device}} <ion-icon name="checkmark-circle-outline"></ion-icon></p>
 							</div>
 							<div class="error" *ngIf="!attrFinder('device', 'data_device')">
-								<p>{{helper.find(componentSelection.attr_data, 'attr', 'data_device')?.item.value }} {{ 'GENERAL.CREATE_COMPONENT.PAGE_4_NOT_FOUND' | translate }}
+								<p>{{helper.find(componentSelection.attributes.attr_data, 'attr', 'data_device')?.item.value }} {{ 'GENERAL.CREATE_COMPONENT.PAGE_4_NOT_FOUND' | translate }}
 									<ion-icon name="close-circle-outline"></ion-icon>
 								</p>
 							</div>
 							<h3>Reading</h3>
 							<div *ngIf="attrFinder('device', 'data_device')?.readings">
-								<div class="success"  *ngIf="helper.find(fhem.devices, 'device', helper.find(componentSelection.attr_data, 'attr', 'data_device').item.value).item.readings[helper.find(componentSelection.attr_data, 'attr', 'data_reading').item.value]">
-									<p *ngIf="helper.find(componentSelection.attr_data, 'attr', 'data_reading')">
-										Reading: {{helper.find(componentSelection.attr_data, 'attr', 'data_reading')?.item.value}}
+								<div class="success"  *ngIf="helper.find(fhem.devices, 'device', helper.find(componentSelection.attributes.attr_data, 'attr', 'data_device').item.value).item.readings[helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading').item.value]">
+									<p *ngIf="helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')">
+										Reading: {{helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')?.item.value}}
 										<ion-icon name="checkmark-circle-outline"></ion-icon>
 									</p>
 								</div>
-								<div class="error"  *ngIf="!helper.find(fhem.devices, 'device', helper.find(componentSelection.attr_data, 'attr', 'data_device').item.value).item.readings[helper.find(componentSelection.attr_data, 'attr', 'data_reading').item.value]">
-									<p *ngIf="helper.find(componentSelection.attr_data, 'attr', 'data_reading')">
-										{{helper.find(componentSelection.attr_data, 'attr', 'data_reading')?.item.value }} {{ 'GENERAL.CREATE_COMPONENT.PAGE_4_NOT_FOUND' | translate }}
+								<div class="error"  *ngIf="!helper.find(fhem.devices, 'device', helper.find(componentSelection.attributes.attr_data, 'attr', 'data_device').item.value).item.readings[helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading').item.value]">
+									<p *ngIf="helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')">
+										{{helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')?.item.value }} {{ 'GENERAL.CREATE_COMPONENT.PAGE_4_NOT_FOUND' | translate }}
 										<ion-icon name="close-circle-outline"></ion-icon>
 									</p>
 								</div>
 							</div>
 							<div *ngIf="!attrFinder('device', 'data_device')?.readings">
 								<div class="error">
-									<p *ngIf="helper.find(componentSelection.attr_data, 'attr', 'data_reading')">
-										{{helper.find(componentSelection.attr_data, 'attr', 'data_reading').item.value }} {{ 'GENERAL.CREATE_COMPONENT.PAGE_4_NOT_FOUND' | translate }}
+									<p *ngIf="helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')">
+										{{helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading').item.value }} {{ 'GENERAL.CREATE_COMPONENT.PAGE_4_NOT_FOUND' | translate }}
 										<ion-icon name="close-circle-outline"></ion-icon>
 									</p>
 								</div>
@@ -211,56 +211,12 @@ export class CreateComponentComponent {
 
 	public selectComponent(comp) {
 		this.pageIndex = 2;
-		this.componentSelection = {};
-		this.componentSelection.comp = comp;
-		this.componentSelection.REF = comp.REF;
-		this.componentSelection.dimensions = comp.dimensions;
-		// build arrays
-		this.componentSelection.attr_data = [];
-		this.componentSelection.attr_bool_data = [];
-		this.componentSelection.attr_arr_data = [];
-		this.componentSelection.attr_style = [];
-		this.componentSelection.attr_arr_style = [];
-		this.componentSelection.attr_icon = [];
-
-		for (const [key, value] of Object.entries(comp.component)) {
-			if (`${key}`.substr(0, 4) === 'data') {
-				this.componentSelection.attr_data.push({
-					attr: `${key}`,
-					value: `${value}`
-				});
-			}
-			if (`${key}`.substr(0, 9) === 'bool_data') {
-				this.componentSelection.attr_bool_data.push({
-					attr: `${key}`,
-					value: JSON.parse(`${value}`)
-				});
-			}
-			if (`${key}`.substr(0, 8) === 'arr_data') {
-				this.componentSelection.attr_arr_data.push({
-					attr: `${key}`,
-					value: this.strToArr(`${value}`)
-				});
-			}
-			if (`${key}`.substr(0, 5) === 'style') {
-				this.componentSelection.attr_style.push({
-					attr: `${key}`,
-					value: `${value}`
-				});
-			}
-			if (`${key}`.substr(0, 9) === 'arr_style') {
-				this.componentSelection.attr_arr_style.push({
-					attr: `${key}`,
-					value: this.strToArr(`${value}`)
-				});
-			}
-			if (`${key}`.substr(0, 4) === 'icon') {
-				this.componentSelection.attr_icon.push({
-					attr: `${key}`,
-					value: `${value}`
-				});
-			}
-		}
+		this.componentSelection = {
+			attributes: this.createComponent.seperateComponentValues(comp.component),
+			comp: comp,
+			REF: comp.REF,
+			dimensions: comp.dimensions
+		};
 	}
 
 	public cancel() {
@@ -283,8 +239,8 @@ export class CreateComponentComponent {
 	}
 
 	public attrFinder(fhemAttr, userAttr) {
-		if (this.helper.find(this.componentSelection.attr_data, 'attr', userAttr)) {
-			const res = this.helper.find( this.fhem.devices, fhemAttr, this.helper.find(this.componentSelection.attr_data, 'attr', userAttr).item.value);
+		if (this.helper.find(this.componentSelection.attributes.attr_data, 'attr', userAttr)) {
+			const res = this.helper.find( this.fhem.devices, fhemAttr, this.helper.find(this.componentSelection.attributes.attr_data, 'attr', userAttr).item.value);
 			if (res) {
 				return res.item;
 			} else {
@@ -296,50 +252,9 @@ export class CreateComponentComponent {
 	}
 
 	public addCompToRoom() {
-		this.pushComp(this.structure.roomComponents(this.container));
-	}
-
-	private pushComp(place) {
-		place.push({
-			ID: this.helper.UIDgenerator(),
-			name: this.componentSelection.comp.name,
-			REF: this.componentSelection.REF,
-			attributes: {
-				data: this.componentSelection.attr_data,
-				bool_data: this.componentSelection.attr_bool_data,
-				arr_data: this.componentSelection.attr_arr_data,
-				style: this.componentSelection.attr_style,
-				arr_style: this.componentSelection.attr_arr_style,
-				icon: this.componentSelection.attr_icon
-			},
-			position: {
-				top: 0,
-				left: 0,
-				width: this.componentSelection.dimensions.minX,
-				height: this.componentSelection.dimensions.minY,
-				zIndex: 1
-			},
-			createScaler: {
-				width: window.innerWidth,
-				height: window.innerHeight
-			}
-		});
-		// check if selected component is a popup container
-		if (this.componentSelection.comp.name.match(/(Popup|Swiper)/)) {
-			place[place.length - 1].attributes.components = [];
-		}
-		// check if selected component is a swiper container
-		if (this.componentSelection.comp.name.match(/(Swiper)/)) {
-			// data_pages is the unique way to define multiple container components
-			let pages = parseInt(this.componentSelection.attr_data.find(x => x.attr === 'data_pages').value);
-			// ensure, that pages are positive and not 0
-			pages = Math.abs(pages) === 0 ? 1 : Math.abs(pages);
-			for (let i = 0; i < pages; i++) {
-				place[place.length - 1].attributes.components.push({
-					components: []
-				});
-			}
-		}
+		const place = this.structure.roomComponents(this.container)
+		this.createComponent.pushComponentToPlace(place, this.componentSelection);
+		// saving new component
 		this.structure.saveRooms().then(() => {
 			// adding the new component to the current view
 			this.createComponent.loadRoomComponents([place[place.length - 1]], this.container, false);

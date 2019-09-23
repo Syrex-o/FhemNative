@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { SettingsService } from '../../services/settings.service';
+import { HelperService } from '../../services/helper.service';
 import { FhemService } from '../../services/fhem.service';
 import { ToastService } from '../../services/toast.service';
 import { StorageService } from '../../services/storage.service';
@@ -19,7 +20,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { File } from '@ionic-native/file/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 import { RoomComponent } from '../room/room.component';
 
@@ -48,9 +48,14 @@ import { RoomComponent } from '../room/room.component';
 						<p class="label-des">{{ 'GENERAL.SETTINGS.FHEM.IMPORT.TITLE' | translate }}</p>
 						<p class="des">{{ 'GENERAL.SETTINGS.FHEM.IMPORT.INFO' | translate }}</p>
 						<button (click)="importSettings()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.FHEM.IMPORT.BUTTON' | translate }}</button>
+
 						<p class="label-des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_ROOMS.TITLE' | translate }}</p>
 						<p class="des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_ROOMS.INFO' | translate }}</p>
 						<button (click)="generateRooms()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.FHEM.AUTO_ROOMS.BUTTON' | translate }}</button>
+
+						<p class="label-des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.TITLE' | translate }}</p>
+						<p class="des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.INFO' | translate }}</p>
+						<button (click)="generateDevices()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.BUTTON' | translate }}</button>
 					</div>
 				</div>
 				<div class="category">
@@ -362,7 +367,7 @@ export class SettingsRoomComponent {
 		private socialSharing: SocialSharing,
 		private chooser: Chooser,
 		private createComponent: CreateComponentService,
-		private webview: WebView) {
+		private helper: HelperService) {
 	}
 
 	public logWarning(event) {
@@ -568,6 +573,63 @@ export class SettingsRoomComponent {
 				false
 			);
 		}
+	}
+
+	public generateDevices(){
+		let createdDevices = [];
+		let wrongSpecDevices = [];
+		this.fhem.devices.forEach((device)=>{
+			if(device.attributes.userattr && device.attributes.userattr.match(/FhemNative/)){
+				const attr = device.attributes.userattr.replace('FhemNative@', '');
+				const component = attr.match(/\w+/g)[0];
+				if(this.createComponent.fhemComponents.find(x=> x.name === component)){
+					const creatorComponent = this.createComponent.fhemComponents.find(x=> x.name === component);
+					const attributes = {};
+
+					attr.match(/\w+:.*/g).forEach((singleAttr)=>{
+						const reading = singleAttr.match(/\w+/g)[0];
+						const settedValue = singleAttr.match(/[^:]+(?=;)/g)[0];
+						for (const [key, value] of Object.entries(creatorComponent.component)) {
+							if(key.indexOf(reading) !== -1){
+								attributes[key] = settedValue;
+							}else{
+								attributes[key] = value;
+							}
+						}
+					});
+					let t = this.createComponent.seperateComponentValues(creatorComponent.component);
+					console.log(t);
+					// console.log(creatorComponent)
+					let addableComponent = {
+						ID: this.helper.UIDgenerator(),
+						name: creatorComponent.name,
+						REF: creatorComponent.REF,
+						attributes: {
+							data: ''
+						},
+						position: {
+							top: 0,
+							left: 0,
+							width: creatorComponent.dimensions.minX,
+							height: creatorComponent.dimensions.minY,
+							zIndex: 1
+						},
+						createScaler: {
+							width: window.innerWidth,
+							height: window.innerHeight
+						}
+					};
+					// console.log(addableComponent);
+					// console.log(device);
+
+					createdDevices.push({name: device.device, room: device.attributes.room || 'Unregistered'});
+				}else{
+					wrongSpecDevices.push(device.device);
+				}
+			}
+		});
+		// console.log(createdDevices);
+		// console.log(wrongSpecDevices);
 	}
 
 	// reading changelog from github
