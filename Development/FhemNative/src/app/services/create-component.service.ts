@@ -67,27 +67,14 @@ export class CreateComponentService {
 		for (let i = 0; i < components.length; i++) {
 			const ref = this.addFhemComponent(components[i].name, container);
 
-			// adding component attributes
-			for (let f = 0; f < components[i].attributes.bool_data.length; f++) {
-				ref.instance[components[i].attributes.bool_data[f].attr] = components[i].attributes.bool_data[f].value;
-			}
-			for (let g = 0; g < components[i].attributes.arr_data.length; g++) {
-				ref.instance[components[i].attributes.arr_data[g].attr] = components[i].attributes.arr_data[g].value;
-			}
-			for (let h = 0; h < components[i].attributes.arr_style.length; h++) {
-				ref.instance[components[i].attributes.arr_style[h].attr] = components[i].attributes.arr_style[h].value;
-			}
-			for (let j = 0; j < components[i].attributes.data.length; j++) {
-				ref.instance[components[i].attributes.data[j].attr] = components[i].attributes.data[j].value;
-			}
-			for (let k = 0; k < components[i].attributes.style.length; k++) {
-				ref.instance[components[i].attributes.style[k].attr] = components[i].attributes.style[k].value;
-			}
-			if (components[i].attributes.icon.length > 0) {
-				for (let l = 0; l < components[i].attributes.icon.length; l++) {
-					ref.instance[components[i].attributes.icon[l].attr] = components[i].attributes.icon[l].value;
+			for (const [key, value] of Object.entries(components[i].attributes)) {
+				if(components[i].attributes[key]){
+					components[i].attributes[key].forEach((el)=>{
+						ref.instance[el.attr] = el.value;
+					});
 				}
 			}
+
 			ref.instance.ID = components[i].ID;
 			const comp = this.helper.find(this.fhemComponents, 'name', components[i].name);
 			// component position
@@ -179,6 +166,91 @@ export class CreateComponentService {
 		for (const [key, value] of Object.entries(comp.item.component)) {
 			if (`${key}` === prop) {
 				return (`${value}`.split(',')) ? `${value}`.split(',') : `${value}`;
+			}
+		}
+	}
+
+	public seperateComponentValues(obj){
+		let res = {};
+		for (const [key, value] of Object.entries(obj)) {
+			if (`${key}`.substr(0, 4) === 'data') {
+				res['attr_data'] = res['attr_data'] || [];
+				res['attr_data'].push({
+					attr: `${key}`,
+					value: `${value}`
+				});
+			}
+			if (`${key}`.substr(0, 9) === 'bool_data') {
+				res['attr_bool_data'] = res['attr_bool_data'] || [];
+				res['attr_bool_data'].push({
+					attr: `${key}`,
+					value: JSON.parse(`${value}`)
+				});
+			}
+			if (`${key}`.substr(0, 8) === 'arr_data') {
+				res['attr_arr_data'] = res['attr_arr_data'] || [];
+				res['attr_arr_data'].push({
+					attr: `${key}`,
+					value: `${value}`.split(',')
+				});
+			}
+			if (`${key}`.substr(0, 5) === 'style') {
+				res['attr_style'] = res['attr_style'] || [];
+				res['attr_style'].push({
+					attr: `${key}`,
+					value: `${value}`
+				});
+			}
+			if (`${key}`.substr(0, 9) === 'arr_style') {
+				res['attr_arr_style'] = res['attr_arr_style'] || [];
+				res['attr_arr_style'].push({
+					attr: `${key}`,
+					value: `${value}`.split(',')
+				});
+			}
+			if (`${key}`.substr(0, 4) === 'icon') {
+				res['attr_icon'] = res['attr_icon'] || [];
+				res['attr_icon'].push({
+					attr: `${key}`,
+					value: `${value}`
+				});
+			}
+		}
+		return res;
+	}
+
+	public pushComponentToPlace(place, component){
+		place.push({
+			ID: this.helper.UIDgenerator(),
+			name: component.comp.name,
+			REF: component.REF,
+			attributes: component.attributes,
+			position: {
+				top: 0,
+				left: 0,
+				width: component.dimensions.minX,
+				height: component.dimensions.minY,
+				zIndex: 1
+			},
+			createScaler: {
+				width: window.innerWidth,
+				height: window.innerHeight
+			}
+		});
+		// check if selected component is a popup container
+		if (component.comp.name.match(/(Popup|Swiper)/)) {
+			place[place.length - 1].attributes.components = [];
+		}
+		// check if selected component is a swiper container
+		if (component.comp.name.match(/(Swiper)/)) {
+			// data_pages is the unique way to define multiple container components
+			let pages = parseInt(component.attr_data.find(x => x.attr === 'data_pages').value);
+			// ensure, that pages are positive and not 0
+			pages = Math.abs(pages) === 0 ? 1 : Math.abs(pages);
+			for (let i = 0; i < pages; i++) {
+				place[place.length - 1].attributes.components.push({
+					components: []
+				});
 			}
 		}
 	}
