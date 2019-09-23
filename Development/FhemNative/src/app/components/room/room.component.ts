@@ -84,6 +84,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 	// app pause and resume handlers
 	private onResumeSubscription: Subscription;
 	private onPauseSubscription: Subscription;
+	private routeSub: Subscription;
 
 	constructor(
 		private fhem: FhemService,
@@ -107,7 +108,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 				}
 			});
 
-		route.params.subscribe(val => {
+		this.routeSub = route.params.subscribe((val:any) => {
 	    	this.loadRoomComponents();
 	  	});
 	}
@@ -155,6 +156,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 		this.removeHelpers();
 		this.onPauseSubscription.unsubscribe();
 		this.onResumeSubscription.unsubscribe();
-		this.route.params.unsubscribe();
+		this.routeSub.unsubscribe();
 	}
 }
