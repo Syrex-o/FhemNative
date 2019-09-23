@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 
 // Services
 import { StorageService } from './storage.service';

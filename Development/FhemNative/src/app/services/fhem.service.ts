@@ -176,12 +176,7 @@ export class FhemService {
 							this.translate.instant('GENERAL.FHEM.DISCONNECT'),
 							'error'
 						);
-						if (!this.noReconnect) {
-							// reconnect
-							const timeout = setTimeout(() => {
-								this.connectFhem();
-							}, 500);
-						}
+						this.reconnect();
 					};
 					this.socket.onerror = (e) => {
 						this.toast.addToast(
@@ -210,6 +205,14 @@ export class FhemService {
 
 			}
 		});
+    }
+
+    private reconnect(){
+    	if (!this.noReconnect) {
+    		const timeout = setTimeout(() => {
+				this.connectFhem();
+			}, 500);
+    	}
     }
 
     private websocketEvents() {

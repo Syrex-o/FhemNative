@@ -25,7 +25,7 @@ export class SettingsService {
 		// editing mode
 		roomEdit: false,
 		menuEdit: false,
-		blockDefaultComponentLoader: false,
+		blockDefaultLoader: false,
 		fhemMenuMode: ''
 	};
 	// subscriber for modes
@@ -37,14 +37,14 @@ export class SettingsService {
 		events: []
 	};
 
-	private appDefaults:Array<any> = [
+	public appDefaults:Array<any> = [
 		{name: 'theme', default: 'dark', toStorage: 'app'},
 		{name: 'showToastMessages', default: true, toStorage: 'app'},
 		{name: 'responsiveResize', default: true, toStorage: 'app'},
 		{name: 'checkUpdates', default: false, toStorage: 'app'},
 		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
 		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: 'app'},
-		{name: 'IPsettings', default: JSON.stringify({IP: '', PORT: '8080', WSS: false, type: 'Websocket'}), toStorage: false}
+		{name: 'IPsettings', default: JSON.stringify({IP: '', PORT: '8080', WSS: false, type: 'Websocket'}), toStorage: false, callback: (data:any)=> {if(data.IP === ''){this.modes.fhemMenuMode = 'ip-config'}}}
 	];
 
 	// Available Icons for FhemNative

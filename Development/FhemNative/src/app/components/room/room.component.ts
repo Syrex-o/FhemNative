@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 import { FhemService } from '../../services/fhem.service';
 import { StructureService } from '../../services/structure.service';
@@ -90,7 +91,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 		public settings: SettingsService,
 		private platform: Platform,
 		private createComponent: CreateComponentService,
-		private zone: NgZone) {
+		private zone: NgZone,
+		private route: ActivatedRoute) {
 		// App Pause / Resume
 			this.onPauseSubscription = this.platform.pause.subscribe(() => {
 				this.fhem.noReconnect = true;
@@ -98,16 +100,20 @@ export class RoomComponent implements OnInit, OnDestroy {
 				this.fhem.disconnect();
 			});
 			this.onResumeSubscription = this.platform.resume.subscribe(() => {
-				this.fhem.noReconnect = false;
-				this.fhem.connectFhem();
-				if(!this.settings.modes.blockDefaultComponentLoader){
+				if(!this.settings.modes.blockDefaultLoader){
+					this.fhem.noReconnect = false;
+					this.fhem.connectFhem();
 					this.loadRoomComponents();
 				}
 			});
+
+		route.params.subscribe(val => {
+	    	this.loadRoomComponents();
+	  	});
 	}
 
 	ngOnInit() {
-		this.loadRoomComponents();
+		// this.loadRoomComponents();
 	}
 
 	public edit() {
@@ -149,5 +155,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 		this.removeHelpers();
 		this.onPauseSubscription.unsubscribe();
 		this.onResumeSubscription.unsubscribe();
+		this.route.params.unsubscribe();
 	}
 }

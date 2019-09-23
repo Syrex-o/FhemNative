@@ -11,6 +11,10 @@
 	font-size: 14px;
 }
 
+ion-content{
+	overflow-y: auto;
+}
+
 .editing {
 	transform-origin: center;
 	animation: wiggle .5s linear infinite;

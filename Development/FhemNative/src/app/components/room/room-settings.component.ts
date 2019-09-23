@@ -19,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { File } from '@ionic-native/file/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 import { RoomComponent } from '../room/room.component';
 
@@ -360,7 +361,8 @@ export class SettingsRoomComponent {
 		private platform: Platform,
 		private socialSharing: SocialSharing,
 		private chooser: Chooser,
-		private createComponent: CreateComponentService) {
+		private createComponent: CreateComponentService,
+		private webview: WebView) {
 	}
 
 	public logWarning(event) {
@@ -376,7 +378,7 @@ export class SettingsRoomComponent {
 			this.createFile('FhemNative_LOG_' + Date.now().toString() + '.json', this.settings.log.events.join('\r\n')).then((e: any) => {
 				this.toast.showAlert(
 					this.translate.instant('GENERAL.DICTIONARY.LOG_ENDED_TITLE'),
-					this.translate.instant('GENERAL.DICTIONARY.LOG_ENDED_INFO') + ' ' + e.name + ' ' + this.translate.instant('GENERAL.DICTIONARY.AS') + ' ' + e.dir + '.',
+					this.translate.instant('GENERAL.DICTIONARY.LOG_ENDED_INFO') + ' ' + e.dir + ' ' + this.translate.instant('GENERAL.DICTIONARY.AS') + ' ' + e.name + '.',
 					false
 				);
 			}).catch((err) => {
@@ -451,13 +453,10 @@ export class SettingsRoomComponent {
 	}
 
 	public importSettings() {
-		this.settings.modes.blockDefaultComponentLoader = true;
 		if (this.platform.is('mobile')) {
 			this.chooser.getFile('').then((file) => {
 				if (file.name.indexOf('FhemNative_settings') !== -1) {
-					this.file.readAsText((this.file.externalRootDirectory === null) ? this.file.externalDataDirectory : this.file.externalRootDirectory, file.name).then((res) => {
-						this.evaluateJsonImport(res);
-				});
+					this.evaluateJsonImport(new TextDecoder("utf-8").decode(file.data));
 				} else {
 					this.toast.showAlert(
 						this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.ERROR.TITLE'),
@@ -493,11 +492,26 @@ export class SettingsRoomComponent {
 		}
 	}
 
+	private arrayBufferToBase64( buffer ) {
+		let binary = '';
+	    let bytes = new Uint8Array( buffer );
+	    let len = bytes.byteLength;
+	    for (let i = 0; i < len; i++) {
+	        binary += String.fromCharCode( bytes[ i ] );
+	    }
+	    return window.btoa( binary );
+	}
+
 	private evaluateJsonImport(rawData) {
+		// disconnect from fhem
+		this.fhem.noReconnect = true;
+		this.settings.modes.blockDefaultLoader = true;
+		this.fhem.disconnect();
+
 		const len = Object.keys(JSON.parse(rawData)).length;
 		let i = 0;
 		for (const [key, value] of Object.entries(JSON.parse(rawData))) {
-			const val: any = value;
+			const val:any = value;
 			if (key !== undefined) {
 				this.storage.changeSetting({
 					name: key,
@@ -505,15 +519,19 @@ export class SettingsRoomComponent {
 				}).then(() => {
 					i++;
 					if (i === len) {
-						
-						this.structure.loadRooms(RoomComponent, true);
+						// reconnect to fhem with new IP
+						this.settings.loadDefaults(this.settings.appDefaults).then(()=>{
+							this.fhem.noReconnect = false;
+							this.fhem.connectFhem();
+							this.structure.loadRooms(RoomComponent, true);
+							this.settings.modes.blockDefaultLoader = false;
+						});
 						this.modalCtrl.dismiss();
 						this.toast.showAlert(
 							this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.TITLE'),
 							this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.INFO'),
 							false
 						);
-						this.settings.modes.blockDefaultComponentLoader = false;
 					}
 				});
 			}

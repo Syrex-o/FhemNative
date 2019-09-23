@@ -3,7 +3,7 @@
     <name>FhemNative</name>
     <description>Cross Platform FHEM-HomeAutomation Frontend.</description>
     <author href="https://github.com/Syrex-o/FhemNative">FhemNative Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -106,6 +106,7 @@
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.1+" />
     </plugin>
     <plugin name="cordova-plugin-chooser" spec="^1.2.5" />
+    <allow-navigation href="http://localhost:8100" sessionid="896f6a53" />
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.5" />
 </widget>

@@ -68,6 +68,7 @@
 		"core-js": "^2.5.4",
 		"d3": "^5.12.0",
 		"es6-promise-plugin": "^4.2.2",
+		"native-run": "^0.2.8",
 		"ngx-toastr": "^10.2.0",
 		"rxjs": "~6.5.1",
 		"tslib": "^1.9.0",

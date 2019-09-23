@@ -56,9 +56,7 @@ export class AppComponent {
 		this.settings.loadDefaults(this.settings.appDefaults).then(()=>{
 			// loading rooms from storage
 			this.structure.loadRooms(RoomComponent, true);
-			if(this.settings.IPsettings.IP === undefined || this.settings.IPsettings.IP === '' ){
-				this.settings.modes.fhemMenuMode = 'ip-config';
-			}else{
+			if(this.settings.IPsettings.IP !== ''){
 				// connect to fhem
 				this.fhem.connectFhem().then((e) => {
 					
