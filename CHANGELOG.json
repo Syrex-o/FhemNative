@@ -47,9 +47,14 @@
     	},
     	{
       		"VERSION": "2.0.2",
-      		"DATE": "23.09.2019",
+      		"DATE": "26.09.2019",
       		"CHANGES":[
-        		{"TYPE": "NEW", "CHANGE": "New component loader to reduce storage and create components faster"}
+        		{"TYPE": "NEW", "CHANGE": "New component loader to reduce storage and create components faster"},
+        		{"TYPE": "NEW", "CHANGE": "New Menu Edit Buttons"},
+        		{"TYPE": "NEW", "CHANGE": "New Room Edit Buttons"},
+        		{"TYPE": "NEW", "CHANGE": "Enable Editing as settings entry --> used for new Buttons"},
+        		{"TYPE": "NEW", "CHANGE": "Added auto Device Loader"},
+        		{"TYPE": "DEL", "CHANGE": "Removed big Menu Edit Buttons and longpress"}
       		]
     	}
 	]

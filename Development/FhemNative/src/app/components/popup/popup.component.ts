@@ -43,7 +43,10 @@ import { HelperService } from '../../services/helper.service';
 			[ngStyle]="{'position': (customMode ? (fixPosition ? 'fixed' : 'absolute') : 'fixed')}">
 			<div class="popup-backdrop" (click)="closePopup()"></div>
 			<div class="popup-inner">
-				<div class="popup-header" long-press duration="1000" (onLongPress)="edit()" [ngClass]="newsSlide ? 'slide' : 'no-slide'">
+				<div class="popup-header" [ngClass]="newsSlide ? 'slide' : 'no-slide'">
+					<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round right" *ngIf="!customMode && !settings.modes.roomEdit && settings.app.enableEditing" (click)="edit()">
+		                <ion-icon class="edit" name="create"></ion-icon>
+		            </button>
 					<div class="headline-container">
 						<h2>{{headLine}}</h2>
 					</div>
@@ -138,6 +141,7 @@ import { HelperService } from '../../services/helper.service';
 		.popup-header{
 			height: 55px;
 			position: relative;
+			box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
 		}
 		.close-container{
 			position: absolute;
@@ -157,8 +161,27 @@ import { HelperService } from '../../services/helper.service';
 			background: transparent;
 			transform: translate3d(-50%,0,0);
 		}
-		.close-container:focus{
+		.close-container:focus,
+		.btn-round:focus{
 			outline: 0px;
+		}
+		.btn-round{
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 45px;
+		    height: 45px;
+		    border-radius: 50%;
+		    border: none;
+		    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
+		    z-index: 100;
+		}
+		.btn-round ion-icon{
+			color: var(--btn-blue);
+			font-size: 25px;
+		}
+		.btn-round.right{
+			right: 60px;
 		}
 		.line{
 			position: absolute;
@@ -221,7 +244,8 @@ import { HelperService } from '../../services/helper.service';
 		}
 
 		.dark .popup-btn,
-		.dark .popup-inner{
+		.dark .popup-inner,
+		.dark .btn-round{
 			background: var(--dark-bg);
 		}
 		.dark h2{
@@ -235,9 +259,6 @@ import { HelperService } from '../../services/helper.service';
 		}
 		.dark .headline-container{
 			box-shadow: inset 20px 0px 10px 0px rgba(24, 37, 43, 1);
-		}
-		.dark .close-container{
-			box-shadow: -20px 0px 10px 15px rgba(24, 37, 43, 1);
 		}
 	`],
 	providers: [{provide: NG_VALUE_ACCESSOR, useExisting: PopupComponent, multi: true}]

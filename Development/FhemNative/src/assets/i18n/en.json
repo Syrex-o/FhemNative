@@ -1059,9 +1059,19 @@
 		"DICTIONARY":{
 			"ROOM": "Room",
 			"ROOMS": "Rooms",
+			"COMPONENTS": "Components", 
 			"ADDED": "added",
 			"NO_ROOMS_ADDED_TITLE": "No rooms added:",
 			"NO_ROOMS_ADDED_INFO": "All rooms are already included in FhemNative.",
+			"NO_COMPONENTS_ADDED_TITLE": "No components added:",
+			"NO_COMPONENTS_ADDED_INFO": "No components for FhemNative found.",
+			"NO_COMPONENTS_ADDED_REASON_TITLE": "Not added components:",
+			"NO_COMPONENTS_ADDED_REASONS":{
+				"ROOM_NAME": "Room name",
+				"NO_ROOM": "No defined room for the device",
+				"NO_COMPONENT": "No component in definition",
+				"ALREADY_DEFINED": "Component is already defined"
+			},
 			"SETTINGS_SAVED_TITLE": "Settings saved:",
 			"SETTINGS_SAVED_INFO": "Settings saved under: ",
 			"LOG_STARTED_TITLE": "A log file is going to be generated",
@@ -1080,7 +1090,8 @@
 				"DAILY": "Daily"
 			},
 			"AS": "as",
-			"AND": "and"
+			"AND": "and",
+			"TO": "to"
 		},
 		"SETTINGS":{
 			"TITLE": "Settings",
@@ -1145,6 +1156,10 @@
 						"EN": "English",
 						"DE": "German"
 					}
+				},
+				"EDITING":{
+					"TITLE": "Menu/Room Editing",
+					"INFO": "Enable/disable Menu and Room editing."
 				},
 				"TOAST":{
 					"TITLE": "Toast Messages",

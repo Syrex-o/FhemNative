@@ -68,7 +68,8 @@ export function createTranslateLoader(http: HttpClient) {
 		SettingsRoomComponent,
 		FhemMenuComponent,
 		TranslateModule,
-		NgSelectModule
+		NgSelectModule,
+		MatRippleModule
 	],
 	providers: [
 		CreateComponentService

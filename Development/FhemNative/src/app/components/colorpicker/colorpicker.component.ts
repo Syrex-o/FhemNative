@@ -370,7 +370,6 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 		if (update.found.device === this.data_device) {
 			if (update.change.changed[this.data_reading]) {
 				if (update.change.changed[this.data_reading] !== this.color) {
-					this.initCanvas();
 					this.color = this.colorSelector(this.arr_data_colorInput[0], 'hex', update.change.changed[this.data_reading]);
 				}
 			}

@@ -38,8 +38,7 @@ import { TimeService } from '../../services/time.service';
 					[ngStyle]="{'height': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%'),
 					'width': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%')}">
 					<div class="slider-bg">
-						<div class="slider-active" [ngStyle]="{'background': style_fillColor, 'width': arr_data_orientation[0] === 'horizontal' ? move+'%' : '100%',
-							'height': arr_data_orientation[0] === 'vertical' ? move+'%' : '100%'}"></div>
+						<div class="slider-active" [ngStyle]="sliderActiveStyle"></div>
 					</div>
 					<div class="slider-thumb" [ngStyle]="{'width.px': data_thumbWidth, 'height.px': data_thumbWidth, 'background': style_thumbColor,
 							'left': arr_data_orientation[0] === 'horizontal' ? move+'%' : '50%', 'bottom': arr_data_orientation[0] === 'vertical' ? move+'%' : '0'}">
@@ -96,9 +95,6 @@ import { TimeService } from '../../services/time.service';
 		.horizontal .slider-active{
 			top: 0;
 			left: 0;
-		}
-		.vertical .slider-active{
-			bottom: 0;
 		}
 		.slider-thumb{
 			position: absolute;
@@ -269,6 +265,8 @@ export class SliderComponent implements OnInit, OnDestroy {
 
 	public value: number;
 	public move: number = 0;
+	public fillMove: number = 0;
+	public sliderActiveStyle: any = {};
 
 	public showpin = false;
 	private isValueTime = false;
@@ -390,6 +388,19 @@ export class SliderComponent implements OnInit, OnDestroy {
 			const w = (this.arr_data_orientation[0] === 'horizontal') ? this.sliderEl.clientWidth : this.sliderEl.clientHeight;
 			const border: any = Math.round(((parseInt(this.data_thumbWidth) / 2) / w) * 100);
 			this.move = x - border;
+
+			this.fillMove =  parseInt(this.data_min) <= parseInt(this.data_max) ? this.move + (100 / parseInt(this.data_thumbWidth)) / 2 : 100 - this.move;
+
+			this.sliderActiveStyle = {
+				background: this.style_fillColor,
+				width: this.arr_data_orientation[0] === 'horizontal' ? this.move+'%' : '100%',
+				height: this.arr_data_orientation[0] === 'vertical' ? this.fillMove+'%' : '100%'
+			}
+			if(parseInt(this.data_min) <= parseInt(this.data_max)){
+				this.sliderActiveStyle['bottom'] = 0;
+			}else{
+				this.sliderActiveStyle['top'] = 0;
+			}
 		});
 	}
 
@@ -402,8 +413,14 @@ export class SliderComponent implements OnInit, OnDestroy {
 		let value = (this.arr_data_orientation[0] === 'horizontal') ?
 			this.toValueNumber(((x - this.sliderEl.getBoundingClientRect().left) / this.sliderEl.clientWidth)) :
 			this.toValueNumber((((( this.sliderEl.getBoundingClientRect().top + this.sliderEl.clientHeight ) -  y)) / this.sliderEl.clientHeight));
-		if (value <= parseInt(this.data_min)) {value = parseInt(this.data_min); }
-		if (value >= parseInt(this.data_max)) {value = parseInt(this.data_max); }
+
+		if(parseInt(this.data_min) <= parseInt(this.data_max)){
+			if (value <= parseInt(this.data_min)) {value = parseInt(this.data_min); }
+			if (value >= parseInt(this.data_max)) {value = parseInt(this.data_max); }
+		}else{
+			if (value <= parseInt(this.data_max)) {value = parseInt(this.data_max); }
+			if (value >= parseInt(this.data_min)) {value = parseInt(this.data_min); }
+		}
 		this.value = value;
 		this.updateValue();
 		if (this.bool_data_updateOnMove) {

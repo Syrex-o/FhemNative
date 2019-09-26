@@ -15,11 +15,6 @@ ion-content{
 	overflow-y: auto;
 }
 
-.editing {
-	transform-origin: center;
-	animation: wiggle .5s linear infinite;
-}
-
 .cdk-drag-preview {
 	box-sizing: border-box;
 	border-radius: 4px;
@@ -65,6 +60,46 @@ ion-content{
 	margin-left: 5%;
 }
 
+.btn-round{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
+    z-index: 100;
+    ion-icon{
+    	font-size: 25px;
+    	&.edit{
+    		color: var(--btn-blue) !important;
+    	}
+    	&.save{
+    		color: var(--btn-green) !important;
+    	}
+    	&.cancel{
+    		color: var(--btn-red) !important;
+    	}
+    }
+    &:focus{
+		outline: 0px;
+	}
+	&.right{
+		right: 8px;
+	}
+	&.left{
+		right: 65px;
+	}
+	&.bigger ion-icon{
+		font-size: 32px;
+	}
+}
+
+ion-icon.less-margin{
+	margin-right: 16px;
+}
+
 .page{
 	padding: 30px;
 	input{
@@ -104,14 +139,6 @@ ion-content{
 	}
 }
 
-.btn.save {
-	background: #4CAF50;
-}
-
-.btn.cancel {
-	background: #d62121;
-}
-
 ion-item {
 	width: 100%;
 }
@@ -136,24 +163,7 @@ ion-item {
 .dark .box,
 .dark .custom-placeholder,
 .dark .list,
-.dark input{
+.dark input,
+.dark .btn-round{
 	background: var(--dark-bg);
-}
-
-@keyframes wiggle {
-	0% {
-		transform: rotate(0deg);
-	}
-	25% {
-		transform: rotate(-.5deg);
-	}
-	50% {
-		transform: rotate(.5deg);
-	}
-	75% {
-		transform: rotate(-.5deg);
-	}
-	100% {
-		transform: rotate(0deg);
-	}
 }

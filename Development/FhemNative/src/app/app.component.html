@@ -5,25 +5,35 @@
                 <ion-toolbar>
                     <ion-title>Menu</ion-title>
                 </ion-toolbar>
+                <button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round right" *ngIf="!settings.modes.menuEdit && settings.app.enableEditing" (click)="enableDrag()">
+                    <ion-icon class="edit" name="create"></ion-icon>
+                </button>
+                <button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round left bigger" *ngIf="settings.modes.menuEdit" (click)="saveChanges()">
+                    <ion-icon class="save" name="checkmark-circle-outline"></ion-icon>
+                </button>
+                <button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round right bigger" *ngIf="settings.modes.menuEdit" (click)="cancelChanges()">
+                    <ion-icon class="cancel" name="close-circle-outline"></ion-icon>
+                </button>
             </ion-header>
             <ion-content>
-                <div cdkDropList class="list" (cdkDropListDropped)="drop($event)" [ngClass]="{'editing': settings.modes.menuEdit}">
+                <div cdkDropList class="list" (cdkDropListDropped)="drop($event)">
                     <ng-container *ngIf="settings.modes.menuEdit">
                         <div class="box" *ngFor="let room of structure.rooms" cdkDrag>
                             <div class="custom-placeholder" *cdkDragPlaceholder></div>
                             <ion-item>
-                                <ion-icon slot="start" [name]="room.icon"></ion-icon>
+                                <ion-icon class="less-margin" slot="start" name="reorder"></ion-icon>
+                                <ion-icon class="less-margin" slot="start" [name]="room.icon"></ion-icon>
                                 <ion-label>{{room.name}}</ion-label>
                             </ion-item>
-                            <ion-icon class="pen" name="create" *ngIf="this.settings.modes.menuEdit && room.name !== structure.currentRoom.name" (click)="editRoom(room)"></ion-icon>
-                            <ion-icon class="trash" name="trash" *ngIf="this.settings.modes.menuEdit && room.name !== structure.currentRoom.name" (click)="removeRoom(room)"></ion-icon>
+                            <ion-icon class="pen" name="create" *ngIf="settings.modes.menuEdit && room.name !== structure.currentRoom.name" (click)="editRoom(room)"></ion-icon>
+                            <ion-icon class="trash" name="trash" *ngIf="settings.modes.menuEdit && room.name !== structure.currentRoom.name" (click)="removeRoom(room)"></ion-icon>
                         </div>
                     </ng-container>
                     <ng-container *ngIf="!settings.modes.menuEdit">
-                        <div class="box" *ngFor="let room of structure.rooms" cdkDrag [cdkDragDisabled]="!settings.modes.menuEdit" long-press (onLongPress)="enableDrag()">
+                        <div class="box" *ngFor="let room of structure.rooms" cdkDrag [cdkDragDisabled]="!settings.modes.menuEdit">
                             <div class="custom-placeholder" *cdkDragPlaceholder></div>
                             <ion-item (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[room.name+'_'+room.ID]">
-                                <ion-icon slot="start" [name]="room.icon"></ion-icon>
+                                <ion-icon class="less-margin" slot="start" [name]="room.icon"></ion-icon>
                                 <ion-label>{{room.name}}</ion-label>
                             </ion-item>
                         </div>
@@ -35,12 +45,6 @@
                         <ion-label>{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-label>
                     </ion-item>
                 </div>
-                <button class="btn save" *ngIf="settings.modes.menuEdit" (click)="saveChanges()">
-                    <ion-label>{{ 'GENERAL.BUTTONS.SAVE' | translate }}</ion-label>
-                </button>
-                <button class="btn cancel" *ngIf="settings.modes.menuEdit" (click)="cancelChanges()">
-                    <ion-label>{{ 'GENERAL.BUTTONS.CANCEL' | translate }}</ion-label>
-                </button>
             </ion-content>
         </ion-menu>
         <ion-router-outlet main></ion-router-outlet>

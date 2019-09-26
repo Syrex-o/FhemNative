@@ -1059,9 +1059,19 @@
 		"DICTIONARY":{
 			"ROOM": "Raum",
 			"ROOMS": "Räume",
+			"COMPONENTS": "Komponenten", 
 			"ADDED": "hinzugefügt",
 			"NO_ROOMS_ADDED_TITLE": "Keine Räume hinzugefügt:",
 			"NO_ROOMS_ADDED_INFO": "Alle Räume sind bereits in FhemNative enthalten.",
+			"NO_COMPONENTS_ADDED_TITLE": "Keine Komponenten hinzugefügt:",
+			"NO_COMPONENTS_ADDED_INFO": "Keine Komponenten für FhemNative gefunden.",
+			"NO_COMPONENTS_ADDED_REASON_TITLE": "Nicht hinzugefügte Komponenten:",
+			"NO_COMPONENTS_ADDED_REASONS":{
+				"ROOM_NAME": "Raumname",
+				"NO_ROOM": "Kein definierter Raum für das Gerät",
+				"NO_COMPONENT": "Keine Komponente in der Definition",
+				"ALREADY_DEFINED": "Komponente ist bereits definiert"
+			},
 			"SETTINGS_SAVED_TITLE": "Einstellungen gespeichert:",
 			"SETTINGS_SAVED_INFO": "Einstellungen gespeichert unter: ",
 			"LOG_STARTED_TITLE": "Ein Log-File wird erstellt",
@@ -1080,7 +1090,8 @@
 				"DAILY": "Täglich"
 			},
 			"AS": "als",
-			"AND": "und"
+			"AND": "und",
+			"TO": "zu"
 		},
 		"SETTINGS":{
 			"TITLE": "Einstellungen",
@@ -1145,6 +1156,10 @@
 						"EN": "Englisch",
 						"DE": "Deutsch"
 					}
+				},
+				"EDITING":{
+					"TITLE": "Menü/Räume bearbeiten",
+					"INFO": "Menü- und Raumbearbeitung aktivieren/deaktivieren."
 				},
 				"TOAST":{
 					"TITLE": "Toast-Nachrichten",
@@ -1241,7 +1256,7 @@
 			"PAGE_3_INFO": "Style konfigurieren:",
 			"PAGE_4_INFO": "Konfiguration testen:",
 			"PAGE_4_STYLE_COMPONENT": "Style Komponente:",
-			"PAGE_4_NOT_FOUND": "nnicht gefunden.",
+			"PAGE_4_NOT_FOUND": "nicht gefunden.",
 			"NO_COMPONENT_SELECTED": "Bitte wähle zuerst eine Komponente."
 		},
 		"EDIT_COMPONENT":{

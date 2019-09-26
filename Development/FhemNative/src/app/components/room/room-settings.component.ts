@@ -80,6 +80,13 @@ import { RoomComponent } from '../room/room.component';
 					</div>
 					<switch
 						[customMode]="true"
+						[(ngModel)]="settings.app.enableEditing"
+						[label]="'GENERAL.SETTINGS.APP.EDITING.TITLE' | translate"
+						[subTitle]="'GENERAL.SETTINGS.APP.EDITING.INFO' | translate"
+						(onToggle)="settings.changeAppSetting('enableEditing', $event)">
+					</switch>
+					<switch
+						[customMode]="true"
 						[(ngModel)]="settings.app.showToastMessages"
 						[label]="'GENERAL.SETTINGS.APP.TOAST.TITLE' | translate"
 						[subTitle]="'GENERAL.SETTINGS.APP.TOAST.INFO' | translate"
@@ -429,7 +436,6 @@ export class SettingsRoomComponent {
 
 	public share(varaint) {
 		this.storage.getAllSettings().then((res: any) => {
-			console.log(res);
 			this.createFile('FhemNative_settings.json', JSON.stringify(res)).then((data: any) => {
 				if (varaint === 'local') {
 					this.toast.showAlert(
@@ -576,23 +582,27 @@ export class SettingsRoomComponent {
 	}
 
 	public generateDevices(){
-		let createdDevices = [];
-		let wrongSpecDevices = [];
+		let generatedDevices = [];
 		this.fhem.devices.forEach((device)=>{
 			if(device.attributes.userattr && device.attributes.userattr.match(/FhemNative/)){
 				let attr = device.attributes.userattr.replace('FhemNative@', '');
 				const component = attr.match(/\w+/g)[0];
-				if(this.createComponent.fhemComponents.find(x=> x.name === component)){
+				if(this.createComponent.fhemComponents.find(x=> x.name.replace(' ', '').toLowerCase() === component.toLowerCase())){
 					attr = attr.replace(component+';', '');
-					const creatorComponent = this.createComponent.fhemComponents.find(x=> x.name === component);
+					const creatorComponent = this.createComponent.fhemComponents.find(x=> x.name.replace(' ', '').toLowerCase() === component.toLowerCase());
 					attr.match(/[\w+:]+(?=;)/g).forEach((singleAttr)=>{
 						const reading = singleAttr.match(/\w+/g)[0];
 						const settedValue = singleAttr.match(/:.*/g)[0].slice(1);
 						for (const [key, value] of Object.entries(creatorComponent.component)) {
-							if(key.indexOf(reading) !== -1){
+							if(key.toLowerCase().indexOf(reading.toLowerCase()) !== -1){
 								creatorComponent.component[key] = settedValue;
+								break;
 							}else{
-								creatorComponent.component[key] = value;
+								if(key === 'data_device'){
+									creatorComponent.component[key] = device.device;
+								}else{
+									creatorComponent.component[key] = value;
+								}
 							}
 						}
 					});
@@ -602,40 +612,85 @@ export class SettingsRoomComponent {
 						REF: creatorComponent.REF,
 						dimensions: creatorComponent.dimensions
 					};
-					let room;
-					if(this.helper.find(this.structure.rooms, 'name', device.attributes.room || 'Unregistered')){
-						const found =  this.helper.find(this.structure.rooms, 'name', device.attributes.room || 'Unregistered');
-						room = found.item.name;
-						pushComponent['position'] = this.arrangeComponent(found.item.components, pushComponent);
-						this.createComponent.pushComponentToPlace(found.item.components, pushComponent);
+					// getting room information
+					if(device.attributes.room){
+						const rooms = device.attributes.room.split(',');
+						rooms.forEach((room)=>{
+							const foundRoom = this.helper.find(this.structure.rooms, 'name', room);
+							if(foundRoom){
+								// room found in structure
+								// check if device is already defined
+								if(foundRoom.item.components.filter(device=> JSON.stringify(pushComponent.attributes) === JSON.stringify(device.attributes)).length > 0){
+									// component already defined
+									generatedDevices.push({device: device.device, generated: false, reason: 'ALREADY_DEFINED', room: room});
+								}else{
+									this.createComponent.pushComponentToPlace(foundRoom.item.components, pushComponent);
+									generatedDevices.push({device: device.device, generated: true, room: room});
+								}
+							}else{
+								// room not found --> create one for devices with dedicated room
+								if(room.indexOf(',') === -1 && room !== 'hidden'){
+									// device has dedicated room
+									this.structure.rooms.push({ ID: this.structure.rooms.length, name: room, icon: 'home', components: []});
+									// add component to new created room
+									this.createComponent.pushComponentToPlace(this.structure.rooms[this.structure.rooms.length -1].components, pushComponent);
+									generatedDevices.push({device: device.device, generated: true, room: room});
+								}else{
+									// room rejected because of strange values
+									generatedDevices.push({device: device.device, generated: false, reason: 'ROOM_NAME'});
+								}
+							}
+						});
 					}else{
-						room = device.attributes.room || 'Unregistered';
-						// this.structure.rooms.push({
-						// 	ID: this.structure.rooms.length,
-						// 	name: room,
-						// 	icon: 'home',
-						// 	components: []
-						// });
+						// no room found
+						generatedDevices.push({device: device.device, generated: false, reason: 'NO_ROOM'});
 					}
-					console.log(this.structure.rooms);
-					createdDevices.push({name: device.device, room: room});
 				}else{
-					wrongSpecDevices.push(device.device);
+					generatedDevices.push({device: device.device, generated: false, reason: 'NO_COMPONENT'});
 				}
 			}
 		});
-		// console.log(createdDevices);
-		// console.log(wrongSpecDevices);
+		if(generatedDevices.length > 0){
+			this.devicesAdded(generatedDevices);
+		}else{
+			// No devices for FhemNative found
+			this.toast.showAlert(
+				this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_TITLE'),
+				this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_INFO'),
+				false
+			);
+		}
 	}
 
-	private arrangeComponent(place, component){
-		if(place.length > 0){
-			let position = {top: 0,left: 0};
-			const left = place[place.length - 1].position.left + place[place.length - 1].position.width;
-			console.log(left);
-			return position;
+	private devicesAdded(generatedDevices){
+		if(generatedDevices.filter(dev => dev.generated).length > 0){
+			this.structure.saveRooms().then(()=>{
+				this.structure.loadRooms(RoomComponent, true);
+			});
+			this.toast.showAlert(
+				this.translate.instant('GENERAL.DICTIONARY.COMPONENTS')+' '+this.translate.instant('GENERAL.DICTIONARY.ADDED'),
+				generatedDevices.filter(dev => dev.generated).map(el=> el.device +' '+this.translate.instant('GENERAL.DICTIONARY.TO')+' '+el.room).join("<br /> <br />"),
+				[{
+	    			text: this.translate.instant('GENERAL.BUTTONS.OKAY'),
+	    			role: 'cancel',
+	    			handler: data => this.rejectedDevices(generatedDevices)
+	    		}]
+			);
 		}else{
-			return {top: 0,left: 0}
+			this.rejectedDevices(generatedDevices);
+		}
+	}
+
+	private rejectedDevices(generatedDevices){
+		if(generatedDevices.filter(dev => !dev.generated).length > 0){
+			this.toast.showAlert(
+		    	this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_REASON_TITLE'),
+		    	generatedDevices.filter(dev => !dev.generated).map(el=>
+		    		el.device+(el.room ? ' '+this.translate.instant('GENERAL.DICTIONARY.TO')+' '+el.room+': ' : ': ') +
+		    		this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_REASONS.'+el.reason)
+		    	).join("<br /> <br />"),
+		    	false
+		    );
 		}
 	}
 

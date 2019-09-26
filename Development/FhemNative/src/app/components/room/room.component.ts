@@ -12,19 +12,22 @@ import { Subscription } from 'rxjs';
 @Component({
 	selector: 'room',
 	template: `
-		<ion-header [ngClass]="settings.app.theme" long-press duration="1000" (onLongPress)="edit()">
+		<ion-header [ngClass]="settings.app.theme">
 			<ion-toolbar>
 				<ion-buttons slot="start">
 				<ion-menu-button></ion-menu-button>
 				</ion-buttons>
 				<ion-title>{{structure.currentRoom.name}}</ion-title>
 			</ion-toolbar>
+			<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round right" *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" (click)="edit()">
+                <ion-icon class="edit" name="create"></ion-icon>
+            </button>
 			<create-room *ngIf="settings.modes.roomEdit"></create-room>
 		</ion-header>
-		<div [ngClass]="settings.app.theme" class="content" long-press [attr.id]="'room_'+structure.currentRoom.ID">
-			<button matRipple [matRippleColor]="'#d4d4d480'" class="save-options" *ngIf="settings.modes.roomEdit" (click)="finishEdit()">
-				<ion-icon class="save-icon" name="checkmark-circle-outline"></ion-icon>
-			</button>
+		<button matRipple [ngClass]="settings.app.theme" [matRippleColor]="'#d4d4d480'" class="btn-round left front" *ngIf="settings.modes.roomEdit" (click)="finishEdit()">
+			<ion-icon class="save-icon bigger" name="checkmark-circle-outline"></ion-icon>
+		</button>
+		<div [ngClass]="settings.app.theme" class="content" [attr.id]="'room_'+structure.currentRoom.ID">
 			<ng-container class="container" #container></ng-container>
 		</div>
 	`,
@@ -40,34 +43,48 @@ import { Subscription } from 'rxjs';
 			width: inherit;
 			height: inherit;
 		}
-		.save-options{
+		button:focus{
+			outline: 0px;
+		}
+		.btn-round{
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 45px;
+		    height: 45px;
+		    border-radius: 50%;
+		    border: none;
+		    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
+		    z-index: 100;
+		}
+		.btn-round ion-icon{
+			font-size: 25px;
+		}
+		.btn-round ion-icon.bigger{
+			font-size: 32px;
+		}
+		.btn-round.right{
+			right: 8px;
+		}
+		.btn-round.left{
+			right: 65px;
+		}
+		.front{
 			position: fixed;
 			top: 5px;
 			z-index: 20004;
-		}
-		.save-options{
-			right: 70px;
+			transform: translateY(0%);
 		}
 
-		.save-icon{
-			transform: scale3d(3,3,3);
+		.btn-round .edit,
+		.btn-round .save-icon{
 			color: var(--btn-blue);
-		}
-		.save-options{
-			width: 45px;
-			height: 45px;
-			border-radius: 50%;
-			background: #ffffff;
-			border: none;
-			box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
-		}
-		button:focus{
-			outline: 0px;
 		}
 
 		.dark.content,
 		.dark .add-btn,
-		.dark .save-options{
+		.dark .btn-round,
+		.dark.btn-round{
 			background: var(--dark-bg);
 		}
 		.dark ion-toolbar{
