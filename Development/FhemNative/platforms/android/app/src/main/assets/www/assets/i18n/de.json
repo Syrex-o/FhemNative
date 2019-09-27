@@ -978,6 +978,10 @@
 					"name": "Schwellenwert",
 					"info": "Aktions-Drosselung. Nur jeden 'n'ten an FHEM senden (in Kombination mit 'Update bei Bewegung')"
 				},
+				"data_labelExtension":{
+					"name": "Label-Endung",
+					"info": "Endung des Werte-Labels (Bsp. %)"
+				},
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
 					"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
@@ -1059,9 +1063,19 @@
 		"DICTIONARY":{
 			"ROOM": "Raum",
 			"ROOMS": "Räume",
+			"COMPONENTS": "Komponenten", 
 			"ADDED": "hinzugefügt",
 			"NO_ROOMS_ADDED_TITLE": "Keine Räume hinzugefügt:",
 			"NO_ROOMS_ADDED_INFO": "Alle Räume sind bereits in FhemNative enthalten.",
+			"NO_COMPONENTS_ADDED_TITLE": "Keine Komponenten hinzugefügt:",
+			"NO_COMPONENTS_ADDED_INFO": "Keine Komponenten für FhemNative gefunden.",
+			"NO_COMPONENTS_ADDED_REASON_TITLE": "Nicht hinzugefügte Komponenten:",
+			"NO_COMPONENTS_ADDED_REASONS":{
+				"ROOM_NAME": "Raumname",
+				"NO_ROOM": "Kein definierter Raum für das Gerät",
+				"NO_COMPONENT": "Keine Komponente in der Definition",
+				"ALREADY_DEFINED": "Komponente ist bereits definiert"
+			},
 			"SETTINGS_SAVED_TITLE": "Einstellungen gespeichert:",
 			"SETTINGS_SAVED_INFO": "Einstellungen gespeichert unter: ",
 			"LOG_STARTED_TITLE": "Ein Log-File wird erstellt",
@@ -1080,7 +1094,8 @@
 				"DAILY": "Täglich"
 			},
 			"AS": "als",
-			"AND": "und"
+			"AND": "und",
+			"TO": "zu"
 		},
 		"SETTINGS":{
 			"TITLE": "Einstellungen",
@@ -1119,8 +1134,13 @@
 				},
 				"AUTO_ROOMS":{
 					"TITLE": "Automatisch Räume generieren",
-					"INFO": "Automatishch Räume aus FHEM kreieren.",
+					"INFO": "Automatisch Räume aus FHEM kreieren.",
 					"BUTTON": "Räume generieren"
+				},
+				"AUTO_DEVICES":{
+					"TITLE": "Automatisch Geräte generieren",
+					"INFO": "Automatisch Geräte aus FHEM kreieren und Räumen zuordnen.",
+					"BUTTON": "Geräte kreieren"
 				}
 			},
 			"APP":{
@@ -1140,6 +1160,10 @@
 						"EN": "Englisch",
 						"DE": "Deutsch"
 					}
+				},
+				"EDITING":{
+					"TITLE": "Menü/Räume bearbeiten",
+					"INFO": "Menü- und Raumbearbeitung aktivieren/deaktivieren."
 				},
 				"TOAST":{
 					"TITLE": "Toast-Nachrichten",
@@ -1227,7 +1251,16 @@
 			"ROOM_NAME": "Raum Name",
 			"ROOM_ICON": "Raum Icon:",
 			"NO_ROOM_NAME": "Bitte gib dem Raum einen Namen,",
-			"ROOM_CREATED": "Raum erstellt."
+			"ROOM_CREATED": "Raum erstellt.",
+			"USE_AS_GROUP":{
+				"TITLE": "Raum als Menü verwenden",
+				"INFO": "Raum als Menü-Struktur verwenden aktivieren/deaktivieren"
+			},
+			"GROUP_TO":{
+				"TITLE": "Raum an Menü-Struktur heften",
+				"INFO": "Raum an Menü-Struktur heften aktivieren/deaktivieren",
+				"TITLE_SELECT": "An welche Menü-Struktur anheften:"
+			}
 		},
 		"CREATE_COMPONENT":{
 			"POPUP_HEADER": "Komponente hinzufügen:",
@@ -1236,7 +1269,7 @@
 			"PAGE_3_INFO": "Style konfigurieren:",
 			"PAGE_4_INFO": "Konfiguration testen:",
 			"PAGE_4_STYLE_COMPONENT": "Style Komponente:",
-			"PAGE_4_NOT_FOUND": "nnicht gefunden.",
+			"PAGE_4_NOT_FOUND": "nicht gefunden.",
 			"NO_COMPONENT_SELECTED": "Bitte wähle zuerst eine Komponente."
 		},
 		"EDIT_COMPONENT":{
