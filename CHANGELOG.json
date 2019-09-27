@@ -54,7 +54,9 @@
         		{"TYPE": "NEW", "CHANGE": "New Room Edit Buttons"},
         		{"TYPE": "NEW", "CHANGE": "Enable Editing as settings entry --> used for new Buttons"},
         		{"TYPE": "NEW", "CHANGE": "Added auto Device Loader"},
-        		{"TYPE": "DEL", "CHANGE": "Removed big Menu Edit Buttons and longpress"}
+        		{"TYPE": "NEW", "CHANGE": "Label Extension attribute for Thermostat"},
+        		{"TYPE": "DEL", "CHANGE": "Removed big Menu Edit Buttons and longpress"},
+        		{"TYPE": "FIX", "CHANGE": "Slider acccepts min max value changes (directional changes)"}
       		]
     	}
 	]

@@ -978,6 +978,10 @@
 					"name": "Schwellenwert",
 					"info": "Aktions-Drosselung. Nur jeden 'n'ten an FHEM senden (in Kombination mit 'Update bei Bewegung')"
 				},
+				"data_labelExtension":{
+					"name": "Label-Endung",
+					"info": "Endung des Werte-Labels (Bsp. %)"
+				},
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
 					"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
@@ -1247,7 +1251,16 @@
 			"ROOM_NAME": "Raum Name",
 			"ROOM_ICON": "Raum Icon:",
 			"NO_ROOM_NAME": "Bitte gib dem Raum einen Namen,",
-			"ROOM_CREATED": "Raum erstellt."
+			"ROOM_CREATED": "Raum erstellt.",
+			"USE_AS_GROUP":{
+				"TITLE": "Raum als Menü verwenden",
+				"INFO": "Raum als Menü-Struktur verwenden aktivieren/deaktivieren"
+			},
+			"GROUP_TO":{
+				"TITLE": "Raum an Menü-Struktur heften",
+				"INFO": "Raum an Menü-Struktur heften aktivieren/deaktivieren",
+				"TITLE_SELECT": "An welche Menü-Struktur anheften:"
+			}
 		},
 		"CREATE_COMPONENT":{
 			"POPUP_HEADER": "Komponente hinzufügen:",

@@ -38,7 +38,11 @@ import { TimeService } from '../../services/time.service';
 					[ngStyle]="{'height': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%'),
 					'width': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%')}">
 					<div class="slider-bg">
-						<div class="slider-active" [ngStyle]="sliderActiveStyle"></div>
+						<div class="slider-active" 
+							[ngStyle]="sliderActiveStyle" 
+							[style.background]="style_fillColor" 
+							[style.boxShadow]="arr_data_orientation === 'horizontal' ? '5px 0 0 0 '+style_fillColor : 0">
+						</div>
 					</div>
 					<div class="slider-thumb" [ngStyle]="{'width.px': data_thumbWidth, 'height.px': data_thumbWidth, 'background': style_thumbColor,
 							'left': arr_data_orientation[0] === 'horizontal' ? move+'%' : '50%', 'bottom': arr_data_orientation[0] === 'vertical' ? move+'%' : '0'}">
@@ -88,13 +92,8 @@ import { TimeService } from '../../services/time.service';
 		}
 		.slider-active{
 			position: absolute;
-			left: 0;
 			border-radius: 5px;
 			z-index: 2;
-		}
-		.horizontal .slider-active{
-			top: 0;
-			left: 0;
 		}
 		.slider-thumb{
 			position: absolute;
@@ -389,17 +388,18 @@ export class SliderComponent implements OnInit, OnDestroy {
 			const border: any = Math.round(((parseInt(this.data_thumbWidth) / 2) / w) * 100);
 			this.move = x - border;
 
-			this.fillMove =  parseInt(this.data_min) <= parseInt(this.data_max) ? this.move + (100 / parseInt(this.data_thumbWidth)) / 2 : 100 - this.move;
+			this.fillMove =  parseInt(this.data_min) <= parseInt(this.data_max) ? this.move : 100 - this.move;
 
 			this.sliderActiveStyle = {
-				background: this.style_fillColor,
-				width: this.arr_data_orientation[0] === 'horizontal' ? this.move+'%' : '100%',
+				width: this.arr_data_orientation[0] === 'horizontal' ? this.fillMove+'%' : '100%',
 				height: this.arr_data_orientation[0] === 'vertical' ? this.fillMove+'%' : '100%'
 			}
 			if(parseInt(this.data_min) <= parseInt(this.data_max)){
 				this.sliderActiveStyle['bottom'] = 0;
+				this.sliderActiveStyle['left'] = 0;
 			}else{
 				this.sliderActiveStyle['top'] = 0;
+				this.sliderActiveStyle['right'] = 0;
 			}
 		});
 	}

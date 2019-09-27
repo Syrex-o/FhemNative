@@ -44,8 +44,8 @@ import { SettingsService } from '../../services/settings.service';
 					  		<g class="dragger">
 					  			<circle class="drag" cx="50" cy="160" r="36"/>
 				       			<path class="dragTip drag" d="M315.5,556.76,299.24,540.5l16.26-16.26,36.26,16.26Z"/>
-				       			<text class="label drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value}}&#8451;</text>
-				       			<text class="labelReplace drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value}}&#8451;</text>
+				       			<text class="label drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value+data_labelExtension}}</text>
+				       			<text class="labelReplace drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value +data_labelExtension}}</text>
 					  		</g>
 					  		<g [attr.mask]="'url(#'+GRADMASK_UID+')'">
 					        	<use xlink:href="#tube" [attr.fill]="'url(#'+LIQUIDGRAD_UID+')'" />
@@ -156,6 +156,7 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 
 	@Input() bool_data_updateOnMove: boolean = false;
 	@Input() data_threshold: string = '10';
+	@Input() data_labelExtension: string = '\xB0C';
 
 	// Styling
 	@Input() style_gradientColor1: string = '#FF0909';
@@ -193,11 +194,12 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 				{variable: 'data_min', default: '0'},
 				{variable: 'data_max', default: '100'},
 				{variable: 'data_threshold', default: '10'},
+				{variable: 'data_labelExtension', default: '\xB0C'},
 				{variable: 'bool_data_updateOnMove', default: false},
 				{variable: 'style_gradientColor1', default: '#FF0909'},
 				{variable: 'style_gradientColor2', default: '#F3481A'},
 				{variable: 'style_gradientColor3', default: '#FABA2C'},
-				{variable: 'style_gradientColor4', default: '#00BCF2'},
+				{variable: 'style_gradientColor4', default: '#00BCF2'}
 			],
 			dimensions: {minX: 120, minY: 170}
 		};

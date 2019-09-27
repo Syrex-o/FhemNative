@@ -507,7 +507,9 @@ export class SettingsRoomComponent {
 		// disconnect from fhem
 		this.fhem.noReconnect = true;
 		this.settings.modes.blockDefaultLoader = true;
-		this.fhem.disconnect();
+		if(this.fhem.connected){
+			this.fhem.disconnect();
+		}
 
 		const len = Object.keys(JSON.parse(rawData)).length;
 		let i = 0;

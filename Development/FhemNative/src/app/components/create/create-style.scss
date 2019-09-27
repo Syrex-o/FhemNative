@@ -143,6 +143,12 @@
 		position: relative;
 		width: 70%;
 		left: 15%;
+		ng-select{
+			margin-bottom: 16px;
+		}
+		p{
+			margin-bottom: 5px;
+		}
 	}
 	.btn{
 		font-family: "Roboto", sans-serif;

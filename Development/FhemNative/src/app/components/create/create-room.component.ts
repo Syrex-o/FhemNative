@@ -36,6 +36,30 @@ import { CreateComponentService } from '../../services/create-component.service'
 				    <span class="label">{{item}}</span>
 				</ng-template>
 			</ng-select>
+			<switch
+				[customMode]="true"
+				[padding]="false"
+				[(ngModel)]="useRoomAsGroup"
+				[label]="'GENERAL.CREATE_ROOM.USE_AS_GROUP.TITLE' | translate"
+				[subTitle]="'GENERAL.CREATE_ROOM.USE_AS_GROUP.INFO' | translate"
+				(onToggle)="grouper('useAsGroup', $event)">
+			</switch>
+			<switch *ngIf="groupRooms.length > 0"
+				[customMode]="true"
+				[padding]="false"
+				[(ngModel)]="roomToGroup"
+				[label]="'GENERAL.CREATE_ROOM.GROUP_TO.TITLE' | translate"
+				[subTitle]="'GENERAL.CREATE_ROOM.GROUP_TO.INFO' | translate"
+				(onToggle)="grouper('roomToGroup', $event)">
+			</switch>
+			<ng-select *ngIf="roomToGroup && groupRooms.length > 0" [items]="groupRooms"
+				[searchable]="false"
+				placeholder="selectedGroup.name"
+				[(ngModel)]="selectedGroup">
+				<ng-template ng-option-tmp let-item="item" let-index="index">
+				    <span class="label">{{item.name}}</span>
+				</ng-template>
+			</ng-select>
 			<button ion-button class="btn submit" (click)="this.saveRoom(roomName)">{{'GENERAL.BUTTONS.SAVE' | translate}}</button>
 			<button ion-button class="btn cancel" (click)="this.editMode = false;">{{'GENERAL.BUTTONS.CANCEL' | translate}}</button>
 			<p class="error-message" *ngIf="addEvent == 'room-error'">{{'GENERAL.CREATE_ROOM.NO_ROOM_NAME' | translate}}</p>
@@ -51,13 +75,17 @@ export class CreateRoomComponent {
 
 	// Room Parameters
 	public roomName: string;
-	public roomIcon = 'home';
+	public roomIcon: string = 'home';
+	public useRoomAsGroup: boolean = false;
+	public roomToGroup: boolean = false;
+
+	public groupRooms: Array<any> = [];
+	public selectedGroup: number;
 
 	constructor(
 		private structure: StructureService,
 		public settings: SettingsService,
 		private createComponent: CreateComponentService) {
-
 	}
 
 	public saveRoom(room) {
@@ -83,6 +111,16 @@ export class CreateRoomComponent {
 			});
 		} else {
 			this.addEvent = 'room-error';
+		}
+	}
+
+	public grouper(scenario, event){
+		if(event){
+			if(scenario === 'useAsGroup'){
+				this.roomToGroup = false;
+			}else{
+				this.useRoomAsGroup = false;
+			}
 		}
 	}
 }
