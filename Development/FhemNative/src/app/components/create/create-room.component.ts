@@ -4,13 +4,14 @@ import { RoomComponent } from '../room/room.component';
 // Services
 import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
+import { HelperService } from '../../services/helper.service';
 import { CreateComponentService } from '../../services/create-component.service';
 
 @Component({
 	selector: 'create-room',
 	template: `
 	<div class="create-container room" [ngClass]="settings.app.theme">
-		<button matRipple [matRippleColor]="'#d4d4d480'" class="add-btn" (click)="this.editMode = true;">
+		<button matRipple [matRippleColor]="'#d4d4d480'" class="add-btn" (click)="openMenu()">
 			<span class="line top"></span>
 			<span class="line bottom"></span>
 		</button>
@@ -54,7 +55,7 @@ import { CreateComponentService } from '../../services/create-component.service'
 			</switch>
 			<ng-select *ngIf="roomToGroup && groupRooms.length > 0" [items]="groupRooms"
 				[searchable]="false"
-				placeholder="selectedGroup.name"
+				bindLabel="name"
 				[(ngModel)]="selectedGroup">
 				<ng-template ng-option-tmp let-item="item" let-index="index">
 				    <span class="label">{{item.name}}</span>
@@ -80,12 +81,18 @@ export class CreateRoomComponent {
 	public roomToGroup: boolean = false;
 
 	public groupRooms: Array<any> = [];
-	public selectedGroup: number;
+	public selectedGroup: any = {};
 
 	constructor(
 		private structure: StructureService,
 		public settings: SettingsService,
-		private createComponent: CreateComponentService) {
+		private createComponent: CreateComponentService,
+		private helper: HelperService) {
+	}
+
+	public openMenu(){
+		this.editMode = true;
+		this.groupRooms = this.structure.rooms.filter(room => room.useRoomAsGroup);
 	}
 
 	public saveRoom(room) {
@@ -98,6 +105,19 @@ export class CreateRoomComponent {
 					components: []
 				}
 			);
+			if(this.useRoomAsGroup){
+				this.structure.rooms[this.structure.rooms.length -1]['useRoomAsGroup'] = true;
+			}
+			if(this.selectedGroup.name){
+				// check if group already has rooms inside
+				if(!this.structure.rooms[this.selectedGroup.ID]['groupRooms']){
+					this.structure.rooms[this.selectedGroup.ID]['groupRooms'] = [];
+				}
+				this.structure.rooms[this.selectedGroup.ID]['groupRooms'].push({
+					ID: this.structure.rooms[this.structure.rooms.length -1].ID,
+					name: this.structure.rooms[this.structure.rooms.length -1].name
+				});
+			}
 			this.addEvent = 'room-added';
 			this.structure.saveRooms().then(() => {
 				this.structure.resetRouter(RoomComponent);
@@ -112,6 +132,8 @@ export class CreateRoomComponent {
 		} else {
 			this.addEvent = 'room-error';
 		}
+		this.useRoomAsGroup = false;
+		this.roomToGroup = false;
 	}
 
 	public grouper(scenario, event){
@@ -123,4 +145,5 @@ export class CreateRoomComponent {
 			}
 		}
 	}
+
 }

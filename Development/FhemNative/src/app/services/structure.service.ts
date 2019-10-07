@@ -27,7 +27,11 @@ export class StructureService {
 
 	// list of all rooms
 	// will be generated on start
-	public rooms: Array<any>;
+	public rooms: Array<any> = [];
+
+	// list of structured rooms
+	public structuredRooms: Array<any> = [];
+
 	// list of room defauls
 	// will be loaded on initial load
 	private roomDefaults: Array<any> = [{
@@ -43,7 +47,58 @@ export class StructureService {
 
 	// getting the room name
 	public getCurrentRoom() {
-		return this.helper.find(this.rooms, 'ID', parseInt(this.router.url.substr(this.router.url.length - 1, 1)));
+		return this.helper.find(this.rooms, 'ID', parseInt(this.router.url.match(/(\d+)$/g)[0]));
+	}
+
+	// returning the list of rooms structured into submenus
+	public getStructuredRoomList(){
+		let structuredRooms = JSON.parse(JSON.stringify(this.rooms));
+		this.rooms.forEach((room, i)=>{
+			if(room.groupRooms){
+				room.groupRooms.forEach((groupRoom, j)=>{
+					const found = this.helper.find(structuredRooms, 'ID', groupRoom.ID);
+					if(found){
+						structuredRooms.splice(found.index, 1);
+					}else{
+						room.groupRooms.splice(j, 1);
+						this.rooms[i].groupRooms.splice(j, 1);
+					}
+				});
+			}
+		});
+		this.structuredRooms = structuredRooms;
+	}
+
+	// pushing rooms back to normal structure and removing unused rooms
+	public modifyRooms(){
+		let modifiedRooms = [];
+		this.structuredRooms.forEach((room, i)=>{
+			if(room.useRoomAsGroup){
+				let found = this.helper.find(this.rooms, 'ID', room.ID);
+				if(found){
+					modifiedRooms.push(room);
+					modifiedRooms[modifiedRooms.length - 1].ID = modifiedRooms.length - 1;
+				}
+				room.groupRooms = room.groupRooms.filter(groupRoom=> this.rooms.some(room=> groupRoom.ID === room.ID));
+				room.groupRooms.forEach((group)=>{
+					let found = this.helper.find(this.rooms, 'ID', group.ID);
+					if(found){
+						found = JSON.parse(JSON.stringify(found));
+						modifiedRooms.push(found.item);
+						modifiedRooms[modifiedRooms.length - 1].ID = modifiedRooms.length - 1;
+						group.ID = found.item.ID;
+					}
+				});
+			}else{
+				let found = this.helper.find(this.rooms, 'ID', room.ID);
+				if(found){
+					modifiedRooms.push(room);
+					modifiedRooms[modifiedRooms.length - 1].ID = modifiedRooms.length - 1;
+				}
+			}
+		});
+		this.rooms = modifiedRooms;
+		this.getStructuredRoomList();
 	}
 
 	// loading rooms for the router
@@ -60,6 +115,7 @@ export class StructureService {
 				if (navigate) {
 					this.router.navigate([this.rooms[0].name + '_' + this.rooms[0].ID]);
 				}
+				this.getStructuredRoomList();
 			});
 		});
 	}
@@ -71,6 +127,7 @@ export class StructureService {
 				name: 'rooms',
 				change: this.rooms
 			}).then((res) => {
+				this.getStructuredRoomList();
 				resolve(res);
 			});
 		});
@@ -78,7 +135,7 @@ export class StructureService {
 
 	// resetting angular router
 	public resetRouter(RoomComponent) {
-		const results: any = [];
+		let results: any = [];
 		for (let i = 0; i < this.rooms.length; i++) {
 			results.push({
 				// building room path
