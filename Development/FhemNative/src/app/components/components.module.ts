@@ -69,7 +69,8 @@ export function createTranslateLoader(http: HttpClient) {
 		FhemMenuComponent,
 		TranslateModule,
 		NgSelectModule,
-		MatRippleModule
+		MatRippleModule,
+		FHEM_COMPONENT_REGISTRY
 	],
 	providers: [
 		CreateComponentService
