@@ -130,8 +130,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 	  	});
 	}
 
-	ngOnInit() {
-		// this.loadRoomComponents();
+	ngOnInit(){
+		
 	}
 
 	public edit() {
