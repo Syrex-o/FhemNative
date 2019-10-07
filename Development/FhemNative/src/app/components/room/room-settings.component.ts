@@ -28,6 +28,9 @@ import { RoomComponent } from '../room/room.component';
 	template: `
 		<ion-header [ngClass]="settings.app.theme">
 			<ion-toolbar>
+			    <button class="back-btn" (click)="modalCtrl.dismiss();" matRipple [matRippleColor]="'#d4d4d480'">
+			    	<ion-icon name="arrow-round-back"></ion-icon>
+			    </button>
 				<ion-title>{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-title>
 			</ion-toolbar>
 		</ion-header>
@@ -351,6 +354,15 @@ import { RoomComponent } from '../room/room.component';
 		}
 		.changelog .category .label-des.DEL{
 			color: var(--btn-red)
+		}
+		.back-btn{
+			background: transparent;
+			float: left;
+			font-size: 30px;
+			margin-left: 8px;
+		}
+		ion-title{
+			transform: translateY(5px);
 		}
 	`]
 })
