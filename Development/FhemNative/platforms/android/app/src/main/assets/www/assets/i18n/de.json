@@ -1262,6 +1262,9 @@
 				"TITLE_SELECT": "An welche Menü-Struktur anheften:"
 			}
 		},
+		"CHANGE_ROOM":{
+			"TITLE": "Raum bearbeiten:"
+		},
 		"CREATE_COMPONENT":{
 			"POPUP_HEADER": "Komponente hinzufügen:",
 			"PAGE_1_INFO": "Komponente auswählen:",
