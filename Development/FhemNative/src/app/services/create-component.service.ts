@@ -230,7 +230,7 @@ export class CreateComponentService {
 				left: component.position ? component.position.left || 0 : 0,
 				width: component.dimensions.minX,
 				height: component.dimensions.minY,
-				zIndex: 1
+				zIndex: 10
 			},
 			createScaler: {
 				width: window.innerWidth,
