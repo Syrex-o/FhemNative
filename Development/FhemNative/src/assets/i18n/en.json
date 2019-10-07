@@ -1262,6 +1262,9 @@
 				"TITLE_SELECT": "Group to which menu structure:"
 			}
 		},
+		"CHANGE_ROOM":{
+			"TITLE": "Edit room:"
+		},
 		"CREATE_COMPONENT":{
 			"POPUP_HEADER": "Add component:",
 			"PAGE_1_INFO": "Select component:",
