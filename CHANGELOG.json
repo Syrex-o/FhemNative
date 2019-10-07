@@ -58,6 +58,19 @@
         		{"TYPE": "DEL", "CHANGE": "Removed big Menu Edit Buttons and longpress"},
         		{"TYPE": "FIX", "CHANGE": "Slider acccepts min max value changes (directional changes)"}
       		]
+    	},
+    	{
+      		"VERSION": "2.0.3",
+      		"DATE": "07.10.2019",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Rooms can be used as structures for 'menu-in-menu' support"},
+      			{"TYPE": "NEW", "CHANGE": "Rooms as group-structures and individual rooms"},
+      			{"TYPE": "NEW", "CHANGE": "Back Button to settings"},
+        		{"TYPE": "FIX", "CHANGE": "Room links to wrong room"},
+        		{"TYPE": "FIX", "CHANGE": "New created components are always on top now"},
+        		{"TYPE": "FIX", "CHANGE": "Fixed chart name fetch"},
+        		{"TYPE": "FIX", "CHANGE": "Fixed chart value fetch"}
+      		]
     	}
 	]
 }
