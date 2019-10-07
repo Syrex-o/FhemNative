@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.0.2';
+	public appVersion: string = '2.0.3';
 	// building default storage
 	public app: any = {};
 
@@ -58,7 +58,7 @@ export class SettingsService {
 		'contact', 'contacts', 'desktop', 'flower',
 		'images', 'information-circle', 'key', 'keypad',
 		'lock', 'map', 'partly-sunny', 'rainy', 'sunny', 'snow',
-		'power', 'radio', 'switch', 'trash', 'add-circle',
+		'power', 'radio', 'switch', 'trash', 'logo-windows', 'add-circle',
 		'checkmark-circle', 'close-circle'
 	];
 	// Available component colors for FhemNative
