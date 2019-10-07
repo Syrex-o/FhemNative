@@ -74,7 +74,7 @@ export class ChartComponent implements OnInit {
 	@Input() zIndex: number;
 
 	public fhemDevice: any;
-	public noData = false;
+	public noData = true;
 
 	// FHEM Definition
 	@Input() data_device: string;
@@ -190,6 +190,7 @@ export class ChartComponent implements OnInit {
 			this.data = {read1: [], read2: []};
 			this.getData().then(() => {
 				resolve();
+				this.noData = false;
 			});
 		});
 	}
@@ -242,14 +243,16 @@ export class ChartComponent implements OnInit {
   				const test = new RegExp(
   					this.data_reading2 !== '' ? [this.data_reading, this.data_reading2].join('|') : this.data_reading, 'g'
   				);
-  				const name = raw.split(/\r\n|\r|\n/)[i].match(test)[0];
-  				for (let j = 1; j <= 2; j++) {
-  					if (name === (j === 1 ? this.data_reading : this.data_reading2)) {
-  						this.data['read' + j].push({
-  							date: d3.timeParse('%Y-%m-%d_%H:%M:%S')(raw.split(/\r\n|\r|\n/)[i].match(/(.*?\s)/)[0].replace(' ', '')),
-	  						value: parseInt(raw.split(/\r\n|\r|\n/)[i].match(/([0-9]+)$/)[0])
-  						});
-  					}
+  				if(raw.split(/\r\n|\r|\n/)[i].match(test)){
+  					const name = raw.split(/\r\n|\r|\n/)[i].match(test)[0];
+	  				for (let j = 1; j <= 2; j++) {
+	  					if (name === (j === 1 ? this.data_reading : this.data_reading2)) {
+	  						this.data['read' + j].push({
+	  							date: d3.timeParse('%Y-%m-%d_%H:%M:%S')(raw.split(/\r\n|\r|\n/)[i].match(/(.*?\s)/)[0].replace(' ', '')),
+		  						value: parseInt(raw.split(/\r\n|\r|\n/)[i].match(/[-+]?[0-9]*\.?[0-9]+$/)[0])
+	  						});
+	  					}
+	  				}
   				}
   			}
   		}
