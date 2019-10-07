@@ -47,7 +47,7 @@
     	},
     	{
       		"VERSION": "2.0.2",
-      		"DATE": "26.09.2019",
+      		"DATE": "27.09.2019",
       		"CHANGES":[
         		{"TYPE": "NEW", "CHANGE": "New component loader to reduce storage and create components faster"},
         		{"TYPE": "NEW", "CHANGE": "New Menu Edit Buttons"},
