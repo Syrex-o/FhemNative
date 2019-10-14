@@ -371,6 +371,10 @@
 					"name": "Reading Name",
 					"info": "Name des Fhem Readings"
 				},
+				"data_indicatorReading":{
+					"name": "Indikator Reading Name",
+					"info": "Name des Fhem Indikator Readings (falls benötigt)"
+				},
 				"data_getOn":{
 					"name": "Get on",
 					"info": "Status des Readings im ON Zustand"
@@ -394,6 +398,14 @@
 				"style_iconColorOff":{
 					"name": "Icon Farbe off",
 					"info": "Icon Farbe im OFF Zustand"
+				},
+				"style_indicatorColor":{
+					"name": "Indikator-Farbe",
+					"info": "Schriftfarbe des Indikators"
+				},
+				"style_indicatorBackgroundColor":{
+					"name": "Indikator Hintergrundfarbe",
+					"info": "Hintergrundfarbe des Indikators"
 				}
 			}
 		},
@@ -417,7 +429,7 @@
 				"NO_URL": "Keine URL gefunden."
 			}
 		},
-		"Kodi Remote":{
+		"Kodi":{
 			"NAME": "Kodi Remote",
 			"INPUTS":{
 				"data_ip":{
@@ -427,6 +439,14 @@
 				"data_port":{
 					"name": "Port",
 					"info": "Port des Kodi Geräts"
+				},
+				"data_username":{
+					"name": "Username",
+					"info": "Username für die Verbindung (falls benötigt)"
+				},
+				"data_password":{
+					"name": "Passwort",
+					"info": "Passwort für die Verbindung (falls benötigt)"
 				}
 			}
 		},
@@ -1285,6 +1305,9 @@
 				"FOREGROUND": "In den Vordergrund",
 				"BACKGROUND": "In den Hintergrund",
 				"COPY": "Kopieren",
+				"SELECT": "Selektieren",
+				"UNSELECT": "Nicht Selektieren",
+				"SELECT_ALL": "Alles selektieren",
 				"PASTE": "Einfügen",
 				"DELETE": "Löschen"
 			}
