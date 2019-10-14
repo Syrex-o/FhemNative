@@ -242,9 +242,9 @@ export class CreateComponentService {
 			place[place.length - 1].attributes.components = [];
 		}
 		// check if selected component is a swiper container
-		if (component.comp.name.match(/(Swiper)/)) {
+		if (component.comp.name.match(/Swiper/)) {
 			// data_pages is the unique way to define multiple container components
-			let pages = parseInt(component.attr_data.find(x => x.attr === 'data_pages').value);
+			let pages = parseInt(component.attributes.attr_data.find(x => x.attr === 'data_pages').value);
 			// ensure, that pages are positive and not 0
 			pages = Math.abs(pages) === 0 ? 1 : Math.abs(pages);
 			for (let i = 0; i < pages; i++) {
