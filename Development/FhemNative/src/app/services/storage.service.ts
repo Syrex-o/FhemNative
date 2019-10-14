@@ -20,7 +20,7 @@ export class StorageService {
 	public setAndGetSetting(obj) {
 		return new Promise((resolve) => {
 			this.storage.get(obj.name).then((value) => {
-				if (!value) {
+				if (value === undefined || value === null) {
 					// setting is not defined jet
 					// setting gets defined and default is resolved after saving
 					this.storage.set(obj.name, obj.default).then(() => {
