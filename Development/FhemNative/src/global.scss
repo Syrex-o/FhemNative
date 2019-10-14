@@ -72,6 +72,7 @@
                 width: 15px;
                 height: 15px;
                 background-color: #14a9d5;
+                transition: all .2s ease;
             }
             &.top-left, &.top-right, &.bottom-left, &.bottom-right, &.center-top, &.center-bottom, &.center-right, &.center-left {
                 cursor: nw-resize;
@@ -105,9 +106,32 @@
             height: 100%;
             border: 1px solid rgba(157, 226, 246, 1);
             background: rgba(157, 226, 246, 0.2);
+            transition: all .2s ease;
         }
     }
 }
+// resize ectension for: selected-for-copy
+.selected-for-copy > .movable {
+    .overlay-move{
+        background: rgba(243, 192, 47, 0.2);
+        border: 1px solid #ffbd00;
+    }
+    .rect:before{
+        background-color: #ffbd00;
+    }
+}
+
+ion-header{
+    z-index: 100;
+}
+fa-icon{
+    width: 1em;
+    .svg-inline--fa{
+        width: inherit !important;
+        height: inherit;
+    }
+}
+
 // Global Styles
 .swiper-pagination {
     top: 0px;
