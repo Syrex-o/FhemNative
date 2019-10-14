@@ -298,6 +298,7 @@ import { RoomComponent } from '../room/room.component';
 			margin-bottom: 5px;
 			font-size: .8em;
 			color: var(--p-small) !important;
+			max-width: 80%;
 		}
 		.item{
 			min-height: 60px;

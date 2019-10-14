@@ -152,6 +152,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 	public finishEdit() {
 		this.settings.modeSub.next({roomEdit: false});
 		this.removeHelpers();
+		this.structure.removeCopyIndicators();
 	}
 
 	private loadRoomComponents() {
