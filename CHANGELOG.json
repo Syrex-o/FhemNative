@@ -71,6 +71,20 @@
         		{"TYPE": "FIX", "CHANGE": "Fixed chart name fetch"},
         		{"TYPE": "FIX", "CHANGE": "Fixed chart value fetch"}
       		]
+    	},
+    	{
+      		"VERSION": "2.0.4",
+      		"DATE": "11.10.2019",
+      		"CHANGES":[
+            {"TYPE": "NEW", "CHANGE": "Added FontAwesome Icons"},
+            {"TYPE": "NEW", "CHANGE": "Added Indicator possibility to Icon Component"},
+      			{"TYPE": "NEW", "CHANGE": "Implemented multiple selection for copy and delete"},
+      			{"TYPE": "NEW", "CHANGE": "Implemented quick select all and auto-unselect for components outside the current container"},
+        		{"TYPE": "FIX", "CHANGE": "Fixed settings reset after app reload"},
+        		{"TYPE": "FIX", "CHANGE": "Fixed settings description label length"},
+        		{"TYPE": "FIX", "CHANGE": "Fixed swiper creation"},
+            {"TYPE": "FIX", "CHANGE": "Language in Room-Edit-Menu"}
+      		]
     	}
 	]
 }
