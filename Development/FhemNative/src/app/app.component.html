@@ -23,7 +23,8 @@
                             <ion-item>
                                 <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [class.disabled]="settings.modes.menuEdit" [routerLink]="[room.name+'_'+room.ID]">
                                     <ion-icon *ngIf="settings.modes.menuEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
-                                    <ion-icon class="less-margin" slot="start" [name]="room.icon"></ion-icon>
+                                    <ion-icon *ngIf="settings.iconFinder(room.icon).type === 'ion'" class="less-margin" slot="start" [name]="room.icon"></ion-icon>
+                                    <fa-icon *ngIf="settings.iconFinder(room.icon).type != 'ion'" class="less-margin" [icon]="[settings.iconFinder(room.icon).type, room.icon]"></fa-icon>
                                     <ion-label>{{room.name}}</ion-label>
                                 </button>
                                 <button class="round float" matRipple [matRippleColor]="'#d4d4d480'" (click)="toggleSubMenu($event)">
@@ -38,7 +39,8 @@
                                     <ion-item>
                                         <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [class.disabled]="settings.modes.menuEdit" [routerLink]="[groupRoom.name+'_'+groupRoom.ID]">
                                             <ion-icon *ngIf="settings.modes.menuEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
-                                            <ion-icon class="less-margin" slot="start" [name]="structure.rooms[groupRoom.ID].icon"></ion-icon>
+                                            <ion-icon *ngIf="settings.iconFinder(structure.rooms[groupRoom.ID].icon).type === 'ion'" class="less-margin" slot="start" [name]="structure.rooms[groupRoom.ID].icon"></ion-icon>
+                                            <fa-icon *ngIf="settings.iconFinder(structure.rooms[groupRoom.ID].icon).type != 'ion'" class="less-margin" [icon]="[settings.iconFinder(structure.rooms[groupRoom.ID].icon).type, structure.rooms[groupRoom.ID].icon]"></fa-icon>
                                             <ion-label>{{groupRoom.name}}</ion-label>
                                         </button>
                                         <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="create" *ngIf="settings.modes.menuEdit && structure.rooms[groupRoom.ID].name !== structure.currentRoom.name" (click)="editRoom(structure.rooms[groupRoom.ID])"></ion-icon>
@@ -51,7 +53,8 @@
                             <ion-item>
                                 <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [class.disabled]="settings.modes.menuEdit" [routerLink]="[room.name+'_'+room.ID]">
                                     <ion-icon *ngIf="settings.modes.menuEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
-                                    <ion-icon class="less-margin" slot="start" [name]="room.icon"></ion-icon>
+                                    <ion-icon *ngIf="settings.iconFinder(room.icon).type === 'ion'" class="less-margin" slot="start" [name]="room.icon"></ion-icon>
+                                    <fa-icon *ngIf="settings.iconFinder(room.icon).type != 'ion'" class="less-margin" [icon]="[settings.iconFinder(room.icon).type, room.icon]"></fa-icon>
                                     <ion-label>{{room.name}}</ion-label>
                                 </button>
                                 <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="create" *ngIf="settings.modes.menuEdit && room.name !== structure.currentRoom.name" (click)="editRoom(room)"></ion-icon>
@@ -74,8 +77,8 @@
     <picker *ngIf="selectedRoom"
         [ngClass]="settings.app.theme"
         [height]="'70%'"
-        [confirmBtn]="'Okay'"
-        [cancelBtn]="'Schließen'"
+        [confirmBtn]="'GENERAL.BUTTONS.OKAY' | translate"
+        [cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate"
         [(ngModel)]="showPicker"
         (onConfirm)="applyRoomChanges()"
         (onCancel)="checkInput()">
@@ -87,11 +90,14 @@
             <p>{{ 'GENERAL.CREATE_ROOM.ROOM_ICON' | translate }}</p>
             <ng-select [items]="settings.icons"
                 [searchable]="false"
+                bindLabel="icon"
+                bindValue="icon"
                 placeholder="selectedRoom.icon"
                 [(ngModel)]="selectedRoom.icon">
                 <ng-template ng-option-tmp let-item="item" let-index="index">
-                    <ion-icon [name]="item"></ion-icon>
-                    <span class="label">{{item}}</span>
+                    <ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
+                    <fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
+                    <span class="label">{{item.icon}}</span>
                 </ng-template>
             </ng-select>
             <switch

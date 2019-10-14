@@ -129,8 +129,10 @@
 	.select-icon{
 		background: var(--btn-blue);
 	}
-	ion-icon{
+	ion-icon,
+	fa-icon{
 		font-size: 1.5em;
+		width: 1em;
 		margin-left: 10px;
 		margin-right: 10px;
 		float: left;
@@ -312,7 +314,8 @@
 	.dark .icon-name,
 	.dark p,
 	.dark .label,
-	.dark ion-icon{
+	.dark ion-icon,
+	.dark fa-icon{
 		color: var(--dark-p);
 	}
 	.dark input{

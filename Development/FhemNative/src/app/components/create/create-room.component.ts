@@ -30,11 +30,13 @@ import { CreateComponentService } from '../../services/create-component.service'
 			<p>{{'GENERAL.CREATE_ROOM.ROOM_ICON' | translate}}</p>
 			<ng-select [items]="settings.icons"
 				[searchable]="false"
+				bindLabel="icon"
 				placeholder="roomIcon"
 				[(ngModel)]="roomIcon">
 				<ng-template ng-option-tmp let-item="item" let-index="index">
-				    <ion-icon [name]="item"></ion-icon>
-				    <span class="label">{{item}}</span>
+				    <ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
+				    <fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
+				    <span class="label">{{item.icon}}</span>
 				</ng-template>
 			</ng-select>
 			<switch
@@ -76,7 +78,7 @@ export class CreateRoomComponent {
 
 	// Room Parameters
 	public roomName: string;
-	public roomIcon: string = 'home';
+	public roomIcon: any = {type: 'ion', icon: 'home'};
 	public useRoomAsGroup: boolean = false;
 	public roomToGroup: boolean = false;
 
@@ -101,7 +103,7 @@ export class CreateRoomComponent {
 				{
 					ID: this.structure.rooms.length,
 					name: room,
-					icon: this.roomIcon,
+					icon: this.roomIcon.icon,
 					components: []
 				}
 			);
@@ -125,7 +127,7 @@ export class CreateRoomComponent {
 					// reset values
 					this.addEvent = '';
 					this.editMode = false;
-					this.roomIcon = 'home';
+					this.roomIcon = {type: 'ion', icon: 'home'};
 					this.roomName = '';
 				}, 1000);
 			});

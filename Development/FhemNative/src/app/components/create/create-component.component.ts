@@ -83,13 +83,16 @@ import { CreateComponentService } from '../../services/create-component.service'
 								<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
 								<ng-select [items]="settings.icons"
 									[searchable]="false"
-						            placeholder="icon.value"
-						            [(ngModel)]="icon.value">
-						            <ng-template ng-option-tmp let-item="item" let-index="index">
-						            	<ion-icon class="icon" [name]="item"></ion-icon>
-					    				<span class="label">{{item}}</span>
-						            </ng-template>
-						        </ng-select>
+									bindLabel="icon"
+									bindValue="icon"
+									placeholder="icon.value"
+									[(ngModel)]="icon.value">
+									<ng-template ng-option-tmp let-item="item" let-index="index">
+									    <ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
+									    <fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
+									    <span class="label">{{item.icon}}</span>
+									</ng-template>
+								</ng-select>
 							</div>
 						</div>
 						<div class="config-data" *ngFor="let style of componentSelection.attributes.attr_style">
@@ -252,7 +255,7 @@ export class CreateComponentComponent {
 	}
 
 	public addCompToRoom() {
-		const place = this.structure.roomComponents(this.container)
+		const place = this.structure.roomComponents(this.container);
 		this.createComponent.pushComponentToPlace(place, this.componentSelection);
 		// saving new component
 		this.structure.saveRooms().then(() => {

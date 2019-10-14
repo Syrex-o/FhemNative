@@ -10,6 +10,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 
+// FontAwesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 // Components
 import { RoomComponent } from './room/room.component';
 import { SettingsRoomComponent } from './room/room-settings.component';
@@ -42,6 +45,7 @@ export function createTranslateLoader(http: HttpClient) {
 		DirectivesModule,
 		NgSelectModule,
 		HttpClientModule,
+		FontAwesomeModule,
 		TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -70,6 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
 		TranslateModule,
 		NgSelectModule,
 		MatRippleModule,
+		FontAwesomeModule,
 		FHEM_COMPONENT_REGISTRY
 	],
 	providers: [

@@ -34,8 +34,10 @@ ion-content{
 ion-item button{
 	background: transparent;
 	font-size: 16px;
-	ion-icon{
+	ion-icon,
+	fa-icon{
 		font-size: 24px;
+		width: 1em;
 	}
 	&:focus{
 		outline: 0px;
@@ -53,7 +55,8 @@ ion-item button{
 		width: 30px;
 		height: 30px;
 		padding: 0;
-		ion-icon{
+		ion-icon,
+		fa-icon{
 			width: 100%;
 			height: inherit;
 		}
@@ -114,7 +117,8 @@ ion-item button{
     border: none;
     box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
     z-index: 100;
-    ion-icon{
+    ion-icon,
+    fa-icon{
     	font-size: 25px;
     	&.edit{
     		color: var(--btn-blue) !important;
@@ -140,7 +144,8 @@ ion-item button{
 	}
 }
 
-ion-icon.less-margin{
+ion-icon.less-margin,
+fa-icon.less-margin{
 	margin-right: 16px;
 }
 
@@ -188,7 +193,8 @@ ion-icon.less-margin{
 
 ion-item {
 	width: 100%;
-	ion-icon{
+	ion-icon,
+	fa-icon{
 		font-size: 25px;
 	}
 }
@@ -199,6 +205,7 @@ ion-item {
 }
 
 .dark ion-icon,
+.dark fa-icon,
 .dark p,
 .dark h2 {
 	color: var(--dark-p);

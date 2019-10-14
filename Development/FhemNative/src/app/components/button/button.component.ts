@@ -27,10 +27,17 @@ import { FhemService } from '../../services/fhem.service';
 					}">
 					<p *ngIf="!bool_data_iconOnly" class="label" [ngStyle]="{'color': style_labelColor}">{{data_label}}</p>
 					<ion-icon
+						*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type === 'ion'"
 						[name]="(fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)"
 						[ngClass]="bool_data_iconOnly ? 'icon-only' : 'icon-text'"
 						[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : style_iconColorOn ), 'font-size.px': data_iconSize }">
 					</ion-icon>
+					<fa-icon
+						*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type != 'ion'"
+						[icon]="[settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type, (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)]"
+						[ngClass]="bool_data_iconOnly ? 'icon-only' : 'icon-text'"
+						[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : style_iconColorOn ), 'font-size.px': data_iconSize }">
+					</fa-icon>
 				</button>
 			</fhem-container>
 		</div>
@@ -59,16 +66,19 @@ import { FhemService } from '../../services/fhem.service';
 		margin: 0;
 		font-weight: 600;
 	}
-	ion-icon{
+	ion-icon,
+	fa-icon{
 		position: absolute;
 		top: 50%;
 		transition: all .2s ease;
 	}
-	ion-icon.icon-text{
+	ion-icon.icon-text,
+	fa-icon.icon-text{
 		right: 8px;
 		transform: translate3d(0,-50%,0);
 	}
-	ion-icon.icon-only{
+	ion-icon.icon-only,
+	fa-icon.icon-only{
 		width: 100%;
 		height: 100%;
 		top: 0;
