@@ -7,6 +7,7 @@ import { ColorpickerComponent } from './colorpicker/colorpicker.component';
 import { IconComponent } from './icon/icon.component';
 import { IframeComponent } from './iframe/iframe.component';
 import { ImageComponent } from './image/image.component';
+import { KodiComponent } from './kodi/kodi.component';
 import { LabelComponent } from './label/label.component';
 import { LineComponent } from './line/line.component';
 import { PinpadComponent } from './pinpad/pinpad.component';
@@ -29,6 +30,7 @@ export const FHEM_COMPONENT_REGISTRY = [
 	IframeComponent,
 	IconComponent,
 	ImageComponent,
+	// KodiComponent,
 	LabelComponent,
 	LineComponent,
 	PinpadComponent,
