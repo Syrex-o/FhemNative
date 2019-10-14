@@ -23,7 +23,7 @@ export class StructureService {
 
 	// component copy
 	// gets filled from context menu
-	public componentCopy;
+	public componentCopy: Array<any> = [];
 
 	// list of all rooms
 	// will be generated on start
@@ -185,5 +185,9 @@ export class StructureService {
 		}
 		// saving rooms after changing
 		this.saveRooms();
+	}
+
+	public removeCopyIndicators(){
+		document.querySelectorAll('.selected-for-copy').forEach(el=> el.classList.remove('selected-for-copy'));
 	}
 }

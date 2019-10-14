@@ -13,8 +13,10 @@ import { HelperService } from '../../services/helper.service';
 			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="showSettings = true;" class="settings">{{ 'GENERAL.EDIT_COMPONENT.MENU.SETTINGS' | translate }}</p>
 			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="sendToFront()" class="top">{{ 'GENERAL.EDIT_COMPONENT.MENU.FOREGROUND' | translate }}</p>
 			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="sendToBack()">{{ 'GENERAL.EDIT_COMPONENT.MENU.BACKGROUND' | translate }}</p>
+			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="select()">{{ !evalSelector(component) ? ('GENERAL.EDIT_COMPONENT.MENU.SELECT' | translate) : ('GENERAL.EDIT_COMPONENT.MENU.UNSELECT' | translate) }}</p>
+			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="selectAll()">{{ 'GENERAL.EDIT_COMPONENT.MENU.SELECT_ALL' | translate }}</p>
 			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="copyComp()">{{ 'GENERAL.EDIT_COMPONENT.MENU.COPY' | translate }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="structure.componentCopy && source !== 'component'" (click)="pasteComp()">{{ 'GENERAL.EDIT_COMPONENT.MENU.PASTE' | translate }}</p>
+			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="structure.componentCopy.length > 0 && source !== 'component'" (click)="pasteComp()">{{ 'GENERAL.EDIT_COMPONENT.MENU.PASTE' | translate }}</p>
 			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="compDelete()" class="delete top">{{ 'GENERAL.EDIT_COMPONENT.MENU.DELETE' | translate }}</p>
 		</div>
 		<picker
@@ -58,13 +60,16 @@ import { HelperService } from '../../services/helper.service';
 					<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.name' | translate }}</p>
 					<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
 					<ng-select [items]="settings.icons"
-					    placeholder="icon.value"
-					    [searchable]="false"
-					    [(ngModel)]="icon.value">
-					    <ng-template ng-option-tmp let-item="item" let-index="index">
-					       	<ion-icon class="icon" [name]="item"></ion-icon>
-							<span class="label">{{item}}</span>
-					    </ng-template>
+						[searchable]="false"
+						bindLabel="icon"
+						bindValue="icon"
+						placeholder="icon.value"
+						[(ngModel)]="icon.value">
+						<ng-template ng-option-tmp let-item="item" let-index="index">
+						    <ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
+						    <fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
+						    <span class="label">{{item.icon}}</span>
+						</ng-template>
 					</ng-select>
 				</div>
 				<div class="style" *ngIf="component.attributes.attr_style?.length > 0">
@@ -206,51 +211,132 @@ export class EditComponentComponent implements AfterViewInit {
 
 	// copy the selected component
 	public copyComp() {
-		this.structure.componentCopy = JSON.parse(JSON.stringify(this.component));
+		// clear the copy container before filling
+		this.structure.componentCopy = [];
+		const roomElements = this.structure.roomComponents(this.container);
+		roomElements.forEach((el)=>{
+			const element = document.getElementById(el.ID);
+			if(element.classList.contains('selected-for-copy')){
+				this.structure.componentCopy.push(JSON.parse(JSON.stringify(el)));
+			}
+		});
+		// check if selection was made
+		// else copyComp gets filled with the selected component
+		if(this.structure.componentCopy.length === 0){
+			this.structure.componentCopy.push(JSON.parse(JSON.stringify(this.component)));
+			document.getElementById(this.component.ID).classList.add('selected-for-copy');
+		}
+		this.removeSelector();
+	}
+
+	// sets selection marker to all single component
+	public select(){
+		const element = document.getElementById(this.component.ID);
+		if(element.classList.contains('selected-for-copy')){
+			element.classList.remove('selected-for-copy');
+		}else{
+			element.classList.add('selected-for-copy');
+		}
+		this.removeSelector();
+	}
+
+	
+
+	// sets selection marker to all components
+	public selectAll(){
+		const roomElements = this.structure.roomComponents(this.container);
+		roomElements.forEach((el)=>{
+			const element = document.getElementById(el.ID);
+			if(!element.classList.contains('selected-for-copy')){
+				element.classList.add('selected-for-copy');
+			}
+		});
+		this.removeSelector();
+	}
+
+	// copy selection remover
+	// used for dynamic container switching while selecting
+	private removeSelector(){
+		const containerComponents = this.structure.roomComponents(this.container);
+		const selectorList = document.querySelectorAll('.selected-for-copy');
+		selectorList.forEach((selector)=>{
+			if(!containerComponents.find(x=>x.ID === selector.id)){
+				selector.classList.remove('selected-for-copy');
+			}
+		});
+	}
+
+	private evalSelector(comp){
+		if(comp && document.getElementById(comp.ID)){
+			if(document.getElementById(comp.ID).classList.contains('selected-for-copy')){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
 	}
 
 	public pasteComp() {
-		const copy = JSON.parse(JSON.stringify(this.structure.componentCopy));
-		// ensure that no container components are inserted into each other
-		if (
-			(!copy.attributes.components && this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) ||
-			(!copy.attributes.components && !this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) ||
-			(copy.attributes.components && !this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/))
-		) {
-			// generate new component ID
-			copy.ID = this.helper.UIDgenerator();
-			// check if copy is a component container
-			if (copy.attributes.components) {
-				for (let i = 0; i < copy.attributes.components.length; i++) {
-					if (copy.attributes.components[i].components) {
-						// container is a multi component container
-						for (let j = 0; j < copy.attributes.components[i].components.length; j++) {
-							copy.attributes.components[i].components[j].ID = this.helper.UIDgenerator();
+		const copyList = JSON.parse(JSON.stringify(this.structure.componentCopy));
+		copyList.forEach((copy)=>{
+			// ensure that no container components are inserted into each other
+			if (
+				(!copy.attributes.components && this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) ||
+				(!copy.attributes.components && !this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) ||
+				(copy.attributes.components && !this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/))
+			){
+				// generate new component ID
+				copy.ID = this.helper.UIDgenerator();
+				// check if copy is a component container
+				if (copy.attributes.components) {
+					for (let i = 0; i < copy.attributes.components.length; i++) {
+						if (copy.attributes.components[i].components) {
+							// container is a multi component container
+							for (let j = 0; j < copy.attributes.components[i].components.length; j++) {
+								copy.attributes.components[i].components[j].ID = this.helper.UIDgenerator();
+							}
+						} else {
+							// container is a single component container
+							copy.attributes.components[i].ID = this.helper.UIDgenerator();
 						}
-					} else {
-						// container is a single component container
-						copy.attributes.components[i].ID = this.helper.UIDgenerator();
 					}
 				}
+				// setting new position to 20 px below current position
+				copy.position.top = parseInt(copy.position.top)+ 20 +'px';
+
+				this.roomComponents.push(copy);
+				this.createComponent.loadRoomComponents([copy], this.container, false);
 			}
-			// resetting top and left
-			copy.position.top = '0px';
-			copy.position.left = '0px';
-
-			this.createComponent.loadRoomComponents([copy], this.container, false);
-
-			this.roomComponents.push(copy);
-
-			this.saveComp();
-		}
+		});
+		this.saveComp();
 	}
 
 	// delete the selected component
 	public compDelete() {
-		this.createComponent.removeFhemComponent(this.componentID);
-		this.roomComponents.splice(
-			this.helper.find(this.roomComponents, 'ID', this.componentID).index, 1
-		);
+		const removeList = [];
+		// remove edit component before slice, to skip selection text error
+		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
+
+		const roomElements = this.structure.roomComponents(this.container);
+		roomElements.forEach((el)=>{
+			const element = document.getElementById(el.ID);
+			if(element.classList.contains('selected-for-copy')){
+				removeList.push(JSON.parse(JSON.stringify(el)));
+			}
+		});
+		if(removeList.length === 0){
+			removeList.push(JSON.parse(JSON.stringify(this.component)));
+		}
+
+		// remove the selected elements
+		removeList.forEach((el)=>{
+			this.createComponent.removeFhemComponent(el.ID);
+			this.roomComponents.splice(
+				this.helper.find(this.roomComponents, 'ID', el.ID).index, 1
+			);
+		});
 		this.saveComp();
 	}
 
