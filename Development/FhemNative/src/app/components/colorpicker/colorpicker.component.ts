@@ -303,8 +303,6 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 	public toggleFavs() {
 		this.showFavs = !this.showFavs;
 		if (this.showFavs) {
-			this.colorFavs = [];
-
 			this.storage.setAndGetSetting({name: 'colorFavs', default: []}).then((val: any) => {
 				this.colorFavs = val;
 			});

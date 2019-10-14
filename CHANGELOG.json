@@ -74,7 +74,7 @@
     	},
     	{
       		"VERSION": "2.0.4",
-      		"DATE": "11.10.2019",
+      		"DATE": "14.10.2019",
       		"CHANGES":[
             {"TYPE": "NEW", "CHANGE": "Added FontAwesome Icons"},
             {"TYPE": "NEW", "CHANGE": "Added Indicator possibility to Icon Component"},

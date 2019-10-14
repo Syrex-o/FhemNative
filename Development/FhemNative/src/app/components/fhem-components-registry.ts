@@ -30,7 +30,7 @@ export const FHEM_COMPONENT_REGISTRY = [
 	IframeComponent,
 	IconComponent,
 	ImageComponent,
-	// KodiComponent,
+	KodiComponent,
 	LabelComponent,
 	LineComponent,
 	PinpadComponent,

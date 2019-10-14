@@ -266,7 +266,7 @@ export class EditComponentComponent implements AfterViewInit {
 		});
 	}
 
-	private evalSelector(comp){
+	public evalSelector(comp){
 		if(comp && document.getElementById(comp.ID)){
 			if(document.getElementById(comp.ID).classList.contains('selected-for-copy')){
 				return true;

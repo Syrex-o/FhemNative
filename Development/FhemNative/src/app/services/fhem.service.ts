@@ -185,6 +185,7 @@ export class FhemService {
 							'error'
 						);
 						reject(e);
+						this.reconnect();
 					};
 				} else {
 					// mqtt connection

@@ -12,7 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 // Icons
 import { 
-	faEllipsisH, faAngleDoubleDown, faAngleDoubleUp, faAngleDoubleLeft, faAngleDoubleRight
+	faEllipsisH, faAngleDoubleDown, faAngleDoubleUp, faAngleDoubleLeft, faAngleDoubleRight,
+	faBath, faBus
 } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -109,6 +110,8 @@ export class SettingsService {
 		{type: 'fas', icon: 'angle-double-down'},
 		{type: 'fas', icon: 'angle-double-left'},
 		{type: 'fas', icon: 'angle-double-right'},
+		{type: 'fas', icon: 'bus'},
+		{type: 'fas', icon: 'bath'}
 	];
 
 	// Available component colors for FhemNative
@@ -133,7 +136,7 @@ export class SettingsService {
 		});
 		// Add FontAwesome Icons to library
 		library.addIcons(
-			faEllipsisH, faAngleDoubleDown, faAngleDoubleUp, faAngleDoubleLeft, faAngleDoubleRight
+			faEllipsisH, faAngleDoubleDown, faAngleDoubleUp, faAngleDoubleLeft, faAngleDoubleRight, faBath, faBus
 		);
 	}
 

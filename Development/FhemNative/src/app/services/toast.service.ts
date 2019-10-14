@@ -77,9 +77,7 @@ export class ToastService {
 		if (inputs) {
 			opts['inputs'] = inputs;
 		}
-
-
 		const alert = await this.alertController.create(opts);
-  await alert.present();
+  		await alert.present();
 	}
 }
