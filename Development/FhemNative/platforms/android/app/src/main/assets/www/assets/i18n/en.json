@@ -1185,6 +1185,10 @@
 					"TITLE": "Menu/Room Editing",
 					"INFO": "Enable/disable Menu and Room editing."
 				},
+				"UNDO_REDO":{
+					"TITLE": "Undo/Redo",
+					"INFO": "Add Undo/Redo functionality while editing."
+				},
 				"TOAST":{
 					"TITLE": "Toast Messages",
 					"INFO": "Enable/disable toast messages."

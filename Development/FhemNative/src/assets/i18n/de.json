@@ -1185,6 +1185,10 @@
 					"TITLE": "Menü/Räume bearbeiten",
 					"INFO": "Menü- und Raumbearbeitung aktivieren/deaktivieren."
 				},
+				"UNDO_REDO":{
+					"TITLE": "Rückgängig/Wiederherstellen",
+					"INFO": "Rückgängig/Wiederherstellen Funktionalität beim bearbeiten ermöglichen."
+				},
 				"TOAST":{
 					"TITLE": "Toast-Nachrichten",
 					"INFO": "Aktivieren/deaktivieren der Toast-Nachrichten."
