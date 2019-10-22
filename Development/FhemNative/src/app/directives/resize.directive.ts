@@ -3,6 +3,7 @@ import { Directive, Input, ElementRef, OnChanges, SimpleChanges, Output, EventEm
 import { SettingsService } from '../services/settings.service';
 import { StructureService } from '../services/structure.service';
 import { CreateComponentService } from '../services/create-component.service';
+import { UndoRedoService } from '../services/undo-redo.service';
 
 @Directive({ selector: '[resize]' })
 export class Resize implements OnChanges, AfterViewInit {
@@ -38,7 +39,8 @@ export class Resize implements OnChanges, AfterViewInit {
 		private settings: SettingsService,
 		private structure: StructureService,
 		private renderer: Renderer2,
-		private createComponent: CreateComponentService) {
+		private createComponent: CreateComponentService,
+		private undoManager: UndoRedoService) {
 		this.hostEl = ref.nativeElement;
 	}
 
@@ -72,9 +74,10 @@ export class Resize implements OnChanges, AfterViewInit {
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
 		if (this.editingEnabled) {
+
 			this.getPos(event);
 	    	// getting container offsets
-	  const container: any = document.getElementById(this.elemContainer.element.nativeElement.parentNode.id).getBoundingClientRect();
+	  		const container: any = document.getElementById(this.elemContainer.element.nativeElement.parentNode.id).getBoundingClientRect();
 			this.offset.top = container.y;
 			this.offset.left = container.x;
 			this.offset.right = window.innerWidth - (container.x + container.width);
@@ -83,11 +86,11 @@ export class Resize implements OnChanges, AfterViewInit {
 				window.removeEventListener('mousemove', whileMove);
 				window.removeEventListener('touchmove', whileMove);
 
-	   window.removeEventListener('mouseup', endMove);
-	   window.removeEventListener('touchend', endMove);
+	   			window.removeEventListener('mouseup', endMove);
+	   			window.removeEventListener('touchend', endMove);
 
 	        	// save the item position, if the element was moved
-	   if (this.moved) {
+	   			if (this.moved) {
 					this.structure.saveItemPosition({
 						item: this.selected,
 						dimensions: {
@@ -96,8 +99,10 @@ export class Resize implements OnChanges, AfterViewInit {
 							top: this.top,
 							left: this.left
 						},
-					});
+					}, false);
 					this.resized.emit({width: this.width, height: this.height});
+					// add change event
+					this.undoManager.addChange();
 				}
 			};
 			const whileMove = (e) => {
@@ -108,10 +113,10 @@ export class Resize implements OnChanges, AfterViewInit {
 				}
 	        };
 			window.addEventListener('mousemove', whileMove);
-	  window.addEventListener('mouseup', endMove);
+	  		window.addEventListener('mouseup', endMove);
 
-	  window.addEventListener('touchmove', whileMove);
-	  window.addEventListener('touchend', endMove);
+	  		window.addEventListener('touchmove', whileMove);
+	  		window.addEventListener('touchend', endMove);
 		}
 	}
 
@@ -145,28 +150,28 @@ export class Resize implements OnChanges, AfterViewInit {
 				this.left = Math.round(this.roundToGrid(left / scaler.width * window.innerWidth));
 
   				// check, that components are not smaller that allowed
-  		this.width = this.width >= this.minimumWidth ? this.width : this.minimumWidth;
+  				this.width = this.width >= this.minimumWidth ? this.width : this.minimumWidth;
 
   				// adding transition style: like in popup
-  		this.hostEl.style.transition = 'all .3s cubic-bezier(.17,.67,.54,1.3)';
+  				this.hostEl.style.transition = 'all .3s cubic-bezier(.17,.67,.54,1.3)';
 
-  		this.hostEl.style.width = this.width + 'px';
-  		this.hostEl.style.left = this.left + 'px';
+  				this.hostEl.style.width = this.width + 'px';
+  				this.hostEl.style.left = this.left + 'px';
 
   				// removing transition style
-  		const timeout = setTimeout(() => {
+  				const timeout = setTimeout(() => {
   					this.hostEl.style.transition = 'all 0ms linear';
   				}, 300);
 
   				// save options
-  		component.createScaler = {width: window.innerWidth, height: window.innerHeight};
+  				component.createScaler = {width: window.innerWidth, height: window.innerHeight};
 				this.structure.saveItemPosition({
 					item: component.position,
 					dimensions: {
 						width: this.width,
 						left: this.left
 					},
-				});
+				}, true);
 			}
 		}
 	}

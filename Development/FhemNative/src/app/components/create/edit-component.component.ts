@@ -5,6 +5,7 @@ import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
 import { CreateComponentService } from '../../services/create-component.service';
 import { HelperService } from '../../services/helper.service';
+import { UndoRedoService } from '../../services/undo-redo.service';
 
 @Component({
 	selector: 'edit-component',
@@ -107,7 +108,8 @@ export class EditComponentComponent implements AfterViewInit {
 		public settings: SettingsService,
 		private ref: ElementRef,
 		private createComponent: CreateComponentService,
-		private helper: HelperService) {
+		private helper: HelperService,
+		private undoManager: UndoRedoService) {
 	}
 
 	static key = 'EditComponentComponent';
@@ -132,9 +134,11 @@ export class EditComponentComponent implements AfterViewInit {
 
 	public showSettings = false;
 
-	@HostListener('document:click', ['$event'])
-	onClick(event) {
-		if (!this.ref.nativeElement.contains(event.target) && event.target.className.indexOf('ng-option') == -1 && event.target.className.indexOf('ng-value-icon') == -1 && event.target.className.indexOf('label') == -1) {
+	// @HostListener('document:click', ['$event'])
+	@HostListener('document:mousedown', ['$event.target'])
+	@HostListener('document:touchstart', ['$event.target'])
+	onClick(target) {
+		if (!this.ref.nativeElement.contains(target) && target.className.indexOf('ng-option') == -1 && target.className.indexOf('ng-value-icon') == -1 && target.className.indexOf('label') == -1) {
 			this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
 		}
 	}
@@ -150,19 +154,23 @@ export class EditComponentComponent implements AfterViewInit {
 					}
 				}
 			}
-			// getting the room components
-			this.roomComponents = this.structure.roomComponents(this.container);
-			// alligning x and y values to fit in container
-			const menu = this.ref.nativeElement.querySelector('.context-menu');
-			const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
-			let x = 0; let y = 0;
-			if (this.x + menu.clientWidth >= container.width) {
-				x = -100;
+			if((this.structure.componentCopy.length > 0 && this.source !== 'component') || this.source === 'component'){
+				// getting the room components
+				this.roomComponents = this.structure.roomComponents(this.container);
+				// alligning x and y values to fit in container
+				const menu = this.ref.nativeElement.querySelector('.context-menu');
+				const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
+				let x = 0; let y = 0;
+				if (this.x + menu.clientWidth >= container.width) {
+					x = -100;
+				}
+				if (this.y + menu.clientHeight >= container.height) {
+					y = -100;
+				}
+				menu.style.transform = 'translate3d(' + x + '%,' + y + '%, 0)';
+			}else{
+				this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
 			}
-			if (this.y + menu.clientHeight >= container.height) {
-				y = -100;
-			}
-			menu.style.transform = 'translate3d(' + x + '%,' + y + '%, 0)';
 		}, 0);
 	}
 
@@ -239,8 +247,6 @@ export class EditComponentComponent implements AfterViewInit {
 		}
 		this.removeSelector();
 	}
-
-	
 
 	// sets selection marker to all components
 	public selectAll(){
@@ -373,9 +379,9 @@ export class EditComponentComponent implements AfterViewInit {
 
 	// saving rooms
 	private saveComp() {
-		this.structure.saveRooms().then(() => {
-			// removing the editor
-			this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
-		});
+		// removing the editor
+		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
+		// add to change stack
+		this.undoManager.addChange();
 	}
 }

@@ -2,15 +2,13 @@
 	.create-container{
 		// create room popup
 		&.room{
-			position: absolute;
-			transform: translate3d(0,-50%,0);
-			top: 50%;
-			right: 5px;
+			position: fixed;
+			top: 5px;
+			right: 16px;
 			z-index: 1000;
 		}
 		// create component popup
 		&.component{
-			position: fixed;
 			position: fixed;
 			bottom: 10px;
 			right: 10px;
@@ -143,8 +141,7 @@
 	}
 	.room-options{
 		position: relative;
-		width: 70%;
-		left: 15%;
+		padding: 20px;
 		ng-select{
 			margin-bottom: 16px;
 		}

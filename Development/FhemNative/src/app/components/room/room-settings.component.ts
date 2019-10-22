@@ -90,6 +90,13 @@ import { RoomComponent } from '../room/room.component';
 					</switch>
 					<switch
 						[customMode]="true"
+						[(ngModel)]="settings.app.enableUndoRedo"
+						[label]="'GENERAL.SETTINGS.APP.UNDO_REDO.TITLE' | translate"
+						[subTitle]="'GENERAL.SETTINGS.APP.UNDO_REDO.INFO' | translate"
+						(onToggle)="settings.changeAppSetting('enableUndoRedo', $event)">
+					</switch>
+					<switch
+						[customMode]="true"
 						[(ngModel)]="settings.app.showToastMessages"
 						[label]="'GENERAL.SETTINGS.APP.TOAST.TITLE' | translate"
 						[subTitle]="'GENERAL.SETTINGS.APP.TOAST.INFO' | translate"

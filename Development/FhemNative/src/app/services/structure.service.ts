@@ -41,6 +41,9 @@ export class StructureService {
 		components: []
 	}];
 
+	// selected room for editing
+	public selectedRoom :any;
+
 	// reserved storage of the current room for refereces
 	// filled of room entrance
 	public currentRoom: any;
@@ -120,6 +123,11 @@ export class StructureService {
 		});
 	}
 
+	// navigate to desired route
+	public navigateTo(route){
+		this.router.navigate([route], { replaceUrl: true });
+	}
+
 	// saving room configuraion
 	public saveRooms() {
 		return new Promise((resolve) => {
@@ -177,14 +185,16 @@ export class StructureService {
 	// used to save the changed item position of a component
 	// needs object of {item: 'position attributes of the item', dimenstions: 'dimensions that should be changed'}
 	// will evaluate the available dimensions
-	public saveItemPosition(obj) {
+	public saveItemPosition(obj, save) {
 		for (const [key, value] of Object.entries(obj.dimensions)) {
 			if (value !== undefined) {
 				obj.item[key] = value + 'px';
 			}
 		}
-		// saving rooms after changing
-		this.saveRooms();
+		// saving rooms after changing if needed
+		if(save){
+			this.saveRooms();
+		}
 	}
 
 	public removeCopyIndicators(){

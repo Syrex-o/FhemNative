@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injectable, Type, Injector } from '@angular/core';
+import { ComponentFactoryResolver, Injectable, Type } from '@angular/core';
 
 // Services
 import { StructureService } from './structure.service';
@@ -22,8 +22,7 @@ export class CreateComponentService {
 	constructor(
 		private resolver: ComponentFactoryResolver,
 		private structure: StructureService,
-		private helper: HelperService,
- 		private injector: Injector) {
+		private helper: HelperService) {
 		this.fhemComponents = [];
 		for (let i = 0; i < this.structure.fhemComponents.length; i++) {
 			const comp = this.structure.fhemComponents[i].getSettings();

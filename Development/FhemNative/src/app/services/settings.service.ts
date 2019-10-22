@@ -23,7 +23,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.0.4';
+	public appVersion: string = '2.0.5';
 	// building default storage
 	public app: any = {};
 
@@ -34,7 +34,7 @@ export class SettingsService {
 	public modes: any = {
 		// editing mode
 		roomEdit: false,
-		menuEdit: false,
+		changeRoom: false,
 		blockDefaultLoader: false,
 		fhemMenuMode: ''
 	};
@@ -53,6 +53,7 @@ export class SettingsService {
 		{name: 'responsiveResize', default: true, toStorage: 'app'},
 		{name: 'checkUpdates', default: false, toStorage: 'app'},
 		{name: 'enableEditing', default: true, toStorage: 'app'},
+		{name: 'enableUndoRedo', default: false, toStorage: 'app'},
 		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
 		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: 'app'},
 		{name: 'IPsettings', default: JSON.stringify({IP: '', PORT: '8080', WSS: false, type: 'Websocket'}), toStorage: false, callback: (data:any)=> {if(data.IP === ''){this.modes.fhemMenuMode = 'ip-config'}}}

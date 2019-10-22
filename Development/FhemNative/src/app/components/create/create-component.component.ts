@@ -5,6 +5,7 @@ import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
 import { HelperService } from '../../services/helper.service';
 import { CreateComponentService } from '../../services/create-component.service';
+import { UndoRedoService } from '../../services/undo-redo.service';
 
 @Component({
 	selector: 'create-component',
@@ -201,7 +202,8 @@ export class CreateComponentComponent {
 		private structure: StructureService,
 		public settings: SettingsService,
 		public createComponent: CreateComponentService,
-		public helper: HelperService) {
+		public helper: HelperService,
+		private undoManager: UndoRedoService) {
 	}
 
 	static key = 'CreateComponentComponent';
@@ -237,10 +239,6 @@ export class CreateComponentComponent {
 		}
 	}
 
-	private strToArr(str) {
-		return str.split(',');
-	}
-
 	public attrFinder(fhemAttr, userAttr) {
 		if (this.helper.find(this.componentSelection.attributes.attr_data, 'attr', userAttr)) {
 			const res = this.helper.find( this.fhem.devices, fhemAttr, this.helper.find(this.componentSelection.attributes.attr_data, 'attr', userAttr).item.value);
@@ -257,11 +255,10 @@ export class CreateComponentComponent {
 	public addCompToRoom() {
 		const place = this.structure.roomComponents(this.container);
 		this.createComponent.pushComponentToPlace(place, this.componentSelection);
-		// saving new component
-		this.structure.saveRooms().then(() => {
-			// adding the new component to the current view
-			this.createComponent.loadRoomComponents([place[place.length - 1]], this.container, false);
-		});
+		// adding the new component to the current view
+		this.createComponent.loadRoomComponents([place[place.length - 1]], this.container, false);
+		// add to change stack
+		this.undoManager.addChange();
 
 		// resetting the component creator
 		this.showPopup = false;

@@ -37,15 +37,13 @@ import { SettingsService } from './services/settings.service';
 import { ToastService } from './services/toast.service';
 import { BackButtonService } from './services/backButton.service';
 import { TimeService } from './services/time.service';
+import { UndoRedoService } from './services/undo-redo.service';
 // Logger
 import { LoggerModule } from './services/logger/logger.module';
 
 @NgModule({
 	declarations: [
 		AppComponent
-	],
-	entryComponents: [
-
 	],
 	imports: [
 		BrowserModule,
@@ -72,6 +70,7 @@ import { LoggerModule } from './services/logger/logger.module';
 		ToastService,
 		BackButtonService,
 		TimeService,
+		UndoRedoService,
 		File,
 		ImagePicker,
 		WebView,

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, NgZone } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ViewContainerRef, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 
@@ -18,20 +18,23 @@ import { Subscription } from 'rxjs';
 				<ion-menu-button></ion-menu-button>
 				</ion-buttons>
 				<ion-title>{{structure.currentRoom.name}}</ion-title>
+				<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" (click)="settings.modeSub.next({roomEdit: true});">
+		            <ion-icon class="edit" name="create"></ion-icon>
+		        </button>
 			</ion-toolbar>
-			<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round right" *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" (click)="edit()">
-                <ion-icon class="edit" name="create"></ion-icon>
-            </button>
-			<create-room *ngIf="settings.modes.roomEdit"></create-room>
 		</ion-header>
-		<button matRipple [ngClass]="settings.app.theme" [matRippleColor]="'#d4d4d480'" class="btn-round left front" *ngIf="settings.modes.roomEdit" (click)="finishEdit()">
-			<ion-icon class="save-icon bigger" name="checkmark-circle-outline"></ion-icon>
-		</button>
+		<button-container [moveToRight]="true"></button-container>
+		<create-room *ngIf="settings.modes.roomEdit"></create-room>
 		<div [ngClass]="settings.app.theme" class="content" [attr.id]="'room_'+structure.currentRoom.ID">
 			<ng-container class="container" #container></ng-container>
 		</div>
 	`,
 	styles: [`
+		ion-title{
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+		}
 		.content{
 			position: relative;
 			height: 100%;
@@ -47,44 +50,25 @@ import { Subscription } from 'rxjs';
 			outline: 0px;
 		}
 		.btn-round{
-			position: absolute;
-			top: 50%;
-			transform: translateY(-50%);
+			position: relative;
+			float: right;
+			margin-right: 16px;
 			width: 45px;
 		    height: 45px;
 		    border-radius: 50%;
 		    border: none;
 		    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
 		    z-index: 100;
-		}
-		.btn-round ion-icon{
-			font-size: 25px;
-		}
-		.btn-round ion-icon.bigger{
-			font-size: 32px;
-		}
-		.btn-round.right{
-			right: 8px;
-		}
-		.btn-round.left{
-			right: 65px;
-		}
-		.front{
-			position: fixed;
-			top: 5px;
-			z-index: 20004;
-			transform: translateY(0%);
+		    font-size: 25px;
 		}
 
-		.btn-round .edit,
-		.btn-round .save-icon{
+		.btn-round .edit{
 			color: var(--btn-blue);
 		}
 
 		.dark.content,
 		.dark .add-btn,
-		.dark .btn-round,
-		.dark.btn-round{
+		.dark .btn-round{
 			background: var(--dark-bg);
 		}
 		.dark ion-toolbar{
@@ -96,12 +80,13 @@ import { Subscription } from 'rxjs';
 		}
 	`]
 })
-export class RoomComponent implements OnInit, OnDestroy {
+export class RoomComponent implements OnDestroy {
 	@ViewChild('container', { static: true, read: ViewContainerRef }) container: ViewContainerRef;
 	// app pause and resume handlers
 	private onResumeSubscription: Subscription;
 	private onPauseSubscription: Subscription;
 	private routeSub: Subscription;
+	private editSub: Subscription;
 
 	constructor(
 		private fhem: FhemService,
@@ -124,19 +109,23 @@ export class RoomComponent implements OnInit, OnDestroy {
 					this.loadRoomComponents();
 				}
 			});
-
-		this.routeSub = route.params.subscribe(val => {
-	    	this.loadRoomComponents();
-	  	});
-	}
-
-	ngOnInit(){
-		
-	}
-
-	public edit() {
-		this.settings.modeSub.next({roomEdit: true});
-		this.createHelpers();
+			// subscribe to route change
+			this.routeSub = route.params.subscribe(val => {
+	    		this.loadRoomComponents();
+	  		});
+	  		// subscribe to room Changes
+	  		this.editSub = this.settings.modeSub.subscribe(next =>{
+	  			if(next.hasOwnProperty('roomEdit')){
+					if(next.roomEdit){
+						// edit mode
+						this.createHelpers();
+					}else{
+						// finish edit mode
+						this.removeHelpers();
+						this.structure.removeCopyIndicators();
+					}
+				}
+	  		});
 	}
 
 	private createHelpers() {
@@ -147,12 +136,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 	private removeHelpers() {
 		this.createComponent.removeSingleComponent('GridComponent', this.container);
 		this.createComponent.removeSingleComponent('CreateComponentComponent', this.container);
-	}
-
-	public finishEdit() {
-		this.settings.modeSub.next({roomEdit: false});
-		this.removeHelpers();
-		this.structure.removeCopyIndicators();
 	}
 
 	private loadRoomComponents() {
@@ -172,8 +155,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.removeHelpers();
+		// unsubscribe events
 		this.onPauseSubscription.unsubscribe();
 		this.onResumeSubscription.unsubscribe();
 		this.routeSub.unsubscribe();
+		this.editSub.unsubscribe();
 	}
 }
