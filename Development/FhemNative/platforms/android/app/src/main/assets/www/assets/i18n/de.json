@@ -994,6 +994,10 @@
 					"name": "Max Wert",
 					"info": "Maximal Wert des Thermostats"
 				},
+				"data_steps":{
+					"name": "Schritte",
+					"info": "Schritte in denen sich das Thermostat bewegt"
+				},
 				"data_threshold":{
 					"name": "Schwellenwert",
 					"info": "Aktions-Drosselung. Nur jeden 'n'ten an FHEM senden (in Kombination mit 'Update bei Bewegung')"
@@ -1005,6 +1009,10 @@
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
 					"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+				},
+				"bool_data_enableAnimation":{
+					"name": "Thermostat Animation",
+					"info": "Aktivieren/deaktivieren der Thermostat-Animation"
 				},
 				"style_gradientColor1":{
 					"name": "Verlaufsfarbe 1",

@@ -994,6 +994,10 @@
 					"name": "Max value",
 					"info": "Max. value of the thermostat"
 				},
+				"data_steps":{
+					"name": "Steps",
+					"info": "Steps for the thermostat to move and set values"
+				},
 				"data_threshold":{
 					"name": "Threshold",
 					"info": "Event reduction. Only send every n command to FHEM (in combination with updateOnMove)"
@@ -1005,6 +1009,10 @@
 				"bool_data_updateOnMove":{
 					"name": "Update on move",
 					"info": "Activate/deactivate sending of values continiously on move"
+				},
+				"bool_data_enableAnimation":{
+					"name": "Thermostat animation",
+					"info": "Enable/disable thermostat animation"
 				},
 				"style_gradientColor1":{
 					"name": "Gradient color 1",
