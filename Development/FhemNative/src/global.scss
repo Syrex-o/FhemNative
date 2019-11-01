@@ -193,7 +193,13 @@ fa-icon{
     .ng-select-container, .ng-option {
         background: var(--dark-bg) !important;
     }
-    .color-label, .label, .ng-value-label, ion-title {
+    .color-label, 
+    .label, 
+    .ng-value-label, 
+    ion-title,
+    .ng-input > input,
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked,
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
         --color: var(--dark-p);
         color: var(--dark-p);
     }
