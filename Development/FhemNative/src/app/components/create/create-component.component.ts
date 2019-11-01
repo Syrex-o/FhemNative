@@ -100,8 +100,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
 							<ng-select [items]="settings.componentColors"
-					            placeholder="style.value"
-					            [searchable]="false"
+					            [addTag]="true"
 					            [(ngModel)]="style.value">
 					            <ng-template ng-option-tmp let-item="item" let-index="index">
 					            	<span class="color" [style.background]="item"></span>
@@ -113,9 +112,8 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
 							<ng-select [items]="settings.componentColors"
-					            placeholder="style.value"
-					            [searchable]="false"
 					            [multiple]="true"
+					            [addTag]="true"
 					            [(ngModel)]="style.value">
 					            <ng-template ng-option-tmp let-item="item" let-index="index">
 					            	<span class="color" [style.background]="item"></span>
@@ -253,6 +251,7 @@ export class CreateComponentComponent {
 	}
 
 	public addCompToRoom() {
+		this.settings.findNewColors([this.componentSelection.attributes.attr_style, this.componentSelection.attributes.attr_arr_style]);
 		const place = this.structure.roomComponents(this.container);
 		this.createComponent.pushComponentToPlace(place, this.componentSelection);
 		// adding the new component to the current view

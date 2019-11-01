@@ -78,7 +78,9 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 					<div class="config-data" *ngFor="let style of component.attributes.attr_style">
 						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
-						<ng-select [items]="settings.componentColors" placeholder="style.value" [(ngModel)]="style.value" [searchable]="false">
+						<ng-select [items]="settings.componentColors" 
+							[(ngModel)]="style.value" 
+							[addTag]="true">
 					        <ng-template ng-option-tmp let-item="item" let-index="index">
 					          	<span class="color" [style.background]="item"></span>
 					           	<span class="color-label">{{item}}</span>
@@ -88,7 +90,10 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 					<div class="config-data" *ngFor="let style of component.attributes.attr_arr_style">
 						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
-						<ng-select [items]="settings.componentColors" placeholder="style.value" [(ngModel)]="style.value" [multiple]="true" [searchable]="false">
+						<ng-select [items]="settings.componentColors" 
+							[(ngModel)]="style.value" 
+							[multiple]="true"
+							[addTag]="true">
 					        <ng-template ng-option-tmp let-item="item" let-index="index">
 					          	<span class="color" [style.background]="item"></span>
 					           	<span class="color-label">{{item}}</span>
@@ -372,6 +377,7 @@ export class EditComponentComponent implements AfterViewInit {
 				);
 			}
 		}
+		this.settings.findNewColors([this.component.attributes.attr_style, this.component.attributes.attr_arr_style]);
 		this.createComponent.removeFhemComponent(this.componentID);
 		this.createComponent.loadRoomComponents([this.component], this.container, false);
 		this.saveComp();

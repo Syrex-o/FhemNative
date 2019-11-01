@@ -26,4 +26,8 @@ export class HelperService {
 	public UIDgenerator() {
 		return '_' + Math.random().toString(36).substr(2, 9);
 	}
+
+	public checkValidHex(str){
+		return (/^#([0-9A-F]{3}){1,2}$/i).test(str);
+	}
 }
