@@ -33,7 +33,7 @@ import { SettingsService } from '../../services/settings.service';
 					   			<clipPath id="tubeMask">
 					        		<use xlink:href="#tube" class="liquidMask" />
 					    		</clipPath>
-					   			<path id="liquid" d="M757,552v490H357V552c50,0,50,20,100,20s50-20,100-20,50,20,100,20S707,552,757,552Z" />
+					   			<path id="liquid" [class.animate]="bool_data_enableAnimation" d="M757,552v490H357V552c50,0,50,20,100,20s50-20,100-20,50,20,100,20S707,552,757,552Z" />
 							<mask [attr.id]="GRADMASK_UID">
 					      		<use xlink:href="#liquid" class="liquid" x="0" fill="#FCEFD6" />
 					      		<use xlink:href="#liquid" class="liquid" x="0" fill="#EEE" opacity="0.7"/>
@@ -42,10 +42,10 @@ import { SettingsService } from '../../services/settings.service';
 					  	<g class="whole" transform="translate(0, -100)">
 					  		<use xlink:href="#tube" class="tubeBg" fill="#C8D9D3" opacity="0.61"/>
 					  		<g class="dragger">
-					  			<circle class="drag" cx="50" cy="160" r="36"/>
+					  			<ellipse class="drag" cx="50" cy="160" rx="45" ry="40"/>
 				       			<path class="dragTip drag" d="M315.5,556.76,299.24,540.5l16.26-16.26,36.26,16.26Z"/>
-				       			<text class="label drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value+data_labelExtension}}</text>
-				       			<text class="labelReplace drag" x="50" y="170">{{fhemDevice?.readings[data_reading].Value +data_labelExtension}}</text>
+				       			<text class="label drag" font-weight="bold" x="37" y="170">{{fhemDevice?.readings[data_reading].Value+data_labelExtension}}</text>
+				       			<text class="labelReplace drag" font-weight="bold" x="37" y="170">{{fhemDevice?.readings[data_reading].Value +data_labelExtension}}</text>
 					  		</g>
 					  		<g [attr.mask]="'url(#'+GRADMASK_UID+')'">
 					        	<use xlink:href="#tube" [attr.fill]="'url(#'+LIQUIDGRAD_UID+')'" />
@@ -69,7 +69,7 @@ import { SettingsService } from '../../services/settings.service';
 		</ng-container>
 	`,
 	styles: [`
-		.dark .dragger circle,
+		.dark .dragger ellipse,
 		.dark .dragger path{
 			fill: var(--dark-p);
 		}
@@ -88,7 +88,7 @@ import { SettingsService } from '../../services/settings.service';
 		.dragger{
 			cursor: pointer;
 		}
-		.dragger circle,
+		.dragger ellipse,
 		.dragger path{
 			fill: #ddd;
 		}
@@ -103,6 +103,9 @@ import { SettingsService } from '../../services/settings.service';
 		}
 		#liquid{
 			position: absolute;
+			transform: translate3d(-160%, -80%,0);
+		}
+		#liquid.animate{
 			animation: mover 1s linear infinite;
 		}
 		@keyframes mover{
@@ -153,8 +156,10 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 
 	@Input() data_min: string = '0';
 	@Input() data_max: string = '100';
+	@Input() data_steps: string = '1';
 
 	@Input() bool_data_updateOnMove: boolean = false;
+	@Input() bool_data_enableAnimation: boolean = true;
 	@Input() data_threshold: string = '10';
 	@Input() data_labelExtension: string = '\xB0C';
 
@@ -193,9 +198,11 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 				{variable: 'data_setReading', default: ''},
 				{variable: 'data_min', default: '0'},
 				{variable: 'data_max', default: '100'},
+				{variable: 'data_steps', default: '1'},
 				{variable: 'data_threshold', default: '10'},
 				{variable: 'data_labelExtension', default: '\xB0C'},
 				{variable: 'bool_data_updateOnMove', default: false},
+				{variable: 'bool_data_enableAnimation', default: true},
 				{variable: 'style_gradientColor1', default: '#FF0909'},
 				{variable: 'style_gradientColor2', default: '#F3481A'},
 				{variable: 'style_gradientColor3', default: '#FABA2C'},
@@ -208,7 +215,7 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 	@HostListener('mousedown', ['$event', '$event.target'])
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
-		if (this.fhemDevice) {
+		if (this.fhemDevice && target.className.baseVal && target.className.baseVal.indexOf('drag') !== -1) {
 			const endMove = () => {
 				window.removeEventListener('mousemove', whileMove);
 				window.removeEventListener('touchmove', whileMove);
@@ -237,7 +244,7 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 		this.fhem.getDevice(this.data_device, this.data_reading).then((device) => {
 			this.fhemDevice = device;
 			if (device) {
-				this.value = parseInt(this.fhemDevice.readings[this.data_reading].Value);
+				this.value = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
 				this.deviceChange = this.fhem.devicesSub.subscribe(next => {
 				 	this.listen(next);
 				});
@@ -263,37 +270,44 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 		const thermostat = this.Thermostat.nativeElement;
 		const liquid = thermostat.querySelectorAll('.liquid');
 		const dragger = thermostat.querySelector('.dragger');
-		const value: any = 83 - Math.round(((this.value - parseInt(this.data_min)) / (parseInt(this.data_max) - parseInt(this.data_min))) * 83);
-		this.animateY(dragger, from, value);
-		for (let i = 0; i < liquid.length; i++) {this.animateY(liquid[i], from, Math.round(parseInt(value) - 5)); }
+
+		// const value: any = 83 - Math.round(((this.value - parseInt(this.data_min)) / (parseInt(this.data_max) - parseInt(this.data_min))) * 83);
+
+		const value = 83 - this.getValuePercentage(this.value) * 83;
+		this.animateY(dragger, from, Math.round(value));
+		for (let i = 0; i < liquid.length; i++) {this.animateY(liquid[i], from, Math.round(value - 5)); }
 	}
 
 	private mover(e, target) {
-		if (e.target.className.baseVal && e.target.className.baseVal.indexOf('drag') !== -1) {
-			const thermostat = this.Thermostat.nativeElement;
-			const liquid = thermostat.querySelectorAll('.liquid');
-			const dragger = thermostat.querySelector('.dragger');
-			this.pseudoLabel(dragger, true);
-			const tube = thermostat.querySelector('.tubeBg');
-			const y = e.pageY || (e.touches ? e.touches[0].clientY : 0);
-			let move = ((y - tube.getBoundingClientRect().top) / (tube.getBoundingClientRect().height + ((thermostat.getBoundingClientRect().height - tube.getBoundingClientRect().height)) - (dragger.getBoundingClientRect().height / 4))) * 100;
-			if (move <= 0) {move = 0; }
-			if (move >= 83) {move = 83; }
-			let value = ((Math.round(parseInt(this.data_max) - ( y -  tube.getBoundingClientRect().top) / tube.getBoundingClientRect().height * (parseInt(this.data_max) - parseInt(this.data_min)))) * (parseInt(this.data_max) - parseInt(this.data_min))) / (parseInt(this.data_max) - parseInt(this.data_min));
-			if (value <= parseInt(this.data_min)) {value = parseInt(this.data_min); }
-			if (value >= parseInt(this.data_max)) {value = parseInt(this.data_max); }
-			this.value = value;
-			dragger.style.transform = `translate3d(0,${move}%,0)`;
-			dragger.querySelector('.labelReplace').innerHTML = value + '&#8451;';
-			for (let i = 0; i < liquid.length; i++) {
-  				liquid[i].style.transform = 'translate3d(0,' + (move - 5) + '%,0)';
-  			}
-  	if (this.bool_data_updateOnMove) {
-				this.waitForThreshold += 1;
-				if (this.waitForThreshold === parseInt(this.data_threshold)) {
-					this.sendValue(this.value);
-					this.waitForThreshold = 0;
-				}
+		const tube = this.Thermostat.nativeElement.querySelector('.tubeBg');
+		const liquid = this.Thermostat.nativeElement.querySelectorAll('.liquid');
+		const dragger = this.Thermostat.nativeElement.querySelector('.dragger');
+
+		// activate pseudo label on move
+		this.pseudoLabel(dragger, true);
+		const y = e.pageY || (e.touches ? e.touches[0].clientY : 0);
+		let move = this.toValueNumber((( tube.getBoundingClientRect().top + tube.getBoundingClientRect().height ) -  y) / tube.getBoundingClientRect().height);
+		move = 83 - this.getValuePercentage(move) * 83;
+
+		if (move <= 0) {move = 0; }
+		if (move >= 83) {move = 83; }
+		let value = this.toValueNumber(((tube.getBoundingClientRect().top + tube.getBoundingClientRect().height) - y) / tube.getBoundingClientRect().height);
+
+		if (value <= parseInt(this.data_min)) {value = parseInt(this.data_min); }
+		if (value >= parseInt(this.data_max)) {value = parseInt(this.data_max); }
+		this.value = value;
+
+		dragger.style.transform = `translate3d(0,${move}%,0)`;
+
+		dragger.querySelector('.labelReplace').innerHTML = value + '&#8451;';
+		for (let i = 0; i < liquid.length; i++) {
+  			liquid[i].style.transform = 'translate3d(0,' + (move - 5) + '%,0)';
+  		}
+  		if (this.bool_data_updateOnMove) {
+			this.waitForThreshold += 1;
+			if (this.waitForThreshold === parseInt(this.data_threshold)) {
+				this.sendValue(this.value);
+				this.waitForThreshold = 0;
 			}
 		}
 	}
@@ -328,6 +342,14 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 		} else {
 			this.fhem.set(this.fhemDevice.device, val);
 		}
+	}
+
+	private getValuePercentage(value) {
+		return (value - parseInt(this.data_min)) / (parseInt(this.data_max) - parseInt(this.data_min));
+	}
+
+	private toValueNumber(factor) {
+		return Math.round(factor * (parseInt(this.data_max) - parseInt(this.data_min)) / parseFloat(this.data_steps)) * parseFloat(this.data_steps) + parseInt(this.data_min);
 	}
 
 
