@@ -21,11 +21,20 @@ import { Subscription } from 'rxjs';
 						<ion-icon class="bigger change" name="more"></ion-icon>
 					</button>
 				</div>
+
 				<div class="undo-manager" *ngIf="showUndo">
-					<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" *ngIf="settings.app.enableUndoRedo" (click)="undoManager.redoChange()">
+					<button 
+						matRipple [matRippleColor]="'#d4d4d480'" 
+						class="btn-round"
+						[disabled]="!undoManager.dataRedoArray.length" (click)="undoManager.redoChange()"
+						[class.disabled]="!undoManager.dataRedoArray.length">
 						<ion-icon class="bigger change" name="redo"></ion-icon>
 					</button>
-					<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" (click)="undoManager.undoChange()">
+					<button 
+						matRipple [matRippleColor]="'#d4d4d480'" 
+						class="btn-round" 
+						[disabled]="!undoManager.dataUndoArray.length" (click)="undoManager.undoChange()"
+						[class.disabled]="!undoManager.dataUndoArray.length">
 						<ion-icon class="bigger change" name="undo"></ion-icon>
 					</button>
 				</div>
@@ -83,6 +92,18 @@ import { Subscription } from 'rxjs';
 		    border: none;
 		    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
 		    z-index: 100;
+		}
+		.btn-round.disabled{
+			opacity: 0.5;
+		}
+		.btn-round.disabled:after{
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(170, 170, 170, 0.4);
 		}
 		.btn-round ion-icon{
 			font-size: 25px;

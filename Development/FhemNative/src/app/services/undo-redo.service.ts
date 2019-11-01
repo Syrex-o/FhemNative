@@ -13,8 +13,8 @@ import { RoomComponent } from '../components/room/room.component';
 
 export class UndoRedoService {
 	private dataCurrentArray: Array<any> = [];
-  	private dataUndoArray: Array<any> = [];
-  	private dataRedoArray: Array<any> = [];
+  	public dataUndoArray: Array<any> = [];
+  	public dataRedoArray: Array<any> = [];
 
   	// room backup on initial edit
 	private roomBackup: Array<any> = [];
