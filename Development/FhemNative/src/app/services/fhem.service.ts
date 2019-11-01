@@ -468,9 +468,9 @@ export class FhemService {
 			if (level === 1) {
 				result[keys[i]] = {Value: '', Time: ''};
 				result[keys[i]].Time = obj[keys[i]].Time;
-				result[keys[i]].Value = (val === 'true' || val === 'false') ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseInt(val) : val;
+				result[keys[i]].Value = (val === 'true' || val === 'false') ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
 			} else {
-				result[keys[i]] = (val === 'true' || val === 'false') ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseInt(val) : val;
+				result[keys[i]] = (val === 'true' || val === 'false') ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
 			}
 		}
 		return result;
