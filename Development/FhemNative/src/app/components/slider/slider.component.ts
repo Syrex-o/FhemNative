@@ -467,6 +467,12 @@ export class SliderComponent implements OnInit, OnDestroy {
 			} else {
 				pos = pos + count;
 				Ythis.move = pos;
+				Ythis.fillMove =  parseInt(Ythis.data_min) <= parseInt(Ythis.data_max) ? Ythis.move : 100 - Ythis.move;
+
+				Ythis.sliderActiveStyle = {
+					width: Ythis.arr_data_orientation[0] === 'horizontal' ? Ythis.fillMove+'%' : '100%',
+					height: Ythis.arr_data_orientation[0] === 'vertical' ? Ythis.fillMove+'%' : '100%'
+				}
 			}
 		}
 	}
