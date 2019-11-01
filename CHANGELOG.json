@@ -103,6 +103,20 @@
             	{"TYPE": "FIX", "CHANGE": "Context/Edit Menu now disappears on click start."},
             	{"TYPE": "DEL", "CHANGE": "Change Room in picker"}
       		]
+    	},
+    	{
+      		"VERSION": "2.0.6",
+      		"DATE": "30.10.2019",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Undo Redo Button availability indicator"},
+      			{"TYPE": "NEW", "CHANGE": "Added more Font Awesome Icons"},
+      			{"TYPE": "NEW", "CHANGE": "Custom colors from user (will be added to default list, after first confirmation)"},
+      			{"TYPE": "NEW", "CHANGE": "Thermostat Animation can be switched off"},
+      			{"TYPE": "NEW", "CHANGE": "Added Thermostat steps"},
+      			{"TYPE": "NEW", "CHANGE": "FhemNative now accepts float values"},
+      			{"TYPE": "FIX", "CHANGE": "Slider Update bar"},
+      			{"TYPE": "FIX", "CHANGE": "Label decimals"}
+      		]
     	}
 	]
 }
