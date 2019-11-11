@@ -26,6 +26,17 @@ export class TimeService {
 		return h + ':' + m;
 	}
 
+	// return time HH:MM:SS from sec
+	public secToTime(sec){
+		let pad = (num, size)=> { return ('000' + num).slice(size * -1); }
+		let t: any = parseFloat(sec).toFixed(3);
+		let h: any = Math.floor(t / 60 / 60);
+		let m: any = Math.floor(t / 60) % 60;
+		let s: any = Math.floor(t - m * 60);
+
+		return (pad(h, 2) === '00' ? '' : pad(h, 2) + ':') + pad(m, 2) + ':' + pad(s, 2);
+	}
+
 	// returns duration in obj (min, durationTime) from time or minutes
 	public duration(start, end) {
 		const startMin = (typeof start === 'number') ? start : this.times(start).toMin;
