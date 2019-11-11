@@ -189,6 +189,17 @@ fa-icon{
         height: 100%;
     }
 }
+
+// alert fix for long text
+.alert-tappable.alert-radio {
+    height: auto;
+    contain: content;
+}
+.alert-radio-label.sc-ion-alert-md,
+.alert-radio-label.sc-ion-alert-ios {
+    white-space: normal;
+}
+
 .dark {
     .ng-select-container, .ng-option {
         background: var(--dark-bg) !important;
