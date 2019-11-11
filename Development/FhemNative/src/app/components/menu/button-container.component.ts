@@ -46,7 +46,7 @@ import { Subscription } from 'rxjs';
 			position: fixed;
 		    top: 5px;
 		    right: 0px;
-		    z-index: 1000;
+		    z-index: 100001;
 		    width: 160px;
 		    height: 55px;
 		}
