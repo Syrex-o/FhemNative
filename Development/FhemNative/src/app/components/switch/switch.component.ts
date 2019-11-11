@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 import { FhemService } from '../../services/fhem.service';
@@ -154,8 +154,7 @@ export class SwitchComponent implements OnInit, ControlValueAccessor {
 
 	constructor(
 		public settings: SettingsService,
-		private fhem: FhemService,
-		private ref: ElementRef) {
+		private fhem: FhemService) {
 
 	}
 	// Component ID
