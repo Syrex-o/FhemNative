@@ -59,6 +59,23 @@ import { RoomComponent } from '../room/room.component';
 						<p class="label-des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.TITLE' | translate }}</p>
 						<p class="des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.INFO' | translate }}</p>
 						<button (click)="generateDevices()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.BUTTON' | translate }}</button>
+						<switch
+							[customMode]="true"
+							[padding]="false"
+							[(ngModel)]="settings.app.loadFhemDevices.enable"
+							[label]="'GENERAL.SETTINGS.FHEM.LOAD_ALL_DEVICES.TITLE' | translate"
+							[subTitle]="'GENERAL.SETTINGS.FHEM.LOAD_ALL_DEVICES.INFO' | translate"
+							(onToggle)="settings.changeAppSettingJSON('loadFhemDevices', 'enable', $event)">
+						</switch>
+						<div class="category-inner no-margin" *ngIf="!settings.app.loadFhemDevices.enable">
+							<p class="label-des">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.TITLE' | translate }}</p>
+							<p class="des">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.INFO' | translate }}</p>
+							<ion-select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+			                	[(ngModel)]="settings.app.loadFhemDevices.option" (ionChange)="settings.changeAppSettingJSON('loadFhemDevices', 'option', $event.detail.value)">
+						        <ion-select-option value="Component">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.OPTIONS.Component' | translate }}</ion-select-option>
+						        <ion-select-option value="Fhem_Defined">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.OPTIONS.Fhem_Defined' | translate }}</ion-select-option>
+						    </ion-select>
+						</div>
 					</div>
 				</div>
 				<div class="category">
@@ -153,12 +170,30 @@ import { RoomComponent } from '../room/room.component';
 						<button (click)="toggleChangelog()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.CHANGELOG.LOG.BUTTON' | translate }}</button>
 					</div>
 				</div>
-				<div>
+				<div class="category">
 					<p class="label">{{ 'GENERAL.SETTINGS.SOFTWARE.TITLE' | translate }}</p>
 					<div class="category-inner">
 						<p class="label-des">{{ 'GENERAL.SETTINGS.SOFTWARE.THIRD_PARTY.TITLE' | translate }}</p>
 						<p class="des">{{ 'GENERAL.SETTINGS.SOFTWARE.THIRD_PARTY.INFO' | translate }}</p>
 						<button (click)="pickerMode = 'thx'; showPicker  = true;" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.SOFTWARE.THIRD_PARTY.BUTTON' | translate }}</button>
+					</div>
+				</div>
+				<div class="category">
+					<p class="label">{{ 'GENERAL.SETTINGS.SUPPORT.TITLE' | translate }}</p>
+					<div class="category-inner">
+						<p class="label-des">{{ 'GENERAL.SETTINGS.SUPPORT.DONATE.TITLE' | translate }}</p>
+						<p class="des">{{ 'GENERAL.SETTINGS.SUPPORT.DONATE.INFO' | translate }}</p>
+						<button (click)="support('https://paypal.me/pools/c/8gwg2amXDT')">{{ 'GENERAL.SETTINGS.SUPPORT.BUTTON' | translate }}</button>
+					</div>
+					<div class="category-inner">
+						<p class="label-des">{{ 'GENERAL.SETTINGS.SUPPORT.DOCUMENTATION.TITLE' | translate }}</p>
+						<p class="des">{{ 'GENERAL.SETTINGS.SUPPORT.DOCUMENTATION.INFO' | translate }}</p>
+						<button (click)="support('https://github.com/Syrex-o/FhemNative')">{{ 'GENERAL.SETTINGS.SUPPORT.BUTTON' | translate }}</button>
+					</div>
+					<div class="category-inner">
+						<p class="label-des">{{ 'GENERAL.SETTINGS.SUPPORT.HELP.TITLE' | translate }}</p>
+						<p class="des">{{ 'GENERAL.SETTINGS.SUPPORT.HELP.INFO' | translate }}</p>
+						<button (click)="support('https://forum.fhem.de/index.php/board,102.0.html')">{{ 'GENERAL.SETTINGS.SUPPORT.BUTTON' | translate }}</button>
 					</div>
 				</div>
 			</div>
@@ -293,12 +328,16 @@ import { RoomComponent } from '../room/room.component';
 			padding-left: 8px;
 			position: relative;
 		}
+		.category-inner.no-margin{
+			padding-left: 0px;
+		}
 		.label{
 			font-weight: 600;
 		}
 		.label-des{
 			margin-bottom: 5px;
 			margin-top: 5px;
+			font-weight: 500;
 		}
 		.des{
 			margin-top: -2px;
@@ -315,6 +354,7 @@ import { RoomComponent } from '../room/room.component';
 			height: 40px;
 			color: #fff;
 			font-size: 1.1em;
+			margin-bottom: 8px;
 		}
 		button:focus{
 			outline: 0px;
@@ -337,6 +377,7 @@ import { RoomComponent } from '../room/room.component';
 			position: absolute;
 			right: 5px;
 			top: 0;
+			max-width: 30%;
 		}
 		.changelog .category{
 			margin-top: 15px;
@@ -371,6 +412,12 @@ import { RoomComponent } from '../room/room.component';
 		}
 		ion-title{
 			transform: translateY(5px);
+		}
+
+		@media only screen and (max-width: 500px) {
+			ion-select{
+				max-width: 20%;
+			}
 		}
 	`]
 })
@@ -730,5 +777,10 @@ export class SettingsRoomComponent {
 				this.toast.addNotify('Changelog', this.translate.instant('GENERAL.DICTIONARY.NO_CHANGELOG_PRESENT'), false);
 			}
 		});
+	}
+
+	// toggle URL links
+	public support(url){
+		window.open(url, '_system', 'location=yes');
 	}
 }
