@@ -493,10 +493,50 @@
 					"name": "Breite/Höhe",
 					"info": "Breite/Höhe der Linie"
 				},
+				"data_rotation":{
+					"name": "Rotation",
+					"info": "Rotation der Linie in Grad"
+				},
+				"data_curve_percentage":{
+					"name": "Kurve",
+					"info": "Prozentangabe der Biegung"
+				},
 				"style_color":{
 					"name": "Farbe",
 					"info": "Farbe der Linie"
 				}
+			}
+		},
+		"MediaList":{
+			"NAME": "Media List",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts"
+				},
+				"data_reading":{
+					"name": "Reading Name",
+					"info": "Name des Fhem Readings"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name des set Befehls (falls benötigt)"
+				},
+				"data_playerDevice":{
+					"name": "Device Name des Players",
+					"info": "Name des Player Devices, um einezelne Tracks abzuspielen"
+				},
+				"arr_data_setList":{
+					"name": "Playlist Befehl",
+					"info": "Name des Playlist Befehls, der gesendet werden soll"
+				},
+				"arr_data_player":{
+					"name": "Player Typ",
+					"info": "Player Typ, zur Erfassung des Track-Index"
+				}
+			},
+			"DICTIONARY":{
+				"TOTAL_DURATION": "Gesamtspiellänge:"
 			}
 		},
 		"Pinpad":{
@@ -1169,6 +1209,18 @@
 					"TITLE": "Automatisch Geräte generieren",
 					"INFO": "Automatisch Geräte aus FHEM kreieren und Räumen zuordnen.",
 					"BUTTON": "Geräte kreieren"
+				},
+				"LOAD_ALL_DEVICES":{
+					"TITLE": "Alle Fhem Geräte laden",
+					"INFO": "Beim App Start alle Fhem Geräte laden aktivieren/deaktivieren."
+				},
+				"LOAD_WHICH_DEVICES":{
+					"TITLE": "Geräte laden difinieren",
+					"INFO": "Welche Geräte sollen beim App Start geladen werden?",
+					"OPTIONS":{
+						"Component": "Geräte die in Komponenten enthalten sind.",
+						"Fhem_Defined": "Geräte die in Fhem hinterlegt sind."
+					}
 				}
 			},
 			"APP":{
@@ -1275,6 +1327,22 @@
 							"TITLE": "OAndere Quellen:"
 						}
 					}
+				}
+			},
+			"SUPPORT":{
+				"TITLE": "Unterstützung",
+				"BUTTON": "Support",
+				"DONATE":{
+					"TITLE": "Unterstütze die Weiterentwicklung",
+					"INFO": "Unterstütze die Entwicklung von FhemNative mit einer kleinen Spende."
+				},
+				"DOCUMENTATION":{
+					"TITLE": "Unterstütze die Dokumentation",
+					"INFO": "Verbessere die Dokukmentation von FhemNative."
+				},
+				"HELP":{
+					"TITLE": "Hilf anderen/Reporte Bugs/Feature Requests",
+					"INFO": "Hilf im Forum aus, reporte deine gefunden Fehler und plaziere Wünsche im FHEM Forum."
 				}
 			}
 		},

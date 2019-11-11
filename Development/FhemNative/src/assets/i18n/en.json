@@ -493,10 +493,50 @@
 					"name": "Width/Height",
 					"info": "Width/Height  of the line"
 				},
+				"data_rotation":{
+					"name": "Rotation",
+					"info": "Degrees of line rotation"
+				},
+				"data_curve_percentage":{
+					"name": "Curve",
+					"info": "Percentage of the Curve"
+				},
 				"style_color":{
 					"name": "Color",
 					"info": "Color of the line"
 				}
+			}
+		},
+		"MediaList":{
+			"NAME": "Media List",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_playerDevice":{
+					"name": "Device Name of the player",
+					"info": "Name of the player decvice to play sibgle tracks"
+				},
+				"arr_data_setList":{
+					"name": "Playlist command",
+					"info": "Name of the playlist command, that should be sended"
+				},
+				"arr_data_player":{
+					"name": "Player type",
+					"info": "Player type, to define the Track-Index"
+				}
+			},
+			"DICTIONARY":{
+				"TOTAL_DURATION": "Total play duration:"
 			}
 		},
 		"Pinpad":{
@@ -1169,6 +1209,18 @@
 					"TITLE": "Auto generate devices",
 					"INFO": "Automatically generate devices from FHEM to dedicated rooms.",
 					"BUTTON": "Generate devices"
+				},
+				"LOAD_ALL_DEVICES":{
+					"TITLE": "Load all Fhem devices",
+					"INFO": "Enable/disable to load all Fhem devices on app start."
+				},
+				"LOAD_WHICH_DEVICES":{
+					"TITLE": "Define device loader",
+					"INFO": "Which devices should be loaded on app start?",
+					"OPTIONS":{
+						"Component": "Devices that are used in components.",
+						"Fhem_Defined": "Devices that are defined in Fhem."
+					}
 				}
 			},
 			"APP":{
@@ -1275,6 +1327,22 @@
 							"TITLE": "Other sources:"
 						}
 					}
+				}
+			},
+			"SUPPORT":{
+				"TITLE": "Support",
+				"BUTTON": "Support",
+				"DONATE":{
+					"TITLE": "Support Development",
+					"INFO": "Support the Development of FhemNative by donating a little amount of money."
+				},
+				"DOCUMENTATION":{
+					"TITLE": "Support documentation",
+					"INFO": "Improve the FhemNative documentation."
+				},
+				"HELP":{
+					"TITLE": "Help others/Report bugs/Feature requests",
+					"INFO": "Hilf the community, reporte your known bugs and place requests in the FHEM forum."
 				}
 			}
 		},
