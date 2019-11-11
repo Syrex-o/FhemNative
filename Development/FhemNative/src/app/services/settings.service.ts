@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.0.6';
+	public appVersion: string = '2.0.7';
 	// building default storage
 	public app: any = {};
 
@@ -56,6 +56,7 @@ export class SettingsService {
 		{name: 'checkUpdates', default: false, toStorage: 'app'},
 		{name: 'enableEditing', default: true, toStorage: 'app'},
 		{name: 'enableUndoRedo', default: false, toStorage: 'app'},
+		{name: 'loadFhemDevices', default: JSON.stringify({enable: true, option: 'Component'}), toStorage: 'app'},
 		{name: 'customColors', default: JSON.stringify([]), toStorage: false, callback: (data:any)=>{if(data.length > 0){this.componentColors = this.componentColors.concat(data)}}},
 		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
 		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: 'app'},

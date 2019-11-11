@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { SettingsService } from './settings.service';
+import { StructureService } from './structure.service';
 import { ToastService } from './toast.service';
 
 // Translator
@@ -38,13 +39,15 @@ export class FhemService {
 
     constructor(
 		private settings: SettingsService,
+		private structure: StructureService,
 		private toast: ToastService,
 		private translate: TranslateService) {
 
     	// subscribe to load Event (all devices loaded)
       	this.loadedDevices.subscribe(next => {
+      		const pre = this.devicesLoaded;
       		this.devicesLoaded = next;
-      		if (next) {
+      		if (next && pre !== this.devicesLoaded) {
       			this.toast.addToast(
       				this.translate.instant('GENERAL.FHEM.TITLE'),
       				this.translate.instant('GENERAL.FHEM.FETCHED_ALL_DEVICES'),
@@ -112,25 +115,68 @@ export class FhemService {
     		this.establishConnection().then((e) => {
     			const type = this.connectionEvaluator();
     			// get all devices for desired connection type
-    			if (type === 'websocket') {
-    				this.socket.send(JSON.stringify(
-    					{type: 'command', payload: {command: 'list', arg: null}}
-    				));
-    			}
-    			if (type === 'fhemweb') {
-    				this.socket.send('jsonlist2 .*');
-    			}
-    			if (type === 'mqtt') {
-
-    			}
+    			this.listDevices(this.settings.app.loadFhemDevices.enable ? '.*' : this.getRelevantDevices());
+    			// initialize events
     			if (type === 'websocket' || type === 'fhemweb') {
-    				this.websocketEvents();
-    			}
+	    			this.websocketEvents();
+	    		}
     			resolve(e);
 			}).catch((e) => {
 				reject(e);
 			});
     	});
+    }
+
+    public listDevices(attr){
+    	const type = this.connectionEvaluator();
+    	if (type === 'websocket') {
+    		this.socket.send(JSON.stringify(
+	    		{type: 'command', payload: {command: 'list', arg: attr}}
+	    	));
+    	}
+    	if (type === 'fhemweb') {
+	    	this.socket.send('jsonlist2 '+ attr);
+	    }
+    }
+
+    private getRelevantDevices(){
+    	let list: any= [];
+
+    	let test = (obj)=>{
+    		if(obj && obj.value !== '' && !list.includes(obj.value)){
+    			list.push(obj.value);
+    		}
+    	}
+    	// components in rooms
+    	this.structure.rooms.forEach((room)=>{
+    		room.components.forEach((component)=>{
+    			test(component.attributes.attr_data.find(x=> x.attr === 'data_device'));
+
+    			if(component.attributes.components){
+    				// check for swiper
+    				if(component.attributes.components[0].components){
+    					component.attributes.components.forEach((comp)=>{
+    						let d = comp.components.filter(x=> x.attributes.attr_data.find(y=> y.attr === 'data_device'));
+    						d.forEach((item)=>{
+		    					test(item.attributes.attr_data.find(x=> x.attr === 'data_device'));
+		    				});
+    					});
+    				}else{
+    					// must be simple container (popup)
+    					let d = component.attributes.components.filter(x=> x.attributes.attr_data.find(y=> y.attr === 'data_device'));
+	    				d.forEach((item)=>{
+	    					test(item.attributes.attr_data.find(x=> x.attr === 'data_device'));
+	    				});
+    				}
+    			}
+    		});
+    	});
+    	list = '('+list.join('|')+')';
+    	// add fhem defined relevant components , if needed
+    	if(this.settings.app.loadFhemDevices.option === 'Fhem_Defined'){
+    		list = 'group=FhemNative,'+list
+    	}
+    	return list;
     }
 
     private establishConnection() {
@@ -151,9 +197,6 @@ export class FhemService {
 					'?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now();
 					this.socket = new WebSocket(url);
 				}
-				if (type === 'mqtt') {
-					// mqtt connection
-				}
 				// clearing device lists
 				this.devices = [];
 				this.listenDevices = [];
@@ -171,24 +214,22 @@ export class FhemService {
 					this.socket.onclose = () => {
 						this.connected = false;
 						this.loadedDevices.next(false);
+						this.reconnect();
 						this.toast.addToast(
 							this.translate.instant('GENERAL.FHEM.TITLE'),
 							this.translate.instant('GENERAL.FHEM.DISCONNECT'),
 							'error'
 						);
-						this.reconnect();
 					};
 					this.socket.onerror = (e) => {
+						this.reconnect();
 						this.toast.addToast(
 							this.translate.instant('GENERAL.FHEM.TITLE'),
 							this.translate.instant('GENERAL.FHEM.ERROR'),
 							'error'
 						);
 						reject(e);
-						this.reconnect();
 					};
-				} else {
-					// mqtt connection
 				}
 				// timeout for connection
 				const timeout = setTimeout(() => {
@@ -226,7 +267,7 @@ export class FhemService {
     			if (msg.type === 'listentry') {
     				// search for reply device in device list
     				const device = this.find(this.devices, 'device', msg.payload.name);
-    				if (!device) {
+    				if (!device && msg.payload.attributes) {
     					this.devices.push({
     						id: msg.payload.internals.NR,
     						device: msg.payload.name,
@@ -236,7 +277,7 @@ export class FhemService {
     					});
     				}
     				// all devices loaded
-    				if (this.devices.length === msg.payload.num) {
+    				if ((this.devices.length === msg.payload.num) || (!this.settings.app.loadFhemDevices.enable && this.devices.length === 0) || (this.settings.app.loadFhemDevices.option === 'Fhem_defined' && this.devices.length === msg.payload.num -1)) {
     					this.loadedDevices.next(true);
     				}
     			}
@@ -258,8 +299,8 @@ export class FhemService {
     		// Fhemweb reply
     		if (type === 'fhemweb') {
     			let lines = msg.split(/\n/);
-      	lines = lines.filter(s => s != '' && s != '[""]');
-      	if (lines.length > 0) {
+      			lines = lines.filter(s => s != '' && s != '[""]');
+      			if (lines.length > 0) {
       				// evaluation for: get all devices
       				if (lines.length === 1) {
 						msg = JSON.parse(msg);
@@ -267,9 +308,9 @@ export class FhemService {
 							// normal reply
 							msg = JSON.parse(msg);
 							// all devices
-	      if (msg.Arg === '.*') {
+	      					if (msg.Arg === '.*' || this.devices.length === 0) {
 	      						for (let i = 0; i < msg.Results.length; i++) {
-	      							if (!this.find(this.devices, 'device', msg.Results[i].Name)) {
+	      							if (!this.find(this.devices, 'device', msg.Results[i].Name) && msg.Results[i].Attributes) {
 	      								this.devices.push({
 			      							id: parseInt(msg.Results[i].Internals.NR),
 			      							device: msg.Results[i].Name,
@@ -283,11 +324,18 @@ export class FhemService {
 		      							this.loadedDevices.next(true);
 		      						}
 		      					}
+		      					// check for no devices in reply
+		      					if((!this.settings.app.loadFhemDevices.enable && msg.Results.length === 0)){
+		      						// all devices loaded
+		      						this.loadedDevices.next(true);
+		      					}
 	      					} else {
-	      						// awnser to single device request
-	      						const index = this.findIndex(this.devices, 'device', msg.Results[0].Name);
-	      						if (index) {
-	      							this.devices[index].readings = this.objResolver(msg.Results[0].Readings, 1);
+	      						if(msg.Results.length > 0){
+	      							// awnser to single device request
+		      						const index = this.findIndex(this.devices, 'device', msg.Results[0].Name);
+		      						if (index) {
+		      							this.devices[index].readings = this.objResolver(msg.Results[0].Readings, 1);
+		      						}
 	      						}
 	      					}
 						} else {
@@ -297,8 +345,6 @@ export class FhemService {
 								property: '',
 								value: ''
 							}};
-							// console.log(e);
-							// console.log(msg[0]);
 						}
       				} else {
       					// evaluation of changes
