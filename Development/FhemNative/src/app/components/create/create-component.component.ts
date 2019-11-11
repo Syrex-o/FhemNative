@@ -37,7 +37,6 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 							(click)="selectComponent(comp)">
 							<p>{{ 'COMPONENTS.'+[comp.name]+'.NAME' | translate }}</p>
 						</div>
-
 					</ng-container>
 				</div>
 			</div>
@@ -127,7 +126,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 			<div class="page page-4">
 				<ng-template [ngIf]="componentSelection" [ngIfElse]="NO_COMP">
 					<p>{{ 'GENERAL.CREATE_COMPONENT.PAGE_4_INFO' | translate }}</p>
-					<div class="config-container" *ngIf="componentSelection.comp.type == 'fhem'">
+					<div class="config-container" *ngIf="componentSelection.comp.type == 'fhem' && pageIndex === 4">
 						<div class="testing-data">
 							<h3>Device</h3>
 							<div class="success"  *ngIf="attrFinder('device', 'data_device')">
@@ -234,6 +233,14 @@ export class CreateComponentComponent {
 		}
 		if (this.pageIndex < 1) {
 			this.pageIndex = 1;
+		}
+		// detect missing devices
+		if(this.pageIndex === 4 && this.helper.find(this.componentSelection.attributes.attr_data, 'attr', 'data_device')){
+			const device = this.helper.find(this.componentSelection.attributes.attr_data, 'attr', 'data_device').item.value;
+			if(device !== '' && !this.helper.find(this.fhem.devices, 'device', device)){
+				// device is not in list
+				this.fhem.listDevices(device);
+			}
 		}
 	}
 
