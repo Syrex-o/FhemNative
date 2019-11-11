@@ -10,6 +10,7 @@ import { ImageComponent } from './image/image.component';
 import { KodiComponent } from './kodi/kodi.component';
 import { LabelComponent } from './label/label.component';
 import { LineComponent } from './line/line.component';
+import { MediaListComponent } from './music/medialist.component';
 import { PinpadComponent } from './pinpad/pinpad.component';
 import { PopupComponent } from './popup/popup.component';
 import { SelectComponent } from './select/select.component';
@@ -33,6 +34,7 @@ export const FHEM_COMPONENT_REGISTRY = [
 	KodiComponent,
 	LabelComponent,
 	LineComponent,
+	MediaListComponent,
 	PinpadComponent,
 	PopupComponent,
 	SelectComponent,
