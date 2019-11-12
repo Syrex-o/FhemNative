@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.0.7';
+	public appVersion: string = '2.0.8';
 	// building default storage
 	public app: any = {};
 
