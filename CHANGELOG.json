@@ -131,6 +131,18 @@
       			{"TYPE": "FIX", "CHANGE": "Button Cotainer z-index in popup"},
       			{"TYPE": "FIX", "CHANGE": "Reconnect handler"}
       		]
+    	},
+    	{
+      		"VERSION": "2.0.8",
+      		"DATE": "12.11.2019",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "New auto generate devices strategy"},
+      			{"TYPE": "NEW", "CHANGE": "New auto generate rooms strategy"},
+      			{"TYPE": "NEW", "CHANGE": "New Fhem change and init handler"},
+      			{"TYPE": "NEW", "CHANGE": "Component description in device importer"},
+      			{"TYPE": "FIX", "CHANGE": "Edit Component for Swiper"},
+      			{"TYPE": "FIX", "CHANGE": "Swiper Properties"}
+      		]
     	}
 	]
 }
