@@ -1218,8 +1218,8 @@
 					"TITLE": "Define device loader",
 					"INFO": "Which devices should be loaded on app start?",
 					"OPTIONS":{
-						"Component": "Devices that are used in components.",
-						"Fhem_Defined": "Devices that are defined in Fhem."
+						"Component": "1:  Devices that are used in components.",
+						"Fhem_Defined": "2: 1. + Devices that are defined in Fhem."
 					}
 				}
 			},

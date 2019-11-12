@@ -1208,18 +1208,18 @@
 				"AUTO_DEVICES":{
 					"TITLE": "Automatisch Geräte generieren",
 					"INFO": "Automatisch Geräte aus FHEM kreieren und Räumen zuordnen.",
-					"BUTTON": "Geräte kreieren"
+					"BUTTON": "Geräte generieren"
 				},
 				"LOAD_ALL_DEVICES":{
 					"TITLE": "Alle Fhem Geräte laden",
 					"INFO": "Beim App Start alle Fhem Geräte laden aktivieren/deaktivieren."
 				},
 				"LOAD_WHICH_DEVICES":{
-					"TITLE": "Geräte laden difinieren",
+					"TITLE": "Geräte laden definieren",
 					"INFO": "Welche Geräte sollen beim App Start geladen werden?",
 					"OPTIONS":{
-						"Component": "Geräte die in Komponenten enthalten sind.",
-						"Fhem_Defined": "Geräte die in Fhem hinterlegt sind."
+						"Component": "1: Geräte die in Komponenten enthalten sind.",
+						"Fhem_Defined": "2: 1. + Geräte die in Fhem hinterlegt sind."
 					}
 				}
 			},
