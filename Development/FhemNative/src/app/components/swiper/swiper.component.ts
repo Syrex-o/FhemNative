@@ -144,7 +144,7 @@ export class SwiperComponent implements OnInit, OnDestroy {
 				y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
 			};
 			// identify the click object
-			if (!this.editingEnabled && (e.target.className.indexOf('content') !== -1 || (e.target.className.indexOf('overlay-move') !== -1 && !this.ref.nativeElement.contains(event.target))) ) {
+			if (!this.editingEnabled && (e.target.className.indexOf('content') !== -1 || (e.target.className.indexOf('overlay-move') !== -1 && !this.ref.nativeElement.contains(e.target))) ) {
 				this.roomEditMode();
 			}
 			// identify if swiping should be allowed or not
@@ -161,11 +161,11 @@ export class SwiperComponent implements OnInit, OnDestroy {
 	onClick(e) {
 		if (this.settings.modes.roomEdit) {
 			this.currentMouse = {
-				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
-				y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
+				x: e.pageX || (e.changedTouches ? e.changedTouches[0].clientX : 0),
+				y: e.pageY || (e.changedTouches ? e.changedTouches[0].clientY : 0)
 			};
 			// identify the click object
-			if (this.editingEnabled && this.ref.nativeElement.contains(event.target)) {
+			if (this.editingEnabled && this.ref.nativeElement.contains(e.target)) {
 				// respect double click event
 				setTimeout(() => {
 					if (!this.ref.nativeElement.firstChild.classList.contains('double-click') && Math.abs(this.startMouse.x - this.currentMouse.x) < 5 && Math.abs(this.startMouse.y - this.currentMouse.y) < 5) {
@@ -296,9 +296,11 @@ export class SwiperComponent implements OnInit, OnDestroy {
 		// removing fhem components in slider from view
 		this.looper((i) => {
 			const sliderComponents = this.helper.find(this.structure.rooms[this.roomID].components, 'ID', this.ID).item.attributes.components[i];
-			for (let j = 0; j < sliderComponents.length; j++) {
-				this.createComponent.removeFhemComponent(sliderComponents[j].ID);
-				this.containers[i].clear();
+			if(sliderComponents){
+				for (let j = 0; j < sliderComponents.length; j++) {
+					this.createComponent.removeFhemComponent(sliderComponents[j].ID);
+					this.containers[i].clear();
+				}
 			}
 		});
 	}
