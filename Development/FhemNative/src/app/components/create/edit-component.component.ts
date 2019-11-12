@@ -315,7 +315,9 @@ export class EditComponentComponent implements AfterViewInit {
 					}
 				}
 				// setting new position to 20 px below current position
-				copy.position.top = parseInt(copy.position.top)+ 20 +'px';
+				// position elements in swiper and popup on top, to find them
+				copy.position.top = this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/) ? 0 : parseInt(copy.position.top)+ 20 + 'px';
+				copy.position.left = this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/) ? 0 : parseInt(copy.position.left) + 'px';
 
 				this.roomComponents.push(copy);
 				this.createComponent.loadRoomComponents([copy], this.container, false);
@@ -354,8 +356,9 @@ export class EditComponentComponent implements AfterViewInit {
 	public saveComponent() {
 		// determine if component has multiple containers
 		if (this.component.attributes.components && this.component.attributes.components[0].components) {
+
 			// data_pages is the unique way to define multiple container components
-			let pages = parseInt(this.component.attributes.data.find(x => x.attr === 'data_pages').value);
+			let pages = parseInt(this.component.attributes.attr_data.find(x => x.attr === 'data_pages').value);
 			// ensure, that pages are positive and not 0
 			pages = Math.abs(pages) === 0 ? 1 : Math.abs(pages);
 
