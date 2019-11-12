@@ -17,6 +17,7 @@ export class FhemService {
 	// device subscription and total device list;
 	public devicesSub = new Subject<any>();
 	public deviceGetSub = new Subject<any>();
+	public devicesListSub = new Subject<any>();
 	public devices: Array<any> = [];
 
 	// connection state
@@ -279,6 +280,7 @@ export class FhemService {
     				// all devices loaded
     				if ((this.devices.length === msg.payload.num) || (!this.settings.app.loadFhemDevices.enable && this.devices.length === 0) || (this.settings.app.loadFhemDevices.option === 'Fhem_defined' && this.devices.length === msg.payload.num -1)) {
     					this.loadedDevices.next(true);
+    					this.returnListDevices(this.settings.app.loadFhemDevices.option === 'Fhem_defined' ? msg.payload.num - 1 : msg.payload.num);
     				}
     			}
     			if (msg.type === 'event') {
@@ -307,37 +309,37 @@ export class FhemService {
 						if (this.IsJsonString(msg)) {
 							// normal reply
 							msg = JSON.parse(msg);
-							// all devices
-	      					if (msg.Arg === '.*' || this.devices.length === 0) {
-	      						for (let i = 0; i < msg.Results.length; i++) {
-	      							if (!this.find(this.devices, 'device', msg.Results[i].Name) && msg.Results[i].Attributes) {
-	      								this.devices.push({
+							if(msg.Results.length === 0){
+								// initially loaded 0 devices
+								if(this.devices.length === 0){
+									this.loadedDevices.next(true);
+								}
+							}else{
+								// keep track of new devices
+								let newDevices = 0;
+								// detect if initial load
+								msg.Results.forEach((result, i)=>{
+									const index = this.findIndex(this.devices, 'device', msg.Results[i].Name);
+									if(index !== null){
+										// device already found
+										this.devices[index].readings = this.objResolver(msg.Results[i].Readings, 1);
+									}else{
+										// new device
+										newDevices++;
+										this.devices.push({
 			      							id: parseInt(msg.Results[i].Internals.NR),
 			      							device: msg.Results[i].Name,
 			      							readings: this.objResolver(msg.Results[i].Readings, 1),
 			      							internals: msg.Results[i].Internals,
 			      							attributes: msg.Results[i].Attributes
 			      						});
-	      							}
-		      						if (i === msg.Results.length - 1) {
-		      							// all devices loaded
-		      							this.loadedDevices.next(true);
-		      						}
-		      					}
-		      					// check for no devices in reply
-		      					if((!this.settings.app.loadFhemDevices.enable && msg.Results.length === 0)){
-		      						// all devices loaded
-		      						this.loadedDevices.next(true);
-		      					}
-	      					} else {
-	      						if(msg.Results.length > 0){
-	      							// awnser to single device request
-		      						const index = this.findIndex(this.devices, 'device', msg.Results[0].Name);
-		      						if (index) {
-		      							this.devices[index].readings = this.objResolver(msg.Results[0].Readings, 1);
-		      						}
-	      						}
-	      					}
+									}
+									if (i === msg.Results.length - 1) {
+										this.loadedDevices.next(true);
+										this.returnListDevices(newDevices);
+									}
+								});
+							}
 						} else {
 							// get reply
 							const result = {payload: {
@@ -364,6 +366,17 @@ export class FhemService {
       			}
     		}
     	};
+    }
+
+    private returnListDevices(n){
+    	if(n > 0){
+    		// remporary copy of devices
+	    	const list = JSON.parse(JSON.stringify(this.devices));
+	    	this.devicesListSub.next(list.splice(Math.max(list.length - n, 0)));
+    	}else{
+    		// return empty list if no new devices fetched
+    		this.devicesListSub.next([]);
+    	}
     }
 
     public IsJsonString(str) {
