@@ -212,7 +212,12 @@ import { RoomComponent } from '../room/room.component';
 						<p class="des">{{ 'GENERAL.SETTINGS.CHANGELOG.SELECTOR.INFO' | translate }}</p>
 						<ion-select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
 		                	[(ngModel)]="changelog.selectedVersion">
-					        <ion-select-option *ngFor="let item of changelog.VERSIONS; let i = index;" [value]="i">{{item.VERSION}}</ion-select-option>
+					        <ion-select-option 
+					        	*ngFor="let item of changelog.VERSIONS; let i = index;" 
+					        	[value]="i"
+					        	[disabled]="isVersionAvailable(i)">
+					        	{{item.VERSION}}
+					        </ion-select-option>
 					    </ion-select>
 					</div>
 					<div class="category-inner">
@@ -614,7 +619,10 @@ export class SettingsRoomComponent {
 	public generateRooms() {
 		let generatedRooms = [];
 		const settingsRooms = this.structure.rooms.map(x=> x.name);
+		let gotReply: boolean = false;
+
 		this.devicesListSub = this.fhem.devicesListSub.subscribe(next=>{
+			gotReply = true;
 			this.devicesListSub.unsubscribe();
 			const roomDevices = this.fhem.devices.filter((x)=>{ return Object.getOwnPropertyNames(x.attributes).find((y)=>{ return y === 'room'}) });
 			roomDevices.forEach((device)=>{
@@ -653,13 +661,25 @@ export class SettingsRoomComponent {
 				);
 			}
 		});
+		setTimeout(()=>{
+			if(!gotReply){
+				this.devicesListSub.unsubscribe();
+				this.toast.showAlert(
+					this.translate.instant('GENERAL.DICTIONARY.NO_ROOMS_ADDED_TITLE'),
+					this.translate.instant('GENERAL.DICTIONARY.NO_ROOMS_ADDED_INFO_NOT_FOUND'),
+					false
+				);
+			}
+		}, 2000);
 		this.fhem.listDevices('room=.*');
 	}
 
 	public generateDevices(){
 		// list of generated devices
 		let generatedDevices = [];
+		let gotReply: boolean = false;
 		this.devicesListSub = this.fhem.devicesListSub.subscribe(next=>{
+			gotReply = true;
 			this.devicesListSub.unsubscribe();
 			const relevantDevices= this.fhem.devices.filter((x:any)=> {return Object.getOwnPropertyNames(x.attributes).find((y:any) => {return y.match(/FhemNative_.*/)})});
 			relevantDevices.forEach((device)=>{
@@ -740,6 +760,16 @@ export class SettingsRoomComponent {
 				);
 			}
 		});
+		setTimeout(()=>{
+			if(!gotReply){
+				this.devicesListSub.unsubscribe();
+				this.toast.showAlert(
+					this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_TITLE'),
+					this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_INFO'),
+					false
+				);
+			}
+		}, 2000);
 		this.fhem.listDevices('userattr=FhemNative.*');
 	}
 
@@ -792,13 +822,29 @@ export class SettingsRoomComponent {
 			if (res) {
 				this.changelog = res;
 				// displaying last version first
-				this.changelog.selectedVersion = this.changelog.VERSIONS.length - 1;
+				const relChangelog = this.changelog.VERSIONS.findIndex(v=> v.VERSION === this.settings.appVersion);
+
+				this.changelog.selectedVersion = relChangelog > -1 ? relChangelog : this.changelog.VERSIONS.length - 1;
+
 				this.pickerMode = 'changelog';
 				this.showPicker  = !this.showPicker;
 			} else {
 				this.toast.addNotify('Changelog', this.translate.instant('GENERAL.DICTIONARY.NO_CHANGELOG_PRESENT'), false);
 			}
 		});
+	}
+
+	public isVersionAvailable(index){
+		const relChangelog = this.changelog.VERSIONS.findIndex(v=> v.VERSION === this.settings.appVersion);
+		if(relChangelog > -1){
+			if(index <= relChangelog){
+				return false;
+			}else{
+				return true;
+			}
+		}else{
+			return false;
+		}
 	}
 
 	// toggle URL links
