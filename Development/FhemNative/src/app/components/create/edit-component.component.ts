@@ -4,6 +4,7 @@ import { Component, Input, AfterViewInit, ElementRef, HostListener } from '@angu
 import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
 import { CreateComponentService } from '../../services/create-component.service';
+import { SelectComponentService } from '../../services/select-component.service';
 import { HelperService } from '../../services/helper.service';
 import { UndoRedoService } from '../../services/undo-redo.service';
 
@@ -11,14 +12,61 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 	selector: 'edit-component',
 	template: `
 		<div class="context-menu" [ngStyle]="{'left.px': x, 'top.px': y}" [ngClass]="settings.app.theme">
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="showSettings = true;" class="settings">{{ 'GENERAL.EDIT_COMPONENT.MENU.SETTINGS' | translate }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="sendToFront()" class="top">{{ 'GENERAL.EDIT_COMPONENT.MENU.FOREGROUND' | translate }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="sendToBack()">{{ 'GENERAL.EDIT_COMPONENT.MENU.BACKGROUND' | translate }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="select()">{{ !evalSelector(component) ? ('GENERAL.EDIT_COMPONENT.MENU.SELECT' | translate) : ('GENERAL.EDIT_COMPONENT.MENU.UNSELECT' | translate) }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="selectAll()">{{ 'GENERAL.EDIT_COMPONENT.MENU.SELECT_ALL' | translate }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="copyComp()">{{ 'GENERAL.EDIT_COMPONENT.MENU.COPY' | translate }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="structure.componentCopy.length > 0 && source !== 'component'" (click)="pasteComp()">{{ 'GENERAL.EDIT_COMPONENT.MENU.PASTE' | translate }}</p>
-			<p matRipple [matRippleColor]="'#d4d4d480'" *ngIf="source === 'component'" (click)="compDelete()" class="delete top">{{ 'GENERAL.EDIT_COMPONENT.MENU.DELETE' | translate }}</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component'" 
+				(click)="showSettings = true;" 
+				class="select-item settings">
+				{{ 'GENERAL.EDIT_COMPONENT.MENU.SETTINGS' | translate }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component'" 
+				(click)="sendToFront()" 
+				class="select-item top">
+				{{ 'GENERAL.EDIT_COMPONENT.MENU.FOREGROUND' | translate }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component'" 
+				(click)="sendToBack()" 
+				class="select-item">
+				{{ 'GENERAL.EDIT_COMPONENT.MENU.BACKGROUND' | translate }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component' && component" 
+				class="select-item" 
+				(click)="selectComponent.buildCopySelector(component.ID, true, container)">
+				{{ !selectComponent.evalCopySelector(component.ID) ? ('GENERAL.EDIT_COMPONENT.MENU.SELECT' | translate) : ('GENERAL.EDIT_COMPONENT.MENU.UNSELECT' | translate) }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'"
+				class="select-item" 
+				(click)="!selectComponent.evalCopySelectorAll(container) ? selectComponent.buildCopySelectorAll(container) : selectComponent.removeContainerCopySelector(container, true)">
+				{{ !selectComponent.evalCopySelectorAll(container) ? ('GENERAL.EDIT_COMPONENT.MENU.SELECT_ALL' | translate) : ('GENERAL.EDIT_COMPONENT.MENU.DESELECT_ALL' | translate) }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component' || (source !== 'component' && selectComponent.selectorList.length > 0)" 
+				class="select-item" 
+				(click)="copyComp()">
+				{{ 'GENERAL.EDIT_COMPONENT.MENU.COPY' | translate }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="selectComponent.copyList.length > 0 && source !== 'component'" 
+				class="select-item" 
+				(click)="pasteComp()">
+				{{ 'GENERAL.EDIT_COMPONENT.MENU.PASTE' | translate }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component' || (source !== 'component' && selectComponent.selectorList.length > 0)"
+				(click)="compDelete()" 
+				class="select-item delete top">
+				{{ 'GENERAL.EDIT_COMPONENT.MENU.DELETE' | translate }}
+			</p>
 		</div>
 		<picker
 			*ngIf="component"
@@ -113,6 +161,7 @@ export class EditComponentComponent implements AfterViewInit {
 		public settings: SettingsService,
 		private ref: ElementRef,
 		private createComponent: CreateComponentService,
+		public selectComponent: SelectComponentService,
 		private helper: HelperService,
 		private undoManager: UndoRedoService) {
 	}
@@ -134,10 +183,7 @@ export class EditComponentComponent implements AfterViewInit {
 	// selected component in structure
 	public component: any;
 
-	// currently active components
-	private roomComponents: any;
-
-	public showSettings = false;
+	public showSettings: boolean = false;
 
 	// @HostListener('document:click', ['$event'])
 	@HostListener('document:mousedown', ['$event.target'])
@@ -151,7 +197,7 @@ export class EditComponentComponent implements AfterViewInit {
 	ngAfterViewInit() {
 		setTimeout(() => {
 			if (this.source === 'component') {
-				this.component = this.structure.selectedElement(this.componentID, this.container);
+				this.component = this.structure.getComponent(this.componentID);
 				// fix for arr_data function calling --> getting defaults
 				if (this.component.attributes.attr_arr_data && this.component.attributes.attr_arr_data.length > 0) {
 					for (let i = 0; i < this.component.attributes.attr_arr_data.length; i++) {
@@ -159,10 +205,7 @@ export class EditComponentComponent implements AfterViewInit {
 					}
 				}
 			}
-			if((this.structure.componentCopy.length > 0 && this.source !== 'component') || this.source === 'component'){
-				// getting the room components
-				this.roomComponents = this.structure.roomComponents(this.container);
-				// alligning x and y values to fit in container
+			// alligning x and y values to fit in container
 				const menu = this.ref.nativeElement.querySelector('.context-menu');
 				const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
 				let x = 0; let y = 0;
@@ -173,18 +216,16 @@ export class EditComponentComponent implements AfterViewInit {
 					y = -100;
 				}
 				menu.style.transform = 'translate3d(' + x + '%,' + y + '%, 0)';
-			}else{
-				this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
-			}
 		}, 0);
 	}
 
 	// addjusting z-index to front
 	public sendToFront() {
-		for (let i = 0; i < this.roomComponents.length; i++) {
-			if (this.component.ID !== this.roomComponents[i].ID) {
-				this.roomComponents[i].position.zIndex = (this.roomComponents[i].position.zIndex === 1) ? 1 : (this.roomComponents[i].position.zIndex - 1);
-				this.changeAttr(this.roomComponents[i].ID, 'zIndex', this.roomComponents[i].position.zIndex);
+		const roomComponents = this.structure.getComponentContainer(this.container);
+		for (let i = 0; i < roomComponents.length; i++) {
+			if (this.component.ID !== roomComponents[i].ID) {
+				roomComponents[i].position.zIndex = (roomComponents[i].position.zIndex === 1) ? 1 : (roomComponents[i].position.zIndex - 1);
+				this.changeAttr(roomComponents[i].ID, 'zIndex', roomComponents[i].position.zIndex);
 			}
 		}
 		this.component.position.zIndex = Math.max(...this.zIndexValues(this.component)) + 1;
@@ -194,10 +235,11 @@ export class EditComponentComponent implements AfterViewInit {
 
 	// addjusting z-index to back
 	public sendToBack() {
-		for (let i = 0; i < this.roomComponents.length; i++) {
-			if (this.component.ID !== this.roomComponents[i].ID) {
-				this.roomComponents[i].position.zIndex = this.roomComponents[i].position.zIndex + 1;
-				this.changeAttr(this.roomComponents[i].ID, 'zIndex', this.roomComponents[i].position.zIndex);
+		const roomComponents = this.structure.getComponentContainer(this.container);
+		for (let i = 0; i < roomComponents.length; i++) {
+			if (this.component.ID !== roomComponents[i].ID) {
+				roomComponents[i].position.zIndex = roomComponents[i].position.zIndex + 1;
+				this.changeAttr(roomComponents[i].ID, 'zIndex', roomComponents[i].position.zIndex);
 			}
 		}
 		this.component.position.zIndex = 1;
@@ -213,149 +255,37 @@ export class EditComponentComponent implements AfterViewInit {
 	}
 
 	private zIndexValues(comp) {
+		const roomComponents = this.structure.getComponentContainer(this.container);
 		const zIndex = [];
-		for (let i = 0; i < this.roomComponents.length; i++) {
-			if (this.roomComponents[i].ID !== comp.ID) {
-				zIndex.push(this.roomComponents[i].position.zIndex);
+		for (let i = 0; i < roomComponents.length; i++) {
+			if (roomComponents[i].ID !== comp.ID) {
+				zIndex.push(roomComponents[i].position.zIndex);
 			}
 		}
 		return zIndex;
 	}
 
-	// copy the selected component
-	public copyComp() {
-		// clear the copy container before filling
-		this.structure.componentCopy = [];
-		const roomElements = this.structure.roomComponents(this.container);
-		roomElements.forEach((el)=>{
-			const element = document.getElementById(el.ID);
-			if(element.classList.contains('selected-for-copy')){
-				this.structure.componentCopy.push(JSON.parse(JSON.stringify(el)));
-			}
-		});
-		// check if selection was made
-		// else copyComp gets filled with the selected component
-		if(this.structure.componentCopy.length === 0){
-			this.structure.componentCopy.push(JSON.parse(JSON.stringify(this.component)));
-			document.getElementById(this.component.ID).classList.add('selected-for-copy');
-		}
-		this.removeSelector();
-	}
-
-	// sets selection marker to all single component
-	public select(){
-		const element = document.getElementById(this.component.ID);
-		if(element.classList.contains('selected-for-copy')){
-			element.classList.remove('selected-for-copy');
-		}else{
-			element.classList.add('selected-for-copy');
-		}
-		this.removeSelector();
-	}
-
-	// sets selection marker to all components
-	public selectAll(){
-		const roomElements = this.structure.roomComponents(this.container);
-		roomElements.forEach((el)=>{
-			const element = document.getElementById(el.ID);
-			if(!element.classList.contains('selected-for-copy')){
-				element.classList.add('selected-for-copy');
-			}
-		});
-		this.removeSelector();
-	}
-
-	// copy selection remover
-	// used for dynamic container switching while selecting
-	private removeSelector(){
-		const containerComponents = this.structure.roomComponents(this.container);
-		const selectorList = document.querySelectorAll('.selected-for-copy');
-		selectorList.forEach((selector)=>{
-			if(!containerComponents.find(x=>x.ID === selector.id)){
-				selector.classList.remove('selected-for-copy');
-			}
-		});
-	}
-
-	public evalSelector(comp){
-		if(comp && document.getElementById(comp.ID)){
-			if(document.getElementById(comp.ID).classList.contains('selected-for-copy')){
-				return true;
-			}else{
-				return false;
-			}
-		}else{
-			return false;
-		}
+	public copyComp(){
+		this.selectComponent.copyComponent( (this.component ? this.component.ID : false), this.container);
 	}
 
 	public pasteComp() {
-		const copyList = JSON.parse(JSON.stringify(this.structure.componentCopy));
-		copyList.forEach((copy)=>{
-			// ensure that no container components are inserted into each other
-			if (
-				(!copy.attributes.components && this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) ||
-				(!copy.attributes.components && !this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) ||
-				(copy.attributes.components && !this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/))
-			){
-				// generate new component ID
-				copy.ID = this.helper.UIDgenerator();
-				// check if copy is a component container
-				if (copy.attributes.components) {
-					for (let i = 0; i < copy.attributes.components.length; i++) {
-						if (copy.attributes.components[i].components) {
-							// container is a multi component container
-							for (let j = 0; j < copy.attributes.components[i].components.length; j++) {
-								copy.attributes.components[i].components[j].ID = this.helper.UIDgenerator();
-							}
-						} else {
-							// container is a single component container
-							copy.attributes.components[i].ID = this.helper.UIDgenerator();
-						}
-					}
-				}
-				// setting new position to 20 px below current position
-				// position elements in swiper and popup on top, to find them
-				copy.position.top = this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/) ? 0 : parseInt(copy.position.top)+ 20 + 'px';
-				copy.position.left = this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/) ? 0 : parseInt(copy.position.left) + 'px';
-
-				this.roomComponents.push(copy);
-				this.createComponent.loadRoomComponents([copy], this.container, false);
-			}
-		});
+		// paste component
+		this.selectComponent.pasteComponent(this.container);
+		// save config
 		this.saveComp();
+		this.selectComponent.removeContainerCopySelector(this.container, true);
 	}
 
 	// delete the selected component
 	public compDelete() {
-		const removeList = [];
-		// remove edit component before slice, to skip selection text error
-		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
-
-		const roomElements = this.structure.roomComponents(this.container);
-		roomElements.forEach((el)=>{
-			const element = document.getElementById(el.ID);
-			if(element.classList.contains('selected-for-copy')){
-				removeList.push(JSON.parse(JSON.stringify(el)));
-			}
-		});
-		if(removeList.length === 0){
-			removeList.push(JSON.parse(JSON.stringify(this.component)));
-		}
-
-		// remove the selected elements
-		removeList.forEach((el)=>{
-			this.createComponent.removeFhemComponent(el.ID);
-			this.roomComponents.splice(
-				this.helper.find(this.roomComponents, 'ID', el.ID).index, 1
-			);
-		});
+		this.selectComponent.removeComponent(this.component, this.container);
 		this.saveComp();
 	}
 
 	public saveComponent() {
 		// determine if component has multiple containers
-		if (this.component.attributes.components && this.component.attributes.components[0].components) {
+		if (this.component.attributes.components && this.component.attributes.components[0] && this.component.attributes.components[0].components) {
 
 			// data_pages is the unique way to define multiple container components
 			let pages = parseInt(this.component.attributes.attr_data.find(x => x.attr === 'data_pages').value);
