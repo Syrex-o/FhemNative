@@ -74,26 +74,26 @@
                 background-color: #14a9d5;
                 transition: all .2s ease;
             }
-            &.top-left, &.top-right, &.bottom-left, &.bottom-right, &.center-top, &.center-bottom, &.center-right, &.center-left {
+            &.top-left, &.top-right, &.bottom-left, &.bottom-right, &.top-center, &.bottom-center, &.right-center, &.left-center {
                 cursor: nw-resize;
             }
-            &.top-left, &.top-right, &.center-top {
+            &.top-left, &.top-right, &.top-center {
                 top: -10px;
             }
-            &.top-left, &.bottom-left, &.center-left {
+            &.top-left, &.bottom-left, &.left-center {
                 left: -10px;
             }
-            &.top-right, &.bottom-right, &.center-right {
+            &.top-right, &.bottom-right, &.right-center {
                 right: -10px;
             }
-            &.bottom-left, &.bottom-right, &.center-bottom {
+            &.bottom-left, &.bottom-right, &.bottom-center {
                 bottom: -10px;
             }
-            &.center-top, &.center-bottom {
+            &.top-center, &.bottom-center {
                 left: 50%;
                 transform: translate3d(-50%, 0, 0);
             }
-            &.center-right, &.center-left {
+            &.right-center, &.left-center {
                 top: 50%;
                 transform: translate3d(0, -50%, 0);
             }
