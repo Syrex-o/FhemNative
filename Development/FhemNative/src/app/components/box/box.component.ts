@@ -96,7 +96,6 @@ export class BoxComponent {
 
 	constructor(public settings: SettingsService) {}
 
-
 	static getSettings() {
 		return {
 			name: 'Box',
