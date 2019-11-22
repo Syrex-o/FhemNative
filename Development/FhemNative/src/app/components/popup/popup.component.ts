@@ -42,7 +42,9 @@ import { HelperService } from '../../services/helper.service';
 			[ngClass]="showPopup ? 'popup-open' : 'popup-close'"
 			[ngStyle]="{'position': (customMode ? (fixPosition ? 'fixed' : 'absolute') : 'fixed')}">
 			<div class="popup-backdrop" (click)="closePopup()"></div>
-			<div class="popup-inner">
+			<div 
+				class="popup-inner"
+				[ngStyle]="{'width': data_width+'%', 'height': data_height+'%'}">
 				<div class="popup-header" [ngClass]="newsSlide ? 'slide' : 'no-slide'">
 					<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round right" *ngIf="!customMode && !settings.modes.roomEdit && settings.app.enableEditing" (click)="edit()">
 		                <ion-icon class="edit" name="create"></ion-icon>
@@ -99,8 +101,8 @@ import { HelperService } from '../../services/helper.service';
 		.popup-container{
 			top: 0;
 			left: 0;
-			width: 100vw;
-			height: 100vh;
+			width: 100%;
+			height: 100%;
 			z-index: 20003;
 			transition: all .3s linear;
 			transform: scale3d(0,0,0);
@@ -295,8 +297,6 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
     @Output() onClose = new EventEmitter();
 
     // popup properties
-    @Input() popupWidth = '80%';
-    @Input() popupHeight = '80%';
     @Input() fixPosition = false;
 
 	// Component ID
@@ -309,6 +309,8 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	@Input() data_getOn: string;
 	@Input() data_getOff: string;
 	@Input() data_headline: string;
+	@Input() data_width: string = '80';
+    @Input() data_height: string = '80';
 	@Input() bool_data_openOnReading: boolean;
 
 	// Icons
@@ -331,6 +333,9 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
     private deviceChange: Subscription;
     private modeSubscriber: Subscription;
 
+    // popup edit mode
+    public editingEnabled: boolean = false;
+
 	static getSettings() {
 		return {
 			name: 'Popup',
@@ -342,6 +347,8 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 				{variable: 'data_getOn', default: 'on'},
 				{variable: 'data_getOff', default: 'off'},
 				{variable: 'data_headline', default: 'Popup'},
+				{variable: 'data_width', default: '80'},
+				{variable: 'data_height', default: '80'},
 				{variable: 'bool_data_openOnReading', default: false},
 				{variable: 'icon_iconOn', default: 'add-circle'},
 				{variable: 'icon_iconOff', default: 'add-circle'},
@@ -392,8 +399,23 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 			});
 			// detecting mode changes in room edit
 			this.modeSubscriber = this.settings.modeSub.subscribe(next => {
-				if (!this.settings.modes.roomEdit) {
-					this.createComponent.removeSingleComponent('GridComponent', this.container);
+				if(next.hasOwnProperty('roomEdit') || next.hasOwnProperty('roomEditFrom')){
+					if(!this.settings.modes.roomEdit){
+						this.createComponent.removeSingleComponent('GridComponent', this.container);
+					}else{
+						if(!this.customMode && this.showPopup && this.editingEnabled && this.structure.canEdit(this.ID)){
+							this.createComponent.createSingleComponent('GridComponent', this.container, {
+								container: this.container
+							});
+
+							this.createComponent.createSingleComponent('CreateComponentComponent', this.createComponent.currentRoomContainer, {
+								container: this.container
+							});
+						}
+						if(!this.structure.canEdit(this.ID)){
+							this.createComponent.removeSingleComponent('GridComponent', this.container);
+						}
+					}
 				}
 			});
 			// getting the spawn room ID, to remove components after OnDestroy
@@ -417,14 +439,10 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
 	public edit() {
 		if (!this.customMode) {
-			this.settings.modeSub.next({roomEdit: true});
-
-			this.createComponent.createSingleComponent('GridComponent', this.container, {
-				container: this.container
-			});
-
-			this.createComponent.createSingleComponent('CreateComponentComponent', this.createComponent.currentRoomContainer, {
-				container: this.container
+			this.editingEnabled = true;
+			this.settings.modeSub.next({
+				roomEdit: true,
+				roomEditFrom: this.ID
 			});
 		}
 	}
@@ -437,7 +455,7 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 		if (!this.customMode) {
 			setTimeout(() => {
 				this.createComponent.loadRoomComponents(
-					this.structure.roomComponents(this.container),
+					this.structure.getComponentContainer(this.container),
 					this.container,
 					false
 				);
@@ -454,6 +472,7 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 			if (!this.settings.modes.roomEdit) {
 				// only close popup in fhem mode, if editing mode is not active
 				this.showPopup = false;
+				this.editingEnabled = false;
 				this.backBtn.removeHandle(this.priority);
 
 				this.removeFhemComponents();
@@ -463,7 +482,7 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
 	private removeFhemComponents() {
 		// removing fhem components in popup from view
-		const popupComponents = this.helper.find(this.structure.rooms[this.roomID].components, 'ID', this.ID).item.attributes.components;
+		const popupComponents = this.structure.getComponentContainer(this.container);
 		for (let i = 0; i < popupComponents.length; i++) {
 			this.createComponent.removeFhemComponent(popupComponents[i].ID);
 		}
