@@ -24,7 +24,6 @@ import { Subscription } from 'rxjs';
 		[customMode]="true"
 		[(ngModel)]="editMode"
 		[headLine]="editRoom ? ('GENERAL.CHANGE_ROOM.TITLE' | translate) : ('GENERAL.CREATE_ROOM.TITLE' | translate)"
-		[popupHeight]="'60%'"
 		[fixPosition]="true"
 		(onClose)="settings.modeSub.next({changeRoom: false});"
 		[ngClass]="settings.app.theme">

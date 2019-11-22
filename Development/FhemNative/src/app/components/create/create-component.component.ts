@@ -21,8 +21,6 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 		[customMode]="true"
 		[headLine]="'GENERAL.CREATE_COMPONENT.POPUP_HEADER' | translate"
 		[(ngModel)]="showPopup"
-		[popupWidth]="'80%'"
-		[popupHeight]="'80%'"
 		[fixPosition]="true"
 		(onClose)="cancel()">
 		<div class="page-container create" [ngClass]="'page-'+pageIndex+'-active'">
@@ -31,7 +29,6 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 				<div class="component-list">
 					<ng-container *ngFor="let comp of createComponent.fhemComponents">
 						<div
-							*ngIf="validateComponentSelection(comp)"
 							matRipple [matRippleColor]="'#d4d4d480'"
 							class="item"
 							(click)="selectComponent(comp)">
@@ -259,7 +256,8 @@ export class CreateComponentComponent {
 
 	public addCompToRoom() {
 		this.settings.findNewColors([this.componentSelection.attributes.attr_style, this.componentSelection.attributes.attr_arr_style]);
-		const place = this.structure.roomComponents(this.container);
+		const place = this.structure.getComponentContainer(this.container);
+
 		this.createComponent.pushComponentToPlace(place, this.componentSelection);
 		// adding the new component to the current view
 		this.createComponent.loadRoomComponents([place[place.length - 1]], this.container, false);
@@ -273,6 +271,7 @@ export class CreateComponentComponent {
 	}
 
 	public validateComponentSelection(comp) {
+		console.log(comp);
 		if (!this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) {
 			return true;
 		} else {
