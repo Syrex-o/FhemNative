@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 				<ion-menu-button></ion-menu-button>
 				</ion-buttons>
 				<ion-title>{{structure.currentRoom.name}}</ion-title>
-				<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" (click)="settings.modeSub.next({roomEdit: true});">
+				<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" (click)="edit()">
 		            <ion-icon class="edit" name="create"></ion-icon>
 		        </button>
 			</ion-toolbar>
@@ -115,22 +115,33 @@ export class RoomComponent implements OnDestroy {
 	  		});
 	  		// subscribe to room Changes
 	  		this.editSub = this.settings.modeSub.subscribe(next =>{
-	  			if(next.hasOwnProperty('roomEdit')){
-					if(next.roomEdit){
+	  			if(next.hasOwnProperty('roomEdit') || next.hasOwnProperty('roomEditFrom')){
+					if(this.settings.modes.roomEdit){
 						// edit mode
 						this.createHelpers();
 					}else{
 						// finish edit mode
 						this.removeHelpers();
-						this.structure.removeCopyIndicators();
 					}
 				}
 	  		});
 	}
 
+	public edit(){
+		// tell the indicator, that editing was triggered from room with ID
+		this.settings.modeSub.next({
+			roomEdit: true,
+			roomEditFrom: this.structure.getCurrentRoom().item.ID
+		});
+	}
+
 	private createHelpers() {
-		this.createComponent.createSingleComponent('GridComponent', this.container, {container: this.container});
-		this.createComponent.createSingleComponent('CreateComponentComponent', this.container, {container: this.container});
+		if(this.structure.canEdit(this.structure.getCurrentRoom().item.ID)){
+			this.createComponent.createSingleComponent('GridComponent', this.container, {container: this.container});
+			this.createComponent.createSingleComponent('CreateComponentComponent', this.container, {container: this.container});
+		}else{
+			this.removeHelpers();
+		}
 	}
 
 	private removeHelpers() {
