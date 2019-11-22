@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.0.8';
+	public appVersion: string = '2.1.0';
 	// building default storage
 	public app: any = {};
 
@@ -34,8 +34,10 @@ export class SettingsService {
 
 	// app modes
 	public modes: any = {
-		// editing mode
+		// indicated edit mode
 		roomEdit: false,
+		// indicates who initiated editing
+		roomEditFrom: null,
 		changeRoom: false,
 		blockDefaultLoader: false,
 		fhemMenuMode: ''
@@ -60,7 +62,7 @@ export class SettingsService {
 		{name: 'customColors', default: JSON.stringify([]), toStorage: false, callback: (data:any)=>{if(data.length > 0){this.componentColors = this.componentColors.concat(data)}}},
 		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
 		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: 'app'},
-		{name: 'IPsettings', default: JSON.stringify({IP: '', PORT: '8080', WSS: false, type: 'Websocket'}), toStorage: false, callback: (data:any)=> {if(data.IP === ''){this.modes.fhemMenuMode = 'ip-config'}}}
+		{name: 'IPsettings', default: JSON.stringify({IP: '', PORT: '8080', WSS: false, type: 'Websocket', basicAuth: false, USER: '', PASSW: ''}), toStorage: false, callback: (data:any)=> {if(data.IP === ''){this.modes.fhemMenuMode = 'ip-config'}}}
 	];
 
 	// Available Icons for FhemNative
@@ -184,9 +186,39 @@ export class SettingsService {
 						// loading to dedicated variable
 						this[defaults[i].name] = res;
 					}
+					// check if new props added to a json setting
+					if(this.helper.testJSON(defaults[i].default)){
+						// default json options detected
+						const jsonSetting = JSON.parse(defaults[i].default);
+						let newProperties: boolean = false;
+						for (const [key, value] of Object.entries(jsonSetting)) {
+							if(res[key] === undefined){
+								// new property found
+								newProperties = true;
+								if(defaults[i].toStorage){
+									this[defaults[i].toStorage][defaults[i].name][key] = value;
+								}else{
+									this[defaults[i].name][key] = value;
+								}
+							}
+						}
+						if(newProperties){
+							if(defaults[i].toStorage){
+								this.storage.changeSetting({
+									name: defaults[i].name,
+									change: JSON.stringify(this[defaults[i].toStorage][defaults[i].name])
+								});
+							}else{
+								this.storage.changeSetting({
+									name: defaults[i].name,
+									change: JSON.stringify(this[defaults[i].name])
+								});
+							}
+						}
+					}
 					// determine callbacks
 					if(defaults[i].callback){
-						defaults[i].callback(res);
+						defaults[i].callback( (defaults[i].toStorage ? this[defaults[i].toStorage][defaults[i].name] : this[defaults[i].name]) );
 					}
 					if(i === defaults.length -1){
 						resolve()

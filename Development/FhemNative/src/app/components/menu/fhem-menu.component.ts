@@ -46,14 +46,38 @@ import { TranslateService } from '@ngx-translate/core';
 					<div class="config-container space">
 						<switch
 							[customMode]="true"
+							[padding]="false"
 							[(ngModel)]="settings.IPsettings.WSS"
 							[label]="'GENERAL.FHEM_MENU.CONNECTION.SECURE.TITLE' | translate"
 							[subTitle]="'GENERAL.FHEM_MENU.CONNECTION.SECURE.INFO' | translate">
 						</switch>
 					</div>
-				</div>
-				<div class="bottom-buttons">
-					<button matRipple [matRippleColor]="'#d4d4d480'" class="btn confirm single" (click)="confirmIPSettings()">{{ 'GENERAL.BUTTONS.CONFIRM' | translate }}</button>
+					<div class="config-container space">
+						<switch
+							[customMode]="true"
+							[padding]="false"
+							[(ngModel)]="settings.IPsettings.basicAuth"
+							[label]="'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.TITLE' | translate"
+							[subTitle]="'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.INFO' | translate">
+						</switch>
+					</div>
+					<ng-container *ngIf="settings.IPsettings.basicAuth">
+						<div class="config-container">
+							<p class="label">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.USER.TITLE' | translate }}</p>
+							<span class="description">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.USER.INFO' | translate }}</span>
+							<input [(ngModel)]="settings.IPsettings.USER" placeholder="{{settings.IPsettings.USER}}">
+			      			<span class="bar"></span>
+						</div>
+						<div class="config-container">
+							<p class="label">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.PASSW.TITLE' | translate }}</p>
+							<span class="description">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.PASSW.INFO' | translate }}</span>
+							<input [(ngModel)]="settings.IPsettings.PASSW" placeholder="{{settings.IPsettings.PASSW}}">
+			      			<span class="bar"></span>
+						</div>
+					</ng-container>
+					<div class="bottom-buttons">
+						<button matRipple [matRippleColor]="'#d4d4d480'" class="btn confirm single" (click)="confirmIPSettings()">{{ 'GENERAL.BUTTONS.CONFIRM' | translate }}</button>
+					</div>
 				</div>
 			</popup>
 		</div>
@@ -110,13 +134,13 @@ import { TranslateService } from '@ngx-translate/core';
 			max-height: calc(100% - 3% - 40px);
 		}
 		.config-container.space{
-			margin-top: 20px;
-			padding-bottom: 20px;
+			margin-top: 10px;
 			border-bottom: 1px solid #757575;
 		}
 		.bottom-buttons{
 			position: relative;
-			bottom: -20px;
+			margin-top: 20px;
+    		margin-bottom: 20px;
 			width: 100%;
 			height: 35px;
 		}
@@ -162,8 +186,7 @@ export class FhemMenuComponent implements OnInit, OnDestroy {
 	}
 
 	public confirmIPSettings() {
-		const res = {IP: this.settings.IPsettings.IP, PORT: this.settings.IPsettings.PORT, WSS: this.settings.IPsettings.WSS, type: this.settings.IPsettings.type};
-		this.storage.changeSetting({name: 'IPsettings', change: JSON.stringify(res)});
+		this.storage.changeSetting({name: 'IPsettings', change: JSON.stringify(this.settings.IPsettings)});
 
 		if (this.fhem.connected) {
 			this.fhem.disconnect();
