@@ -237,7 +237,7 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 	   			window.removeEventListener('mouseup', endMove);
 	   			window.removeEventListener('touchend', endMove);
 	   			if (this.fhemDevice) {
-					if (parseInt(this.fhemDevice.readings[this.data_reading].Value) !== this.value) {
+					if (parseFloat(this.fhemDevice.readings[this.data_reading].Value) !== this.value) {
 						this.sendValue(this.value);
 					}
 				}
@@ -261,7 +261,7 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 			this.fhem.getDevice(this.data_device, this.data_reading).then((device) => {
 				this.fhemDevice = device;
 				if (device) {
-					this.value = parseInt(this.fhemDevice.readings[this.data_reading].Value);
+					this.value = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
 					this.data_label = (this.data_label === '') ? this.fhemDevice.device : this.data_label;
 					this.deviceChange = this.fhem.devicesSub.subscribe(next => {
 						this.listen(next);
@@ -275,7 +275,7 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 	private listen(update) {
 		if (update.found.device === this.data_device) {
 			if (update.change.changed[this.data_reading]) {
-				const updateValue = parseInt(update.change.changed[this.data_reading]);
+				const updateValue = parseFloat(update.change.changed[this.data_reading]);
 				if (updateValue !== this.value) {
 					this.value = updateValue;
 					this.invalidate();
@@ -516,7 +516,7 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 		}
 
 		const value = this.toValueNumber(relativeValue);
-		this.value = parseInt(value.toFixed(0));
+		this.value = parseFloat(value.toFixed(1));
 		this.invalidatePinPosition();
 		if (this.bool_data_updateOnMove) {
 			this.waitForThreshold += 1;
