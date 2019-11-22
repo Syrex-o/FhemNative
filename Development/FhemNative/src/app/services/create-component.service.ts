@@ -123,6 +123,7 @@ export class CreateComponentService {
 		const factoryClass = factories.find((x: any) => x.key === name) as Type<any>;
 		const component = this.containerComponents.find((component) => component.instance instanceof factoryClass);
 		const componentIndex = this.containerComponents.indexOf(component);
+
 		if (componentIndex !== -1 && container && container.indexOf(component) !== -1) {
 			container.remove(container.indexOf(component));
 			this.containerComponents.splice(componentIndex, 1);
