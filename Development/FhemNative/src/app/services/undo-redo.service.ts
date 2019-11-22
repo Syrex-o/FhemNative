@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
 import { StructureService } from './structure.service';
 import { CreateComponentService } from './create-component.service';
+import { SelectComponentService } from './select-component.service';
 
 // Room Component
 import { RoomComponent } from '../components/room/room.component';
@@ -24,7 +25,8 @@ export class UndoRedoService {
 	constructor(
 		private settings: SettingsService,
 		private structure: StructureService,
-		private createComponent: CreateComponentService){
+		private createComponent: CreateComponentService,
+		private selectComponent: SelectComponentService){
 		// subscribe to room editor
 		this.settings.modeSub.subscribe(next =>{
 			if(next.hasOwnProperty('roomEdit')){
@@ -100,6 +102,7 @@ export class UndoRedoService {
 			this.evaluateStack(-1);
 			// load relevant components
 			this.loadRoomStructure();
+			this.selectComponent.reconstructCopySelectorList();
 		}
 	}
 
@@ -115,6 +118,7 @@ export class UndoRedoService {
 			this.evaluateStack(1);
 			// load relevant components
 			this.loadRoomStructure();
+			this.selectComponent.reconstructCopySelectorList();
 		}
 	}
 
