@@ -36,6 +36,8 @@ import { DirectivesModule } from '../directives/directives.module';
 
 // Services
 import { CreateComponentService } from '../services/create-component.service';
+import { SelectComponentService } from '../services/select-component.service';
+import { ShortcutService } from '../services/shortcut.service';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -75,7 +77,9 @@ export function createTranslateLoader(http: HttpClient) {
 		FHEM_COMPONENT_REGISTRY
 	],
 	providers:[
-		CreateComponentService
+		CreateComponentService,
+		SelectComponentService,
+		ShortcutService
 	],
 	exports: [
 		RoomComponent,
