@@ -614,6 +614,14 @@
 					"name": "Kopfzeile",
 					"info": "Label der Kopfzeile im Popup"
 				},
+				"data_width":{
+					"name": "Popup Breite",
+					"info": "Breite des Popups in %"
+				},
+				"data_height":{
+					"name": "Popup Höhe",
+					"info": "Höhe des Popups in %"
+				},
 				"bool_data_openOnReading":{
 					"name": "Öffnen bei Reading",
 					"info": "Aktivieren/deaktivieren des automatischen öffnens bei Reading"
@@ -1135,6 +1143,7 @@
 			"ADDED": "hinzugefügt",
 			"NO_ROOMS_ADDED_TITLE": "Keine Räume hinzugefügt:",
 			"NO_ROOMS_ADDED_INFO": "Alle Räume sind bereits in FhemNative enthalten.",
+			"NO_ROOMS_ADDED_INFO_NOT_FOUND": "Es konnten keine Räume von Fhem generiert werden.",
 			"NO_COMPONENTS_ADDED_TITLE": "Keine Komponenten hinzugefügt:",
 			"NO_COMPONENTS_ADDED_INFO": "Keine Komponenten für FhemNative gefunden.",
 			"NO_COMPONENTS_ADDED_REASON_TITLE": "Nicht hinzugefügte Komponenten:",
@@ -1388,6 +1397,7 @@
 				"SELECT": "Selektieren",
 				"UNSELECT": "Nicht Selektieren",
 				"SELECT_ALL": "Alles selektieren",
+				"DESELECT_ALL": "Alles deselektieren",
 				"PASTE": "Einfügen",
 				"DELETE": "Löschen"
 			}
@@ -1410,6 +1420,18 @@
 				"SECURE":{
 					"TITLE": "Sichere Verbindung",
 					"INFO": "Sichere Verbindung aktivieren/deaktivieren"
+				},
+				"BASIC_AUTH":{
+					"TITLE": "Basic Auth.",
+					"INFO": "Basic Authentifizierung aktivieren/deaktivieren",
+					"USER":{
+						"TITLE": "Benutzername",
+						"INFO": "Benutzername für Basic Auth."
+					},
+					"PASSW":{
+						"TITLE": "Passwort",
+						"INFO": "Passwort für Basic Auth."
+					}
 				}
 			}
 		},

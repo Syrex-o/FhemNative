@@ -614,6 +614,14 @@
 					"name": "Headline",
 					"info": "Headline of the popup"
 				},
+				"data_width":{
+					"name": "Popup Width",
+					"info": "Width of the popup in %"
+				},
+				"data_height":{
+					"name": "Popup Height",
+					"info": "Height of the popup in %"
+				},
 				"bool_data_openOnReading":{
 					"name": "Open on reading",
 					"info": "Enable/disable to open popup on reading"
@@ -1135,6 +1143,7 @@
 			"ADDED": "added",
 			"NO_ROOMS_ADDED_TITLE": "No rooms added:",
 			"NO_ROOMS_ADDED_INFO": "All rooms are already included in FhemNative.",
+			"NO_ROOMS_ADDED_INFO_NOT_FOUND": "No room from Fhem could be generated.",
 			"NO_COMPONENTS_ADDED_TITLE": "No components added:",
 			"NO_COMPONENTS_ADDED_INFO": "No components for FhemNative found.",
 			"NO_COMPONENTS_ADDED_REASON_TITLE": "Not added components:",
@@ -1388,6 +1397,7 @@
 				"SELECT": "Select",
 				"UNSELECT": "Deselect",
 				"SELECT_ALL": "Select all",
+				"DESELECT_ALL": "Deselect all",
 				"PASTE": "Paste",
 				"DELETE": "Delete"
 			}
@@ -1410,6 +1420,18 @@
 				"SECURE":{
 					"TITLE": "Secure connection",
 					"INFO": "Enable/disable to establish a secure connection"
+				},
+				"BASIC_AUTH":{
+					"TITLE": "Basic Auth.",
+					"INFO": "Activate/deactivate basic authentification",
+					"USER":{
+						"TITLE": "Username",
+						"INFO": "Username for Basic Auth."
+					},
+					"PASSW":{
+						"TITLE": "Password",
+						"INFO": "Password for Basic Auth."
+					}
 				}
 			}
 		},
