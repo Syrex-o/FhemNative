@@ -29,8 +29,12 @@ export class FhemService {
 
 	private socket: any;
 
+	private tries: number = 0;
+	private maxTries: number = 10;
+
 	// no Reconnect
 	public noReconnect = false;
+	private timeout:any;
 
 	// list of device to listen for changes
 	private listenDevices: Array<any> = [];
@@ -79,19 +83,19 @@ export class FhemService {
       			if (!this.combinedDevices.includes(next.found.device)) {
       				this.combinedDevices.push(next.found.device);
       				if (!timerRuns) {
-      				timerRuns = true;
-      				setTimeout(() => {
-      					if (this.combinedDevices.length > 0) {
-      						this.toast.addToast(
-      							this.translate.instant('GENERAL.FHEM.TITLE'),
-      							this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + this.combinedDevices.join(', '),
-      							'info'
-      						);
-      						this.combinedDevices = [];
-      					}
-      					timerRuns = false;
-      				}, 300);
-      			}
+	      				timerRuns = true;
+	      				setTimeout(() => {
+	      					if (this.combinedDevices.length > 0) {
+	      						this.toast.addToast(
+	      							this.translate.instant('GENERAL.FHEM.TITLE'),
+	      							this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + this.combinedDevices.join(', '),
+	      							'info'
+	      						);
+	      						this.combinedDevices = [];
+	      					}
+	      					timerRuns = false;
+	      				}, 300);
+	      			}
       			}
       		}
       	});
@@ -148,35 +152,21 @@ export class FhemService {
     			list.push(obj.value);
     		}
     	}
-    	// components in rooms
-    	this.structure.rooms.forEach((room)=>{
-    		room.components.forEach((component)=>{
-    			test(component.attributes.attr_data.find(x=> x.attr === 'data_device'));
 
-    			if(component.attributes.components){
-    				// check for swiper
-    				if(component.attributes.components[0].components){
-    					component.attributes.components.forEach((comp)=>{
-    						let d = comp.components.filter(x=> x.attributes.attr_data.find(y=> y.attr === 'data_device'));
-    						d.forEach((item)=>{
-		    					test(item.attributes.attr_data.find(x=> x.attr === 'data_device'));
-		    				});
-    					});
-    				}else{
-    					// must be simple container (popup)
-    					let d = component.attributes.components.filter(x=> x.attributes.attr_data.find(y=> y.attr === 'data_device'));
-	    				d.forEach((item)=>{
-	    					test(item.attributes.attr_data.find(x=> x.attr === 'data_device'));
-	    				});
-    				}
+    	this.structure.rooms.forEach((room)=>{
+    		this.structure.modifyComponentList(room.components,  (cb)=>{
+    			if(cb.attributes.attr_data){
+    				test(cb.attributes.attr_data.find(x=> x.attr === 'data_device'));
     			}
     		});
     	});
+
     	list = '('+list.join('|')+')';
     	// add fhem defined relevant components , if needed
     	if(this.settings.app.loadFhemDevices.option === 'Fhem_Defined'){
     		list = 'group=FhemNative,'+list
     	}
+    	
     	return list;
     }
 
@@ -189,13 +179,19 @@ export class FhemService {
 				const type = this.connectionEvaluator();
 				if (type === 'websocket') {
 					// external websocket connection
-					url = (this.settings.IPsettings.WSS ? 'wss://' : 'ws://') + this.settings.IPsettings.IP + ':' + this.settings.IPsettings.PORT;
+					url = (this.settings.IPsettings.WSS ? 'wss://' : 'ws://') + 
+					(this.settings.IPsettings.basicAuth ? this.settings.IPsettings.USER + ':' + this.settings.IPsettings.PASSW + '@' : '' ) + 
+					this.settings.IPsettings.IP + ':' + this.settings.IPsettings.PORT;
+
 					this.socket = new WebSocket(url, ['json']);
 				}
 				if (type === 'fhemweb') {
 					// fhemweb connection
-					url = (this.settings.IPsettings.WSS ? 'wss://' : 'ws://') + this.settings.IPsettings.IP + ':' + this.settings.IPsettings.PORT +
+					url = (this.settings.IPsettings.WSS ? 'wss://' : 'ws://') + 
+					(this.settings.IPsettings.basicAuth ? this.settings.IPsettings.USER + ':' + this.settings.IPsettings.PASSW + '@' : '' ) + 
+					this.settings.IPsettings.IP + ':' + this.settings.IPsettings.PORT +
 					'?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now();
+
 					this.socket = new WebSocket(url);
 				}
 				// clearing device lists
@@ -233,7 +229,10 @@ export class FhemService {
 					};
 				}
 				// timeout for connection
-				const timeout = setTimeout(() => {
+				if(this.timeout){
+					clearTimeout(this.timeout);
+				}
+				this.timeout = setTimeout(() => {
 					// check if connection ever was established
 					if (!this.connected) {
 						this.noReconnect = true;
@@ -243,18 +242,21 @@ export class FhemService {
 							'error'
 						);
 						reject({type: 'timeout'});
+						this.tries = 0;
 					}
-				}, 5000);
-
+				}, 3000);
 			}
 		});
     }
 
     private reconnect(){
     	if (!this.noReconnect) {
-    		const timeout = setTimeout(() => {
-				this.connectFhem();
-			}, 500);
+    		this.tries ++;
+    		if(this.tries <= this.maxTries){
+    			const timeout = setTimeout(() => {
+					this.connectFhem();
+				}, 1000);
+    		}
     	}
     }
 
