@@ -2,23 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Directives
-import { LongPressDirective } from './long-press.directive';
 import { Resize } from './resize.directive';
-import { DoubleClick } from './double-click.directive';
+import { ClickerDirective } from './clicker.directive';
 
 @NgModule({
 		declarations: [
-			LongPressDirective,
 			Resize,
-			DoubleClick
+			ClickerDirective
 		],
 		imports: [
 			CommonModule
 		],
 		exports: [
-			LongPressDirective,
 			Resize,
-			DoubleClick
+			ClickerDirective
 		]
 })
 export class DirectivesModule { }
