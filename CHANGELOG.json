@@ -143,6 +143,32 @@
       			{"TYPE": "FIX", "CHANGE": "Edit Component for Swiper"},
       			{"TYPE": "FIX", "CHANGE": "Swiper Properties"}
       		]
+    	},
+    	{
+      		"VERSION": "2.1.0",
+      		"DATE": "22.11.2019",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Component Containers can now be passed in component containers"},
+      			{"TYPE": "NEW", "CHANGE": "New component selection strategy"},
+      			{"TYPE": "NEW", "CHANGE": "Moving multiple components at the same time is now possible"},
+      			{"TYPE": "NEW", "CHANGE": "Added Fhem connection tries"},
+      			{"TYPE": "NEW", "CHANGE": "Popup has width and height property now"},
+      			{"TYPE": "NEW", "CHANGE": "New deep UID generator for copy and paste"},
+      			{"TYPE": "NEW", "CHANGE": "New Grid creation strategy (only one grid at the same time)"},
+      			{"TYPE": "NEW", "CHANGE": "Right click context menu is now available"},
+      			{"TYPE": "NEW", "CHANGE": "Auto selection of new components after paste"},
+      			{"TYPE": "NEW", "CHANGE": "Added Shortcuts for Desktop"},
+      			{"TYPE": "NEW", "CHANGE": "Added Basic Authentification for FHEMWEB"},
+      			{"TYPE": "NEW", "CHANGE": "Longpress for context menu"},
+      			{"TYPE": "NEW", "CHANGE": "More Option in context menu on grid"},
+      			{"TYPE": "FIX", "CHANGE": "Changelog now shows current app version at first"},
+      			{"TYPE": "FIX", "CHANGE": "Fixed Sweiper Grid construction on change to room"},
+      			{"TYPE": "FIX", "CHANGE": "Changelog disabled selection for not available versions"},
+      			{"TYPE": "FIX", "CHANGE": "Circle Slider decimals display"},
+      			{"TYPE": "FIX", "CHANGE": "Response of Auto generators"},
+      			{"TYPE": "FIX", "CHANGE": "Device Getter now accepts deep nested components"},
+      			{"TYPE": "DEL", "CHANGE": "Removed restrictions to copy/paste and create components"}
+      		]
     	}
 	]
 }
