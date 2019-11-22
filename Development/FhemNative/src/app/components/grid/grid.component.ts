@@ -1,8 +1,13 @@
 import { Component, ViewChild, ElementRef, OnInit, OnDestroy, HostListener, Input } from '@angular/core';
 
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+
 import { SettingsService } from '../../services/settings.service';
-import { StructureService } from '../../services/structure.service';
 import { CreateComponentService } from '../../services/create-component.service';
+import { SelectComponentService } from '../../services/select-component.service';
+import { ShortcutService } from '../../services/shortcut.service';
+import { UndoRedoService } from '../../services/undo-redo.service';
 
 @Component({
 	selector: 'grid',
@@ -12,7 +17,9 @@ import { CreateComponentService } from '../../services/create-component.service'
 			double-click
 			[editingEnabled]="settings.modes.roomEdit"
 			[source]="'grid'"
-			(onDoubleClick)="loadContextMenu($event)">
+			(onDoubleClick)="loadContextMenu($event)"
+			(onRightClick)="loadContextMenu($event)"
+			(onLongClick)="loadContextMenu($event)">
 			<span *ngFor="let w of gridW; let i = index;" class="line w" [ngStyle]="{'left.px': w, 'height.px': gridHeight}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
 			<span *ngFor="let h of gridH; let i = index;" class="line h" [ngStyle]="{'top.px': h}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
 		</div>
@@ -51,11 +58,14 @@ import { CreateComponentService } from '../../services/create-component.service'
 })
 
 export class GridComponent implements OnInit, OnDestroy {
+	private killShortcuts = new Subject<void>();
 
 	constructor(
 		public settings: SettingsService,
 		private createComponent: CreateComponentService,
-		private structure: StructureService) {
+		private selectComponent: SelectComponentService,
+		private shortcuts: ShortcutService,
+		private undoManager: UndoRedoService) {
 	}
 
 	static key = 'GridComponent';
@@ -94,17 +104,59 @@ export class GridComponent implements OnInit, OnDestroy {
 		setTimeout(() => {
 			document.getElementById(this.container.element.nativeElement.parentNode.id).addEventListener('scroll', this.scrollL);
 		}, 0);
+
+		// add shortcuts
+		// select/deselect all
+		this.shortcuts.addShortcut({ keys: 'Control.a' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+			if(!this.selectComponent.evalCopySelectorAll(this.container)){
+				// not all components selected
+				this.selectComponent.buildCopySelectorAll(this.container);
+			}else{
+				// all components are selected
+				this.selectComponent.removeContainerCopySelector(this.container, true);
+			}
+			this.selectComponent.buildCopySelectorAll
+		});
+		// copy selection
+		this.shortcuts.addShortcut({ keys: 'Control.c' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+			if(this.selectComponent.selectorList.length > 0){
+				this.selectComponent.copyComponent(false, this.container);
+			}
+		});
+		// paste selection
+		this.shortcuts.addShortcut({ keys: 'Control.v' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+			if(this.selectComponent.copyList.length > 0){
+				this.selectComponent.pasteComponent(this.container);
+				// save config
+				this.saveComp();
+				this.selectComponent.removeContainerCopySelector(this.container, true);
+			}
+		});
+		// delete selection
+		this.shortcuts.addShortcut({ keys: 'Control.d' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+			if(this.selectComponent.selectorList.length > 0){
+				this.selectComponent.removeComponent(false, this.container);
+				// save config
+				this.saveComp();
+			}
+		});
+		// undo 
+		this.shortcuts.addShortcut({ keys: 'Control.z' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+			this.undoManager.undoChange();
+		});
+		// redo 
+		this.shortcuts.addShortcut({ keys: 'Control.y' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+			this.undoManager.redoChange();
+		});
 	}
 
 	public loadContextMenu(e) {
-		if (this.structure.componentCopy) {
-			this.createComponent.createSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer, {
-				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
-				y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
-				source: 'grid',
-				container: this.container
-			});
-		}
+		this.createComponent.createSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer, {
+			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
+			y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
+			source: 'grid',
+			container: this.container
+		});
 	}
 
 	private getParentDimensions() {
@@ -118,22 +170,34 @@ export class GridComponent implements OnInit, OnDestroy {
 		if (this.container.element.nativeElement.parentNode.id) {
 			document.getElementById(this.container.element.nativeElement.parentNode.id).removeEventListener('scroll', this.scrollL);
 		}
+
+		// remove shortcuts
+		this.killShortcuts.next();
+		this.killShortcuts.complete();
+	}
+
+	// refers to same logic as edit component
+	private saveComp(){
+		// removing the editor
+		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
+		// add to change stack
+		this.undoManager.addChange();
 	}
 
 	private buildGrid() {
 		setTimeout(() => {
 			this.getParentDimensions();
 			this.gridW = [];
-	  this.gridH = [];
-	  const gridW = this.parent.width;
-	  const gridH = this.parent.height;
-	  this.gridHeight = gridH;
+	  		this.gridH = [];
+	  		const gridW = this.parent.width;
+	  		const gridH = this.parent.height;
+	  		this.gridHeight = gridH;
 			const WS = Math.floor(gridW / this.settings.app.grid.gridSize);
-	  const HS = Math.floor(gridH / this.settings.app.grid.gridSize);
-	  for (let i = 1; i <= WS; i++) {
+	  		const HS = Math.floor(gridH / this.settings.app.grid.gridSize);
+	  		for (let i = 1; i <= WS; i++) {
 		      	this.gridW.push(this.settings.app.grid.gridSize * i);
 		    }
-		 for (let i = 1; i <= HS; i++) {
+		 	for (let i = 1; i <= HS; i++) {
 		      	this.gridH.push(this.settings.app.grid.gridSize * i);
 		    }
 		}, 0);
