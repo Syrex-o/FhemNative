@@ -137,7 +137,7 @@ export class ImageComponent implements OnInit {
 	public selectImage() {
 		if (this.platform.is('mobile')) {
 			this.imagePicker.getPictures({ quality: 100, maximumImagesCount: 1}).then(results => {
-				this.structure.selectedElement(this.ID, this.helper.find(this.createComponent.containerComponents, 'ID', this.ID).item.container).attributes.data.find((x) => {
+				this.structure.getComponent(this.ID).attributes.data.find((x)=>{
 					if (x.attr === 'data_url') {
 						x.value = this.webview.convertFileSrc(results[0]);
 					}
