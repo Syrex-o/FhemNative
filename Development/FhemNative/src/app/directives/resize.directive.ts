@@ -3,6 +3,7 @@ import { Directive, Input, ElementRef, OnChanges, SimpleChanges, Output, EventEm
 import { SettingsService } from '../services/settings.service';
 import { StructureService } from '../services/structure.service';
 import { CreateComponentService } from '../services/create-component.service';
+import { SelectComponentService } from '../services/select-component.service';
 import { UndoRedoService } from '../services/undo-redo.service';
 
 @Directive({ selector: '[resize]' })
@@ -18,21 +19,27 @@ export class Resize implements OnChanges, AfterViewInit {
 	@Output() onResize = new EventEmitter();
 	@Output() onMove = new EventEmitter();
 
-	private elem: any = {left: 0, top: 0, width: 0, height: 0};
-	private elemContainer;
+	private elemContainer: any;
 
 	private mouse: any = {x: 0, y: 0};
 	private scroller = 0;
 
-	private width: any;
-	private height: any;
-	private top: any;
-	private left: any;
-
 	private offset: any = {top: 56, left: 0, right: 0};
 
 	private moved = false;
-	private selected: any;
+
+	// trigger once per movement
+	private startMove: boolean = false;
+
+	// Testing
+	private elemList: any = {
+		elements: [],
+		components: [],
+		width: [],
+		height: [],
+		top: [],
+		left: []
+	};
 
 	constructor(
 		private ref: ElementRef,
@@ -40,6 +47,7 @@ export class Resize implements OnChanges, AfterViewInit {
 		private structure: StructureService,
 		private renderer: Renderer2,
 		private createComponent: CreateComponentService,
+		private selectComponent: SelectComponentService,
 		private undoManager: UndoRedoService) {
 		this.hostEl = ref.nativeElement;
 	}
@@ -55,7 +63,7 @@ export class Resize implements OnChanges, AfterViewInit {
 					const containerID = x.REF.hostView._viewContainerRef.element.nativeElement.parentNode.id;
 					const swiperIndex = containerID.match(/\d+/)[0];
 
-					this.elemContainer = x.REF._view.viewContainerParent.component.containers[swiperIndex];
+					this.elemContainer = x.REF._view.viewContainerParent.component.containers['_results'] ? x.REF._view.viewContainerParent.component.containers['_results'][swiperIndex] : x.REF._view.viewContainerParent.component.containers[swiperIndex];
 				}
 			}
 		});
@@ -74,8 +82,11 @@ export class Resize implements OnChanges, AfterViewInit {
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
 		if (this.editingEnabled) {
+			// one start 
+			this.startMove = true;
 
-			this.getPos(event);
+			this.getStartPos(event);
+
 	    	// getting container offsets
 	  		const container: any = document.getElementById(this.elemContainer.element.nativeElement.parentNode.id).getBoundingClientRect();
 			this.offset.top = container.y;
@@ -91,21 +102,35 @@ export class Resize implements OnChanges, AfterViewInit {
 
 	        	// save the item position, if the element was moved
 	   			if (this.moved) {
-					this.structure.saveItemPosition({
-						item: this.selected,
-						dimensions: {
-							width: this.width,
-							height: this.height,
-							top: this.top,
-							left: this.left
-						},
-					}, false);
-					this.resized.emit({width: this.width, height: this.height});
+	   				if(this.selectComponent.selectorList.length === 1){
+						this.selectComponent.removeCopySelector(this.hostEl.id);
+					}
+					this.elemList.elements.forEach((elem, i)=>{
+						const selected = this.structure.getComponent(elem.id).position;
+						this.structure.saveItemPosition({
+							item: selected,
+							dimensions: {
+								width: this.elemList.width[i],
+								height: this.elemList.height[i],
+								top: this.elemList.top[i],
+								left: this.elemList.left[i]
+							}
+						}, false);
+						this.emitHostEvent('resized', i);
+					});
 					// add change event
 					this.undoManager.addChange();
 				}
 			};
 			const whileMove = (e) => {
+				if(!this.selectComponent.evalCopySelector(this.hostEl.id) && this.startMove){
+					this.selectComponent.removeContainerCopySelector(false, true);
+					this.selectComponent.buildCopySelector(this.hostEl.id, false, this.elemContainer);
+				}
+				if(this.startMove){
+					this.getItemPos(e);
+				}
+				this.startMove = false;
 				if (target.className === 'overlay-move') {
 					this.mover(e);
 				} else {
@@ -131,7 +156,7 @@ export class Resize implements OnChanges, AfterViewInit {
 	private responseToDeviceChange() {
 		// resize component if needed
 		if (this.settings.app.responsiveResize) {
-			const component = this.structure.selectedElement(this.hostEl.id, this.elemContainer);
+			const component = this.structure.getComponent(this.hostEl.id);
 			const position = component.position;
 			let scaler;
 			if (component.createScaler) {
@@ -146,17 +171,17 @@ export class Resize implements OnChanges, AfterViewInit {
 				const width = parseInt(position.width);
 				const left = parseInt(position.left ? position.left : 0);
 
-				this.width = Math.round(this.roundToGrid(width / scaler.width * window.innerWidth));
-				this.left = Math.round(this.roundToGrid(left / scaler.width * window.innerWidth));
+				let w = Math.round(this.roundToGrid(width / scaler.width * window.innerWidth));
+				const l = Math.round(this.roundToGrid(left / scaler.width * window.innerWidth));
 
   				// check, that components are not smaller that allowed
-  				this.width = this.width >= this.minimumWidth ? this.width : this.minimumWidth;
+  				w = w >= this.minimumWidth ? w : this.minimumWidth;
 
   				// adding transition style: like in popup
   				this.hostEl.style.transition = 'all .3s cubic-bezier(.17,.67,.54,1.3)';
 
-  				this.hostEl.style.width = this.width + 'px';
-  				this.hostEl.style.left = this.left + 'px';
+  				this.hostEl.style.width = w + 'px';
+  				this.hostEl.style.left = l + 'px';
 
   				// removing transition style
   				const timeout = setTimeout(() => {
@@ -168,8 +193,8 @@ export class Resize implements OnChanges, AfterViewInit {
 				this.structure.saveItemPosition({
 					item: component.position,
 					dimensions: {
-						width: this.width,
-						left: this.left
+						width: w,
+						left: l
 					},
 				}, true);
 			}
@@ -186,10 +211,10 @@ export class Resize implements OnChanges, AfterViewInit {
 				+ '<span class="rect top-right"></span>'
 				+ '<span class="rect bottom-left"></span>'
 				+ '<span class="rect bottom-right"></span>'
-				+ '<span class="rect center-top"></span>'
-				+ '<span class="rect center-left"></span>'
-				+ '<span class="rect center-right"></span>'
-				+ '<span class="rect center-bottom"></span>'
+				+ '<span class="rect top-center"></span>'
+				+ '<span class="rect left-center"></span>'
+				+ '<span class="rect right-center"></span>'
+				+ '<span class="rect bottom-center"></span>'
 				+ '<span class="overlay-move"></span>'
 			);
 		}
@@ -202,18 +227,36 @@ export class Resize implements OnChanges, AfterViewInit {
 		}
 	}
 
-	private getPos(e) {
-		const el = this.hostEl.getBoundingClientRect();
-		this.elem.left = el.x;
-		this.elem.top = el.y;
-		this.elem.height = this.height = el.height;
-		this.elem.width = this.width = el.width;
+	private getStartPos(e) {
 		// mouse Position
 		this.mouse.x = e.pageX || (e.touches ? e.touches[0].clientX : 0);
 		this.mouse.y = e.pageY || (e.touches ? e.touches[0].clientY : 0);
 		this.offset = {top: 56, left: 0, right: 0};
-		// selected Element
-		this.selected = this.structure.selectedElement(this.hostEl.id, this.elemContainer).position;
+	}
+
+	private getItemPos(e){
+		this.elemList.elements = [];
+		this.elemList.components = [];
+		this.elemList.width = [];
+		this.elemList.height = [];
+		this.elemList.top = [];
+		this.elemList.left = [];
+
+		this.selectComponent.selectorList.forEach((selector)=>{
+			const el = document.getElementById(selector.ID);
+			const bounding:any = el.getBoundingClientRect();
+			this.elemList.elements.push(el);
+			this.elemList.components.push(bounding);
+			this.elemList.width.push(bounding.width);
+			this.elemList.height.push(bounding.height);
+			this.elemList.top.push(bounding.y);
+			this.elemList.left.push(bounding.x);
+		});
+	}
+
+	// relevant callback (onmove, onresize)
+	private emitHostEvent(callbackEvent, index){
+		this[callbackEvent].emit({top: this.elemList.top[index], left: this.elemList.left[index], width: this.elemList.width[index], height: this.elemList.height[index]});
 	}
 
 	private mover(e) {
@@ -223,17 +266,22 @@ export class Resize implements OnChanges, AfterViewInit {
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
 		};
 		this.scroller = this.evaluateScroller();
-		// left maximal and minimal
-		const left = this.roundToGrid((d.x - this.mouse.x + this.elem.left) - this.offset.left);
-		this.left = (left >= 0 && left + this.elem.width + this.offset.left <= (window.innerWidth - this.offset.right)) ? left : this.left;
-		this.hostEl.style.left = this.left + 'px';
 
-		// top maximal and minimal
-		const top = this.roundToGrid(((d.y - this.mouse.y + this.elem.top) - this.offset.top) + this.scroller);
-		this.top = (top >= 0) ? top : this.top;
-		this.hostEl.style.top = this.top + 'px';
+		// move each element in stack
+		this.elemList.components.forEach((elem, i)=>{
+			// left positioning
+			const left = this.roundToGrid((d.x - this.mouse.x + elem.left) - this.offset.left);
+			this.elemList.left[i] = (left >= 0 && left + elem.width + this.offset.left <= (window.innerWidth - this.offset.right)) ? left : this.elemList.left[i];
+			this.elemList.elements[i].style.left = this.elemList.left[i] + 'px';
 
-		this.onMove.emit({top: this.top, left: this.left, width: this.width, height: this.height});
+			// top positioning
+			const top = this.roundToGrid(((d.y - this.mouse.y + elem.top) - this.offset.top) + this.scroller);
+			this.elemList.top[i] = (top >= 0) ? top : this.elemList.top[i];
+			this.elemList.elements[i].style.top = this.elemList.top[i] + 'px';
+
+			// emit onMove event
+			this.emitHostEvent('onMove', i);
+		});
 		this.moved = true;
 	}
 
@@ -244,143 +292,61 @@ export class Resize implements OnChanges, AfterViewInit {
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
 		};
 		this.scroller = this.evaluateScroller();
-		let width = 0, height = 0, top = 0, left = 0;
-		if (target.className == 'rect top-right') {
-			// width maximal and minimal
-			width = this.roundToGrid(this.elem.width + (d.x - this.mouse.x));
-			this.width = (width + this.elem.left <= (window.innerWidth - this.offset.right) && width >= this.minimumWidth) ? width : this.width;
-			this.hostEl.style.width = this.width + 'px';
 
-			// height maximal and minimal
-			height = this.roundToGrid(this.elem.height - (d.y - this.mouse.y));
-			this.height = (height >= this.minimumHeight && this.top > 0) ? height : this.height;
-			this.hostEl.style.height = this.height + 'px';
-
-			// top maximal and minimal
-			top = this.roundToGrid((d.y - this.mouse.y) + (this.elem.top - this.offset.top) + this.scroller);
-			this.top = (top >= 0 && height >= this.minimumHeight) ? top : this.top;
-			this.hostEl.style.top = this.top + 'px';
-
-			if (this.width > this.minimumWidth && this.height > this.minimumHeight) {
-				this.onResize.emit({width: this.width, height: this.height});
-			}
+		if(target.className.match(/(rect.*(-right|right-))/)){
+			this.elemList.components.forEach((elem, i)=>{
+				// width maximal and minimal
+				const width = this.roundToGrid(elem.width + (d.x - this.mouse.x));
+				this.elemList.width[i] = (width + elem.left <= (window.innerWidth - this.offset.right) && width >= this.minimumWidth) ? width : this.elemList.width[i];
+				this.elemList.elements[i].style.width = this.elemList.width[i] + 'px';
+			});
 		}
-		if (target.className == 'rect top-left') {
-			// width maximal and minimal
-			width = this.roundToGrid(this.elem.width - (d.x - this.mouse.x));
-			this.width = (width >= this.minimumWidth && this.left > 0) ? width : this.width;
-			this.hostEl.style.width = this.width + 'px';
+		if(target.className.match(/(rect.*(-left|left-))/)){
+			this.elemList.components.forEach((elem, i)=>{
+				// width maximal and minimal
+				const width = this.roundToGrid(elem.width - (d.x - this.mouse.x));
+				this.elemList.width[i] = (width >= this.minimumWidth && this.elemList.left[i] > 0) ? width : this.elemList.width[i];
+				this.elemList.elements[i].style.width = this.elemList.width[i] + 'px';
 
-			// left maximal and minimal
-			left = this.roundToGrid(((d.x - this.mouse.x) + this.elem.left) - this.offset.left);
-			this.left = (left >= 0 && width >= this.minimumWidth) ? left : this.left;
-			this.hostEl.style.left = this.left + 'px';
-
-			// height maximal and minimal
-			height = this.roundToGrid(this.elem.height - (d.y - this.mouse.y));
-			this.height = (height >= this.minimumHeight && this.top > 0) ? height : this.height;
-			this.hostEl.style.height = this.height + 'px';
-
-			// top maximal and minimal
-			top = this.roundToGrid((d.y - this.mouse.y) + (this.elem.top - this.offset.top) + this.scroller);
-			this.top = (top >= 0 && height >= this.minimumHeight) ? top : this.top;
-			this.hostEl.style.top = this.top + 'px';
-
-			if (this.height > this.minimumHeight && this.width > this.minimumWidth) {
-				this.onResize.emit({width: this.width, height: this.height});
-			}
+				// left maximal and minimal
+				const left = this.roundToGrid(((d.x - this.mouse.x) + elem.left) - this.offset.left);
+				this.elemList.left[i] = (left >= 0 && width >= this.minimumWidth) ? left : this.elemList.left[i];
+				this.elemList.elements[i].style.left = this.elemList.left[i] + 'px';
+			});
 		}
-		if (target.className == 'rect bottom-left') {
-			// width maximal and minimal
-			width = this.roundToGrid(this.elem.width - (d.x - this.mouse.x));
-			this.width = (width >= this.minimumWidth && this.left > 0) ? width : this.width;
-			this.hostEl.style.width = this.width + 'px';
+		if(target.className.match(/(rect.*(top-))/)){
+			this.elemList.components.forEach((elem, i)=>{
+				// height maximal and minimal
+				const height = this.roundToGrid(elem.height - (d.y - this.mouse.y));
+				this.elemList.height[i] = (height >= this.minimumHeight && this.elemList.top[i] > 0) ? height : this.elemList.height[i];
+				this.elemList.elements[i].style.height = this.elemList.height[i] + 'px';
 
-			// left maximal and minimal
-			left = this.roundToGrid(((d.x - this.mouse.x) + this.elem.left) - this.offset.left);
-			this.left = (left >= 0 && width >= this.minimumWidth) ? left : this.left;
-			this.hostEl.style.left = this.left + 'px';
-
-			// height maximal and minimal
-			height = this.roundToGrid(this.elem.height + (d.y - this.mouse.y));
-			this.height = (height >= this.minimumHeight) ? height : this.height;
-			this.hostEl.style.height = this.height + 'px';
-
-			if (this.height > this.minimumHeight && this.width > this.minimumWidth) {
-				this.onResize.emit({width: this.width, height: this.height});
-			}
+				// top maximal and minimal
+				const top = this.roundToGrid((d.y - this.mouse.y) + (elem.top - this.offset.top) + this.scroller);
+				this.elemList.top[i] = (top >= 0 && height >= this.minimumHeight) ? top : this.elemList.top[i];
+				this.elemList.elements[i].style.top = this.elemList.top[i] + 'px';
+			});
 		}
-		if (target.className == 'rect bottom-right') {
-			// width maximal and minimal
-			width = this.roundToGrid(this.elem.width + (d.x - this.mouse.x));
-			this.width = (width + this.elem.left <= (window.innerWidth - this.offset.right) && width >= this.minimumWidth) ? width : this.width;
-			this.hostEl.style.width = this.width + 'px';
-
-			// height maximal and minimal
-			height = this.roundToGrid(this.elem.height + (d.y - this.mouse.y));
-			this.height = (height >= this.minimumHeight) ? height : this.height;
-			this.hostEl.style.height = this.height + 'px';
-
-			if (this.height > this.minimumHeight && this.width > this.minimumWidth) {
-				this.onResize.emit({width: this.width, height: this.height});
-			}
+		if(target.className.match(/(rect.*(bottom-))/)){
+			this.elemList.components.forEach((elem, i)=>{
+				const height = this.roundToGrid(elem.height + (d.y - this.mouse.y));
+				this.elemList.height[i] = (height >= this.minimumHeight) ? height : this.elemList.height[i];
+				this.elemList.elements[i].style.height = this.elemList.height[i] + 'px';
+			});
 		}
-		if (target.className == 'rect center-top') {
-			// height maximal and minimal
-			height = this.roundToGrid(this.elem.height - (d.y - this.mouse.y));
-			this.height = (height >= this.minimumHeight && this.top > 0) ? height : this.height;
-			this.hostEl.style.height = this.height + 'px';
-
-			// top maximal and minimal
-			top = this.roundToGrid((d.y - this.mouse.y) + (this.elem.top - this.offset.top) + this.scroller);
-			this.top = (top >= 0 && height >= this.minimumHeight) ? top : this.top;
-			this.hostEl.style.top = this.top + 'px';
-
-			if (this.height > this.minimumHeight) {
-				this.onResize.emit({width: this.width, height: this.height});
+		// emit onResize
+		this.elemList.components.forEach((elem, i)=>{
+			if (this.elemList.width[i] > this.minimumWidth && this.elemList.height[i] > this.minimumHeight) {
+				this.emitHostEvent('onResize', i);
 			}
-		}
-		if (target.className == 'rect center-right') {
-			// width maximal and minimal
-			width = this.roundToGrid(this.elem.width + (d.x - this.mouse.x));
-			this.width = (width + this.elem.left <= (window.innerWidth - this.offset.right) && width >= this.minimumWidth) ? width : this.width;
-			this.hostEl.style.width = this.width + 'px';
+		});
 
-			if (this.width > this.minimumWidth) {
-				this.onResize.emit({width: this.width, height: this.height});
-			}
-		}
-		if (target.className == 'rect center-bottom') {
-			// height maximal and minimal
-			height = this.roundToGrid(this.elem.height + (d.y - this.mouse.y));
-			this.height = (height >= this.minimumHeight) ? height : this.height;
-			this.hostEl.style.height = this.height + 'px';
-
-			if (this.height > this.minimumHeight) {
-				this.onResize.emit({width: this.width, height: this.height});
-			}
-		}
-		if (target.className == 'rect center-left') {
-			// width maximal and minimal
-			width = this.roundToGrid(this.elem.width - (d.x - this.mouse.x));
-			this.width = (width >= this.minimumWidth && this.left > 0) ? width : this.width;
-			this.hostEl.style.width = this.width + 'px';
-
-			// left maximal and minimal
-			left = this.roundToGrid(((d.x - this.mouse.x) + this.elem.left) - this.offset.left);
-			this.left = (left >= 0 && width >= this.minimumWidth) ? left : this.left;
-			this.hostEl.style.left = this.left + 'px';
-
-			if (this.width > this.minimumWidth) {
-				this.onResize.emit({width: this.width, height: this.height});
-			}
-		}
 		this.moved = true;
 	}
 
 	private roundToGrid(p) {
 		const n = this.settings.app.grid.gridSize;
-  return (this.settings.app.grid.enabled ? (p % n < n / 2 ? p - (p % n) : p + n - (p % n)) : p );
+  		return (this.settings.app.grid.enabled ? (p % n < n / 2 ? p - (p % n) : p + n - (p % n)) : p );
   	}
 
   	private evaluateScroller() {

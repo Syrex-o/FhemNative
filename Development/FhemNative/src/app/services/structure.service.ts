@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 // Services
 import { StorageService } from './storage.service';
 import { HelperService } from './helper.service';
+import { SettingsService } from './settings.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,16 +15,13 @@ export class StructureService {
 		private router: Router,
 		private storage: StorageService,
 		private helper: HelperService,
+		private settings: SettingsService,
 		private zone: NgZone) {
 
 	}
 	// list of fhem components
 	// gets filled on load to prevent circular dependencies
 	public fhemComponents;
-
-	// component copy
-	// gets filled from context menu
-	public componentCopy: Array<any> = [];
 
 	// list of all rooms
 	// will be generated on start
@@ -45,7 +43,7 @@ export class StructureService {
 	public selectedRoom :any;
 
 	// reserved storage of the current room for refereces
-	// filled of room entrance
+	// filled on room entrance
 	public currentRoom: any;
 
 	// getting the room name
@@ -156,31 +154,157 @@ export class StructureService {
 		this.router.resetConfig(results);
 	}
 
-	// Selected element from Directives
-	// get the current element
-	public selectedElement(elemID, container) {
-		return this.helper.find(this.roomComponents(container), 'ID', elemID).item;
+	// get the element in any structure by ID
+	public getComponent(ID){
+		const comp = this.searchForComp(this.rooms, ID);
+		if(comp){
+			return comp;
+		}
+		return null;
 	}
 
-	// returning the currently active list of components in: room or deeper structure
-	public roomComponents(container) {
+	// exec callback on each nested component inside arr
+	// searches for deep components
+	public modifyComponentList(arr, callback){
+		for(let item of arr){
+			if(item.ID){
+				callback(item);
+			}
+			if(item.attributes.components){
+				// multi container
+				if(item.attributes.components[0] && item.attributes.components[0].components){
+					for(let subItem of item.attributes.components){
+						this.modifyComponentList(subItem.components, callback);
+					}
+				}else{
+					// single container
+					this.modifyComponentList(item.attributes.components, callback);
+				}
+			}
+		}
+	}
+
+	public getComponentContainer(container){
 		const containerID = container.element.nativeElement.parentNode.id;
+		// modified ID due to needs
+		let transformedID;
 		// elem is placed in a popup
 		if (containerID.indexOf('popup') !== -1) {
-			const popupID = containerID.replace('popup_', '');
-			return this.helper.find(this.rooms[this.currentRoom.ID].components, 'ID', popupID).item.attributes.components;
+			transformedID = containerID.replace('popup_', '');
 		}
 		// elem is placed in a room
 		if (containerID.indexOf('room') !== -1) {
-			return this.rooms[this.currentRoom.ID].components;
+			transformedID = parseInt(containerID.match(/(\d+)/)[0]);
 		}
 		// elem is placed in a swiper
 		if (containerID.indexOf('swiper') !== -1) {
-			const swiperIndex = containerID.match(/\d+/)[0];
-			const swiperID = containerID.replace('swiper_' + swiperIndex + '_', '');
-			return this.helper.find(this.rooms[this.currentRoom.ID].components, 'ID', swiperID).item.attributes.components[swiperIndex].components;
+			transformedID = containerID.match(/(_[^_]+)$/)[0];
 		}
+		let comp = this.searchForComp(this.rooms, transformedID);
+		if(comp){
+			if(comp.attributes){
+				if(comp.attributes.components){
+					if(comp.attributes.components[0] && comp.attributes.components[0].components){
+						// multi container
+						const index = containerID.match(/\d+/)[0];
+						return comp.attributes.components[index].components;
+					}else{
+						// single container
+						return comp.attributes.components;
+					}
+				}
+			}else{
+				// return room components
+				return comp.components;
+			}
+		}
+		return null;
 	}
+
+	private searchForComp(arr, ID){
+		for(let item of arr){
+			// item found in top structure
+			if(item.ID === ID){
+				return item;
+			}else{
+				if(item.attributes){
+					if(item.attributes.components){
+						// search in component containers
+						if(item.attributes.components[0] && item.attributes.components[0].components){
+							// search in multi container component
+							for(let subItem of item.attributes.components){
+								let check = this.searchForComp(subItem.components, ID);
+								if(check){
+									return check;
+								}
+							}
+						}else{
+							if(item.attributes.components){
+								// search in single container component
+								let check = this.searchForComp(item.attributes.components, ID);
+								if(check){
+									return check;
+								}
+							}
+						}
+					}
+				}else{
+					// room structure got passed
+					let check = this.searchForComp(item.components, ID);
+					if(check){
+						return check;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	// determines if component can be edited
+	// needs the ID of the component container
+	// used for container in container components (poup in swiper)
+	public canEdit(ID){
+		if(this.settings.modes.roomEditFrom !== null){
+			const container = this.getComponent(ID);
+			if(container){
+				// detect different ID's
+				if(container.ID !== this.settings.modes.roomEditFrom){
+					// check if component is in the container
+					const isIn = this.searchForComp( (container.attributes ? container.attributes.components : container.components) , this.settings.modes.roomEditFrom);
+					if(isIn){
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	// Selected element from Directives
+	// get the current element
+	// public selectedElement(elemID, container) {
+	// 	return this.helper.find(this.roomComponents(container), 'ID', elemID).item;
+	// }
+
+	// returning the currently active list of components in: room or deeper structure
+	// public roomComponents(container) {
+	// 	const containerID = container.element.nativeElement.parentNode.id;
+	// 	// elem is placed in a popup
+	// 	if (containerID.indexOf('popup') !== -1) {
+	// 		const popupID = containerID.replace('popup_', '');
+	// 		return this.helper.find(this.rooms[this.currentRoom.ID].components, 'ID', popupID).item.attributes.components;
+	// 	}
+	// 	// elem is placed in a room
+	// 	if (containerID.indexOf('room') !== -1) {
+	// 		return this.rooms[this.currentRoom.ID].components;
+	// 	}
+	// 	// elem is placed in a swiper
+	// 	if (containerID.indexOf('swiper') !== -1) {
+	// 		const swiperIndex = containerID.match(/\d+/)[0];
+	// 		const swiperID = containerID.replace('swiper_' + swiperIndex + '_', '');
+	// 		return this.helper.find(this.rooms[this.currentRoom.ID].components, 'ID', swiperID).item.attributes.components[swiperIndex].components;
+	// 	}
+	// }
 
 	// used to save the changed item position of a component
 	// needs object of {item: 'position attributes of the item', dimenstions: 'dimensions that should be changed'}
@@ -195,9 +319,5 @@ export class StructureService {
 		if(save){
 			this.saveRooms();
 		}
-	}
-
-	public removeCopyIndicators(){
-		document.querySelectorAll('.selected-for-copy').forEach(el=> el.classList.remove('selected-for-copy'));
 	}
 }

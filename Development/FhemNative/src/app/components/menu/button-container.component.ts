@@ -2,6 +2,7 @@ import { Component, Input, HostListener, ElementRef } from '@angular/core';
 
 import { SettingsService } from '../../services/settings.service';
 import { UndoRedoService } from '../../services/undo-redo.service';
+import { SelectComponentService } from '../../services/select-component.service';
 
 import { Subscription } from 'rxjs';
 
@@ -140,6 +141,7 @@ export class ButtonContainerComponent {
 	constructor(
 		public settings: SettingsService,
 		public undoManager: UndoRedoService,
+		private selectComponent: SelectComponentService,
 		private ref: ElementRef) {
 	}
 
@@ -152,13 +154,21 @@ export class ButtonContainerComponent {
   	}
 
 	public cancelChanges(){
-		this.settings.modeSub.next({roomEdit: false});
+		this.settings.modeSub.next({
+			roomEdit: false,
+			roomEditFrom: null
+		});
 		this.undoManager.cancelChanges();
+		this.selectComponent.removeContainerCopySelector(false, true);
 	}
 
 	public saveChanges() {
-		this.settings.modeSub.next({roomEdit: false});
+		this.settings.modeSub.next({
+			roomEdit: false,
+			roomEditFrom: null
+		});
 		this.undoManager.applyChanges();
+		this.selectComponent.removeContainerCopySelector(false, true);
 	}
 
 	public showUndoManager(){
