@@ -55,16 +55,7 @@ export class Resize implements OnChanges, AfterViewInit {
 	ngAfterViewInit() {
 		this.createComponent.containerComponents.find((x) => {
 			if (x.ID === this.hostEl.id) {
-				if (x.REF._view.viewContainerParent.component.container) {
-					// component has single container
-					this.elemContainer = x.REF._view.viewContainerParent.component.container;
-				} else {
-					// component has multiple containers
-					const containerID = x.REF.hostView._viewContainerRef.element.nativeElement.parentNode.id;
-					const swiperIndex = containerID.match(/\d+/)[0];
-
-					this.elemContainer = x.REF._view.viewContainerParent.component.containers['_results'] ? x.REF._view.viewContainerParent.component.containers['_results'][swiperIndex] : x.REF._view.viewContainerParent.component.containers[swiperIndex];
-				}
+				this.elemContainer = this.structure.getComponentContainerRaw(x);
 			}
 		});
 		// detect device and size changes
@@ -102,6 +93,7 @@ export class Resize implements OnChanges, AfterViewInit {
 
 	        	// save the item position, if the element was moved
 	   			if (this.moved) {
+	   				this.moved = false;
 	   				if(this.selectComponent.selectorList.length === 1){
 						this.selectComponent.removeCopySelector(this.hostEl.id);
 					}

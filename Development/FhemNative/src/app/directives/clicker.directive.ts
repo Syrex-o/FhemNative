@@ -1,10 +1,20 @@
-import { Directive, Input, ElementRef, HostBinding, HostListener, EventEmitter, Output } from '@angular/core';
+import { Directive, Input, ElementRef, HostBinding, HostListener, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
+
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 import { CreateComponentService } from '../services/create-component.service';
+import { SelectComponentService } from '../services/select-component.service';
 import { HelperService } from '../services/helper.service';
+import { ShortcutService } from '../services/shortcut.service';
 
 @Directive({ selector: '[double-click]' })
-export class ClickerDirective {
+export class ClickerDirective implements OnInit, OnDestroy{
+	private killShortcuts = new Subject<void>();
+
+	// chortcuts
+	private keyPress: boolean = false;
+
 	// for long press
 	private startMouse: any = {};
 	private currentMouse: any = {};
@@ -36,9 +46,16 @@ export class ClickerDirective {
 
 	constructor(
 		private createComponent: CreateComponentService,
+		private selectComponent: SelectComponentService,
 		private ref: ElementRef,
-		private helper: HelperService) {
+		private helper: HelperService,
+		private shortcuts: ShortcutService) {
+	}
 
+	ngOnInit(){
+		this.shortcuts.addShortcut({ keys: 'Control' }, true).pipe(takeUntil(this.killShortcuts)).subscribe((e: Event)=>{
+			this.keyPress = e.type === 'keydown' ? true : false;
+		});
 	}
 
 	// create the menu for editing components
@@ -55,7 +72,7 @@ export class ClickerDirective {
 	// double click event
 	@HostListener('click', ['$event'])
   	onDblClick(e) {
-  		if (this.editingEnabled && (e.target.className === 'overlay-move' || e.target.className === 'grid')) {
+  		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
   			this.clicker ++;
   			setTimeout(() => {
 		  		if (this.clicker >= 2) {
@@ -79,12 +96,18 @@ export class ClickerDirective {
   	// right click event
   	@HostListener('contextmenu', ['$event'])
   	onContextClick(e) {
-  		if (this.editingEnabled && (e.target.className === 'overlay-move' || e.target.className === 'grid')) {
+  		if (!this.keyPress && this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
   			if (this.source === 'component') {
 		  		this.createEditMenu(e);
 		  	} else {
 		  		this.onRightClick.emit(e);
 		  	}
+  		}
+  		// quick select
+  		if (this.keyPress && this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
+  			if (this.source === 'component') {
+  				this.selectComponent.buildCopySelector(this.ref.nativeElement.id, true, this.helper.find(this.createComponent.containerComponents, 'ID', this.ref.nativeElement.id).item.container);
+  			}
   		}
   	}
 
@@ -92,7 +115,7 @@ export class ClickerDirective {
   	@HostListener('touchstart', ['$event'])
 	@HostListener('mousedown', ['$event'])
 	onMouseDown(e) {
-		if (this.editingEnabled && (e.target.className === 'overlay-move' || e.target.className === 'grid')) {
+		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
 			this.startMouse = {
 				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 				y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
@@ -118,7 +141,7 @@ export class ClickerDirective {
 	@HostListener('mousemove', ['$event'])
 	@HostListener('touchmove', ['$event'])
 	onMouseMove(e) {
-		if (this.editingEnabled && (e.target.className === 'overlay-move' || e.target.className === 'grid')) {
+		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
 			if (this.pressing) {
 				this.currentMouse = {
 					x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
@@ -134,5 +157,11 @@ export class ClickerDirective {
 		clearTimeout(this.timeout);
 		this.longPressing = false;
 		this.pressing = false;
+	}
+
+	ngOnDestroy(){
+		// remove shortcuts
+		this.killShortcuts.next();
+		this.killShortcuts.complete();
 	}
 }
