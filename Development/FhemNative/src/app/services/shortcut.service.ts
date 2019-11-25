@@ -25,9 +25,10 @@ export class ShortcutService {
     	@Inject(DOCUMENT) private document: Document) {
 	}
 
-	public addShortcut(options: Partial<Options>){
+	public addShortcut(options: Partial<Options>, keyup: Partial<boolean>){
 		const merged = { ...this.defaults, ...options };
-    	const event = `keydown.${merged.keys}`;
+    	const downEvent = `keydown.${merged.keys}`;
+    	const upEvent = `keyup.${merged.keys}`;
 
     	merged.description && this.hotkeys.set(merged.keys, merged.description);
 
@@ -37,10 +38,21 @@ export class ShortcutService {
         		observer.next(e);
       		};
 
-      		const dispose = this.eventManager.addEventListener(merged.element, event, handler);
+      		let disposeUp: any;
+
+      		const disposeDown = this.eventManager.addEventListener(merged.element, downEvent, handler);
+      		// get keyup Event if needed
+      		if(keyup){
+      			disposeUp = this.eventManager.addEventListener(merged.element, upEvent, handler);
+      		}
+
 
       		return () => {
-        		dispose();
+        		disposeDown();
+        		
+        		if(keyup){
+        			disposeUp();
+        		}
         		this.hotkeys.delete(merged.keys);
       		};
     	});
