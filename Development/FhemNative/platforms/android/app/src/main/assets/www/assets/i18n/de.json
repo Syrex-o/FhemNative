@@ -465,9 +465,21 @@
 					"name": "Label",
 					"info": "Anzuzeigendes Label (falls benötigt)"
 				},
+				"data_labelExtension":{
+					"name": "Label-Endung",
+					"info": "Endung des Werte-Labels (Bsp. %)"
+				},
 				"data_size":{
 					"name": "Größe",
 					"info": "Größe des Labels"
+				},
+				"data_min":{
+					"name": "Min Wert",
+					"info": "Minimal Wert (falls benötigt für Min Farbe)"
+				},
+				"data_max":{
+					"name": "Max Wert",
+					"info": "Maximal Wert (falls benötigt für Max Farbe)"
 				},
 				"data_fontWeight":{
 					"name": "Schriftgröße",
@@ -476,6 +488,14 @@
 				"style_color":{
 					"name": "Farbe",
 					"info": "Farbe des Labels"
+				},
+				"style_minColor":{
+					"name": "Min Farbe",
+					"info": "Farbe für < Min Wert"
+				},
+				"style_maxColor":{
+					"name": "Max Farbe",
+					"info": "Farbe für > Max Wert"
 				}
 			},
 			"TRANSLATOR":{

@@ -465,9 +465,21 @@
 					"name": "Label",
 					"info": "Label to display (if needed)"
 				},
+				"data_labelExtension":{
+					"name": "Label extension",
+					"info": "Ending of the value label (Exp. %)"
+				},
 				"data_size":{
 					"name": "Size",
 					"info": "Size of the label"
+				},
+				"data_min":{
+					"name": "Min value",
+					"info": "Minimal value (if needed for min color)"
+				},
+				"data_max":{
+					"name": "Max value",
+					"info": "Maximal value (if needed for max color)"
 				},
 				"data_fontWeight":{
 					"name": "Font weight",
@@ -476,6 +488,14 @@
 				"style_color":{
 					"name": "Color",
 					"info": "Color of the label"
+				},
+				"style_minColor":{
+					"name": "Min color",
+					"info": "color for < min value"
+				},
+				"style_maxColor":{
+					"name": "Max color",
+					"info": "Color for > max value"
 				}
 			},
 			"TRANSLATOR":{
