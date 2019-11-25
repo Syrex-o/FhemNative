@@ -20,8 +20,8 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 			(onDoubleClick)="loadContextMenu($event)"
 			(onRightClick)="loadContextMenu($event)"
 			(onLongClick)="loadContextMenu($event)">
-			<span *ngFor="let w of gridW; let i = index;" class="line w" [ngStyle]="{'left.px': w, 'height.px': gridHeight}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
-			<span *ngFor="let h of gridH; let i = index;" class="line h" [ngStyle]="{'top.px': h}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
+			<span *ngFor="let w of gridW; let i = index;" class="grid-line w" [ngStyle]="{'left.px': w, 'height.px': gridHeight}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
+			<span *ngFor="let h of gridH; let i = index;" class="grid-line h" [ngStyle]="{'top.px': h}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
 		</div>
 	`,
 	styles: [`
@@ -32,25 +32,25 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 			left: 0;
 			top: 0;
 		}
-		.line{
+		.grid-line{
 		    position: absolute;
 		    background: #ddd;
 		    opacity: 0.2;
 		}
-		.line.w{
+		.grid-line.w{
 		    width: 1px;
 		    height: 100%;
 		}
-		.line.h{
+		.grid-line.h{
 		    width: 100%;
 		    height: 1px;
 		    left: 0;
 		}
-		.line.w.bold{
+		.grid-line.w.bold{
 		    width: 2px;
 		    transform: translateX(-1px);
 		}
-		.line.h.bold{
+		.grid-line.h.bold{
 		    height: 2px;
 		    transform: translateY(-1px);
 		}
@@ -59,6 +59,8 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 
 export class GridComponent implements OnInit, OnDestroy {
 	private killShortcuts = new Subject<void>();
+
+	private shiftPress: boolean = false;
 
 	constructor(
 		public settings: SettingsService,
@@ -90,6 +92,19 @@ export class GridComponent implements OnInit, OnDestroy {
 		this.buildGrid();
 	}
 
+	// rectangle press creation
+	@HostListener('touchstart', ['$event'])
+	@HostListener('mousedown', ['$event'])
+	onMouseDown(e) {
+		if(this.shiftPress){
+			this.createComponent.createSingleComponent('SelectRectangleComponent', this.container, {
+				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
+				y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
+				container: this.container
+			});
+		}
+	}
+
 	private scroll(e) {
 		if (e) {
 			if (e.target.scrollHeight !== this.gridHeight) {
@@ -107,7 +122,7 @@ export class GridComponent implements OnInit, OnDestroy {
 
 		// add shortcuts
 		// select/deselect all
-		this.shortcuts.addShortcut({ keys: 'Control.a' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortcuts.addShortcut({ keys: 'Control.a' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			if(!this.selectComponent.evalCopySelectorAll(this.container)){
 				// not all components selected
 				this.selectComponent.buildCopySelectorAll(this.container);
@@ -118,13 +133,13 @@ export class GridComponent implements OnInit, OnDestroy {
 			this.selectComponent.buildCopySelectorAll
 		});
 		// copy selection
-		this.shortcuts.addShortcut({ keys: 'Control.c' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortcuts.addShortcut({ keys: 'Control.c' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			if(this.selectComponent.selectorList.length > 0){
 				this.selectComponent.copyComponent(false, this.container);
 			}
 		});
 		// paste selection
-		this.shortcuts.addShortcut({ keys: 'Control.v' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortcuts.addShortcut({ keys: 'Control.v' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			if(this.selectComponent.copyList.length > 0){
 				this.selectComponent.pasteComponent(this.container);
 				// save config
@@ -133,7 +148,7 @@ export class GridComponent implements OnInit, OnDestroy {
 			}
 		});
 		// delete selection
-		this.shortcuts.addShortcut({ keys: 'Control.d' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortcuts.addShortcut({ keys: 'Control.d' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			if(this.selectComponent.selectorList.length > 0){
 				this.selectComponent.removeComponent(false, this.container);
 				// save config
@@ -141,12 +156,19 @@ export class GridComponent implements OnInit, OnDestroy {
 			}
 		});
 		// undo 
-		this.shortcuts.addShortcut({ keys: 'Control.z' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortcuts.addShortcut({ keys: 'Control.z' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			this.undoManager.undoChange();
 		});
 		// redo 
-		this.shortcuts.addShortcut({ keys: 'Control.y' }).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortcuts.addShortcut({ keys: 'Control.y' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			this.undoManager.redoChange();
+		});
+		// select rectangle
+		this.shortcuts.addShortcut({ keys: 'Shift' }, true).pipe(takeUntil(this.killShortcuts)).subscribe((e: Event)=>{
+			this.shiftPress = e.type === 'keydown' ? true : false;
+			if(!this.shiftPress){
+				this.createComponent.removeSingleComponent('SelectRectangleComponent', this.container);
+			}
 		});
 	}
 
@@ -174,6 +196,8 @@ export class GridComponent implements OnInit, OnDestroy {
 		// remove shortcuts
 		this.killShortcuts.next();
 		this.killShortcuts.complete();
+		// remove select rect
+		this.createComponent.removeSingleComponent('SelectRectangleComponent', this.container);
 	}
 
 	// refers to same logic as edit component

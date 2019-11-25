@@ -19,6 +19,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RoomComponent } from './room/room.component';
 import { SettingsRoomComponent } from './room/room-settings.component';
 import { GridComponent } from './grid/grid.component';
+import { SelectRectangleComponent } from './grid/select-rectangle.component';
 import { PickerComponent } from './picker/picker.component';
 import { FhemMenuComponent } from './menu/fhem-menu.component';
 import { ButtonContainerComponent } from './menu/button-container.component';
@@ -66,6 +67,7 @@ export function createTranslateLoader(http: HttpClient) {
 		RoomComponent,
 		SettingsRoomComponent,
 		GridComponent,
+		SelectRectangleComponent,
 		CreateComponentComponent,
 		EditComponentComponent,
 		CreateRoomComponent,
@@ -98,6 +100,7 @@ export function createTranslateLoader(http: HttpClient) {
 		RoomComponent,
 		SettingsRoomComponent,
 		GridComponent,
+		SelectRectangleComponent,
 		CreateComponentComponent,
 		EditComponentComponent,
 		FHEM_COMPONENT_REGISTRY
