@@ -184,6 +184,25 @@ export class StructureService {
 		}
 	}
 
+	// gets the component container ref
+	public getComponentContainerRaw(elem){
+		let container;
+		if (elem.REF._view.viewContainerParent.component.container) {
+			// component has single container
+			container = elem.REF._view.viewContainerParent.component.container;
+		}else{
+			// component has multiple containers
+			const containerID = elem.REF.hostView._viewContainerRef.element.nativeElement.parentNode.id;
+			const swiperIndex = parseInt(containerID.match(/\d+/)[0]);
+
+			container = elem.REF._view.viewContainerParent.component.containers['_results'] ? 
+				elem.REF._view.viewContainerParent.component.containers['_results'][swiperIndex] : 
+				elem.REF._view.viewContainerParent.component.containers[swiperIndex];
+		}
+		return container;
+	}
+
+	// gets the component container of elements inside
 	public getComponentContainer(container){
 		const containerID = container.element.nativeElement.parentNode.id;
 		// modified ID due to needs
@@ -279,32 +298,6 @@ export class StructureService {
 		}
 		return true;
 	}
-
-	// Selected element from Directives
-	// get the current element
-	// public selectedElement(elemID, container) {
-	// 	return this.helper.find(this.roomComponents(container), 'ID', elemID).item;
-	// }
-
-	// returning the currently active list of components in: room or deeper structure
-	// public roomComponents(container) {
-	// 	const containerID = container.element.nativeElement.parentNode.id;
-	// 	// elem is placed in a popup
-	// 	if (containerID.indexOf('popup') !== -1) {
-	// 		const popupID = containerID.replace('popup_', '');
-	// 		return this.helper.find(this.rooms[this.currentRoom.ID].components, 'ID', popupID).item.attributes.components;
-	// 	}
-	// 	// elem is placed in a room
-	// 	if (containerID.indexOf('room') !== -1) {
-	// 		return this.rooms[this.currentRoom.ID].components;
-	// 	}
-	// 	// elem is placed in a swiper
-	// 	if (containerID.indexOf('swiper') !== -1) {
-	// 		const swiperIndex = containerID.match(/\d+/)[0];
-	// 		const swiperID = containerID.replace('swiper_' + swiperIndex + '_', '');
-	// 		return this.helper.find(this.rooms[this.currentRoom.ID].components, 'ID', swiperID).item.attributes.components[swiperIndex].components;
-	// 	}
-	// }
 
 	// used to save the changed item position of a component
 	// needs object of {item: 'position attributes of the item', dimenstions: 'dimensions that should be changed'}
