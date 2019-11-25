@@ -20,7 +20,11 @@ import { SettingsService } from '../../services/settings.service';
 				<div class="label-container">
 					<p
 						class="label-item"
-						[ngStyle]="{'font-size.px': data_size, 'font-weight': data_fontWeight, 'color': style_color}">
+						[ngStyle]="{
+							'font-size.px': data_size, 
+							'font-weight': data_fontWeight, 
+							'color': fhemDevice ? getValueColor() : style_color
+						}">
 						{{ (fhemDevice ? fhemDevice.readings[data_reading].Value : data_label) }}
 					</p>
 					<p class="error" *ngIf="!fhemDevice && data_label === ''">
@@ -44,6 +48,7 @@ import { SettingsService } from '../../services/settings.service';
 			top: 50%;
 			transform: translate3d(0,-50%,0);
 			left: 0;
+			transition: all .2s ease;
 		}
 		.label-container{
 			position: absolute;
@@ -68,11 +73,16 @@ export class LabelComponent implements OnInit {
 	@Input() data_device: string;
 	@Input() data_reading: string;
 	@Input() data_label: string;
+	@Input() data_labelExtension: string;
 	@Input() data_size: string;
+	@Input() data_min: string;
+	@Input() data_max: string;
 	@Input() data_fontWeight: string;
 
 	// Styling
 	@Input() style_color = '#86d993';
+	@Input() style_minColor = '#02adea';
+	@Input() style_maxColor = '#fb0a2a';
 
 	// position information
 	@Input() width: number;
@@ -92,12 +102,37 @@ export class LabelComponent implements OnInit {
 				{variable: 'data_device', default: ''},
 				{variable: 'data_reading', default: ''},
 				{variable: 'data_label', default: ''},
+				{variable: 'data_labelExtension', default: ''},
 				{variable: 'data_size', default: '16'},
+				{variable: 'data_min', default: ''},
+				{variable: 'data_max', default: ''},
 				{variable: 'data_fontWeight', default: '300'},
-				{variable: 'style_color', default: '#86d993'}
+				{variable: 'style_color', default: '#86d993'},
+				{variable: 'style_minColor', default: '#02adea'},
+				{variable: 'style_maxColor', default: '#fb0a2a'}
 			],
 			dimensions: {minX: 60, minY: 40}
 		};
+	}
+
+	public getValueColor(){
+		// int colors
+		if(!isNaN(this.fhemDevice.readings[this.data_reading].Value)){
+			if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value < parseFloat(this.data_min)){
+				return this.style_minColor;
+			}
+			if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value > parseFloat(this.data_max)){
+				return this.style_maxColor;
+			}
+		}else{
+			if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_min){
+				return this.style_minColor;
+			}
+			if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_max){
+				return this.style_maxColor;
+			}
+		}
+		return this.style_color;
 	}
 
 	ngOnInit() {
