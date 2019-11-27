@@ -172,7 +172,7 @@
     	},
     	{
       		"VERSION": "2.1.1",
-      		"DATE": "125.11.2019",
+      		"DATE": "25.11.2019",
       		"CHANGES":[
       			{"TYPE": "NEW", "CHANGE": "Select component with Strg and click"},
       			{"TYPE": "NEW", "CHANGE": "Implemented Select Rectangle on Shift Shortcut"},
