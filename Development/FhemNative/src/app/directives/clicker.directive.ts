@@ -141,7 +141,7 @@ export class ClickerDirective implements OnInit, OnDestroy{
 	@HostListener('mousemove', ['$event'])
 	@HostListener('touchmove', ['$event'])
 	onMouseMove(e) {
-		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
+		if (this.editingEnabled && typeof e.target.className !== 'object' && e.target.className.match(/grid|overlay-move/)) {
 			if (this.pressing) {
 				this.currentMouse = {
 					x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
