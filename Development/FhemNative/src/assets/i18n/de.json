@@ -288,6 +288,39 @@
 				}
 			}
 		},
+		"Clock":{
+			"NAME": "Clock",
+			"INPUTS": {
+				"arr_data_style": {
+					"name": "Uhren Style",
+					"info": "Uhrentyp"
+				},
+				"arr_data_format":{
+					"name": "Format",
+					"info": "Zeitformat der Uhr"
+				},
+				"bool_data_showTicks":{
+					"name": "Zeige Ticks",
+					"info": "Anzeigen/nicht anzeigen der Stunden Ticks"
+				},
+				"style_color":{
+					"name": "Uhrfarbe",
+					"info": "Primärfarbe der Uhr"
+				},
+				"style_hourColor":{
+					"name": "Stundenfarbe",
+					"info": "Farbe der Stundenanzeige"
+				},
+				"style_minuteColor":{
+					"name": "Minutenfarbe",
+					"info": "Farbe der Minutenanzeige"
+				},
+				"style_secondColor":{
+					"name": "Sekundenfarbe",
+					"info": "Farbe der Sekundenanzeige"
+				}
+			}
+		},
 		"Color Picker":{
 			"NAME": "Color Picker",
 			"INPUTS":{
@@ -1142,6 +1175,19 @@
 				"bool_data_showBorder":{
 					"name": "Rand anzeigen",
 					"info": "Anzeigen/nicht anzeigen des Rands"
+				}
+			}
+		},
+		"Weather":{
+			"NAME": "Weather",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts"
+				},
+				"arr_data_fhemModule":{
+					"name": "Fhem Modul",
+					"info": "Name des Fhem Wetter Moduls"
 				}
 			}
 		}

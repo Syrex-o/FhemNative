@@ -288,6 +288,39 @@
 				}
 			}
 		},
+		"Clock":{
+			"NAME": "Clock",
+			"INPUTS": {
+				"arr_data_style": {
+					"name": "Clock style",
+					"info": "Clock tyle"
+				},
+				"arr_data_format":{
+					"name": "Format",
+					"info": "Time format of the clock"
+				},
+				"bool_data_showTicks":{
+					"name": "Show ticks",
+					"info": "Show/hide hourly ticks"
+				},
+				"style_color":{
+					"name": "Clock color",
+					"info": "Primary color of the clock"
+				},
+				"style_hourColor":{
+					"name": "Hour color",
+					"info": "Color of the hours display"
+				},
+				"style_minuteColor":{
+					"name": "Minute color",
+					"info": "Color of the minutes display"
+				},
+				"style_secondColor":{
+					"name": "Second color",
+					"info": "Color of the seconds display"
+				}
+			}
+		},
 		"Color Picker":{
 			"NAME": "Color Picker",
 			"INPUTS":{
@@ -1142,6 +1175,19 @@
 				"bool_data_showBorder":{
 					"name": "Show border",
 					"info": "Show/hide switch border"
+				}
+			}
+		},
+		"Weather":{
+			"NAME": "Weather",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"arr_data_fhemModule":{
+					"name": "Fhem module",
+					"info": "Name of the fhem weather module"
 				}
 			}
 		}

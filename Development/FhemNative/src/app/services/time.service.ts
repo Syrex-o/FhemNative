@@ -54,11 +54,12 @@ export class TimeService {
 	// returns relevant local time values
 	public local() {
 		const d = new Date();
-  const weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-  const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Okober', 'November', 'Dezenmber'];
-  const hours = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
-  const minutes = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
-  return{
+  		const weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  		const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Okober', 'November', 'Dezenmber'];
+  		const hours = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
+  		const minutes = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+  		const seconds = (d.getSeconds() < 10) ? '0' + d.getSeconds() : d.getSeconds();
+  		return{
 		    month: d.getMonth(),
 		    monthText: months[d.getMonth()],
 		    day: d.getDate(),
@@ -67,9 +68,18 @@ export class TimeService {
 		    weekdayText: weekdays[d.getDay()],
 		    hour: hours,
 		    minute: minutes,
+		    second: seconds,
 		    time: hours + ':' + minutes,
+		    dateRaw: d,
+		    dateFormatted: d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
 		    timeMin: this.times(hours + ':' + minutes).toMin
 		};
+	}
+
+	public addDay(date, days){
+		const result = new Date(date);
+		result.setDate(result.getDate() + days);
+  		return result;
 	}
 
 	// returns the end of time + duration in (time) from time or minutes

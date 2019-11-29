@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.1.1';
+	public appVersion: string = '2.1.2';
 	// building default storage
 	public app: any = {};
 
@@ -76,9 +76,10 @@ export class SettingsService {
 		{type: 'ion', icon: 'clock'},{type: 'ion', icon: 'cog'},{type: 'ion', icon: 'contact'},{type: 'ion', icon: 'contacts'},
 		{type: 'ion', icon: 'desktop'},{type: 'ion', icon: 'flower'},{type: 'ion', icon: 'images'},{type: 'ion', icon: 'information-circle'},
 		{type: 'ion', icon: 'key'},{type: 'ion', icon: 'keypad'},{type: 'ion', icon: 'lock'},{type: 'ion', icon: 'map'},{type: 'ion', icon: 'partly-sunny'},
+		{type: 'ion', icon: 'cloudy'}, {type: 'ion', icon: 'thunderstorm'}, {type: 'ion', icon: 'cloudy-night'}, {type: 'ion', icon: 'moon'},
 		{type: 'ion', icon: 'rainy'},{type: 'ion', icon: 'sunny'},{type: 'ion', icon: 'snow'},{type: 'ion', icon: 'power'},{type: 'ion', icon: 'radio'},
 		{type: 'ion', icon: 'switch'},{type: 'ion', icon: 'trash'},{type: 'ion', icon: 'logo-windows'},{type: 'ion', icon: 'add-circle'},
-		{type: 'ion', icon: 'checkmark-circle'},{type: 'ion', icon: 'close-circle'},
+		{type: 'ion', icon: 'checkmark-circle'},{type: 'ion', icon: 'close-circle'}, {type: 'ion', icon: 'walk'},
 		// Font Awesome
 		{type: 'fas', icon: 'ellipsis-h'},
 		{type: 'fas', icon: 'angle-double-up'},
