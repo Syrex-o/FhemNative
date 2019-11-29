@@ -4,18 +4,21 @@ import { CommonModule } from '@angular/common';
 // Directives
 import { Resize } from './resize.directive';
 import { ClickerDirective } from './clicker.directive';
+import { NgIfOnceDirective } from './ngIfOnce.directive';
 
 @NgModule({
 		declarations: [
 			Resize,
-			ClickerDirective
+			ClickerDirective,
+			NgIfOnceDirective
 		],
 		imports: [
 			CommonModule
 		],
 		exports: [
 			Resize,
-			ClickerDirective
+			ClickerDirective,
+			NgIfOnceDirective
 		]
 })
 export class DirectivesModule { }
