@@ -25,7 +25,7 @@ import { SettingsService } from '../../services/settings.service';
 							'font-weight': data_fontWeight, 
 							'color': fhemDevice ? getValueColor() : style_color
 						}">
-						{{ (fhemDevice ? fhemDevice.readings[data_reading].Value : data_label) }}
+						{{ (fhemDevice ? fhemDevice.readings[data_reading].Value : data_label) + data_labelExtension }}
 					</p>
 					<p class="error" *ngIf="!fhemDevice && data_label === ''">
 						{{'COMPONENTS.Label.TRANSLATOR.NO_LABEL' | translate}}
