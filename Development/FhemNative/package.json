@@ -1,7 +1,7 @@
 {
 	"name": "FhemNative",
 	"productName": "FhemNative",
-	"version": "2.1.1",
+	"version": "2.1.2",
 	"author": "Syrex-o",
 	"homepage": "./",
 	"main": "electron.js",
@@ -23,7 +23,8 @@
 		"build:electron:dev": "npm run build:electron -- -c dev",
 		"build:electron:prod": "npm run build:electron -- -c production",
 		"electron:windows": "npm run build:electron:prod && npx electron-builder build --windows",
-		"electron:mac": "npm run build:electron:prod && npx electron-builder build --mac"
+		"electron:mac": "npm run build:electron:prod && npx electron-builder build --mac",
+		"electron:linux": "npm run build:electron:prod && npx electron-builder build --linux"
 	},
 	"private": true,
 	"dependencies": {

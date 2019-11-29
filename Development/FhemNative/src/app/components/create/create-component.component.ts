@@ -135,7 +135,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 								</p>
 							</div>
 							<h3>Reading</h3>
-							<div *ngIf="attrFinder('device', 'data_device')?.readings">
+							<div *ngIf="attrFinder('device', 'data_device')?.readings && helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')">
 								<div class="success"  *ngIf="helper.find(fhem.devices, 'device', helper.find(componentSelection.attributes.attr_data, 'attr', 'data_device').item.value).item.readings[helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading').item.value]">
 									<p *ngIf="helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')">
 										Reading: {{helper.find(componentSelection.attributes.attr_data, 'attr', 'data_reading')?.item.value}}
@@ -232,7 +232,7 @@ export class CreateComponentComponent {
 			this.pageIndex = 1;
 		}
 		// detect missing devices
-		if(this.pageIndex === 4 && this.helper.find(this.componentSelection.attributes.attr_data, 'attr', 'data_device')){
+		if(this.pageIndex === 4 && this.componentSelection.attributes.attr_data && this.helper.find(this.componentSelection.attributes.attr_data, 'attr', 'data_device')){
 			const device = this.helper.find(this.componentSelection.attributes.attr_data, 'attr', 'data_device').item.value;
 			if(device !== '' && !this.helper.find(this.fhem.devices, 'device', device)){
 				// device is not in list

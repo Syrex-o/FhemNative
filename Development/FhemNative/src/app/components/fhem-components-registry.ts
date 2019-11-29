@@ -3,6 +3,7 @@ import { ButtonComponent } from './button/button.component';
 import { ChartComponent } from './chart/chart.component';
 import { CircleMenuComponent } from './circle-menu/circle-menu.component';
 import { CircleSliderComponent } from './circle-slider/circle-slider.component';
+import { ClockComponent } from './clock/clock.component';
 import { ColorpickerComponent } from './colorpicker/colorpicker.component';
 import { IconComponent } from './icon/icon.component';
 import { IframeComponent } from './iframe/iframe.component';
@@ -20,6 +21,7 @@ import { SwiperComponent } from './swiper/swiper.component';
 import { SwitchComponent } from './switch/switch.component';
 import { ThermostatComponent } from './thermostat/thermostat.component';
 import { TimepickerComponent } from './timepicker/timepicker.component';
+import { WeatherComponent } from './weather/weather.component';
 
 export const FHEM_COMPONENT_REGISTRY = [
 	BoxComponent,
@@ -27,6 +29,7 @@ export const FHEM_COMPONENT_REGISTRY = [
 	ChartComponent,
 	CircleMenuComponent,
 	CircleSliderComponent,
+	ClockComponent,
 	ColorpickerComponent,
 	IframeComponent,
 	IconComponent,
@@ -43,5 +46,6 @@ export const FHEM_COMPONENT_REGISTRY = [
 	SwiperComponent,
 	SwitchComponent,
 	ThermostatComponent,
-	TimepickerComponent
+	TimepickerComponent,
+	WeatherComponent
 ];
