@@ -272,12 +272,12 @@ export class ChartComponent implements OnInit {
 		// build axis
 		this.buildAxis();
 		// build Charts
- 	this.drawCharts();
+ 		this.drawCharts();
 	}
 
 	private drawCharts() {
 		const chart = this.arr_data_chartType[0].toUpperCase();
-  const chart2 = this.arr_data_chartType2[0].toUpperCase();
+  		const chart2 = this.arr_data_chartType2[0].toUpperCase();
 		if (this.data_reading) {
 			this['create' + chart + 'chart']('read1', 0);
 		}
@@ -315,13 +315,13 @@ export class ChartComponent implements OnInit {
 				.rangeRound([0, this.dim.content.width])
 				.domain([
 					d3.min([
-						d3.min(this.data.read1.map((d) => d.date)),
-						( this.data.read2.length > 0 ? d3.min(this.data.read2.map((d) => d.date)) : d3.min(this.data.read1.map((d) => d.date)))
-					]),
+						d3.min(this.data.read1.map(d => d.date)),
+						( this.data.read2.length > 0 ? d3.min(this.data.read2.map((d) => d.date)): d3.min(this.data.read1.map((d) => d.date)))
+					]) as unknown as number,
 					d3.max([
 					 	d3.max(this.data.read1.map((d) => d.date)),
 					 	( this.data.read2.length > 0 ? d3.max(this.data.read2.map((d) => d.date)) : d3.max(this.data.read1.map((d) => d.date)))
-					])
+					]) as unknown as number
 				]);
 
 			this.y = d3.scaleLinear()
@@ -330,8 +330,8 @@ export class ChartComponent implements OnInit {
 					0,
 					(this.data_maxY !== '' ? parseInt(this.data_maxY) : d3.max(
 						[
-							d3.max(this.data.read1.map((d) => d.value)),
-							( this.data.read2.length > 0 ? d3.max(this.data.read2.map((d) => d.value)) : 0)
+							d3.max(this.data.read1.map((d) => d.value)) as unknown as number,
+							( this.data.read2.length > 0 ? d3.max(this.data.read2.map((d) => d.value)) as unknown as number : 0)
 						]
 					) )
 				]);
@@ -436,12 +436,12 @@ export class ChartComponent implements OnInit {
 
 	private createLINEchart(read, index) {
 		const line = d3.line()
-      		.x((d) => this.x(d.date))
-      		.y((d) => this.y(d.value))
+      		.x((d:any) => this.x(d.date))
+      		.y((d:any) => this.y(d.value))
       		.curve(d3.curveMonotoneX);
 
   const line0 = d3.line()
-      		.x((d) => this.x(d.date))
+      		.x((d:any) => this.x(d.date))
       		.y((d) => this.y(0))
       		.curve(d3.curveMonotoneX);
 
@@ -480,23 +480,23 @@ export class ChartComponent implements OnInit {
 			.attr('stroke', this.colorSet[index + 1])
 			.attr('stroke-width', 1.5)
 				.attr('d', d3.area()
-					.x(d => this.x(d.date))
+					.x((d:any) => this.x(d.date))
 					.y0(this.y(0))
 					.y1(d => this.y(0))
 				)
 				.transition()
         		.duration(600)
 			.attr('d', d3.area()
-				.x(d => this.x(d.date))
+				.x((d:any) => this.x(d.date))
 				.y0(this.y(0))
-				.y1(d => this.y(d.value))
+				.y1((d:any) => this.y(d.value))
 			);
 	}
 
 	private createGAUGEchart(read, index) {
-		const value = d3.mean(this.data[read], (d) => d.value);
+		const value = d3.mean(this.data[read], (d:any) => d.value);
 		const minValue = 0;
-	  	const maxValue = (this.data_maxY !== '' ? parseInt(this.data_maxY) : d3.max(this.data[read].map((d) => d.value)));
+	  	const maxValue:any = (this.data_maxY !== '' ? parseInt(this.data_maxY) : d3.max(this.data[read].map((d) => d.value)));
 
 	  	const radius = Math.min(this.dim.svg.width - 40, this.dim.svg.height - 40) / 2;
 	  	const locationX = this.dim.svg.width / 2;
@@ -560,9 +560,9 @@ export class ChartComponent implements OnInit {
 	}
 
 	private createLIQUIDGAUGEchart(read, index) {
-		const value = d3.mean(this.data[read], (d) => d.value),
+		const value = d3.mean(this.data[read], (d:any) => d.value),
 		minValue = 0, // The gauge minimum value.
-        maxValue = (this.data_maxY !== '' ? parseInt(this.data_maxY) : d3.max(this.data[read].map((d) => d.value))), // The gauge maximum value.
+        maxValue:any = (this.data_maxY !== '' ? parseInt(this.data_maxY) : d3.max(this.data[read].map((d) => d.value))), // The gauge maximum value.
 
         // Styles
         circleThicknessConfig = 0.05, // The outer circle thickness as a percentage of it's radius.
@@ -631,8 +631,8 @@ export class ChartComponent implements OnInit {
             .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(textVertPosition) + ')');
   if (value) {
         	const clipArea = d3.area()
-	            .x((d) => waveScaleX(d.x) )
-	            .y0((d) => waveScaleY(Math.sin(Math.PI * 2 * waveOffset * -1 + Math.PI * 2 * (1 - waveCount) + d.y * 2 * Math.PI)) )
+	            .x((d:any) => waveScaleX(d.x) )
+	            .y0((d:any) => waveScaleY(Math.sin(Math.PI * 2 * waveOffset * -1 + Math.PI * 2 * (1 - waveCount) + d.y * 2 * Math.PI)) )
 	            .y1((d) => (fillCircleRadius * 2 + waveHeight) );
 	        const gaugeGroupDefs = gaugeGroup.append('defs');
 	        const waveGroup = gaugeGroupDefs.append('clipPath').attr('id', this.UID);
