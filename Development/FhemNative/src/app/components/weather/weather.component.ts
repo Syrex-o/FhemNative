@@ -21,9 +21,7 @@ import { TimeService } from '../../services/time.service';
 			(onResize)="resize($event)"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
 			<fhem-container [specs]="{'device': data_device, 'reading': null, 'available': true}">
-				<div class="chart-container">
-
-				</div>
+				<div class="chart-container"></div>
 			</fhem-container>
 		</div>
 	`,
@@ -41,7 +39,6 @@ import { TimeService } from '../../services/time.service';
 	`]
 })
 export class WeatherComponent implements AfterViewInit {
-
 	constructor(
 		private fhem: FhemService,
 		public settings: SettingsService,
@@ -54,6 +51,7 @@ export class WeatherComponent implements AfterViewInit {
 
 	@Input() data_device: string;
 	@Input() arr_data_fhemModule: Array<any>;
+	@Input() bool_data_showCurrentDayDetails: boolean = false;
 
 	// position information
 	@Input() width: string;
@@ -75,7 +73,24 @@ export class WeatherComponent implements AfterViewInit {
   		content: {width: 0, height: 0}
   	};
 
+  	private DateFormats: any = {
+        decimal: ',',
+        thousands: '.',
+        grouping: [3],
+        currency: ['€', ''],
+        dateTime: '%a %b %e %X %Y',
+        date: '%d.%m.%Y',
+        time: '%H:%M:%S',
+        periods: ['AM', 'PM'],
+        days: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+        shortDays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+        shortMonths: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
+    };
+
   	private data: any;
+
+  	private currentDay: any = {};
 
   	private x: any;
     private y: any;
@@ -100,7 +115,8 @@ export class WeatherComponent implements AfterViewInit {
 			type: 'fhem',
 			inputs: [
 				{variable: 'data_device', default: ''},
-				{variable: 'arr_data_fhemModule', default: 'Proplanta'}
+				{variable: 'arr_data_fhemModule', default: 'Proplanta'},
+				{variable: 'bool_data_showCurrentDayDetails', default: false}
 			],
 			dimensions: {minX: 150, minY: 80}
 		};
@@ -108,6 +124,7 @@ export class WeatherComponent implements AfterViewInit {
 
 
 	ngAfterViewInit() {
+		d3.timeFormatDefaultLocale(this.DateFormats);
 		this.fhem.getDevice(this.data_device, null).then((device) => {
 			this.fhemDevice = device;
 			if(device){
@@ -125,7 +142,7 @@ export class WeatherComponent implements AfterViewInit {
 			for (const [key, value] of Object.entries(this.fhemDevice.readings)) {
 				// search for day readings
 				if(key.match(/fc\d/)){
-					const date = this.time.addDay(this.time.local().dateRaw, parseInt(key.match(/\d/)[0]));
+					let date:any = new Date(this.time.addDay(this.time.local().dateRaw, parseInt(key.match(/\d/)[0])));
 					date.setMinutes(0);
 					date.setSeconds(0);
 					// get value
@@ -173,6 +190,18 @@ export class WeatherComponent implements AfterViewInit {
 					}
 				}
 			}
+			if(this.bool_data_showCurrentDayDetails){
+				this.currentDay = {
+			  		tempMin: this.fhemDevice.readings.fc0_tempMin.Value,
+			  		tempMax: this.fhemDevice.readings.fc0_tempMax.Value,
+			  		tempCurrent: this.fhemDevice.readings.temperature.Value
+				}
+			}
+		}
+
+		// sort values
+		for (const [key, value] of Object.entries(this.data)) {
+			this.data[key].sort((a, b)=> b.date - a.date);
 		}
 	}
 
@@ -209,6 +238,7 @@ export class WeatherComponent implements AfterViewInit {
 			.attr("y1", "0%")
 			.attr("y2", "100%");
 
+
 		gradient.append("stop")
 	   		.attr('class', 'start')
 	   		.attr("offset", "0%")
@@ -221,31 +251,25 @@ export class WeatherComponent implements AfterViewInit {
 		   	.attr("stop-color", "#005e79")
 		   	.attr("stop-opacity", 0.5);
 
-		// line generator
-		// const line = d3.line()
-		// 	.x(d => this.x(d.date))
-
-		// create line chart
+		// create area chart
 		this.svg.select('.chart').append('path')
-			.datum(data)
 			.attr('class', 'area')
-			.attr('stroke', 'url(#svgGradient)')
-			.attr('stroke-width', "3")
-			.attr("fill", "transparent")
-			.attr('d', d3.line()
-				.curve(d3.curveCatmullRom.alpha(0.5))
-				.x(d => this.x(d.date))
-				// .y0(this.y(0))
-				.y(d => this.y(0))
-			)
+			.datum(data)
+			.attr('fill', 'url(#svgGradient)')
+				.attr('d', d3.area()
+					.x((d:any) => this.x(d.date))
+					.y0(this.y( d3.min(this.data.temp.map(d => d.value - 5)) ))
+					.y1(d => this.y( d3.min(this.data.temp.map(d => d.value - 5)) ))
+					.curve(d3.curveNatural)
+				)
 			.transition()
         	.duration(600)
-			.attr('d', d3.line()
-				.curve(d3.curveCatmullRom.alpha(0.5))
-				.x(d => this.x(d.date))
-				// .y0(this.y(0))
-				.y(d => this.y(d.value))
-			);
+	   			.attr('d', d3.area()
+					.x((d:any) => this.x(d.date))
+					.y0(this.y( d3.min(this.data.temp.map(d => d.value - 5)) ))
+					.y1((d:any) => this.y(d.value))
+					.curve(d3.curveNatural)
+				)
 
 		// create labels
 		this.svg.select('.chart').selectAll('.text')
@@ -253,7 +277,7 @@ export class WeatherComponent implements AfterViewInit {
 			.enter()
 			.append('text')
 			.attr("class", "label")
-			.attr("x", ((d)=> { return this.x(d.date); }  ))
+			.attr("x", (d=>this.x(d.date)))
 			.attr("y", (d)=> {
 				if(d.value >= 0){
 					return this.y(d.value) - 15;
@@ -265,7 +289,33 @@ export class WeatherComponent implements AfterViewInit {
 			.attr('font-size', '10px')
   			.text((d)=> { return d.value + '\xB0'; });
 
-  		this.breakLine();
+	    // daily values display
+	    if(this.bool_data_showCurrentDayDetails){
+	    	this.svg.select('.chart')
+	    		.append('g')
+	    		.attr("class", "overall")
+	    		.attr('transform', 'translate(' + 0 + ',' + this.dim.padding.top + ')');
+
+	    	// date
+	    	this.svg.select('.overall').append('text')
+	    		.attr("class", "date")
+	    		.attr('font-size', '12px')
+	    		.text(d3.timeFormat("%d. %B %H:%m")(new Date));
+	    	// min max
+	    	this.svg.select('.overall').append('text')
+	    		.attr("class", "min")
+	    		.attr('font-size', '12px')
+	    		.text('Min: '+this.currentDay.tempMin+ '\xB0'+ ' - Max: '+this.currentDay.tempMax+ '\xB0')
+	    		.attr('transform', 'translate(' + 0 + ',' + 15 + ')')
+	    	// current
+	    	this.svg.select('.overall').append('text')
+	    		.attr("class", "current")
+	    		.attr('font-size', '20px')
+	    		.text(this.currentDay.tempCurrent+ '\xB0C')
+	    		.attr('transform', 'translate(' + 0 + ',' + 35 + ')')
+	    }
+
+	    this.breakLine();
   		this.addIcons();
 	    this.colorAxis();
 	}
@@ -295,34 +345,35 @@ export class WeatherComponent implements AfterViewInit {
 
 	private buildAxis() {
 		this.x = d3.scaleTime()
+			.range([0, this.dim.content.width])
 			.domain([
-				d3.min(this.data.temp.map((d) => d.date)),
-				d3.max(this.data.temp.map((d) => d.date))
-			])
-			.range([0, this.dim.content.width]);
+				d3.min(this.data.temp.map(d => d.date)) as unknown as number,
+				d3.max(this.data.temp.map(d => d.date)) as unknown as number
+			]);
 
 		this.y = d3.scaleLinear()
+			.rangeRound([this.dim.content.height, 0])
 			.domain([
-				d3.min(this.data.temp.map((d) => d.value - 5)),
-				d3.max(this.data.temp.map((d) => d.value + 5))
-			])
-			.range([this.dim.content.height, 0]);
+				d3.min(this.data.temp.map(d => d.value - 5)) as unknown as number,
+				d3.max(this.data.temp.map(d => d.value + 5)) as unknown as number
+			]);
 
 		this.xScale = d3.axisBottom(this.x)
+			.tickSizeOuter(0)
 			.tickFormat(d3.timeFormat('%Y-%m-%d %H:%M'))
-			.tickSize(5, 0, 0)
 			.ticks(this.getTicks());
 
-		this.yScale = d3.axisLeft(this.y).tickFormat((d) => d);
+		this.yScale = d3.axisLeft(this.y).tickFormat((d:any) => d);
 
 		this.xAxis = this.svg.selectAll('.focus').append('g')
 			.attr('class', 'x axis')
 			.attr('transform', 'translate(' + [0, this.dim.content.height] + ')')
-			.call(this.xScale)
+			.call(this.xScale);
 
 	 	const zoom = d3.zoom()
-	 		.scaleExtent([0.9, 5])
-	 		.translateExtent([[0, this.dim.padding.top], [this.dim.content.width + this.dim.padding.left + this.dim.padding.right, this.dim.svg.height]])
+	 		.extent([[0, this.dim.padding.top], [this.dim.svg.width-(this.dim.padding.left + this.dim.padding.right), this.dim.svg.width-this.dim.padding.top]])
+	 		.scaleExtent([0.9, 10])
+	 		.translateExtent([[0, this.dim.padding.top], [this.dim.svg.width-(this.dim.padding.left + this.dim.padding.right), this.dim.svg.width-this.dim.padding.top]])
 	 		.on('zoom', this.zoomed.bind(this));
 
 	 	// zoom content
@@ -448,6 +499,7 @@ export class WeatherComponent implements AfterViewInit {
       	this.svg.selectAll('.axis text').style('fill', color);
       	this.svg.selectAll('.label').style('fill', color);
       	this.svg.selectAll('.chart-icon').style('fill', color);
+      	this.svg.selectAll('.overall').style('fill', color);
   	}
 
 	// get svg size
