@@ -1183,7 +1183,7 @@
 			}
 		},
 		"Weather":{
-			"NAME": "Weather",
+			"NAME": "Wetter",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -1192,6 +1192,10 @@
 				"arr_data_fhemModule":{
 					"name": "Fhem Modul",
 					"info": "Name des Fhem Wetter Moduls"
+				},
+				"bool_data_showCurrentDayDetails":{
+					"name": "Tageswerte anzeigen",
+					"info": "Anzeigen/nicht anzeigen der Tageswerte"
 				}
 			}
 		}

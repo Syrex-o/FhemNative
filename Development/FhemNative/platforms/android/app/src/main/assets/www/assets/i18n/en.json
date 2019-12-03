@@ -1192,6 +1192,10 @@
 				"arr_data_fhemModule":{
 					"name": "Fhem module",
 					"info": "Name of the fhem weather module"
+				},
+				"bool_data_showCurrentDayDetails":{
+					"name": "Show day values",
+					"info": "Show/hide day values"
 				}
 			}
 		}

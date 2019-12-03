@@ -387,6 +387,10 @@
 				"data_url":{
 					"name": "Url",
 					"info": "Externe URL (anderenfalls versucht IFrame eine URL im Reading zu finden)"
+				},
+				"bool_data_showBorder":{
+					"name": "Rand anzeigen",
+					"info": "Anzeigen/nicht anzeigen des Rands"
 				}
 			},
 			"TRANSLATOR":{
@@ -1179,7 +1183,7 @@
 			}
 		},
 		"Weather":{
-			"NAME": "Weather",
+			"NAME": "Wetter",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -1188,6 +1192,10 @@
 				"arr_data_fhemModule":{
 					"name": "Fhem Modul",
 					"info": "Name des Fhem Wetter Moduls"
+				},
+				"bool_data_showCurrentDayDetails":{
+					"name": "Tageswerte anzeigen",
+					"info": "Anzeigen/nicht anzeigen der Tageswerte"
 				}
 			}
 		}
