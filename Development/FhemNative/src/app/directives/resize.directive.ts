@@ -189,6 +189,12 @@ export class Resize implements OnChanges, AfterViewInit {
 						left: l
 					},
 				}, true);
+				this.onResize.emit({
+					width: w, 
+					height: parseInt(this.hostEl.style.height),
+					left: l,
+					top: parseInt(this.hostEl.style.top)
+				});
 			}
 		}
 	}
