@@ -19,8 +19,7 @@ import { HttpClient } from '@angular/common/http';
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
 			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true, 'offline': true}">
 				<div class="frame">
-					<iframe *ngIf="src && fhemDevice" [src]="src"></iframe>
-					<iframe *ngIf="src && !fhemDevice" [src]="src"></iframe>
+					<iframe *ngIf="(src && fhemDevice) || (src && !fhemDevice)" [src]="src" [frameBorder]="bool_data_showBorder ? 1 : 0"></iframe>
 					<p *ngIf="src === '' || !src" class="error">
 						{{'COMPONENTS.IFrame.TRANSLATOR.NO_URL' | translate}}
 						{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
@@ -66,6 +65,7 @@ export class IframeComponent implements OnInit {
 	@Input() data_device: string;
 	@Input() data_reading: string;
 	@Input() data_url: string;
+	@Input() bool_data_showBorder: boolean = true;
 
 	// position information
 	@Input() width: number;
@@ -86,7 +86,8 @@ export class IframeComponent implements OnInit {
 			inputs: [
 				{variable: 'data_device', default: ''},
 				{variable: 'data_reading', default: 'state'},
-				{variable: 'data_url', default: ''}
+				{variable: 'data_url', default: ''},
+				{variable: 'bool_data_showBorder', default: true}
 			],
 			dimensions: {minX: 100, minY: 100}
 		};
