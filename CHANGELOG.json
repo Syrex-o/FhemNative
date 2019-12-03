@@ -192,6 +192,19 @@
       			{"TYPE": "FIX", "CHANGE": "Click Events for context menu --> easier to access now"},
       			{"TYPE": "FIX", "CHANGE": "Create component for partly device/reading availability"}
       		]
+    	},
+    	{
+      		"VERSION": "2.1.3",
+      		"DATE": "03.12.2019",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "IFrame border option"},
+      			{"TYPE": "NEW", "CHANGE": "Weather current day display"},
+      			{"TYPE": "FIX", "CHANGE": "Fixed Resize Event Call"},
+      			{"TYPE": "FIX", "CHANGE": "Chart Component Version"},
+      			{"TYPE": "FIX", "CHANGE": "Weather Component Sorting/Scaling/Moving"},
+      			{"TYPE": "FIX", "CHANGE": "Weather Component Area draw"},
+      			{"TYPE": "DEL", "CHANGE": "Unused Stuff from IFrame Component"}
+      		]
     	}
 	]
 }

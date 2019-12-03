@@ -387,6 +387,10 @@
 				"data_url":{
 					"name": "Url",
 					"info": "External URL (otherwise IFrame tries to find the URL in the reading)"
+				},
+				"bool_data_showBorder":{
+					"name": "Show border",
+					"info": "Show/hide IFrame border"
 				}
 			},
 			"TRANSLATOR":{
