@@ -205,6 +205,19 @@
       			{"TYPE": "FIX", "CHANGE": "Weather Component Area draw"},
       			{"TYPE": "DEL", "CHANGE": "Unused Stuff from IFrame Component"}
       		]
+    	},
+    	{
+      		"VERSION": "2.1.4",
+      		"DATE": "06.12.2019",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Weather temperature label animation"},
+      			{"TYPE": "NEW", "CHANGE": "Slider ios-style"},
+      			{"TYPE": "FIX", "CHANGE": "Same basic icons for ios and android"},
+      			{"TYPE": "FIX", "CHANGE": "Ios Layout"},
+      			{"TYPE": "FIX", "CHANGE": "cordova res icon generator"},
+      			{"TYPE": "FIX", "CHANGE": "Slider update value in wrong direction"},
+      			{"TYPE": "FIX", "CHANGE": "Popup font-awesome icon finder"}
+      		]
     	}
 	]
 }
