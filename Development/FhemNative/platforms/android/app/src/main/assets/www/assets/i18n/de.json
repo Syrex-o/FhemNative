@@ -816,6 +816,14 @@
 				"style_tickColor":{
 					"name": "Tick-Farbe",
 					"info": "Farbe der Slider Ticks"
+				},
+				"style_iconColor":{
+					"name": "Icon-Farbe",
+					"info": "Farbe des Slider Icons"
+				},
+				"icon_sliderIcon":{
+					"name": "Slider Icon",
+					"info": "Icon im Slider (für Style im ios-Modus)"
 				}
 			}
 		},
