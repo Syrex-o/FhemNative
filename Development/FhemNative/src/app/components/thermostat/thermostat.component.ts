@@ -22,9 +22,9 @@ import { SettingsService } from '../../services/settings.service';
 						<defs>
 					    	<linearGradient [attr.id]="LIQUIDGRAD_UID" x1="57" y1="150" x2="57" y2="546" gradientUnits="userSpaceOnUse">
 					      		<stop [attr.stop-color]="style_gradientColor1" offset="0"/>
-					      		<stop [attr.stop-color]="style_gradientColor2" offset="0.2"/>
-					      		<stop [attr.stop-color]="style_gradientColor3" offset="0.5"/>
-					      		<stop [attr.stop-color]="style_gradientColor4" offset="1"/>
+					      		<stop [attr.stop-color]="style_gradientColor2" offset="20%"/>
+					      		<stop [attr.stop-color]="style_gradientColor3" offset="50%"/>
+					      		<stop [attr.stop-color]="style_gradientColor4" offset="100%"/>
 					    	</linearGradient>
 							<rect id="tube" x="110" y="150" width="86" height="400" rx="43" ry="43"/>
 					    		<clipPath id="liquidMask">
