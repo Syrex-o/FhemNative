@@ -30,9 +30,15 @@ import { HelperService } from '../../services/helper.service';
 				(click)="openPopup()">
 					<div class="icon-container">
 						<ion-icon
+							*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type === 'ion'"
 							[name]="(fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)"
 							[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : (showPopup ? style_iconColorOn : style_iconColorOff) ) }">
 						</ion-icon>
+						<fa-icon
+							*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type != 'ion'"
+							[icon]="[settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type, (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)]"
+							[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : (showPopup ? style_iconColorOn : style_iconColorOff) ) }">
+						</fa-icon>
 					</div>
 				</button>
 			</fhem-container>
@@ -89,14 +95,21 @@ import { HelperService } from '../../services/helper.service';
 		.popup-btn:focus{
 			outline: 0px;
 		}
-		.popup-btn ion-icon{
+		.popup-btn ion-icon,
+		.popup-btn fa-icon{
 			position: absolute;
 			left: 50%;
 			top: 50%;
 			transform: translate3d(-50%, -50%,0);
+			transition: all .2s ease;
+		}
+		.popup-btn ion-icon{
 			width: 100%;
 			height: 100%;
-			transition: all .2s ease;
+		}
+		.popup-btn fa-icon{
+			width: 80%;
+			height: 80%;
 		}
 		.popup-container{
 			top: 0;
