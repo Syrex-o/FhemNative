@@ -142,7 +142,7 @@ export class WeatherComponent implements AfterViewInit {
 			for (const [key, value] of Object.entries(this.fhemDevice.readings)) {
 				// search for day readings
 				if(key.match(/fc\d/)){
-					let date:any = new Date(this.time.addDay(this.time.local().dateRaw, parseInt(key.match(/\d/)[0])));
+					let date:any = this.time.addDay(this.time.local().dateRaw, parseInt(key.match(/\d/)[0]));
 					date.setMinutes(0);
 					date.setSeconds(0);
 					// get value
@@ -277,17 +277,20 @@ export class WeatherComponent implements AfterViewInit {
 			.enter()
 			.append('text')
 			.attr("class", "label")
-			.attr("x", (d=>this.x(d.date)))
-			.attr("y", (d)=> {
-				if(d.value >= 0){
-					return this.y(d.value) - 15;
-				}else{
-					return this.y(d.value) + 10;
-				}
-			})
 			.attr("dy", ".75em")
 			.attr('font-size', '10px')
-  			.text((d)=> { return d.value + '\xB0'; });
+  			.text((d)=> { return d.value + '\xB0'; })
+			.attr("x", (d=> this.x(d.date)))
+				.attr("y", d=> this.y( d3.min(this.data.temp.map(d => d.value - 5))))
+			.transition()
+        	.duration(600)
+				.attr("y", (d)=> {
+					if(d.value >= 0){
+						return this.y(d.value) - 15;
+					}else{
+						return this.y(d.value) + 10;
+					}
+				});
 
 	    // daily values display
 	    if(this.bool_data_showCurrentDayDetails){
