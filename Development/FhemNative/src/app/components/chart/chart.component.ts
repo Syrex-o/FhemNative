@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, NgZone } from '@angular/core';
+import { Component, Input, OnInit, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import * as d3 from 'd3';
@@ -60,8 +60,7 @@ export class ChartComponent implements OnInit {
 	constructor(
 		private fhem: FhemService,
 		public settings: SettingsService,
-		private ref: ElementRef,
-		private zone: NgZone) {
+		private ref: ElementRef) {
 	}
 	// Component ID
 	@Input() ID: number;
