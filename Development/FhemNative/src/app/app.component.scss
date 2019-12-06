@@ -1,10 +1,14 @@
-ion-content{
-	overflow-y: auto;
-}
-
 ion-item ion-icon{
 	margin-left: 10px;
 	margin-right: 8px;
+}
+
+ion-item{
+	width: 100%;
+	
+	padding-right: 0px;
+	--box-shadow: 0px;
+	--inner-border-width: 0px;
 }
 
 .page{
@@ -61,8 +65,6 @@ ion-item ion-icon{
 	color: var(--dark-p);
 }
 
-.dark ion-toolbar,
-.dark ion-content,
 .dark ion-item {
 	--background: var(--dark-bg);
 }

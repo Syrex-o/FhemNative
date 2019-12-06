@@ -108,6 +108,10 @@ import { Subscription } from 'rxjs';
 		}
 		.btn-round ion-icon{
 			font-size: 25px;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
 		}
 		.btn-round ion-icon.bigger{
 			font-size: 32px;

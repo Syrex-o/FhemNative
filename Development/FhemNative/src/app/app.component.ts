@@ -62,6 +62,14 @@ export class AppComponent {
 			if(this.settings.app.checkUpdates){
 				this.checkForUpdate();
 			}
+			// style status bar accourding to style for IOS
+			if(this.platform.is('ios')){
+				if(this.settings.app.theme === 'dark'){
+					this.statusBar.backgroundColorByHexString('#18252B');
+				}else{
+					this.statusBar.backgroundColorByHexString('#FFFFFF');
+				}
+			}
 		});
 	}
 
@@ -126,7 +134,10 @@ export class AppComponent {
 
 	initializeApp() {
 		this.platform.ready().then(() => {
-			this.statusBar.styleDefault();
+			// this.statusBar.styleDefault();
+			if(this.platform.is('ios')){
+				this.statusBar.overlaysWebView(false);
+			}
 			this.splashScreen.hide();
 		});
 	}
