@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
 				</ion-buttons>
 				<ion-title>{{structure.currentRoom.name}}</ion-title>
 				<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" (click)="edit()">
-		            <ion-icon class="edit" name="create"></ion-icon>
+		            <ion-icon class="edit" name="md-create"></ion-icon>
 		        </button>
 			</ion-toolbar>
 		</ion-header>
@@ -30,6 +30,12 @@ import { Subscription } from 'rxjs';
 		</div>
 	`,
 	styles: [`
+		ion-header.ios{
+			height: 60px;
+		}
+		ion-toolbar.ios{
+			--min-height: 56px;
+		}
 		ion-title{
 			position: absolute;
 			top: 50%;
@@ -64,6 +70,10 @@ import { Subscription } from 'rxjs';
 
 		.btn-round .edit{
 			color: var(--btn-blue);
+			left: 50%;
+		    position: absolute;
+		    top: 50%;
+		    transform: translate(-50%, -50%);
 		}
 
 		.dark.content,

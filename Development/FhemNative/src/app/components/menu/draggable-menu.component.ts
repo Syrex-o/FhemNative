@@ -12,59 +12,77 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 @Component({
 	selector: 'draggable-menu',
 	template: `
-		<button *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" class="btn-round fixed" matRipple [matRippleColor]="'#d4d4d480'" [ngClass]="settings.app.theme" (click)="settings.modeSub.next({roomEdit: true})">
-			<ion-icon class="edit" name="create"></ion-icon>
-		</button>
-		<button-container></button-container>
-		<div cdkDropList class="list" (cdkDropListDropped)="drop($event, false)" [ngClass]="settings.app.theme">
-			<div class="box" *ngFor="let room of structure.structuredRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
-				<div class="custom-placeholder" *cdkDragPlaceholder></div>
-				<ng-container *ngIf="room.useRoomAsGroup">
-					<ion-item>
-                        <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[room.name+'_'+room.ID]">
-                            <ion-icon *ngIf="settings.modes.roomEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
-                            <ion-icon *ngIf="settings.iconFinder(room.icon).type === 'ion'" class="less-margin" slot="start" [name]="room.icon"></ion-icon>
-                            <fa-icon *ngIf="settings.iconFinder(room.icon).type !== 'ion'" class="less-margin" [icon]="[settings.iconFinder(room.icon).type, room.icon]"></fa-icon>
-                            <ion-label>{{room.name}}</ion-label>
-                        </button>
-                        <button class="round float" matRipple [matRippleColor]="'#d4d4d480'" (click)="toggleSubMenu($event)">
-                            <ion-icon slot="end" name="funnel"></ion-icon>
-                        </button>
-                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="create" *ngIf="settings.modes.roomEdit" (click)="editRoom(room)"></ion-icon>
-                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="trash" name="trash" *ngIf="settings.modes.roomEdit && structure.rooms.length > 1" (click)="removeRoom(room)"></ion-icon>
-                    </ion-item>
-                    <div cdkDropList class="list" (cdkDropListDropped)="drop($event, room)">
-                        <div class="box submenu" *ngFor="let groupRoom of room.groupRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
-                            <div class="custom-placeholder" *cdkDragPlaceholder></div>
-                            <ion-item>
-                                <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[groupRoom.name+'_'+groupRoom.ID]">
-                                    <ion-icon *ngIf="settings.modes.roomEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
-                                    <ion-icon *ngIf="settings.iconFinder(structure.rooms[groupRoom.ID].icon).type === 'ion'" class="less-margin" slot="start" [name]="structure.rooms[groupRoom.ID].icon"></ion-icon>
-                                    <fa-icon *ngIf="settings.iconFinder(structure.rooms[groupRoom.ID].icon).type != 'ion'" class="less-margin" [icon]="[settings.iconFinder(structure.rooms[groupRoom.ID].icon).type, structure.rooms[groupRoom.ID].icon]"></fa-icon>
-                                    <ion-label>{{groupRoom.name}}</ion-label>
-                                </button>
-                                <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="create" *ngIf="settings.modes.roomEdit" (click)="editRoom(structure.rooms[groupRoom.ID])"></ion-icon>
-                                <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="trash" name="trash" *ngIf="settings.modes.roomEdit" (click)="removeRoom(structure.rooms[groupRoom.ID])"></ion-icon>
-                            </ion-item>
-                        </div>
-                    </div>
-				</ng-container>
-				<ng-container *ngIf="!room.useRoomAsGroup">
-                    <ion-item>
-                        <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[room.name+'_'+room.ID]">
-                            <ion-icon *ngIf="settings.modes.roomEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
-                            <ion-icon *ngIf="settings.iconFinder(room.icon).type === 'ion'" class="less-margin" slot="start" [name]="room.icon"></ion-icon>
-                            <fa-icon *ngIf="settings.iconFinder(room.icon).type != 'ion'" class="less-margin" [icon]="[settings.iconFinder(room.icon).type, room.icon]"></fa-icon>
-                            <ion-label>{{room.name}}</ion-label>
-                        </button>
-                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="create" *ngIf="settings.modes.roomEdit" (click)="editRoom(room)"></ion-icon>
-                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="trash" name="trash" *ngIf="settings.modes.roomEdit && structure.rooms.length > 1" (click)="removeRoom(room)"></ion-icon>
-                    </ion-item>
-                </ng-container>
-			</div>
-		</div>
+		<ng-container>
+			<ion-header [ngClass]="settings.app.theme">
+                <ion-toolbar>
+                    <ion-title>Menu</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <button *ngIf="!settings.modes.roomEdit && settings.app.enableEditing" class="btn-round fixed" matRipple [matRippleColor]="'#d4d4d480'" [ngClass]="settings.app.theme" (click)="settings.modeSub.next({roomEdit: true})">
+				<ion-icon class="edit" name="md-create"></ion-icon>
+			</button>
+			<button-container></button-container>
+			<ng-container *ngIf="structure.rooms.length > 0">
+				<ion-content [ngClass]="settings.app.theme">
+					<div cdkDropList class="list" (cdkDropListDropped)="drop($event, false)">
+						<div class="box" *ngFor="let room of structure.structuredRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
+							<div class="custom-placeholder" *cdkDragPlaceholder></div>
+							<ng-container *ngIf="room.useRoomAsGroup">
+								<ion-item>
+			                        <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[room.name+'_'+room.ID]">
+			                            <ion-icon *ngIf="settings.modes.roomEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
+			                            <ion-icon *ngIf="settings.iconFinder(room.icon).type === 'ion'" class="less-margin" slot="start" [name]="room.icon"></ion-icon>
+			                            <fa-icon *ngIf="settings.iconFinder(room.icon).type !== 'ion'" class="less-margin" [icon]="[settings.iconFinder(room.icon).type, room.icon]"></fa-icon>
+			                            <ion-label>{{room.name}}</ion-label>
+			                        </button>
+			                        <button class="round float" matRipple [matRippleColor]="'#d4d4d480'" (click)="toggleSubMenu($event)">
+			                            <ion-icon slot="end" name="md-funnel"></ion-icon>
+			                        </button>
+			                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="md-create" *ngIf="settings.modes.roomEdit" (click)="editRoom(room)"></ion-icon>
+			                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="trash" name="trash" *ngIf="settings.modes.roomEdit && structure.rooms.length > 1" (click)="removeRoom(room)"></ion-icon>
+			                    </ion-item>
+			                    <div cdkDropList class="list" (cdkDropListDropped)="drop($event, room)">
+			                        <div class="box submenu" *ngFor="let groupRoom of room.groupRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
+			                            <div class="custom-placeholder" *cdkDragPlaceholder></div>
+			                            <ion-item>
+			                                <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[groupRoom.name+'_'+groupRoom.ID]">
+			                                    <ion-icon *ngIf="settings.modes.roomEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
+			                                    <ion-icon *ngIf="settings.iconFinder(structure.rooms[groupRoom.ID].icon).type === 'ion'" class="less-margin" slot="start" [name]="structure.rooms[groupRoom.ID].icon"></ion-icon>
+			                                    <fa-icon *ngIf="settings.iconFinder(structure.rooms[groupRoom.ID].icon).type != 'ion'" class="less-margin" [icon]="[settings.iconFinder(structure.rooms[groupRoom.ID].icon).type, structure.rooms[groupRoom.ID].icon]"></fa-icon>
+			                                    <ion-label>{{groupRoom.name}}</ion-label>
+			                                </button>
+			                                <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="md-create" *ngIf="settings.modes.roomEdit" (click)="editRoom(structure.rooms[groupRoom.ID])"></ion-icon>
+			                                <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="trash" name="trash" *ngIf="settings.modes.roomEdit" (click)="removeRoom(structure.rooms[groupRoom.ID])"></ion-icon>
+			                            </ion-item>
+			                        </div>
+			                    </div>
+							</ng-container>
+							<ng-container *ngIf="!room.useRoomAsGroup">
+			                    <ion-item>
+			                        <button class="button" matRipple [matRippleColor]="'#d4d4d480'" (click)="menu.close()" [routerDirection]="'root'" [routerLink]="[room.name+'_'+room.ID]">
+			                            <ion-icon *ngIf="settings.modes.roomEdit" class="less-margin" slot="start" name="reorder"></ion-icon>
+			                            <ion-icon *ngIf="settings.iconFinder(room.icon).type === 'ion'" class="less-margin" slot="start" [name]="room.icon"></ion-icon>
+			                            <fa-icon *ngIf="settings.iconFinder(room.icon).type != 'ion'" class="less-margin" [icon]="[settings.iconFinder(room.icon).type, room.icon]"></fa-icon>
+			                            <ion-label>{{room.name}}</ion-label>
+			                        </button>
+			                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="pen" name="md-create" *ngIf="settings.modes.roomEdit" (click)="editRoom(room)"></ion-icon>
+			                        <ion-icon matRipple [matRippleColor]="'#d4d4d480'" class="trash" name="trash" *ngIf="settings.modes.roomEdit && structure.rooms.length > 1" (click)="removeRoom(room)"></ion-icon>
+			                    </ion-item>
+			                </ng-container>
+						</div>
+					</div>
+					<ng-content select="[body]"></ng-content>
+		        </ion-content>
+			</ng-container>
+		</ng-container>
 	`,
 	styles: [`
+		:host{
+			height: 100%;
+		}
+		ion-content{
+			overflow-y: auto;
+		}
 		.box {
 			padding: 10px 10px;
 			border-bottom: solid 1px #ccc;
@@ -132,6 +150,8 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 		ion-item{
 			width: 100%;
 			padding-right: 0px;
+			--box-shadow: 0px;
+			--inner-border-width: 0px;
 		}
 		ion-label{
 			margin-left: 8px;
@@ -156,12 +176,6 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 			font-size: 26px;
 			margin-right: 10px;
 		}
-		.btn-container{
-			position: fixed;
-		    top: 5px;
-		    right: 0px;
-		    z-index: 100;
-		}
 		.btn-round{
 			position: relative;
 			float: right;
@@ -177,6 +191,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 			position: fixed;
 			top: 5px;
 			right: 0px;
+			z-index: 10000;
 		}
 		.btn-round ion-icon{
 		    font-size: 25px;
@@ -207,6 +222,8 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 			color: var(--dark-p);
 		}
 
+		ion-content.dark ,
+		.dark ion-toolbar,
 		.dark .box,
 		.dark .custom-placeholder,
 		.dark .list,

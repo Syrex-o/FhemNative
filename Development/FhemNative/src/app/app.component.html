@@ -1,20 +1,14 @@
 <ion-app>
     <ion-split-pane [disabled]="true">
         <ion-menu [ngClass]="settings.app.theme" [swipeGesture]="!settings.modes.roomEdit">
-            <ion-header>
-                <ion-toolbar>
-                    <ion-title>Menu</ion-title>
-                </ion-toolbar>
-            </ion-header>
-            <ion-content *ngIf="structure.rooms.length > 0">
-                <draggable-menu></draggable-menu>
-                <div class="box settings">
+             <draggable-menu>
+                <div body class="box settings">
                     <ion-item (click)="openSettings()" matRipple [matRippleColor]="'#d4d4d480'">
                         <ion-icon slot="start" name="cog"></ion-icon>
                         <ion-label>{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-label>
                     </ion-item>
                 </div>
-            </ion-content>
+             </draggable-menu>
         </ion-menu>
         <ion-router-outlet main></ion-router-outlet>
     </ion-split-pane>
