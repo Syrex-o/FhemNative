@@ -121,9 +121,29 @@
     }
 }
 
+.header-ios:after{
+    left: 0;
+    bottom: -3px;
+    background-position: left 0 top -2px;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: rgba(0,0,0,0.1);
+    content: "";
+}
+
 ion-header{
     height: 56px;
-    z-index: 100;
+    ion-title.ios{
+        padding-left: 65px;
+        text-align: left;
+    }
+    ion-toolbar.ios{
+        height: 100%;
+        ion-title{
+            height: 65px;
+        }
+    }
 }
 fa-icon{
     width: 1em;
