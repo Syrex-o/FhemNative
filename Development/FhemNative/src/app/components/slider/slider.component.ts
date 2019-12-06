@@ -1,4 +1,5 @@
-import { Component, Input, OnDestroy, OnInit, HostListener, ElementRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, HostListener, ElementRef, EventEmitter, Output } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { FhemService } from '../../services/fhem.service';
@@ -29,7 +30,7 @@ import { TimeService } from '../../services/time.service';
 		</div>
 		<ng-template #Slider>
 			<div [ngClass]="arr_data_style[0] === 'slider' ? 'slider-container' : 'container-box'"
-				[ngStyle]="{'height': (arr_data_style[0] === 'slider' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%') : '100%'),
+				[ngStyle]="{'background': style_thumbColor, 'height': (arr_data_style[0] === 'slider' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%') : '100%'),
 					'width': (arr_data_style[0] === 'slider' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : '100%') : '100%')}">
 				<button *ngIf="arr_data_style[0] === 'box'" matRipple [matRippleColor]="'#d4d4d480'" class="btn reduce" (click)="setSteps('reduce')">
 					<ion-icon name="remove"></ion-icon>
@@ -37,14 +38,14 @@ import { TimeService } from '../../services/time.service';
 				<div [ngClass]="arr_data_style[0] === 'slider' ? 'slider-outlet' : 'slider-box-inner'"
 					[ngStyle]="{'height': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%'),
 					'width': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%')}">
-					<div class="slider-bg">
-						<div class="slider-active" 
+					<div class="slider-bg" [style.background]="style_thumbColor">
+						<span class="slider-active" 
 							[ngStyle]="sliderActiveStyle" 
 							[style.background]="style_fillColor" 
 							[style.boxShadow]="arr_data_orientation === 'horizontal' ? '5px 0 0 0 '+style_fillColor : 0">
-						</div>
+						</span>
 					</div>
-					<div class="slider-thumb" [ngStyle]="{'width.px': data_thumbWidth, 'height.px': data_thumbWidth, 'background': style_thumbColor,
+					<div *ngIf="arr_data_style[0] === 'slider' || arr_data_style[0] === 'box'" class="slider-thumb" [ngStyle]="{'width.px': data_thumbWidth, 'height.px': data_thumbWidth, 'background': style_thumbColor,
 							'left': arr_data_orientation[0] === 'horizontal' ? move+'%' : '50%', 'bottom': arr_data_orientation[0] === 'vertical' ? move+'%' : '0'}">
 						<span 
 							class="pin" 
@@ -59,6 +60,27 @@ import { TimeService } from '../../services/time.service';
 				<button *ngIf="arr_data_style[0] === 'box'" matRipple [matRippleColor]="'#d4d4d480'" class="btn add" (click)="setSteps('add')">
 					<ion-icon name="add"></ion-icon>
 				</button>
+				<ng-container *ngIf="arr_data_style[0] === 'ios-slider'">
+					<ion-icon
+						*ngIf="settings.iconFinder(icon_sliderIcon).type === 'ion'"
+						[name]="icon_sliderIcon"
+						class="icon"
+						[ngStyle]="{
+							'color': style_iconColor
+						}">
+					</ion-icon>
+					<fa-icon
+						*ngIf="settings.iconFinder(icon_sliderIcon).type !== 'ion'"
+						[icon]="icon_sliderIcon"
+						class="icon"
+						[ngStyle]="{
+							'color': style_iconColor,
+							'left': arr_data_orientation[0] === 'horizontal' ? '10px' : '50%',
+							'bottom': arr_data_orientation[0] === 'horizontal' ? '50%' : '10px',
+							'transform': arr_data_orientation[0] === 'horizontal' ? 'translate(0px, 50%)' : 'translate(-50%, 0px)'
+						}">
+					</fa-icon>
+				</ng-container>
 			</div>
 		</ng-template>
 	`,
@@ -84,7 +106,6 @@ import { TimeService } from '../../services/time.service';
 		}
 		.slider-bg{
 			position: relative;
-			background: #ddd;
 			border-radius: 5px;
 			z-index: 1;
 			height: 100%;
@@ -160,8 +181,7 @@ import { TimeService } from '../../services/time.service';
 		}
 		.container-box{
 			position: absolute;
-			background: #4a4a4a;
-			border-radius: 25px;
+			border-radius: 5px;
 		}
 		.slider-box-inner{
 			position:absolute;
@@ -204,9 +224,28 @@ import { TimeService } from '../../services/time.service';
 		.vertical .btn.add{
 			top: 0;
 		}
-	`]
+
+		.icon{
+			position: absolute;
+			font-size: 25px;
+			z-index: 2;
+		}
+	`],
+	providers: [{provide: NG_VALUE_ACCESSOR, useExisting: SliderComponent, multi: true}]
 })
-export class SliderComponent implements OnInit, OnDestroy {
+export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor {
+	onTouched: () => void = () => {};
+	onChange: (_: any) => void = (_: any) => {};
+	updateChanges() {this.onChange(this.value); }
+	registerOnChange(fn: any): void {this.onChange = fn; }
+	registerOnTouched(fn: any): void {this.onTouched = fn; }
+
+	writeValue(value) {
+		if (value) {
+			this.value = value;
+			this.updateChanges();
+		}
+	}
 
 	constructor(
 		private fhem: FhemService,
@@ -239,13 +278,16 @@ export class SliderComponent implements OnInit, OnDestroy {
 
 	@Input() data_ticks = '10';
 
-	@Input() data_min = '0';
-	@Input() data_max = '100';
+	@Input() data_min:any = '0';
+	@Input() data_max:any = '100';
 
 	@Input() style_thumbColor = '#ddd';
 	@Input() style_fillColor = '#14a9d5';
 
 	@Input() style_tickColor = '#ddd';
+
+	@Input() style_iconColor = '#ddd';
+	@Input() icon_sliderIcon = 'lightbulb';
 
 	// position information
 	@Input() width: any;
@@ -268,9 +310,14 @@ export class SliderComponent implements OnInit, OnDestroy {
 	public sliderActiveStyle: any = {};
 
 	public showpin = false;
-	private isValueTime = false;
+	private isValueTime: boolean = false;
+	private isValueInSec: boolean = false;
 
 	private sliderEl: any;
+
+	// custom events
+	@Output() onSlideEnd: EventEmitter<any> = new EventEmitter();
+	@Output() onSlide: EventEmitter<any> = new EventEmitter();
 
 	static getSettings() {
 		return {
@@ -286,7 +333,7 @@ export class SliderComponent implements OnInit, OnDestroy {
 				{variable: 'data_ticks', default: '10'},
 				{variable: 'data_min', default: '0'},
 				{variable: 'data_max', default: '100'},
-				{variable: 'arr_data_style', default: 'slider,box'},
+				{variable: 'arr_data_style', default: 'slider,box,ios-slider'},
 				{variable: 'arr_data_orientation', default: 'horizontal,vertical'},
 				{variable: 'data_sliderHeight', default: '5'},
 				{variable: 'data_thumbWidth', default: '25'},
@@ -296,7 +343,9 @@ export class SliderComponent implements OnInit, OnDestroy {
 				{variable: 'bool_data_updateOnMove', default: false},
 				{variable: 'style_thumbColor', default: '#ddd'},
 				{variable: 'style_fillColor', default: '#14a9d5'},
-				{variable: 'style_tickColor', default: '#ddd'}
+				{variable: 'style_tickColor', default: '#ddd'},
+				{variable: 'style_iconColor', default: '#ddd'},
+				{variable: 'icon_sliderIcon', default: 'lightbulb'}
 			],
 			dimensions: {minX: 200, minY: 30}
 		};
@@ -305,7 +354,7 @@ export class SliderComponent implements OnInit, OnDestroy {
 	@HostListener('mousedown', ['$event', '$event.target'])
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
-		if (this.fhemDevice && target.className.indexOf('slider') !== -1) {
+		if ((this.fhemDevice || this.customMode) && (target.className.baseVal === "" || target.className.indexOf('slider') !== -1)) {
 			const whileMove = (e) => {
 				this.touch(e, target);
 	        };
@@ -318,9 +367,10 @@ export class SliderComponent implements OnInit, OnDestroy {
 
 	   			this.showpin = false;
 
-	   			if (parseInt(this.fhemDevice.readings[this.data_reading].Value) !== this.value) {
+	   			if (this.fhemDevice && parseInt(this.fhemDevice.readings[this.data_reading].Value) !== this.value) {
 					this.sendValue(this.value);
 				}
+				this.onSlideEnd.emit(this.value);
 	    	};
 
 			window.addEventListener('mousemove', whileMove);
@@ -332,18 +382,31 @@ export class SliderComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.fhem.getDevice(this.data_device, this.data_reading).then((device) => {
-			this.fhemDevice = device;
-			if (device) {
-				this.value = this.checkForTime(this.fhemDevice.readings[this.data_reading].Value, true);
-				this.deviceChange = this.fhem.devicesSub.subscribe(next => {
-					this.listen(next);
-				});
-				setTimeout(() => {
-					this.sliderEl = (this.arr_data_style[0] === 'slider') ? this.ref.nativeElement.querySelector('.slider-container') : this.ref.nativeElement.querySelector('.slider-box-inner');
-					this.updateValue();
-				}, 0);
-			}
+		if(this.data_device){
+			this.fhem.getDevice(this.data_device, this.data_reading).then((device) => {
+				this.fhemDevice = device;
+				if (device) {
+					this.value = this.checkForTime(this.fhemDevice.readings[this.data_reading].Value, true);
+					this.deviceChange = this.fhem.devicesSub.subscribe(next => {
+						this.listen(next);
+					});
+					this.defineSliderVal();
+				}
+			});
+		}
+		if(this.customMode && this.data_device === ''){
+			setTimeout(()=>{
+				this.value = this.checkForTime(this.value, true);
+				this.defineSliderVal();
+			});
+		}
+	}
+
+	private defineSliderVal(){
+		setTimeout(() => {
+			this.sliderEl = (this.arr_data_style[0] === 'slider') ? this.ref.nativeElement.querySelector('.slider-container') : this.ref.nativeElement.querySelector('.slider-box-inner');
+			this.updateValue();
+			this.getSizeDefs();
 		});
 	}
 
@@ -359,20 +422,28 @@ export class SliderComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	private getSizeDefs(){
+		if (this.arr_data_orientation[0] === 'vertical' && this.arr_data_style[0].match(/slider|ios-slider/)) {
+			this.minimumHeight = 200;
+			this.minimumWidth = 30;
+		}
+		if (this.arr_data_style[0] === 'box' && this.arr_data_orientation[0] === 'horizontal') {
+			this.minimumHeight = 60;
+			this.minimumWidth = 200;
+		}
+		if (this.arr_data_style[0] === 'box' && this.arr_data_orientation[0] === 'vertical') {
+			this.minimumHeight = 200;
+			this.minimumWidth = 60;
+		}
+		if (this.arr_data_style[0] === 'ios-slider' && this.arr_data_orientation[0] === 'horizontal') {
+			this.minimumHeight = 30;
+			this.minimumWidth = 200;
+		}
+	}
+
 	public initSlider() {
 		setTimeout(() => {
-			if (this.arr_data_orientation[0] === 'vertical' && this.arr_data_style[0] === 'slider') {
-				this.minimumHeight = 200;
-				this.minimumWidth = 30;
-			}
-			if (this.arr_data_style[0] === 'box' && this.arr_data_orientation[0] === 'horizontal') {
-				this.minimumHeight = 60;
-				this.minimumWidth = 200;
-			}
-			if (this.arr_data_style[0] === 'box' && this.arr_data_orientation[0] === 'vertical') {
-				this.minimumHeight = 200;
-				this.minimumWidth = 60;
-			}
+			this.getSizeDefs();
 			this.updateValue();
 			if (this.bool_data_showTicks) {
 				this.drawTicks();
@@ -386,20 +457,20 @@ export class SliderComponent implements OnInit, OnDestroy {
 
 			const w = (this.arr_data_orientation[0] === 'horizontal') ? this.sliderEl.clientWidth : this.sliderEl.clientHeight;
 			const border: any = Math.round(((parseInt(this.data_thumbWidth) / 2) / w) * 100);
-			this.move = x - border;
+
+			this.move = (this.arr_data_style[0] === 'slider' || this.arr_data_style[0] === 'box') ? x - border : x;
 
 			this.fillMove =  parseInt(this.data_min) <= parseInt(this.data_max) ? this.move : 100 - this.move;
 
-			this.sliderActiveStyle = {
-				width: this.arr_data_orientation[0] === 'horizontal' ? this.fillMove+'%' : '100%',
-				height: this.arr_data_orientation[0] === 'vertical' ? this.fillMove+'%' : '100%'
-			}
+			this.sliderActiveStyle['width'] = this.arr_data_orientation[0] === 'horizontal' ? this.fillMove+'%' : '100%';
+			this.sliderActiveStyle['height'] = this.arr_data_orientation[0] === 'vertical' ? this.fillMove+'%' : '100%';
+
 			if(parseInt(this.data_min) <= parseInt(this.data_max)){
-				this.sliderActiveStyle['bottom'] = 0;
-				this.sliderActiveStyle['left'] = 0;
+				this.sliderActiveStyle['bottom'] = '0px';
+				this.sliderActiveStyle['left'] = '0px';
 			}else{
-				this.sliderActiveStyle['top'] = 0;
-				this.sliderActiveStyle['right'] = 0;
+				this.sliderActiveStyle['top'] = '0px';
+				this.sliderActiveStyle['right'] = '0px';
 			}
 		});
 	}
@@ -422,6 +493,8 @@ export class SliderComponent implements OnInit, OnDestroy {
 			if (value >= parseInt(this.data_min)) {value = parseInt(this.data_min); }
 		}
 		this.value = value;
+		this.onSlide.emit(value);
+		
 		this.updateValue();
 		if (this.bool_data_updateOnMove) {
 			this.waitForThreshold += 1;
@@ -456,7 +529,7 @@ export class SliderComponent implements OnInit, OnDestroy {
 		const border = (this.arr_data_orientation[0] === 'horizontal') ?
 			Math.round(((parseInt(this.data_thumbWidth) / 2) / this.sliderEl.clientWidth) * 100) :
 			Math.round(((parseInt(this.data_thumbWidth) / 2) / this.sliderEl.clientHeight) * 100);
-		const to = x - border;
+		const to = (this.arr_data_style[0] === 'slider' || this.arr_data_style[0] === 'box') ? x - border : x;
 		const Ythis = this;
 		let pos = Math.round(this.getValuePercentage(from) * 100);
 		const id = setInterval(frame, 5);
@@ -469,10 +542,8 @@ export class SliderComponent implements OnInit, OnDestroy {
 				Ythis.move = pos;
 				Ythis.fillMove =  parseInt(Ythis.data_min) <= parseInt(Ythis.data_max) ? Ythis.move : 100 - Ythis.move;
 
-				Ythis.sliderActiveStyle = {
-					width: Ythis.arr_data_orientation[0] === 'horizontal' ? Ythis.fillMove+'%' : '100%',
-					height: Ythis.arr_data_orientation[0] === 'vertical' ? Ythis.fillMove+'%' : '100%'
-				}
+				Ythis.sliderActiveStyle['width'] = Ythis.arr_data_orientation[0] === 'horizontal' ? Ythis.fillMove+'%' : '100%';
+				Ythis.sliderActiveStyle['height'] = Ythis.arr_data_orientation[0] === 'vertical' ? Ythis.fillMove+'%' : '100%';
 			}
 		}
 	}
@@ -517,9 +588,21 @@ export class SliderComponent implements OnInit, OnDestroy {
 		time = (typeof time === 'number' || time instanceof Number) ? time.toString() : time;
 		if (time.substr(2, 1) === ':') {
 			this.isValueTime = true;
-			this.data_min = (init ? this.time.times(this.data_min).toMin : this.data_min);
-			this.data_max = (init ? this.time.times(this.data_max).toMin : this.data_max);
-			return this.time.times(time).toMin;
+			if(time.length > 5){
+				this.isValueInSec = true;
+				// hours to sec
+				const currentSec = (parseInt(time.substr(0,2)) * 60 * 60) + (parseInt(time.substr(3,2)) * 60) + parseInt(time.substr(6,2));
+
+				this.data_min = (init ? (parseInt(this.data_min.substr(0,2)) * 60 * 60) + (parseInt(this.data_min.substr(3,2)) * 60) + parseInt(this.data_min.substr(6,2))  : this.data_min);
+				this.data_max = (init ? (parseInt(this.data_max.substr(0,2)) * 60 * 60) + (parseInt(this.data_max.substr(3,2)) * 60) + parseInt(this.data_max.substr(6,2))  : this.data_min);
+
+				return currentSec;
+
+			}else{
+				this.data_min = (init ? this.time.times(this.data_min).toMin : this.data_min);
+				this.data_max = (init ? this.time.times(this.data_max).toMin : this.data_max);
+				return this.time.times(time).toMin;
+			}
 		} else {
 			return parseInt(time);
 		}
@@ -527,7 +610,18 @@ export class SliderComponent implements OnInit, OnDestroy {
 
 	public displayAs(val) {
 		if (this.isValueTime) {
-			return this.time.minToTime(val);
+			if(this.isValueInSec){
+				let h:any = Math.floor(val / 3600);
+				let m:any = Math.floor((val - (h * 3600)) / 60);
+				let s:any = val - (h * 3600) - (m * 60);
+
+				if (h   < 10) {h   = "0"+h;}
+			    if (m < 10) {m = "0"+m;}
+			    if (s < 10) {s = "0"+s;}
+			    return h+':'+m+':'+s;
+			}else{
+				return this.time.minToTime(val);
+			}
 		} else {
 			return val;
 		}
