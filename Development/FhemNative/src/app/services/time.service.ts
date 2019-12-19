@@ -66,6 +66,7 @@ export class TimeService {
 	public local() {
 		const d = new Date();
   		const weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  		const weekdaysShort = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
   		const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Okober', 'November', 'Dezenmber'];
   		const hours = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
   		const minutes = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
@@ -77,6 +78,7 @@ export class TimeService {
 		    year: d.getFullYear(),
 		    weekday: d.getDay(),
 		    weekdayText: weekdays[d.getDay()],
+		    weekdayTextShort: weekdaysShort[d.getDay()],
 		    hour: hours,
 		    minute: minutes,
 		    second: seconds,
