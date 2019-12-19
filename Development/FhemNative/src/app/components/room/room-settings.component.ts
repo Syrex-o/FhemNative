@@ -7,6 +7,7 @@ import { FhemService } from '../../services/fhem.service';
 import { ToastService } from '../../services/toast.service';
 import { StorageService } from '../../services/storage.service';
 import { StructureService } from '../../services/structure.service';
+import { TasksService } from '../../services/tasks.service';
 import { CreateComponentService } from '../../services/create-component.service';
 
 import { ModalController, Platform } from '@ionic/angular';
@@ -35,7 +36,7 @@ import { RoomComponent } from '../room/room.component';
 				<ion-title>{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-title>
 			</ion-toolbar>
 		</ion-header>
-		<ion-content padding [ngClass]="settings.app.theme">
+		<ion-content class="ion-padding" [ngClass]="settings.app.theme">
 			<div class="page">
 				<div class="category">
 					<p class="label">{{ 'GENERAL.SETTINGS.FHEM.TITLE' | translate }}</p>
@@ -119,6 +120,13 @@ import { RoomComponent } from '../room/room.component';
 						[label]="'GENERAL.SETTINGS.APP.TOAST.TITLE' | translate"
 						[subTitle]="'GENERAL.SETTINGS.APP.TOAST.INFO' | translate"
 						(onToggle)="settings.changeAppSetting('showToastMessages', $event)">
+					</switch>
+					<switch
+						[customMode]="true"
+						[(ngModel)]="settings.app.showTasks"
+						[label]="'GENERAL.SETTINGS.APP.TASKS.TITLE' | translate"
+						[subTitle]="'GENERAL.SETTINGS.APP.TASKS.INFO' | translate"
+						(onToggle)="settings.changeAppSetting('showTasks', $event); toggleTasks($event);">
 					</switch>
 					<switch
 						[customMode]="true"
@@ -449,7 +457,8 @@ export class SettingsRoomComponent {
 		private socialSharing: SocialSharing,
 		private chooser: Chooser,
 		private createComponent: CreateComponentService,
-		private helper: HelperService) {
+		private helper: HelperService,
+		private task: TasksService) {
 	}
 
 	public logWarning(event) {
@@ -850,5 +859,14 @@ export class SettingsRoomComponent {
 	// toggle URL links
 	public support(url){
 		window.open(url, '_system', 'location=yes');
+	}
+
+	// task service enabler/ disabler
+	public toggleTasks(event){
+		if(event){
+			this.task.listen();
+		}else{
+			this.task.unlisten();
+		}
 	}
 }
