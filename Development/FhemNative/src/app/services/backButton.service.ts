@@ -30,7 +30,7 @@ export class BackButtonService {
 	}
 
 	public removeHandle(prio) {
-		if (this.subs[this.subs.length - 1].prio.orginal === prio) {
+		if (this.subs[this.subs.length - 1] && this.subs[this.subs.length - 1].prio.orginal === prio) {
 			this.subs[this.subs.length - 1].sub.unsubscribe();
 			this.subs.pop();
 		}
