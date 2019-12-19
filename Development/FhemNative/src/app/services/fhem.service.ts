@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { SettingsService } from './settings.service';
@@ -46,7 +46,8 @@ export class FhemService {
 		private settings: SettingsService,
 		private structure: StructureService,
 		private toast: ToastService,
-		private translate: TranslateService) {
+		private translate: TranslateService,
+		private zone: NgZone) {
 
     	// subscribe to load Event (all devices loaded)
       	this.loadedDevices.subscribe(next => {
@@ -262,27 +263,39 @@ export class FhemService {
 
     private websocketEvents() {
     	const type = this.connectionEvaluator();
+    	// list of catched devices
+    	let listDevices = [];
     	this.socket.onmessage = (e) => {
     		let msg = e.data;
     		// desired websocket message handling
     		if (type === 'websocket') {
     			msg = JSON.parse(msg);
     			if (msg.type === 'listentry') {
+
     				// search for reply device in device list
     				const device = this.find(this.devices, 'device', msg.payload.name);
-    				if (!device && msg.payload.attributes) {
-    					this.devices.push({
-    						id: msg.payload.internals.NR,
-    						device: msg.payload.name,
-			    			readings: msg.payload.readings,
-			    			internals: msg.payload.internals,
-			    			attributes: msg.payload.attributes
-    					});
+    				if(msg.payload.attributes){
+    					const push = {
+							id: parseInt(msg.payload.internals.NR),
+				      		device: msg.payload.name,
+				      		readings: this.objResolver(msg.payload.readings, 1),
+				      		internals: msg.payload.internals,
+				      		attributes: msg.payload.attributes
+						}
+    					listDevices.push(push);
+    					// detect new device
+    					if(!device){
+    						this.devices.push(push);
+    					}
+    					if(msg.payload.num === listDevices.length){
+	    					this.returnListDevices(listDevices);
+    						listDevices = [];
+	    				}
     				}
     				// all devices loaded
     				if ((this.devices.length === msg.payload.num) || (!this.settings.app.loadFhemDevices.enable && this.devices.length === 0) || (this.settings.app.loadFhemDevices.option === 'Fhem_defined' && this.devices.length === msg.payload.num -1)) {
     					this.loadedDevices.next(true);
-    					this.returnListDevices(this.settings.app.loadFhemDevices.option === 'Fhem_defined' ? msg.payload.num - 1 : msg.payload.num);
+    					// this.returnListDevices(this.settings.app.loadFhemDevices.option === 'Fhem_defined' ? msg.payload.num - 1 : msg.payload.num);
     				}
     			}
     			if (msg.type === 'event') {
@@ -319,26 +332,30 @@ export class FhemService {
 							}else{
 								// keep track of new devices
 								let newDevices = 0;
+								listDevices = [];
 								// detect if initial load
 								msg.Results.forEach((result, i)=>{
 									const index = this.findIndex(this.devices, 'device', msg.Results[i].Name);
+									// device push
+									const push = {
+										id: parseInt(msg.Results[i].Internals.NR),
+			      						device: msg.Results[i].Name,
+			      						readings: this.objResolver(msg.Results[i].Readings, 1),
+			      						internals: msg.Results[i].Internals,
+			      						attributes: msg.Results[i].Attributes
+									}
+									listDevices.push(push);
 									if(index !== null){
 										// device already found
 										this.devices[index].readings = this.objResolver(msg.Results[i].Readings, 1);
 									}else{
 										// new device
 										newDevices++;
-										this.devices.push({
-			      							id: parseInt(msg.Results[i].Internals.NR),
-			      							device: msg.Results[i].Name,
-			      							readings: this.objResolver(msg.Results[i].Readings, 1),
-			      							internals: msg.Results[i].Internals,
-			      							attributes: msg.Results[i].Attributes
-			      						});
+										this.devices.push(push);
 									}
 									if (i === msg.Results.length - 1) {
 										this.loadedDevices.next(true);
-										this.returnListDevices(newDevices);
+										this.returnListDevices(listDevices);
 									}
 								});
 							}
@@ -370,15 +387,14 @@ export class FhemService {
     	};
     }
 
-    private returnListDevices(n){
-    	if(n > 0){
-    		// remporary copy of devices
-	    	const list = JSON.parse(JSON.stringify(this.devices));
-	    	this.devicesListSub.next(list.splice(Math.max(list.length - n, 0)));
-    	}else{
-    		// return empty list if no new devices fetched
-    		this.devicesListSub.next([]);
-    	}
+    private returnListDevices(devices){
+    	this.zone.run(()=>{
+    		if(devices.length > 0){
+	    		this.devicesListSub.next(devices);
+	    	}else{
+	    		this.devicesListSub.next([]);
+	    	}
+    	});
     }
 
     public IsJsonString(str) {
