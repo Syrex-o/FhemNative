@@ -17,7 +17,6 @@ export class StructureService {
 		private helper: HelperService,
 		private settings: SettingsService,
 		private zone: NgZone) {
-
 	}
 	// list of fhem components
 	// gets filled on load to prevent circular dependencies
@@ -45,6 +44,10 @@ export class StructureService {
 	// reserved storage of the current room for refereces
 	// filled on room entrance
 	public currentRoom: any;
+
+	// room hide list
+	// gets filled from app.component to prevent circular dependencies
+	private roomHides: Array<any>;
 
 	// getting the room name
 	public getCurrentRoom() {
@@ -109,6 +112,22 @@ export class StructureService {
 				name: 'rooms',
 				default: this.roomDefaults
 			}).then((result: any) => {
+				// generate Unique ID for rooms, if not defined
+				let allUID: boolean = true;
+				result.forEach((room)=>{
+					if(!room.UID){
+						allUID = false;
+						room.UID = this.helper.UIDgenerator();
+					}
+				});
+				if(!allUID){
+					// new save of rooms
+					this.storage.changeSetting({
+						name: 'rooms',
+						change: result
+					});
+				}
+				// apply structure and navigate
 				this.rooms = result;
 				// loading storage rooms
 				this.resetRouter(RoomComponent);
@@ -161,6 +180,39 @@ export class StructureService {
 			return comp;
 		}
 		return null;
+	}
+
+	// returns a list of all components
+	public getAllComponents(){
+		let components = [];
+
+		let looper = (arr, roomName)=>{
+			for(let item of arr){
+				if(item.ID){
+					components.push({
+						component: item,
+						room: roomName
+					});
+				}
+				if(item.attributes.components){
+					// search in component containers
+					if(item.attributes.components[0] && item.attributes.components[0].components){
+						for(let subItem of item.attributes.components){
+							looper(subItem.components, roomName);
+						}
+					}else{
+						if(item.attributes.components){
+							// search in single container component
+							looper(item.attributes.components, roomName);
+						}
+					}
+				}
+			}
+		}
+		for(let item of this.rooms){
+			looper(item.components, item.name);
+		}
+		return components;
 	}
 
 	// exec callback on each nested component inside arr
@@ -240,6 +292,7 @@ export class StructureService {
 		return null;
 	}
 
+	// searches for component in defined Array
 	private searchForComp(arr, ID){
 		for(let item of arr){
 			// item found in top structure
