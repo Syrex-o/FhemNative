@@ -7,11 +7,13 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 // Room Component for routing
 import { RoomComponent } from './components/room/room.component';
 import { SettingsRoomComponent } from './components/room/room-settings.component';
+import { TasksRoomComponent } from './components/tasks/room-tasks.component';
 // Services
 import { StructureService } from './services/structure.service';
 import { FhemService } from './services/fhem.service';
 import { SettingsService } from './services/settings.service';
 import { ToastService } from './services/toast.service';
+import { TasksService } from './services/tasks.service';
 
 // Translator
 import { TranslateService } from '@ngx-translate/core';
@@ -27,7 +29,6 @@ import { HttpClient } from '@angular/common/http';
 	styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-
 	constructor(
 		private platform: Platform,
 		private splashScreen: SplashScreen,
@@ -39,8 +40,11 @@ export class AppComponent {
 		public modalController: ModalController,
 		private http: HttpClient,
 		private toast: ToastService,
-		private translate: TranslateService) {
+		private translate: TranslateService,
+		private task: TasksService) {
+		// load room structure
 		this.structure.loadRooms(RoomComponent, true);
+		// initialize app
 		this.initializeApp();
 		// loading fhem components to structure
 		this.structure.fhemComponents = FHEM_COMPONENT_REGISTRY;
@@ -50,7 +54,10 @@ export class AppComponent {
 			if(this.settings.IPsettings.IP !== ''){
 				// connect to fhem
 				this.fhem.connectFhem().then((e) => {
-					
+					// listen to tasks
+					if(this.settings.app.showTasks){
+						this.task.listen();
+					}
 				}).catch((e) => {
 					if (e.type === 'error') {
 						this.fhem.disconnect();
@@ -59,6 +66,8 @@ export class AppComponent {
 					}
 				});
 			}
+
+			// check app for updates
 			if(this.settings.app.checkUpdates){
 				this.checkForUpdate();
 			}
@@ -73,6 +82,7 @@ export class AppComponent {
 		});
 	}
 
+	// check for app updates on github
 	private checkForUpdate(){
 		const baseUrl = "https://api.github.com/repos/Syrex-o/FhemNative/git/trees/master";
 		this.http.get(baseUrl).subscribe((res:any)=>{
@@ -146,6 +156,15 @@ export class AppComponent {
 		this.menu.close();
 		const modal = await this.modalController.create({
 			component: SettingsRoomComponent,
+			cssClass: 'modal-fullscreen'
+		});
+		return await modal.present();
+	}
+
+	async openTasks() {
+		this.menu.close();
+		const modal = await this.modalController.create({
+			component: TasksRoomComponent,
 			cssClass: 'modal-fullscreen'
 		});
 		return await modal.present();
