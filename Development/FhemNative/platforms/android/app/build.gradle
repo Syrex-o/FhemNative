@@ -91,8 +91,8 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
-apply from: "../cordova-plugin-telerik-imagepicker/starter-ignorelinterrors.gradle"
-apply from: "../cordova-plugin-telerik-imagepicker/starter-androidtarget.gradle"
+apply from: "../cordova-plugin-telerik-imagepicker/FhemNative-ignorelinterrors.gradle"
+apply from: "../cordova-plugin-telerik-imagepicker/FhemNative-androidtarget.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()

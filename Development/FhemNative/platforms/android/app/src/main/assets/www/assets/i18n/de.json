@@ -522,6 +522,10 @@
 					"name": "Schriftgröße",
 					"info": "Schriftgröße des Labels"
 				},
+				"arr_data_textAlign":{
+					"name": "Text-Ausrichtung",
+					"info": "Ausrichtung des Label-Text"
+				},
 				"style_color":{
 					"name": "Farbe",
 					"info": "Farbe des Labels"
@@ -1221,7 +1225,8 @@
 		"DICTIONARY":{
 			"ROOM": "Raum",
 			"ROOMS": "Räume",
-			"COMPONENTS": "Komponenten", 
+			"COMPONENT": "Komponente",
+			"COMPONENTS": "Komponenten",
 			"ADDED": "hinzugefügt",
 			"NO_ROOMS_ADDED_TITLE": "Keine Räume hinzugefügt:",
 			"NO_ROOMS_ADDED_INFO": "Alle Räume sind bereits in FhemNative enthalten.",
@@ -1344,6 +1349,10 @@
 					"TITLE": "Toast-Nachrichten",
 					"INFO": "Aktivieren/deaktivieren der Toast-Nachrichten."
 				},
+				"TASKS":{
+					"TITLE": "Tasks",
+					"INFO": "Aktivieren/deaktivieren des Task Service."
+				},
 				"VERSION_CHECK":{
 					"TITLE": "Update-Suche",
 					"INFO": "Aktivieren/deaktivieren der App-Update Suche."
@@ -1437,6 +1446,35 @@
 				}
 			}
 		},
+		"TASKS":{
+			"TITLE": "Tasks",
+			"CREATE_TASK": {
+				"TITLE": "Task erstellen",
+				"INFO": "Erstelle eine Aufgabe für FhemNative im Hintergrund",
+				"NAME": {
+					"TITLE": "Task Name",
+					"INFO": "Name des Tasks"
+				},
+				"DES": {
+					"TITLE": "Task Beschreibung",
+					"INFO": "Beschreibung des Tasks (für eigene Übersichtlichkeit)"
+				}
+			},
+			"EDIT_TASK": {
+				"TITLE": "Task bearbeiten"
+			},
+			"CONFIG_TASK": {
+				"TITLE": "Task konfigurieren"
+			},
+			"CHANGE_TASK": {
+				"TITLE": "Task-Typ auswählen",
+				"INFO": "Wechsel zwischen verschiedenen Task Typen",
+				"MISSING":{
+					"TITLE": "Fehlende Werte",
+					"INFO": "Es fehlen Eingabewerte in der Task-Definition. Bitte stell sicher, dass alle Felder Gefüllt sind."
+				}
+			}
+		},
 		"CREATE_ROOM":{
 			"TITLE": "Raum erstellen:",
 			"ROOM_NAME": "Raum Name",
@@ -1473,6 +1511,7 @@
 			},
 			"MENU":{
 				"SETTINGS": "Einstellungen",
+				"DETAILS": "Komponenten Details",
 				"FOREGROUND": "In den Vordergrund",
 				"BACKGROUND": "In den Hintergrund",
 				"COPY": "Kopieren",

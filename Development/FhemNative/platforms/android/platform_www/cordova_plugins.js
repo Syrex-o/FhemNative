@@ -1,6 +1,22 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
   {
+    "id": "cordova-plugin-chooser.Chooser",
+    "file": "plugins/cordova-plugin-chooser/www/chooser.js",
+    "pluginId": "cordova-plugin-chooser",
+    "clobbers": [
+      "chooser"
+    ]
+  },
+  {
+    "id": "cordova-plugin-device.device",
+    "file": "plugins/cordova-plugin-device/www/device.js",
+    "pluginId": "cordova-plugin-device",
+    "clobbers": [
+      "device"
+    ]
+  },
+  {
     "id": "cordova-plugin-file.DirectoryEntry",
     "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
     "pluginId": "cordova-plugin-file",
@@ -174,35 +190,11 @@ module.exports = [
     "runs": true
   },
   {
-    "id": "cordova-sqlite-storage.SQLitePlugin",
-    "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
-    "pluginId": "cordova-sqlite-storage",
+    "id": "cordova-plugin-ionic-keyboard.keyboard",
+    "file": "plugins/cordova-plugin-ionic-keyboard/www/android/keyboard.js",
+    "pluginId": "cordova-plugin-ionic-keyboard",
     "clobbers": [
-      "SQLitePlugin"
-    ]
-  },
-  {
-    "id": "cordova-plugin-statusbar.statusbar",
-    "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
-    "pluginId": "cordova-plugin-statusbar",
-    "clobbers": [
-      "window.StatusBar"
-    ]
-  },
-  {
-    "id": "cordova-plugin-device.device",
-    "file": "plugins/cordova-plugin-device/www/device.js",
-    "pluginId": "cordova-plugin-device",
-    "clobbers": [
-      "device"
-    ]
-  },
-  {
-    "id": "cordova-plugin-splashscreen.SplashScreen",
-    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-    "pluginId": "cordova-plugin-splashscreen",
-    "clobbers": [
-      "navigator.splashscreen"
+      "window.Keyboard"
     ]
   },
   {
@@ -214,11 +206,19 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-ionic-keyboard.keyboard",
-    "file": "plugins/cordova-plugin-ionic-keyboard/www/android/keyboard.js",
-    "pluginId": "cordova-plugin-ionic-keyboard",
+    "id": "cordova-plugin-splashscreen.SplashScreen",
+    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+    "pluginId": "cordova-plugin-splashscreen",
     "clobbers": [
-      "window.Keyboard"
+      "navigator.splashscreen"
+    ]
+  },
+  {
+    "id": "cordova-plugin-statusbar.statusbar",
+    "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+    "pluginId": "cordova-plugin-statusbar",
+    "clobbers": [
+      "window.StatusBar"
     ]
   },
   {
@@ -244,29 +244,30 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-chooser.Chooser",
-    "file": "plugins/cordova-plugin-chooser/www/chooser.js",
-    "pluginId": "cordova-plugin-chooser",
+    "id": "cordova-sqlite-storage.SQLitePlugin",
+    "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+    "pluginId": "cordova-sqlite-storage",
     "clobbers": [
-      "chooser"
+      "SQLitePlugin"
     ]
   }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
-  "cordova-plugin-file": "6.0.2",
-  "cordova-sqlite-storage": "3.3.0",
-  "cordova-plugin-whitelist": "1.3.3",
-  "cordova-plugin-statusbar": "2.4.2",
+  "cordova-plugin-add-swift-support": "2.0.2",
+  "cordova-plugin-chooser": "1.2.5",
   "cordova-plugin-device": "2.0.2",
-  "cordova-plugin-splashscreen": "5.0.2",
-  "cordova-plugin-ionic-webview": "4.1.1",
+  "cordova-plugin-file": "6.0.2",
   "cordova-plugin-ionic-keyboard": "2.2.0",
+  "cordova-plugin-ionic-webview": "4.1.1",
+  "cordova-plugin-splashscreen": "5.0.2",
+  "cordova-plugin-statusbar": "2.4.2",
   "cordova-plugin-telerik-imagepicker": "2.3.3",
+  "cordova-plugin-whitelist": "1.3.3",
   "es6-promise-plugin": "4.2.2",
   "cordova-plugin-x-socialsharing": "5.6.0",
-  "cordova-plugin-chooser": "1.2.5"
+  "cordova-sqlite-storage": "3.3.0"
 };
 // BOTTOM OF METADATA
 });
