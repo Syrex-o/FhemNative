@@ -522,6 +522,10 @@
 					"name": "Font weight",
 					"info": "Font weight of the label"
 				},
+				"arr_data_textAlign":{
+					"name": "Text align",
+					"info": "Alignment of the label text"
+				},
 				"style_color":{
 					"name": "Color",
 					"info": "Color of the label"
@@ -1221,6 +1225,7 @@
 		"DICTIONARY":{
 			"ROOM": "Room",
 			"ROOMS": "Rooms",
+			"COMPONENT": "Component",
 			"COMPONENTS": "Components", 
 			"ADDED": "added",
 			"NO_ROOMS_ADDED_TITLE": "No rooms added:",
@@ -1344,6 +1349,10 @@
 					"TITLE": "Toast Messages",
 					"INFO": "Enable/disable toast messages."
 				},
+				"TASKS":{
+					"TITLE": "Tasks",
+					"INFO": "Enable/disable Task Service."
+				},
 				"VERSION_CHECK":{
 					"TITLE": "Check updates",
 					"INFO": "Enable/disable to check for App updates."
@@ -1437,6 +1446,35 @@
 				}
 			}
 		},
+		"TASKS":{
+			"TITLE": "Tasks",
+			"CREATE_TASK": {
+				"TITLE": "Create Task",
+				"INFO": "Create a task for FhemNative in background",
+				"NAME": {
+					"TITLE": "Task name",
+					"INFO": "Name of the task"
+				},
+				"DES": {
+					"TITLE": "Task Description",
+					"INFO": "Description of the task (for own clarity)"
+				}
+			},
+			"EDIT_TASK": {
+				"TITLE": "Edit task"
+			},
+			"CONFIG_TASK": {
+				"TITLE": "Configure task"
+			},
+			"CHANGE_TASK": {
+				"TITLE": "Select task type",
+				"INFO": "Switch between different task types",
+				"MISSING":{
+					"TITLE": "Missing values",
+					"INFO": "There are missing Input values in the task definition. Please ensure, that all fields are filled."
+				}
+			}
+		},
 		"CREATE_ROOM":{
 			"TITLE": "Create room:",
 			"ROOM_NAME": "Room name",
@@ -1473,6 +1511,7 @@
 			},
 			"MENU":{
 				"SETTINGS": "Settings",
+				"DETAILS": "Component details",
 				"FOREGROUND": "Put in foreground",
 				"BACKGROUND": "Put in background",
 				"COPY": "Copy",
