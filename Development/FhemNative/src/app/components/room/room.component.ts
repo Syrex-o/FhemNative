@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FhemService } from '../../services/fhem.service';
 import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
+import { TasksService } from '../../services/tasks.service';
 import { CreateComponentService } from '../../services/create-component.service';
 
 import { Subscription } from 'rxjs';
@@ -105,7 +106,8 @@ export class RoomComponent implements OnDestroy {
 		private platform: Platform,
 		private createComponent: CreateComponentService,
 		private zone: NgZone,
-		private route: ActivatedRoute) {
+		private route: ActivatedRoute,
+		private task: TasksService) {
 		// App Pause / Resume
 			this.onPauseSubscription = this.platform.pause.subscribe(() => {
 				this.fhem.noReconnect = true;
@@ -115,7 +117,12 @@ export class RoomComponent implements OnDestroy {
 			this.onResumeSubscription = this.platform.resume.subscribe(() => {
 				if(!this.settings.modes.blockDefaultLoader){
 					this.fhem.noReconnect = false;
-					this.fhem.connectFhem();
+					this.fhem.connectFhem().then((e)=>{
+						// listen to tasks
+						if(this.settings.app.showTasks){
+							this.task.listen();
+						}
+					});
 					this.loadRoomComponents();
 				}
 			});
