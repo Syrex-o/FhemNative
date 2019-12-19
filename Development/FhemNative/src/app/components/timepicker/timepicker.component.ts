@@ -18,11 +18,17 @@ import { SettingsService } from '../../services/settings.service';
 			minimumHeight="40"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex, 'border-bottom': (bool_data_showBorder) ? '1px solid #ddd' : '0px'}" >
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 				<ng-container *ngTemplateOutlet="timepicker"></ng-container>
 			</fhem-container>
 		</div>
-		<div *ngIf="customMode" class="timepicker-custom" [ngClass]="settings.app.theme">
+		<div 
+			*ngIf="customMode" 
+			class="timepicker-custom"
+			[ngClass]="settings.app.theme"
+			[ngStyle]="{
+				'height': fixBtnHeight ? '100%' : '50px'
+			}">
 			<ng-container *ngTemplateOutlet="timepicker"></ng-container>
 		</div>
 
@@ -51,7 +57,6 @@ import { SettingsService } from '../../services/settings.service';
 		.timepicker-custom{
 			position: relative;
 			width: 100%;
-			height: 50px;
 			border-bottom: 1px solid var(--dark-border);
 		}
 		.btn{
@@ -113,6 +118,8 @@ export class TimepickerComponent implements OnInit, OnDestroy, ControlValueAcces
 	@Input() format = 'HH:mm';
 	@Input() maxHours = '24';
 	@Input() maxMinutes = '60';
+	// set the button height to parent defenition instead of 50px --> .timepicker-custom
+	@Input() fixBtnHeight: boolean = false;
 
 	// Component ID
 	@Input() ID: number;

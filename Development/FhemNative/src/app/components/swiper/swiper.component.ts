@@ -21,7 +21,7 @@ import { HelperService } from '../../services/helper.service';
 			id="{{ID}}"
 			(onResize)="resizeSlides()"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': null, 'reading': null, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: null, reading: null, offline: true}">
 				<div class="swiper-container" [ngStyle]="{
 					'border': bool_data_showBorder ? '1px solid #ddd' : '0px',
 					'border-bottom-left-radius.px': data_borderRadius,

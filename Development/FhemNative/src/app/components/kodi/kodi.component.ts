@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 			minimumHeight="490"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': null, 'reading': null, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: null, reading: null, offline: true}">
 				<div class="remote-container">
 					<div class="header-container">
 						<div class="row">

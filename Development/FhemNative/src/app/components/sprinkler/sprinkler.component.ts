@@ -22,7 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 			[minimumHeight]="minimumHeight"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': data_device, 'reading': null, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: null, available: true}">
 				<div class="sprinkler-page-container" *ngIf="sprinklers.states?.length > 0">
 					<div class="btn-box">
 						<button *ngIf="sprinklers.smart.winterMode" matRipple [matRippleColor]="'#d4d4d480'" class="btn-icon left" (click)="openSettings('winterMode')">

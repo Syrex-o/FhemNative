@@ -17,7 +17,7 @@ import { SettingsService } from '../../services/settings.service';
 			id="{{ID}}"
 			(onResize)="resize($event)"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 				<div
 					class="pinpad-container">
 					<div class="pinpad-valid" *ngIf="fhemDevice?.readings[data_pin]">

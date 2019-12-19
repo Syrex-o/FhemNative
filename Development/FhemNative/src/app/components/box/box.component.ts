@@ -14,7 +14,7 @@ import { SettingsService } from '../../services/settings.service';
 			minimumHeight="60"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': null, 'reading': null, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: null, reading: null, offline: true}">
 				<div class="box-container" [ngStyle]="{'box-shadow': bool_data_showShadow ? '0px 15px 25px 0 rgba(0, 0, 0, 0.3)' : '0px'}">
 					<div class="box-head" *ngIf="bool_data_showHeader" [ngStyle]="{
 						'background-color': style_headerColor,

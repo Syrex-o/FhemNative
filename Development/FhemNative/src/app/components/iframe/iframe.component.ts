@@ -17,7 +17,7 @@ import { HttpClient } from '@angular/common/http';
 			minimumHeight="40"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true}">
 				<div class="frame">
 					<iframe *ngIf="(src && fhemDevice) || (src && !fhemDevice)" [src]="src" [frameBorder]="bool_data_showBorder ? 1 : 0"></iframe>
 					<p *ngIf="src === '' || !src" class="error">

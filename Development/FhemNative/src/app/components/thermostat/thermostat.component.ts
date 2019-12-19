@@ -17,7 +17,7 @@ import { SettingsService } from '../../services/settings.service';
 				minimumHeight="40"
 				id="{{ID}}"
 				[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-				<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
+				<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 					<svg #Thermostat xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 20 250 470">
 						<defs>
 					    	<linearGradient [attr.id]="LIQUIDGRAD_UID" x1="57" y1="150" x2="57" y2="546" gradientUnits="userSpaceOnUse">

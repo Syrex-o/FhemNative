@@ -19,11 +19,37 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 				class="select-item settings">
 				{{ 'GENERAL.EDIT_COMPONENT.MENU.SETTINGS' | translate }}
 			</p>
+			<div class="details">
+				<p matRipple 
+					[matRippleColor]="'#d4d4d480'" 
+					*ngIf="source === 'component'" 
+					(click)="toggleComponentDetails()" 
+					class="select-item top">
+					{{ 'GENERAL.EDIT_COMPONENT.MENU.DETAILS' | translate }}
+				</p>
+				<div class="component-details" *ngIf="componentDetails.show" [ngClass]="componentDetails.class">
+					<span class="triangle"></span>
+					<div class="details-container">
+						<p class="head">{{ 'GENERAL.DICTIONARY.COMPONENT' | translate }}:</p>
+						<div class="details-row" *ngFor="let detail of componentDetails.component | keyvalue">
+							<span class="key">{{detail.key}}:</span>
+							<span class="value">{{detail.value}}</span>
+						</div>
+					</div>
+					<div class="details-container">
+						<p class="head">{{ 'GENERAL.DICTIONARY.ROOM' | translate }}:</p>
+						<div class="details-row" *ngFor="let detail of componentDetails.room | keyvalue">
+							<span class="key">{{detail.key}}:</span>
+							<span class="value">{{detail.value}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
 			<p matRipple 
 				[matRippleColor]="'#d4d4d480'" 
 				*ngIf="source === 'component'" 
 				(click)="sendToFront()" 
-				class="select-item top">
+				class="select-item">
 				{{ 'GENERAL.EDIT_COMPONENT.MENU.FOREGROUND' | translate }}
 			</p>
 			<p matRipple 
@@ -183,7 +209,13 @@ export class EditComponentComponent implements AfterViewInit {
 	// selected component in structure
 	public component: any;
 
+	// show settings picker
 	public showSettings: boolean = false;
+
+	// component details
+	public componentDetails: any = {
+		show: false
+	};
 
 	// @HostListener('document:click', ['$event'])
 	@HostListener('document:mousedown', ['$event.target'])
@@ -322,5 +354,31 @@ export class EditComponentComponent implements AfterViewInit {
 		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
 		// add to change stack
 		this.undoManager.addChange();
+	}
+
+	// select component details
+	public toggleComponentDetails(){
+		this.componentDetails.show = !this.componentDetails.show;
+		if(this.componentDetails.show){
+			const d = this.structure.getComponent(this.componentID);
+			this.componentDetails.component = {
+				ID: this.componentID,
+				name: d.name
+			};
+			this.componentDetails.room = {
+				ID: this.structure.currentRoom.ID,
+				UID: this.structure.currentRoom.UID,
+				name: this.structure.currentRoom.name
+			};
+
+			// set position to left or right
+			const menu = this.ref.nativeElement.querySelector('.context-menu');
+			const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
+			if(this.x + menu.clientWidth + 170 >= container.width){
+				this.componentDetails.class = 'left';
+			}else{
+				this.componentDetails.class = 'right';
+			}
+		}
 	}
 }

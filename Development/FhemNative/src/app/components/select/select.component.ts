@@ -16,7 +16,7 @@ import { SettingsService } from '../../services/settings.service';
 			minimumHeight="20"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 				<div
 					class="select-container">
 					<button matRipple [matRippleColor]="'#d4d4d480'" class="select-btn" (click)="showDropdown = !showDropdown;">

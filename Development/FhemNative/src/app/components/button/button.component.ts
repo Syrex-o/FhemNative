@@ -16,7 +16,7 @@ import { FhemService } from '../../services/fhem.service';
 			minimumHeight="30"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true, 'connected': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true, connected: true}">
 				<button
 					matRipple [matRippleColor]="'#d4d4d480'"
 					class="btn"

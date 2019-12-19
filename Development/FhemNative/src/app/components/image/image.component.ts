@@ -22,7 +22,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 			minimumHeight="40"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true}">
 				<div
 					class="image-container">
 					<img *ngIf="src && fhemDevice" [src]="src">

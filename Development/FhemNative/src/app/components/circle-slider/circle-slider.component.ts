@@ -18,7 +18,7 @@ import { FhemService } from '../../services/fhem.service';
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}"
 			(onResize)="resize()">
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 				<div class="svg-container">
 					<svg #svgRoot xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
 						 [attr.viewBox]="styles.viewBox" preserveAspectRatio="xMinYMin meet">

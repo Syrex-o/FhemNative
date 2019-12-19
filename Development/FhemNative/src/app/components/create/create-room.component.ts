@@ -127,6 +127,7 @@ export class CreateRoomComponent implements OnDestroy {
 				// room is created
 				this.structure.rooms.push({
 					ID: this.structure.rooms.length,
+					UID: this.helper.UIDgenerator(),
 					name: room,
 					icon: this.roomIcon.icon,
 					components: []

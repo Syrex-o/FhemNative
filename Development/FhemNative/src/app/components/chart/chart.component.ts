@@ -19,7 +19,7 @@ import { SettingsService } from '../../services/settings.service';
 			id="{{ID}}"
 			(onResize)="resize($event)"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': data_device, 'reading': null, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: null, available: true}">
 				<div class="chart-container">
 					<p *ngIf="noData" class="no-data">
 						{{ 'COMPONENTS.Chart.TRANSLATOR.NO_DATA' | translate }}

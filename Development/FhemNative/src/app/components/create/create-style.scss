@@ -299,12 +299,74 @@
 	.page-4-active .page-4{
 		transform: translate3d(0%, 0, 0);
 	}
+	// component details
+	.details{
+		position: relative;
+		.component-details{
+			position: absolute;
+			top: 50%;
+			width: 150px;
+			height: 150px;
+			background: #fff;
+		    border-radius: 4px;
+		    box-shadow: 0 6px 30px 0px rgba(0, 0, 0, 0.3);
+		    border-top: 1px solid #8e8e8e;
+		    border-bottom: 1px solid #8e8e8e;
+		    text-align: left;
+		    padding: 8px;
+			&.right{
+				right: 0;
+				transform: translate(calc(100% + 20px), -50%);
+				border-right: 1px solid #8e8e8e;
+				.triangle{
+					left: -20px;
+					border-width: 75px 20px 75px 0;
+					border-color: transparent #fff transparent transparent;
+				}
+			}
+			&.left{
+				left: 0;
+				transform: translate(calc(-100% - 20px), -50%);
+				border-left: 1px solid #8e8e8e;
+				.triangle{
+					right: -20px;
+					border-width: 75px 0 75px 20px;
+					border-color: transparent transparent transparent #fff;
+				}
+			}
+			.triangle{
+				position: absolute;
+				top: 0;
+				width: 0;
+				height: 0;
+				border-style: solid;
+			}
+			.details-container{
+				margin-bottom: 15px;
+				.head{
+					text-align: center;
+					line-height: 15px;
+				}
+				.value{
+					position: absolute;
+    				right: 8px;
+				}
+			}
+		}
+	}
 
 	.dark .add-btn,
 	.dark input,
 	.dark .page-container,
-	.dark.context-menu{
+	.dark.context-menu,
+	.dark .component-details{
 		background: var(--dark-bg);
+	}
+	.dark .component-details.left .triangle{
+		border-color: transparent transparent transparent var(--dark-bg);
+	}
+	.dark .component-details.right .triangle{
+		border-color: transparent var(--dark-bg) transparent transparent;
 	}
 	.dark h2,
 	.dark h3,
@@ -312,7 +374,9 @@
 	.dark p,
 	.dark .label,
 	.dark ion-icon,
-	.dark fa-icon{
+	.dark fa-icon,
+	.dark span.key,
+	.dark span.value{
 		color: var(--dark-p);
 	}
 	.dark input{

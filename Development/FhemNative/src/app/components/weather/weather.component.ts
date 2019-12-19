@@ -20,7 +20,7 @@ import { TimeService } from '../../services/time.service';
 			id="{{ID}}"
 			(onResize)="resize($event)"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': data_device, 'reading': null, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: null, available: true}">
 				<div class="chart-container"></div>
 			</fhem-container>
 		</div>

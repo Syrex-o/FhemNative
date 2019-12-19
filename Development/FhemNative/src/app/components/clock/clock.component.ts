@@ -16,7 +16,7 @@ import { SettingsService } from '../../services/settings.service';
 			minimumHeight="40"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': null, 'reading': null, 'available': true, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: null, reading: null, offline: true}">
 				<ng-container *ngIf="arr_data_style[0] === 'digital'">
 					<svg class="date" viewBox="0 0 62 18">
 						<text [attr.fill]="style_hourColor" [attr.x]="displayValue('ss') ? 0 : 10" y="15" *ngIfOnce="displayValue('HH')" class="hour">{{digitalClock.HH}}</text>

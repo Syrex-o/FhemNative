@@ -19,7 +19,7 @@ import { ToastService } from '../../services/toast.service';
 				minimumHeight="30"
 				id="{{ID}}"
 				[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-				<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
+				<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 					<button
 						class="color-preview"
 						[style.background]="'#'+color" (click)="togglePopup()">

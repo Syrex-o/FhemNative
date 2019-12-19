@@ -16,7 +16,7 @@ import { SettingsService } from '../../services/settings.service';
 			minimumHeight="30"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true, 'offline': true}">
 				<div class="icon-container" [ngClass]="(fhemDevice && fhemDevice.readings[data_indicatorReading]) ? 'show-indicator' : 'hide-indicator'">
 					<ion-icon
 						*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type === 'ion'"

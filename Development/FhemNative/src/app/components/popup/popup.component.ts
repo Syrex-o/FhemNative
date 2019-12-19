@@ -23,7 +23,7 @@ import { HelperService } from '../../services/helper.service';
 			minimumHeight="35"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true}">
 				<button
 				matRipple [matRippleColor]="'#d4d4d480'"
 				class="popup-btn"
@@ -292,17 +292,17 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	@ViewChild('container', { static: true, read: ViewContainerRef }) container: ViewContainerRef;
 
 	// Popup Settings
-    public newsSlide = false;
+    public newsSlide: boolean = false;
 
     // Custom Popup Settings
     // used for usage outside of fhem
-    @Input() customMode = false;
+    @Input() customMode: boolean = false;
     // headline of the popup
     @Input() headLine: string;
     // show/hide close button
-    @Input() closeButton = true;
+    @Input() closeButton: boolean = true;
     // back button priority
-    @Input() priority = 1;
+    @Input() priority: number = 1;
 
     public showPopup = false;
 
@@ -310,7 +310,7 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
     @Output() onClose = new EventEmitter();
 
     // popup properties
-    @Input() fixPosition = false;
+    @Input() fixPosition: boolean = false;
 
 	// Component ID
 	@Input() ID: number;

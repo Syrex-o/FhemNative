@@ -18,6 +18,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // Components
 import { RoomComponent } from './room/room.component';
 import { SettingsRoomComponent } from './room/room-settings.component';
+import { TasksRoomComponent } from './tasks/room-tasks.component';
+
+// code
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+
 import { GridComponent } from './grid/grid.component';
 import { SelectRectangleComponent } from './grid/select-rectangle.component';
 import { PickerComponent } from './picker/picker.component';
@@ -43,6 +48,7 @@ import { ShortcutService } from '../services/shortcut.service';
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 }
+
 @NgModule({
 	imports: [
 		RouterModule,
@@ -55,6 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
 		DragDropModule,
 		HttpClientModule,
 		FontAwesomeModule,
+		CodemirrorModule,
 		TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -66,6 +73,7 @@ export function createTranslateLoader(http: HttpClient) {
 	declarations: [
 		RoomComponent,
 		SettingsRoomComponent,
+		TasksRoomComponent,
 		GridComponent,
 		SelectRectangleComponent,
 		CreateComponentComponent,
@@ -87,6 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
 		RoomComponent,
 		PickerComponent,
 		SettingsRoomComponent,
+		TasksRoomComponent,
 		FhemMenuComponent,
 		ButtonContainerComponent,
 		DraggableMenuComponent,
@@ -99,6 +108,7 @@ export function createTranslateLoader(http: HttpClient) {
 	entryComponents: [
 		RoomComponent,
 		SettingsRoomComponent,
+		TasksRoomComponent,
 		GridComponent,
 		SelectRectangleComponent,
 		CreateComponentComponent,

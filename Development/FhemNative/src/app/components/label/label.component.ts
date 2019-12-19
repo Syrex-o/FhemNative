@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { Subscription } from 'rxjs';
+
 import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
 
@@ -16,14 +18,15 @@ import { SettingsService } from '../../services/settings.service';
 			minimumHeight="40"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}">
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true, 'offline': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true}">
 				<div class="label-container">
 					<p
 						class="label-item"
 						[ngStyle]="{
 							'font-size.px': data_size, 
 							'font-weight': data_fontWeight, 
-							'color': fhemDevice ? getValueColor() : style_color
+							'color': fhemDevice ? getValueColor() : style_color,
+							'text-align': arr_data_textAlign[0]
 						}">
 						{{ (fhemDevice ? fhemDevice.readings[data_reading].Value : data_label) + data_labelExtension }}
 					</p>
@@ -78,6 +81,7 @@ export class LabelComponent implements OnInit {
 	@Input() data_min: string;
 	@Input() data_max: string;
 	@Input() data_fontWeight: string;
+	@Input() arr_data_textAlign: Array<string> = ['left', 'center', 'right'];
 
 	// Styling
 	@Input() style_color = '#86d993';
@@ -92,6 +96,7 @@ export class LabelComponent implements OnInit {
 	@Input() zIndex: number;
 
 	public fhemDevice: any;
+	private deviceChange: Subscription;
 
 	static getSettings() {
 		return {
@@ -107,6 +112,7 @@ export class LabelComponent implements OnInit {
 				{variable: 'data_min', default: ''},
 				{variable: 'data_max', default: ''},
 				{variable: 'data_fontWeight', default: '300'},
+				{variable: 'arr_data_textAlign', default: 'left,center,right'},
 				{variable: 'style_color', default: '#86d993'},
 				{variable: 'style_minColor', default: '#02adea'},
 				{variable: 'style_maxColor', default: '#fb0a2a'}

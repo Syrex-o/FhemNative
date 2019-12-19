@@ -15,7 +15,7 @@ import { SettingsService } from '../../services/settings.service';
 			minimumHeight="40"
 			id="{{ID}}"
 			[ngStyle]="{'width': width, 'height': height, 'top': top, 'left': left, 'z-index': zIndex}" >
-			<fhem-container [specs]="{'device': data_device, 'reading': data_reading, 'available': true}">
+			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 				<div
 					class="circle-menu-container"
 					[ngClass]="arr_data_expandStyle[0]">
