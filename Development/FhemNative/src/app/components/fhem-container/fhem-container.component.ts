@@ -3,15 +3,26 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
 import { FhemService } from '../../services/fhem.service';
 import { HelperService } from '../../services/helper.service';
+import { TasksService } from '../../services/tasks.service';
+
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'fhem-container',
 	template: `
-		<ng-template [ngIf]="specs.available" [ngIfElse]="CONNECTED_CONTAINER">
-			<!-- Template to render fhem device if device and reading are present -->
-			<ng-container *ngIf="deviceState.connected && deviceState.devicePresent && deviceState.readingPresent; else CONNECTED_CONTAINER">
-				<ng-container *ngTemplateOutlet="RENDER_CONTAINER"></ng-container>
-			</ng-container>
+		
+		<ng-template [ngIf]="(task.hideList.components.indexOf(specs.ID)) > -1" [ngIfElse]="AVAILABLE_CONTAINER">
+			<!-- Hide Component -->
+		</ng-template>
+
+
+		<ng-template #AVAILABLE_CONTAINER>
+			<ng-template [ngIf]="specs.available" [ngIfElse]="CONNECTED_CONTAINER">
+				<!-- Template to render fhem device if device and reading are present -->
+				<ng-container *ngIf="deviceState.connected && deviceState.devicePresent && deviceState.readingPresent; else CONNECTED_CONTAINER">
+					<ng-container *ngTemplateOutlet="RENDER_CONTAINER"></ng-container>
+				</ng-container>
+			</ng-template>
 		</ng-template>
 
 		<ng-template #CONNECTED_CONTAINER>
@@ -39,7 +50,6 @@ import { HelperService } from '../../services/helper.service';
 				</div>
 			</ng-template>
 		</ng-template>
-
 
 		<ng-template #UNAVAILABLE>
 			<div class="unavailable" [ngClass]="settings.app.theme">
@@ -179,13 +189,13 @@ export class FhemContainerComponent implements OnInit, OnDestroy {
 	public showLoader = true;
 
 	// subscribe to fhem state
-	private fhemSub: any;
+	private fhemSub: Subscription;
 
 	constructor(
 		public settings: SettingsService,
 		private fhem: FhemService,
-		private helper: HelperService) {
-
+		private helper: HelperService,
+		public task: TasksService) {
 	}
 
 	ngOnInit() {
@@ -194,6 +204,7 @@ export class FhemContainerComponent implements OnInit, OnDestroy {
 
 		// initialize specs
 		this.specs = {
+			ID: this.specs.ID || 0,
 			device: (typeof this.specs.device === 'string') ? this.specs.device.replace(/\s/g, '').split(',') : this.specs.device,
 			reading: this.specs.reading,
 			offline: this.specs.offline || false,
