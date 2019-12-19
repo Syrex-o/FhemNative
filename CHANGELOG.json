@@ -218,6 +218,22 @@
       			{"TYPE": "FIX", "CHANGE": "Slider update value in wrong direction"},
       			{"TYPE": "FIX", "CHANGE": "Popup font-awesome icon finder"}
       		]
+    	},
+    	{
+      		"VERSION": "2.2.0",
+      		"DATE": "19.12.2019",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Label component text align option"},
+      			{"TYPE": "NEW", "CHANGE": "Fhem device list strategy"},
+      			{"TYPE": "NEW", "CHANGE": "Alpha version of Tasks"},
+      			{"TYPE": "NEW", "CHANGE": "Component Details --> reachable from context menu"},
+      			{"TYPE": "NEW", "CHANGE": "Task Types: Fhem, Time, Weekday"},
+      			{"TYPE": "NEW", "CHANGE": "Task Options: hide_room, hide_component, switch_room, show_alert"},
+      			{"TYPE": "NEW", "CHANGE": "Rooms automatically get UID"},
+      			{"TYPE": "FIX", "CHANGE": "Room list height --> settings not reachable"},
+      			{"TYPE": "FIX", "CHANGE": "Back Button Service for unattatched subscribtion --> close event before open event"},
+      			{"TYPE": "FIX", "CHANGE": "All components for fhem-container --> components submit ID to fhem-container"},
+      		]
     	}
 	]
 }
