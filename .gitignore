@@ -8,6 +8,8 @@ www
 <%= appPath %>/bower_components
 coverage
 platforms
+platforms/android
+platforms/ios
 plugins
 *.swp
 *.swo
