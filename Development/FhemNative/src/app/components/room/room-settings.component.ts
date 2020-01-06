@@ -625,29 +625,81 @@ export class SettingsRoomComponent {
 		}
 	}
 
-	public generateRooms() {
+	// add rooms from devices to FhemNative
+	public addRooms(devices: Array<any>){
 		let generatedRooms = [];
 		const settingsRooms = this.structure.rooms.map(x=> x.name);
+
+		let roomAdder = (name, groupTo)=>{
+			generatedRooms.push(name);
+			this.structure.rooms.push({
+				ID: this.structure.rooms.length,
+				UID: this.helper.UIDgenerator(),
+				name: name,
+				icon: 'home',
+				components: []
+			});
+			if(groupTo){
+				const structureRoom = this.structure.rooms[groupTo];
+				// test if room is already a structure
+				if(structureRoom['useRoomAsGroup']){
+					// room is a structure
+					if(structureRoom.groupRooms.length > 0){
+						// check if room has sub rooms
+						const subFound = structureRoom['groupRooms'].find(x => x.name === name);
+						if(subFound){
+							// room already found
+							this.structure.rooms.splice(this.structure.rooms.length -1, 1);
+							generatedRooms.splice(generatedRooms.length -1, 1);
+						}else{
+							// room not found
+							this.structure.rooms[groupTo].groupRooms.push({ID: this.structure.rooms.length -1, name: name});
+						}
+					}
+				}else{
+					// room is no structure
+					this.structure.rooms[groupTo]['useRoomAsGroup'] = true;
+					this.structure.rooms[groupTo]['groupRooms'] = [{ID: this.structure.rooms.length -1, name: name}];
+				}
+			}
+		};
+
+		devices.forEach((device)=>{
+			const roomAttr = device.attributes.room;
+			// test for psudo rooms
+			if(roomAttr.indexOf('->') > -1){
+				const pseudoRooms = roomAttr.split('->');
+				// only get first structure
+				if(pseudoRooms.length >= 2){
+					const mainRoom = pseudoRooms[0];
+					const subRoom = pseudoRooms[1];
+					// test if mainRoom exists
+					if(!mainRoom.match(/Unsorted|hidden/) && !settingsRooms.includes(mainRoom) && !generatedRooms.includes(mainRoom)){
+						roomAdder(mainRoom, false);
+					}
+					roomAdder(subRoom, this.structure.rooms.find(x=> x.name === mainRoom).ID);
+				}
+			}else{
+				const rooms = roomAttr.split(',');
+				rooms.forEach((room)=>{
+					if(!room.match(/Unsorted|hidden/) && !settingsRooms.includes(room) && !generatedRooms.includes(room)){
+						roomAdder(room, false);
+					}
+				});
+			}
+		});
+		return generatedRooms;
+	}
+
+	public generateRooms() {
 		let gotReply: boolean = false;
 
 		this.devicesListSub = this.fhem.devicesListSub.subscribe(next=>{
 			gotReply = true;
 			this.devicesListSub.unsubscribe();
-			const roomDevices = this.fhem.devices.filter((x)=>{ return Object.getOwnPropertyNames(x.attributes).find((y)=>{ return y === 'room'}) });
-			roomDevices.forEach((device)=>{
-				const rooms = device.attributes.room.split(',');
-				rooms.forEach((room)=>{
-					if(!room.match(/Unsorted|hidden/) && !settingsRooms.includes(room) && !generatedRooms.includes(room)){
-						generatedRooms.push(room);
-						this.structure.rooms.push({
-							ID: this.structure.rooms.length,
-							name: room,
-							icon: 'home',
-							components: []
-						});
-					}
-				});
-			});
+			const generatedRooms = this.addRooms(
+				this.fhem.devices.filter((x)=>{ return Object.getOwnPropertyNames(x.attributes).find((y)=>{ return y === 'room'}) })
+			);
 			if(generatedRooms.length > 0){
 				// save the generated rooms
 				this.structure.saveRooms().then(() => {
@@ -690,7 +742,10 @@ export class SettingsRoomComponent {
 		this.devicesListSub = this.fhem.devicesListSub.subscribe(next=>{
 			gotReply = true;
 			this.devicesListSub.unsubscribe();
-			const relevantDevices= this.fhem.devices.filter((x:any)=> {return Object.getOwnPropertyNames(x.attributes).find((y:any) => {return y.match(/FhemNative_.*/)})});
+			// generate the rooms
+			const generatedRooms = this.addRooms(this.fhem.devices.filter((x)=>{ return Object.getOwnPropertyNames(x.attributes).find((y)=>{ return y === 'room'}) }));
+			// generate the devices
+			const relevantDevices = this.fhem.devices.filter((x:any)=> {return Object.getOwnPropertyNames(x.attributes).find((y:any) => {return y.match(/FhemNative_.*/)})});
 			relevantDevices.forEach((device)=>{
 				const relevantReadings = Object.getOwnPropertyNames(device.attributes).filter(y => y.match(/FhemNative_.*/));
 				relevantReadings.forEach((reading)=>{
@@ -722,7 +777,16 @@ export class SettingsRoomComponent {
 						};
 						// getting room information
 						if(device.attributes.room){
-							const rooms = device.attributes.room.split(',');
+							let rooms = [];
+							if(device.attributes.room.indexOf('->') > -1){
+								const pseudoRooms = device.attributes.room.split('->');
+								// only get first structure
+								if(pseudoRooms.length >= 2){
+									rooms = [pseudoRooms[1]];
+								}
+							}else{
+								rooms = device.attributes.room.split(',');
+							}
 							rooms.forEach((room)=>{
 								const foundRoom = this.helper.find(this.structure.rooms, 'name', room);
 								if(foundRoom){
@@ -732,28 +796,21 @@ export class SettingsRoomComponent {
 										// component already defined
 										generatedDevices.push({device: device.device, generated: false, reason: 'ALREADY_DEFINED', room: room, as: component});
 									}else{
+										// new component, add to room
 										this.createComponent.pushComponentToPlace(foundRoom.item.components, pushComponent);
 										generatedDevices.push({device: device.device, generated: true, room: room, as: component});
 									}
 								}else{
-									// room not found --> create one for devices with dedicated room
-									if(room.indexOf(',') === -1 && room !== 'hidden'){
-										// device has dedicated room
-										this.structure.rooms.push({ ID: this.structure.rooms.length, name: room, icon: 'home', components: []});
-										// add component to new created room
-										this.createComponent.pushComponentToPlace(this.structure.rooms[this.structure.rooms.length -1].components, pushComponent);
-										generatedDevices.push({device: device.device, generated: true, room: room, as: component});
-									}else{
-										// room rejected because of strange values
-										generatedDevices.push({device: device.device, generated: false, reason: 'ROOM_NAME', as: component});
-									}
+									// component rejected because of strange room values
+									generatedDevices.push({device: device.device, generated: false, reason: 'ROOM_NAME', as: component});
 								}
 							});
 						}else{
-							// no room found
+							// no room for component
 							generatedDevices.push({device: device.device, generated: false, reason: 'NO_ROOM', as: component});
 						}
 					}else{
+						// wrong definition
 						generatedDevices.push({device: device.device, generated: false, reason: 'NO_COMPONENT', as: component});
 					}
 				});
