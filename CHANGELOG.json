@@ -232,7 +232,22 @@
       			{"TYPE": "NEW", "CHANGE": "Rooms automatically get UID"},
       			{"TYPE": "FIX", "CHANGE": "Room list height --> settings not reachable"},
       			{"TYPE": "FIX", "CHANGE": "Back Button Service for unattatched subscribtion --> close event before open event"},
-      			{"TYPE": "FIX", "CHANGE": "All components for fhem-container --> components submit ID to fhem-container"},
+      			{"TYPE": "FIX", "CHANGE": "All components for fhem-container --> components submit ID to fhem-container"}
+      		]
+    	},
+    	{
+      		"VERSION": "2.2.1",
+      		"DATE": "06.01.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Transparent color selection"},
+      			{"TYPE": "NEW", "CHANGE": "Colorpicker width and height attributes"},
+      			{"TYPE": "NEW", "CHANGE": "Device and Room generators detect pseudo rooms and creates them"},
+      			{"TYPE": "FIX", "CHANGE": "State evaluation for numeric values --> Switch, Button, Icon"},
+      			{"TYPE": "FIX", "CHANGE": "Image position"},
+      			{"TYPE": "FIX", "CHANGE": "Room UID in Auto generators"},
+      			{"TYPE": "FIX", "CHANGE": "Resize icons"},
+      			{"TYPE": "FIX", "CHANGE": "Select box size for low configurable components"},
+      			{"TYPE": "FIX", "CHANGE": "Listen Updates for 0 values"}
       		]
     	}
 	]

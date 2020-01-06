@@ -275,7 +275,11 @@
 					"info": "Activate/deactivate sending of values continiously on move"
 				},
 				"style_backgroundColor":{
-					"name": "background color",
+					"name": "Arc background",
+					"info": "Background color of the slider arc"
+				},
+				"style_circleBackgroundColor":{
+					"name": "Background color",
 					"info": "Background color of the inner circle"
 				},
 				"style_thumbColor":{
@@ -343,6 +347,18 @@
 				"data_setSliderReading":{
 					"name": "Set slider reading",
 					"info": "name des Set Befehls vom sliderReading (if needed)"
+				},
+				"data_popupWidth":{
+					"name": "Popup width",
+					"info": "Breite of the color picker popup"
+				},
+				"data_popupHeight":{
+					"name": "Popup height",
+					"info": "Höhe of the color picker popup"
+				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border radius of the color preview in %"
 				},
 				"data_headline":{
 					"name": "Headline",
@@ -1208,6 +1224,14 @@
 				"bool_data_showCurrentDayDetails":{
 					"name": "Show day values",
 					"info": "Show/hide day values"
+				},
+				"bool_data_showDayBorder":{
+					"name": "Seperate days",
+					"info": "Activate/deactivate day seperation by horizontal lines"
+				},
+				"style_dayBorderColor":{
+					"name": "Day seperator color",
+					"info": "Color of the day seperator lines"
 				}
 			}
 		}

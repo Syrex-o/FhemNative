@@ -1,7 +1,7 @@
 {
 	"name": "FhemNative",
 	"productName": "FhemNative",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"author": "Syrex-o",
 	"homepage": "./",
 	"main": "electron.js",

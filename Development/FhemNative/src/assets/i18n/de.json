@@ -275,6 +275,10 @@
 					"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
 				},
 				"style_backgroundColor":{
+					"name": "Bogen Hintergrundfarbe",
+					"info": "Hintergrundfarbe des Kreisbogens"
+				},
+				"style_circleBackgroundColor":{
 					"name": "Hintergrundfarbe",
 					"info": "Hintergrundfarbe des inneren Kreises"
 				},
@@ -343,6 +347,18 @@
 				"data_setSliderReading":{
 					"name": "Set Slider Reading",
 					"info": "Name des set Befehls für das Slider Reading"
+				},
+				"data_popupWidth":{
+					"name": "Popup Breite",
+					"info": "Breite des Colorpicker Popups"
+				},
+				"data_popupHeight":{
+					"name": "Popup Höhe",
+					"info": "Höhe des Colorpicker Popups"
+				},
+				"data_borderRadius":{
+					"name": "Rand-Radius",
+					"info": "Radius vom Rand der Farbvorschau in %"
 				},
 				"data_headline":{
 					"name": "Kopfzeile",
@@ -1208,6 +1224,14 @@
 				"bool_data_showCurrentDayDetails":{
 					"name": "Tageswerte anzeigen",
 					"info": "Anzeigen/nicht anzeigen der Tageswerte"
+				},
+				"bool_data_showDayBorder":{
+					"name": "Tage trennen",
+					"info": "Tage durch horizontale Linien trennen aktivieren/deaktivieren"
+				},
+				"style_dayBorderColor":{
+					"name": "Trennlinienfarbe",
+					"info": "Farbe der Tages-Trennlinien"
 				}
 			}
 		}
