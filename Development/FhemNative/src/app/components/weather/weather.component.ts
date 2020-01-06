@@ -52,6 +52,9 @@ export class WeatherComponent implements AfterViewInit {
 	@Input() data_device: string;
 	@Input() arr_data_fhemModule: Array<any>;
 	@Input() bool_data_showCurrentDayDetails: boolean = false;
+	@Input() bool_data_showDayBorder: boolean = false;
+
+	@Input() style_dayBorderColor = '#272727';
 
 	// position information
 	@Input() width: string;
@@ -116,7 +119,9 @@ export class WeatherComponent implements AfterViewInit {
 			inputs: [
 				{variable: 'data_device', default: ''},
 				{variable: 'arr_data_fhemModule', default: 'Proplanta'},
-				{variable: 'bool_data_showCurrentDayDetails', default: false}
+				{variable: 'bool_data_showCurrentDayDetails', default: false},
+				{variable: 'bool_data_showDayBorder', default: false},
+				{variable: 'style_dayBorderColor', default: '#272727'}
 			],
 			dimensions: {minX: 150, minY: 80}
 		};
@@ -203,6 +208,7 @@ export class WeatherComponent implements AfterViewInit {
 		for (const [key, value] of Object.entries(this.data)) {
 			this.data[key].sort((a, b)=> b.date - a.date);
 		}
+		console.log(this.data);
 	}
 
 	public resize(size) {
@@ -368,6 +374,18 @@ export class WeatherComponent implements AfterViewInit {
 
 		this.yScale = d3.axisLeft(this.y).tickFormat((d:any) => d);
 
+		if(this.bool_data_showDayBorder){
+			this.svg.selectAll('.focus').append('g')
+				.attr('class', 'grid')
+				.attr('transform', 'translate(' + [0, this.dim.content.height] + ')')
+				.call(
+					d3.axisBottom(this.x)
+						.ticks(d3.timeDay, 1)
+						.tickSize(-this.dim.content.height / 1.4)
+						.tickSizeOuter(0)
+				)
+		}
+
 		this.xAxis = this.svg.selectAll('.focus').append('g')
 			.attr('class', 'x axis')
 			.attr('transform', 'translate(' + [0, this.dim.content.height] + ')')
@@ -482,6 +500,14 @@ export class WeatherComponent implements AfterViewInit {
 				return newXscale(d.date);
 			});
 
+		this.svg.selectAll('.grid')
+			.call(
+				d3.axisBottom(this.x)
+				.scale(d3.event.transform.rescaleX(this.x))
+				.ticks(d3.timeDay, 1)
+				.tickSize(-this.dim.content.height / 1.4)
+				.tickSizeOuter(0)
+			)
 		// rescale icons
 		this.svg.selectAll('.icon')
 			.attr('transform', (d)=>{
@@ -503,6 +529,9 @@ export class WeatherComponent implements AfterViewInit {
       	this.svg.selectAll('.label').style('fill', color);
       	this.svg.selectAll('.chart-icon').style('fill', color);
       	this.svg.selectAll('.overall').style('fill', color);
+      	this.svg.selectAll('.grid .tick line')
+      		.style('stroke', this.style_dayBorderColor)
+      		.style('stroke-opacity', 0.7);
   	}
 
 	// get svg size
