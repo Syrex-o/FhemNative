@@ -55,6 +55,7 @@
         left: 0;
         top: 0;
         z-index: 100;
+        pointer-events: all;
         .rect {
             position: absolute;
             width: 20px;
@@ -76,8 +77,21 @@
                 background-color: #14a9d5;
                 transition: all .2s ease;
             }
-            &.top-left, &.top-right, &.bottom-left, &.bottom-right, &.top-center, &.bottom-center, &.right-center, &.left-center {
-                cursor: nw-resize;
+            &.top-center,
+            &.bottom-center{
+                cursor: ns-resize;
+            }
+            &.top-left,
+            &.bottom-right{
+                cursor: nwse-resize;
+            }
+            &.top-right,
+            &.bottom-left{
+                cursor: nesw-resize;
+            }
+            &.left-center,
+            &.right-center{
+                cursor: ew-resize;
             }
             &.top-left, &.top-right, &.top-center {
                 top: -10px;

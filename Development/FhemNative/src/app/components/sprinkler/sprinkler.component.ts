@@ -65,8 +65,8 @@ import { TranslateService } from '@ngx-translate/core';
 			[customMode]="true"
 			[headLine]="'COMPONENTS.Sprinkler.TRANSLATOR.COLORS.TITLE' | translate"
 			[(ngModel)]="openPopup"
-			[data_width]="'90%'"
-			[data_height]="'90%'"
+			[data_width]="'90'"
+			[data_height]="'90'"
 			(onClose)="popupClose()"
 			[fixPosition]="true">
 			<div class="page">
@@ -87,8 +87,8 @@ import { TranslateService } from '@ngx-translate/core';
 			[customMode]="true"
 			[headLine]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.TITLE' | translate"
 			[(ngModel)]="openPopup"
-			[data_width]="'90%'"
-			[data_height]="'90%'"
+			[data_width]="'90'"
+			[data_height]="'90'"
 			(onClose)="popupClose()"
 			[fixPosition]="true">
 			<div class="page">
@@ -210,8 +210,8 @@ import { TranslateService } from '@ngx-translate/core';
 			[customMode]="true"
 			[headLine]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WINTER.TITLE' | translate"
 			[(ngModel)]="openPopup"
-			[data_width]="'90%'"
-			[data_height]="'90%'"
+			[data_width]="'90'"
+			[data_height]="'90'"
 			(onClose)="popupClose()"
 			[fixPosition]="true">
 			<div class="page">
@@ -233,8 +233,8 @@ import { TranslateService } from '@ngx-translate/core';
 			[customMode]="true"
 			[headLine]="'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.TITLE' | translate"
 			[(ngModel)]="openPopup"
-			[data_width]="'100%'"
-			[data_height]="'100%'"
+			[data_width]="'100'"
+			[data_height]="'100'"
 			(onClose)="popupClose()"
 			[fixPosition]="true">
 			<ion-slides *ngIf="arr_data_settingsStyle[0] === 'slider'">
