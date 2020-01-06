@@ -22,7 +22,8 @@ import { ToastService } from '../../services/toast.service';
 				<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true}">
 					<button
 						class="color-preview"
-						[style.background]="'#'+color" (click)="togglePopup()">
+						[ngStyle]="{'background': '#'+color, 'border-radius': data_borderRadius+'%'}"
+						(click)="togglePopup()">
 					</button>
 				</fhem-container>
 		  	</div>
@@ -32,6 +33,8 @@ import { ToastService } from '../../services/toast.service';
 				[headLine]="data_headline"
 				(onClose)="clearCanvas()"
 				[fixPosition]="true"
+				[data_width]="data_popupWidth"
+				[data_height]="data_popupHeight"
 				[ngClass]="settings.app.theme">
 				<div class="favs">
 					<button matRipple [matRippleColor]="'#d4d4d480'" class="btn right-btn" (click)="addToColorFavs()"><ion-icon name="star"></ion-icon></button>
@@ -79,14 +82,15 @@ import { ToastService } from '../../services/toast.service';
 			position: absolute;
 			width: 30px;
 			height: 30px;
+			pointer-events: none;
 		}
 		.color-preview{
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			border-radius: 5px;
 		  	box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
 		  	transition: all .1s ease;
+		  	pointer-events: all;
 		}
 		button:focus{
 			outline: 0px;
@@ -239,9 +243,12 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 	// Component ID
 	@Input() ID: number;
 
-	@Input() data_device = '';
-	@Input() data_reading = '';
-	@Input() data_setReading = '';
+	@Input() data_device: string = '';
+	@Input() data_reading: string = '';
+	@Input() data_setReading: string = '';
+	@Input() data_popupWidth: string = '80';
+	@Input() data_popupHeight: string = '80';
+	@Input() data_borderRadius: string = '5';
 
 	@Input() arr_data_colorInput: string|string[] = '';
 	@Input() arr_data_colorOutput: string|string[] = '';
@@ -251,12 +258,12 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 	@Input() data_setSliderReading = '';
 
 
-	public showSlider = false;
+	public showSlider: boolean = false;
 
-	@Input('') data_headline = '';
+	@Input() data_headline: string = '';
 
-	@Input('false') bool_data_updateOnMove = false;
-	@Input('10') data_threshold = '10';
+	@Input() bool_data_updateOnMove: boolean = false;
+	@Input() data_threshold: string = '10';
 
 	// position information
 	@Input() width: number;
@@ -290,6 +297,9 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 				{variable: 'data_setReading', default: ''},
 				{variable: 'data_sliderReading', default: ''},
 				{variable: 'data_setSliderReading', default: ''},
+				{variable: 'data_popupWidth', default: '80'},
+				{variable: 'data_popupHeight', default: '80'},
+				{variable: 'data_borderRadius', default: '5'},
 				{variable: 'data_headline', default: ''},
 				{variable: 'data_threshold', default: '10'},
 				{variable: 'arr_data_colorInput', default: 'hex,#hex,rgb'},
@@ -303,7 +313,7 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 	public toggleFavs() {
 		this.showFavs = !this.showFavs;
 		if (this.showFavs) {
-			this.storage.setAndGetSetting({name: 'colorFavs', default: []}).then((val: any) => {
+			this.storage.setAndGetSetting({name: 'colorFavs', default: JSON.stringify([])}).then((val: any) => {
 				this.colorFavs = val;
 			});
 		}
@@ -331,23 +341,24 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 				window.removeEventListener('mousemove', whileMove);
 				window.removeEventListener('touchmove', whileMove);
 
-	   window.removeEventListener('mouseup', endMove);
-	   window.removeEventListener('touchend', endMove);
-	   if (this.fhemDevice.readings[this.data_reading].Value !== this.color) {
-					this.sendValue(this.color);
-				}
-	        };
+			   window.removeEventListener('mouseup', endMove);
+			   window.removeEventListener('touchend', endMove);
+			   if (this.fhemDevice.readings[this.data_reading].Value !== this.color) {
+							this.sendValue(this.color);
+						}
+		    };
 
-	  const whileMove = (e) => {
-	        	if (this.fhemDevice) {
+		  	const whileMove = (e) => {
+		        if (this.fhemDevice) {
 					this.touch(e, target);
 				}
-	        };
-			window.addEventListener('mousemove', whileMove);
-	  window.addEventListener('mouseup', endMove);
+		    };
 
-	  window.addEventListener('touchmove', whileMove);
-	  window.addEventListener('touchend', endMove);
+			window.addEventListener('mousemove', whileMove);
+		  	window.addEventListener('mouseup', endMove);
+
+		  	window.addEventListener('touchmove', whileMove);
+		  	window.addEventListener('touchend', endMove);
 		}
 	}
 

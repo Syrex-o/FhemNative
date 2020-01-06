@@ -26,15 +26,15 @@ import { FhemService } from '../../services/fhem.service';
 							<filter [attr.id]="'blurFilter' + svgControlId" x="0" y="0" width="100%" height="100%">
 								<feGaussianBlur in="SourceGraphic" [attr.stdDeviation]="styles.blurRadius" />
 								<feComponentTransfer>
-								<feFuncA type="discrete" tableValues="1 1"/>
-									</feComponentTransfer>
+									<feFuncA type="discrete" tableValues="1 1"/>
+								</feComponentTransfer>
 							</filter>
 							<clipPath [attr.id]="'sliderClip' + svgControlId">
 								<path [attr.d]="styles.clipPathStr" stroke="black"></path>
 							</clipPath>
 						</defs>
 						<g [attr.transform]="styles.arcTranslateStr" class="container">
-							<circle cx="0" cy="0" [attr.r]="radius - (data_arcThickness / 2)" [attr.fill]="style_backgroundColor" class="circle-bg" [attr.transform]="styles.translateBg"/>
+							<circle cx="0" cy="0" [attr.r]="radius - (data_arcThickness / 2)" [attr.fill]="style_circleBackgroundColor" class="circle-bg" [attr.transform]="styles.translateBg"/>
 							<g class="toClip" [attr.clip-path]="'url(#sliderClip' + svgControlId +')'">
 								<g class="toFilter" [attr.filter]="'url(#blurFilter' + svgControlId +')'">
 									<path [attr.d]="arc.d" [attr.fill]="arc.color" *ngFor="let arc of styles.gradArcs"></path>
@@ -58,6 +58,7 @@ import { FhemService } from '../../services/fhem.service';
 			position: absolute;
 			width: 200px;
 			height: 200px;
+			pointer-events: none;
 		}
 		.svg-container{
 			position: absolute;
@@ -73,10 +74,11 @@ import { FhemService } from '../../services/fhem.service';
 		}
 		.circle{
 			cursor: pointer;
+			pointer-events: all;
 		}
 		.labels{
 			position: absolute;
-			top: 50%;
+			top: 60%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			text-align: center;
@@ -84,6 +86,7 @@ import { FhemService } from '../../services/fhem.service';
 		.text{
 			font-weight: 500;
 			margin-bottom: 0;
+			margin-top: 0;
 		}
 		.subline{
 			font-weight: 300;
@@ -137,7 +140,10 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 	@Input() data_thumbRadius = '16'; // CSS pixels
 	@Input() data_thumbBorder: any = '3';
 
+	// Arc background
 	@Input() style_backgroundColor = '#272727';
+	// Circle Background
+	@Input() style_circleBackgroundColor = '#272727';
 	@Input() style_thumbColor = '#fbfbfb';
 	@Input() arr_style_fillColors: any = ['#2ec6ff','#272727'];
 
@@ -213,6 +219,7 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 				{variable: 'data_max', default: '100'},
 				{variable: 'bool_data_updateOnMove', default: false},
 				{variable: 'style_backgroundColor', default: '#272727'},
+				{variable: 'style_circleBackgroundColor', default: '#272727'},
 				{variable: 'style_thumbColor', default: '#fbfbfb'},
 				{variable: 'arr_style_fillColors', default: '#2ec6ff,#272727'}
 			],
@@ -274,7 +281,7 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 
 	private listen(update) {
 		if (update.found.device === this.data_device) {
-			if (update.change.changed[this.data_reading]) {
+			if (this.data_reading in update.change.changed) {
 				const updateValue = parseFloat(update.change.changed[this.data_reading]);
 				if (updateValue !== this.value) {
 					this.value = updateValue;

@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.2.0';
+	public appVersion: string = '2.2.1';
 	// building default storage
 	public app: any = {};
 
@@ -111,7 +111,8 @@ export class SettingsService {
 		'#97b538', '#272727', '#2ec6ff', '#434E5D',
 		'#58677C', '#58677c', '#14a9d5', '#2994b3',
 		'#a2a4ab', '#FF0909', '#F3481A', '#FABA2C',
-		'#00BCF2', '#ddd', '#fff', '#000'
+		'#00BCF2', '#ddd', '#fff', '#000', 
+		'transparent'
 	];
 
 	// user added colors
