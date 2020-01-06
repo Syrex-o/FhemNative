@@ -41,6 +41,8 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 			position: absolute;
 		    width: 100px;
 		    height: 100px;
+		    left: 0;
+		    top: 0;
 		}
 		.image-container{
 			position: absolute;
@@ -52,6 +54,8 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 			position: absolute;
 			width: 100%;
 			height: 100%;
+			left: 0;
+		    top: 0;
 		}
 		button{
 			position: absolute;
