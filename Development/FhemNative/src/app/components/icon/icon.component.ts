@@ -19,14 +19,14 @@ import { SettingsService } from '../../services/settings.service';
 			<fhem-container [specs]="{ID: ID, device: data_device, reading: data_reading, available: true, 'offline': true}">
 				<div class="icon-container" [ngClass]="(fhemDevice && fhemDevice.readings[data_indicatorReading]) ? 'show-indicator' : 'hide-indicator'">
 					<ion-icon
-						*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type === 'ion'"
-						[name]="(fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)"
-						[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : style_iconColorOn )}">
+						*ngIf="settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type === 'ion'"
+						[name]="(fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)"
+						[ngStyle]="{'color': (fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? style_iconColorOn : style_iconColorOff) : style_iconColorOn )}">
 					</ion-icon>
 					<fa-icon
-						*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type != 'ion'"
-						[icon]="[settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type, (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)]"
-						[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : style_iconColorOn )}">
+						*ngIf="settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type != 'ion'"
+						[icon]="[settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type, (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)]"
+						[ngStyle]="{'color': (fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? style_iconColorOn : style_iconColorOff) : style_iconColorOn )}">
 					</fa-icon>
 					<span 
 						class="indicator"
@@ -78,7 +78,7 @@ import { SettingsService } from '../../services/settings.service';
 export class IconComponent implements OnInit {
 
 	constructor(
-		private fhem: FhemService,
+		public fhem: FhemService,
 		public settings: SettingsService) {}
 	// Component ID
 	@Input() ID: number;

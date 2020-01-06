@@ -33,17 +33,17 @@ import { SettingsService } from '../../services/settings.service';
 					[ngClass]="{
 						'toggle-btn' : (!customMode && arr_data_buttonStyle[0] === 'toggle-outline'),
 						'toggle-inline' : (customMode || (!customMode && arr_data_buttonStyle[0] === 'toggle') ),
-						'toggle-btn-on' : ((customMode && value) || (!customMode && fhemDevice?.readings[data_reading].Value === data_getOn)),
-						'toggle-btn-off' : ((customMode && !value) || (!customMode && fhemDevice?.readings[data_reading].Value === data_getOff))
+						'toggle-btn-on' : ((customMode && value) || (!customMode && fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn))),
+						'toggle-btn-off' : ((customMode && !value) || (!customMode && !fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn)))
 					 }"
-					[style.background]="(!customMode ? (fhemDevice?.readings[data_reading].Value === data_getOn ? style_colorOn : style_colorOff) : value ? style_colorOn : style_colorOff)"
+					[style.background]="(!customMode ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? style_colorOn : style_colorOff) : value ? style_colorOn : style_colorOff)"
 					(click)="toggle()">
 					<span
 						[ngClass]="{
 							'toggle-btn-inner' : (!customMode && arr_data_buttonStyle[0] === 'toggle-outline'),
 							'toggle-inline-inner' : (customMode || (!customMode && arr_data_buttonStyle[0] === 'toggle') )
 					}"
-					[style.background]="(!customMode ? (fhemDevice?.readings[data_reading].Value === data_getOn ? style_thumbColorOn : style_thumbColorOff) : value ? style_thumbColorOn : style_thumbColorOff)">
+					[style.background]="(!customMode ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? style_thumbColorOn : style_thumbColorOff) : value ? style_thumbColorOn : style_thumbColorOff)">
 					</span>
 				</button>
 			</div>
@@ -154,7 +154,7 @@ export class SwitchComponent implements OnInit, ControlValueAccessor {
 
 	constructor(
 		public settings: SettingsService,
-		private fhem: FhemService) {
+		public fhem: FhemService) {
 
 	}
 	// Component ID
@@ -248,7 +248,7 @@ export class SwitchComponent implements OnInit, ControlValueAccessor {
 			this.onToggle.emit(this.value);
 			this.updateChanges();
 		} else {
-			const command = (this.fhemDevice.readings[this.data_reading].Value === this.data_getOn) ? this.data_setOff : this.data_setOn;
+			const command = (this.fhemDevice.readings[this.data_reading].Value.toString() === this.data_getOn) ? this.data_setOff : this.data_setOn;
 			if (this.data_setReading !== '') {
 				this.fhem.setAttr(this.fhemDevice.device, this.data_setReading, command);
 			} else {

@@ -27,16 +27,16 @@ import { FhemService } from '../../services/fhem.service';
 					}">
 					<p *ngIf="!bool_data_iconOnly" class="label" [ngStyle]="{'color': style_labelColor}">{{data_label}}</p>
 					<ion-icon
-						*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type === 'ion'"
-						[name]="(fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)"
+						*ngIf="settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type === 'ion'"
+						[name]="(fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)"
 						[ngClass]="bool_data_iconOnly ? 'icon-only' : 'icon-text'"
-						[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : style_iconColorOn ), 'font-size.px': data_iconSize }">
+						[ngStyle]="{'color': (fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? style_iconColorOn : style_iconColorOff) : style_iconColorOn ), 'font-size.px': data_iconSize }">
 					</ion-icon>
 					<fa-icon
-						*ngIf="settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type != 'ion'"
-						[icon]="[settings.iconFinder((fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)).type, (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)]"
+						*ngIf="settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type != 'ion'"
+						[icon]="[settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type, (fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)]"
 						[ngClass]="bool_data_iconOnly ? 'icon-only' : 'icon-text'"
-						[ngStyle]="{'color': (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? style_iconColorOn : style_iconColorOff) : style_iconColorOn ), 'font-size.px': data_iconSize }">
+						[ngStyle]="{'color': (fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? style_iconColorOn : style_iconColorOff) : style_iconColorOn ), 'font-size.px': data_iconSize }">
 					</fa-icon>
 				</button>
 			</fhem-container>

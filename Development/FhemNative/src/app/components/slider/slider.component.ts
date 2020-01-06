@@ -29,15 +29,22 @@ import { TimeService } from '../../services/time.service';
 			<ng-container *ngTemplateOutlet="Slider"></ng-container>
 		</div>
 		<ng-template #Slider>
-			<div [ngClass]="arr_data_style[0] === 'slider' ? 'slider-container' : 'container-box'"
-				[ngStyle]="{'background': style_thumbColor, 'height': (arr_data_style[0] === 'slider' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%') : '100%'),
-					'width': (arr_data_style[0] === 'slider' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : '100%') : '100%')}">
+			<div 
+				[ngClass]="arr_data_style[0] === 'slider' || arr_data_style[0] === 'volume' ? 'slider-container' : 'container-box'"
+				class="{{arr_data_style[0]}}"
+				[ngStyle]="{
+					'background': style_thumbColor, 
+					'height': (arr_data_style[0] === 'slider' || arr_data_style[0] === 'volume' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%') : '100%'),
+					'width': (arr_data_style[0] === 'slider' || arr_data_style[0] === 'volume' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : '100%') : '100%')
+				}">
 				<button *ngIf="arr_data_style[0] === 'box'" matRipple [matRippleColor]="'#d4d4d480'" class="btn reduce" (click)="setSteps('reduce')">
 					<ion-icon name="remove"></ion-icon>
 				</button>
-				<div [ngClass]="arr_data_style[0] === 'slider' ? 'slider-outlet' : 'slider-box-inner'"
-					[ngStyle]="{'height': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%'),
-					'width': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%')}">
+				<div [ngClass]="arr_data_style[0] === 'slider' || arr_data_style[0] === 'volume' ? 'slider-outlet' : 'slider-box-inner'"
+					[ngStyle]="{
+						'height': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%'),
+						'width': (arr_data_style[0] === 'box' ? (arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% - 100px)') : '100%')
+					}">
 					<div class="slider-bg" [style.background]="style_thumbColor">
 						<span class="slider-active" 
 							[ngStyle]="sliderActiveStyle" 
@@ -45,12 +52,22 @@ import { TimeService } from '../../services/time.service';
 							[style.boxShadow]="arr_data_orientation === 'horizontal' ? '5px 0 0 0 '+style_fillColor : 0">
 						</span>
 					</div>
-					<div *ngIf="arr_data_style[0] === 'slider' || arr_data_style[0] === 'box'" class="slider-thumb" [ngStyle]="{'width.px': data_thumbWidth, 'height.px': data_thumbWidth, 'background': style_thumbColor,
-							'left': arr_data_orientation[0] === 'horizontal' ? move+'%' : '50%', 'bottom': arr_data_orientation[0] === 'vertical' ? move+'%' : '0'}">
+					<div 
+						*ngIf="arr_data_style[0] === 'slider' || arr_data_style[0] === 'box' || arr_data_style[0] === 'volume'" 
+						class="slider-thumb" [ngStyle]="{
+							'width.px': data_thumbWidth, 
+							'height.px': data_thumbWidth, 
+							'background': style_thumbColor,
+							'left': arr_data_orientation[0] === 'horizontal' ? move+'%' : '50%', 'bottom': arr_data_orientation[0] === 'vertical' ? move+'%' : '0'
+						}">
 						<span 
 							class="pin" 
 							[ngClass]="showpin ? 'show' : 'hide'" 
-							[ngStyle]="{'background':style_fillColor, 'top': arr_data_orientation[0] === 'horizontal' ? (data_thumbWidth * -1)+'px' : '50%', 'left': arr_data_orientation[0] === 'vertical' ? (data_thumbWidth * -1)+'px' : '50%'}">
+							[ngStyle]="{
+								'background':style_fillColor, 
+								'top': arr_data_orientation[0] === 'horizontal' ? (data_thumbWidth * -1)+'px' : '50%', 
+								'left': arr_data_orientation[0] === 'vertical' ? (data_thumbWidth * -1)+'px' : '50%'
+							}">
 							{{displayAs(value)+data_labelExtension}}
 							<span class="pin-arrow" [style.borderTopColor]="style_fillColor"></span>
 						</span>
@@ -223,6 +240,22 @@ import { TimeService } from '../../services/time.service';
 		}
 		.vertical .btn.add{
 			top: 0;
+		}
+		.volume.slider-container:before{
+			content: "";
+			position: absolute;
+			width: 105%;
+			height: 250%;
+			background: red;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 20px;
+			background: #dddddd;
+			box-shadow: inset 0px 0px 4px 1px rgba(0, 0, 0, 0.8);
+		}
+		.volume.slider-container .slider-thumb{
+			height: 100% !important;
 		}
 
 		.icon{
@@ -404,7 +437,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 
 	private defineSliderVal(){
 		setTimeout(() => {
-			this.sliderEl = (this.arr_data_style[0] === 'slider') ? this.ref.nativeElement.querySelector('.slider-container') : this.ref.nativeElement.querySelector('.slider-box-inner');
+			this.sliderEl = this.arr_data_style[0] === 'slider' ? this.ref.nativeElement.querySelector('.slider-container') : this.ref.nativeElement.querySelector('.slider-box-inner');
 			this.updateValue();
 			this.getSizeDefs();
 		});
@@ -412,7 +445,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 
 	private listen(update) {
 		if (update.found.device === this.data_device) {
-			if (update.change.changed[this.data_reading]) {
+			if (this.data_reading in update.change.changed) {
 				if (parseInt(update.change.changed[this.data_reading]) !== this.value) {
 					const oldValue = this.value;
 					this.value = this.checkForTime(this.fhemDevice.readings[this.data_reading].Value, false);
@@ -458,7 +491,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 			const w = (this.arr_data_orientation[0] === 'horizontal') ? this.sliderEl.clientWidth : this.sliderEl.clientHeight;
 			const border: any = Math.round(((parseInt(this.data_thumbWidth) / 2) / w) * 100);
 
-			this.move = (this.arr_data_style[0] === 'slider' || this.arr_data_style[0] === 'box') ? x - border : x;
+			this.move = (this.arr_data_style[0].match(/slider|box|volume/)) ? x - border : x;
 
 			this.fillMove =  parseInt(this.data_min) <= parseInt(this.data_max) ? this.move : 100 - this.move;
 
