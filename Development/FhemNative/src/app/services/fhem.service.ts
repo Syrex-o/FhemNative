@@ -397,6 +397,7 @@ export class FhemService {
     	});
     }
 
+    // test for json
     public IsJsonString(str) {
     	try {
 	        JSON.parse(str);
@@ -404,6 +405,18 @@ export class FhemService {
 	        return false;
 	    }
 	    return true;
+    }
+
+    // test for state values, true or false decisions
+    public deviceReadingActive(device, reading, compareTo){
+    	if(device && device.readings[reading]){
+    		const value = device.readings[reading].Value.toString().toLowerCase();
+    		compareTo = compareTo.toString().toLowerCase();
+    		if(value === compareTo){
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     public getDevice(device, reading) {

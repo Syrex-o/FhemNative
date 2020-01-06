@@ -438,7 +438,7 @@ export class PopupComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
 	private listen(update) {
 		if (update.found.device === this.data_device) {
-			if (update.change.changed[this.data_reading]) {
+			if (this.data_reading in update.change.changed) {
 				const reading = update.change.changed[this.data_reading];
 				if (reading === this.data_getOn && this.bool_data_openOnReading) {
 					this.openPopup();

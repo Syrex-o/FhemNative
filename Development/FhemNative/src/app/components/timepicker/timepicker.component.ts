@@ -214,7 +214,7 @@ export class TimepickerComponent implements OnInit, OnDestroy, ControlValueAcces
 
 	private listen(update) {
 		if (update.found.device === this.data_device) {
-			if (update.change.changed[this.data_reading]) {
+			if (this.data_reading in update.change.changed) {
 				this.value = update.change.changed[this.data_reading];
 				this.currentValue = this.value;
 			}

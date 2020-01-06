@@ -255,7 +255,7 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 
 	private listen(update) {
 		if (update.found.device === this.data_device) {
-			if (update.change.changed[this.data_reading]) {
+			if (this.data_reading in update.change.changed) {
 				const oldValue = 83 - Math.round(((this.value - parseInt(this.data_min)) / (parseInt(this.data_max) - parseInt(this.data_min))) * 83);
 				const updateValue = parseInt(update.change.changed[this.data_reading]);
 				if (updateValue !== this.value) {
