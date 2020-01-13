@@ -174,7 +174,7 @@ export class RoomComponent implements OnDestroy {
 			this.createComponent.currentRoomContainer = this.container;
 			// loading the room components
 			this.createComponent.loadRoomComponents(this.structure.currentRoom.components, this.container, true);
-
+			// create helpers, if needed
 			if (this.settings.modes.roomEdit) {
 				this.createHelpers();
 			}

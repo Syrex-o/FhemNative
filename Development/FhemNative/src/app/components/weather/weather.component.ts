@@ -208,7 +208,6 @@ export class WeatherComponent implements AfterViewInit {
 		for (const [key, value] of Object.entries(this.data)) {
 			this.data[key].sort((a, b)=> b.date - a.date);
 		}
-		console.log(this.data);
 	}
 
 	public resize(size) {

@@ -25,6 +25,7 @@ export class ShortcutService {
     	@Inject(DOCUMENT) private document: Document) {
 	}
 
+    // add a shortcut
 	public addShortcut(options: Partial<Options>, keyup: Partial<boolean>){
 		const merged = { ...this.defaults, ...options };
     	const downEvent = `keydown.${merged.keys}`;

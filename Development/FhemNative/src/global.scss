@@ -234,6 +234,36 @@ fa-icon{
     }
 }
 
+// alert custom classes
+ion-alert.dark{
+    .alert-head h2,
+    .alert-message{
+        color: var(--dark-p);
+    }
+    hr{
+        background: var(--dark-p);
+    }
+    .alert-wrapper{
+        background: var(--dark-bg);
+    }
+    &.allow-text-select{
+        .des{
+            color: var(--p-small);
+        }
+    }
+}
+ion-alert.allow-text-select{
+    user-select: text;
+    .des{
+        font-size: 0.8em;
+        display: block;
+        white-space: nowrap;
+        margin-bottom: 5px;
+    }
+}
+ion-alert.wider{
+    --min-width: 300px;
+}
 // alert fix for long text
 .alert-tappable.alert-radio {
     height: auto;

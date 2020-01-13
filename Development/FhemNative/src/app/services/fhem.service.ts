@@ -302,8 +302,8 @@ export class FhemService {
     				const found = this.find(this.listenDevices, 'device', msg.payload.name);
     				if (found) {
     					const res = msg.payload;
-						   res.changed = this.objResolver(res.changed, 2);
-						   this.devicesSub.next({found, change: res});
+						res.changed = this.objResolver(res.changed, 2);
+						this.devicesSub.next({found, change: res});
     				}
     			}
     			if (msg.type === 'getreply') {
