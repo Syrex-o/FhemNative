@@ -1244,7 +1244,8 @@
 			"NEXT": "Next",
 			"SAVE": "Save",
 			"CLOSE": "Close",
-			"OKAY": "Okay"
+			"OKAY": "Okay",
+			"SHOW": "Show"
 		},
 		"DICTIONARY":{
 			"ROOM": "Room",
@@ -1341,6 +1342,10 @@
 						"Component": "1:  Devices that are used in components.",
 						"Fhem_Defined": "2: 1. + Devices that are defined in Fhem."
 					}
+				},
+				"DYNAMIC_COMPONENT_LOADER":{
+					"TITLE": "Dynamic component loader",
+					"INFO": "Activate/deactivate to define components based on Fhem userAttr."
 				}
 			},
 			"APP":{
@@ -1535,7 +1540,6 @@
 			},
 			"MENU":{
 				"SETTINGS": "Settings",
-				"DETAILS": "Component details",
 				"FOREGROUND": "Put in foreground",
 				"BACKGROUND": "Put in background",
 				"COPY": "Copy",
@@ -1544,7 +1548,18 @@
 				"SELECT_ALL": "Select all",
 				"DESELECT_ALL": "Deselect all",
 				"PASTE": "Paste",
-				"DELETE": "Delete"
+				"DELETE": "Delete",
+				"DETAILS": "Component details",
+				"DEF_DETAILS":{
+					"SHORT": {
+						"TITLE": "Short definition",
+						"INFO": "Short definition in comparison to default values."
+					},
+					"LONG": {
+						"TITLE": "Full definition",
+						"INFO": "Full component definition."
+					}
+				}
 			}
 		},
 		"FHEM_MENU":{

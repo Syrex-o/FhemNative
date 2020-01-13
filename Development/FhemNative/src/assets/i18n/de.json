@@ -1244,7 +1244,8 @@
 			"NEXT": "Weiter",
 			"SAVE": "Speichern",
 			"CLOSE": "Schließen",
-			"OKAY": "Okay"
+			"OKAY": "Okay",
+			"SHOW": "Anzeigen"
 		},
 		"DICTIONARY":{
 			"ROOM": "Raum",
@@ -1341,6 +1342,10 @@
 						"Component": "1: Geräte die in Komponenten enthalten sind.",
 						"Fhem_Defined": "2: 1. + Geräte die in Fhem hinterlegt sind."
 					}
+				},
+				"DYNAMIC_COMPONENT_LOADER":{
+					"TITLE": "Komponenten dynamisch laden",
+					"INFO": "Komponenten anhand von Fhem userAttr definieren aktivieren/deaktivieren."
 				}
 			},
 			"APP":{
@@ -1535,7 +1540,6 @@
 			},
 			"MENU":{
 				"SETTINGS": "Einstellungen",
-				"DETAILS": "Komponenten Details",
 				"FOREGROUND": "In den Vordergrund",
 				"BACKGROUND": "In den Hintergrund",
 				"COPY": "Kopieren",
@@ -1544,7 +1548,18 @@
 				"SELECT_ALL": "Alles selektieren",
 				"DESELECT_ALL": "Alles deselektieren",
 				"PASTE": "Einfügen",
-				"DELETE": "Löschen"
+				"DELETE": "Löschen",
+				"DETAILS": "Komponenten Details",
+				"DEF_DETAILS":{
+					"SHORT": {
+						"TITLE": "Kurzdefinition",
+						"INFO": "Kurzdefinition im Vergleich zu default Werten."
+					},
+					"LONG": {
+						"TITLE": "Komplettdefinition",
+						"INFO": "Komplette Definition der Komponente."
+					}
+				}
 			}
 		},
 		"FHEM_MENU":{
