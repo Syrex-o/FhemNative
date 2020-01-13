@@ -4,6 +4,8 @@ import { SettingsService } from '../../services/settings.service';
 import { FhemService } from '../../services/fhem.service';
 import { HelperService } from '../../services/helper.service';
 import { TasksService } from '../../services/tasks.service';
+import { StructureService } from '../../services/structure.service';
+import { CreateComponentService } from '../../services/create-component.service';
 
 import { Subscription } from 'rxjs';
 
@@ -190,12 +192,16 @@ export class FhemContainerComponent implements OnInit, OnDestroy {
 
 	// subscribe to fhem state
 	private fhemSub: Subscription;
+	// component
+	private component:any;
 
 	constructor(
 		public settings: SettingsService,
 		private fhem: FhemService,
 		private helper: HelperService,
-		public task: TasksService) {
+		public task: TasksService,
+		private structure: StructureService,
+		private createComponent: CreateComponentService) {
 	}
 
 	ngOnInit() {
@@ -228,6 +234,7 @@ export class FhemContainerComponent implements OnInit, OnDestroy {
 
 	private evaluator(fhemState) {
 		this.deviceState.connected = this.fhem.connected;
+		this.component = this.structure.getComponent(this.specs.ID);
 		if (fhemState) {
 			// connection to them is present
 			this.deviceState.deviceList = true;
@@ -235,8 +242,12 @@ export class FhemContainerComponent implements OnInit, OnDestroy {
 				for (let i = 0; i < this.specs.device.length; i++) {
 					const deviceIndex = this.helper.find(this.fhem.devices, 'device', (this.specs.device[i] || null));
 					if (deviceIndex) {
+						// device found
 						this.deviceState.devicePresent = true;
-						const device = this.fhem.devices[deviceIndex.index];
+						// detect dynamic loader
+						if(this.settings.app.loadFhemDevices.dynamicComponentLoader && this.component && this.fhem.devices[deviceIndex.index] && this.fhem.devices[deviceIndex.index].attributes.userattr && this.fhem.devices[deviceIndex.index].attributes.userattr.indexOf('FhemNative_' + this.component.name.replace(' ', '')) > -1){
+							this.updateComponent();
+						}
 						this.deviceState.readingPresent = this.fhem.deviceReadingFinder(this.specs.device[i], this.specs.reading);
 					}
 				}
@@ -246,6 +257,36 @@ export class FhemContainerComponent implements OnInit, OnDestroy {
 		} else {
 			this.deviceState.deviceList = false;
 		}
+	}
+
+	// update component inputs
+	private updateComponent(){
+		setTimeout(()=>{
+			const roomComponent = this.createComponent.findFhemComponent(this.specs.ID);
+			for (let i = 0; i < this.specs.device.length; i++) {
+				const device = this.helper.find(this.fhem.devices, 'device', (this.specs.device[i] || null));
+				if (roomComponent && device) {
+					// attributes of component
+					const fhemComponent = this.createComponent.fhemComponents.find(x=> x.name.replace(' ', '').toLowerCase() === this.component.name.replace(' ', '').toLowerCase());
+					if(fhemComponent && device.item.attributes['FhemNative_' + this.component.name.replace(' ', '')]){
+						// reading of userAttr
+						const fhemNativeReading = device.item.attributes['FhemNative_' + this.component.name.replace(' ', '')];
+						fhemNativeReading.match(/[\w+:]+(?=;)/g).forEach((singleAttr)=>{
+							const reading = singleAttr.match(/\w+/g)[0];
+							const settedValue = singleAttr.match(/:.*/g)[0].slice(1);
+							// compare to component
+							for (const [key, value] of Object.entries(fhemComponent.component)) {
+								if(key.toLowerCase().indexOf(reading.toLowerCase()) !== -1){
+									if(key in roomComponent.item.instance){
+										roomComponent.item.instance[key] = settedValue;
+									}
+								}
+							}
+						});
+					}
+				}
+			}
+		});
 	}
 
 	ngOnDestroy() {

@@ -78,6 +78,14 @@ import { RoomComponent } from '../room/room.component';
 						        <ion-select-option value="Fhem_Defined">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.OPTIONS.Fhem_Defined' | translate }}</ion-select-option>
 						    </ion-select>
 						</div>
+						<switch
+							[customMode]="true"
+							[padding]="false"
+							[(ngModel)]="settings.app.loadFhemDevices.dynamicComponentLoader"
+							[label]="'GENERAL.SETTINGS.FHEM.DYNAMIC_COMPONENT_LOADER.TITLE' | translate"
+							[subTitle]="'GENERAL.SETTINGS.FHEM.DYNAMIC_COMPONENT_LOADER.INFO' | translate"
+							(onToggle)="settings.changeAppSettingJSON('loadFhemDevices', 'dynamicComponentLoader', $event)">
+						</switch>
 					</div>
 				</div>
 				<div class="category">
