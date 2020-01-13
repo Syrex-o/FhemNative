@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, OnInit, OnDestroy, HostListener, Input } from '@angular/core';
 
 import { takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 import { SettingsService } from '../../services/settings.service';
 import { CreateComponentService } from '../../services/create-component.service';
@@ -59,6 +59,11 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 
 export class GridComponent implements OnInit, OnDestroy {
 	private killShortcuts = new Subject<void>();
+
+	private shortCuts: any = {};
+
+	// listen to editing
+	private editSub: Subscription;
 
 	private shiftPress: boolean = false;
 
@@ -121,8 +126,24 @@ export class GridComponent implements OnInit, OnDestroy {
 		}, 0);
 
 		// add shortcuts
+		this.buildShortcuts();
+		// listen to mode changes
+		this.editSub = this.settings.modeSub.subscribe(next =>{
+			if(next.hasOwnProperty('showComponentConfig')){
+				if(next.showComponentConfig){
+					this.removeShortcuts();
+				}else{
+					this.buildShortcuts();
+				}
+			}
+		});
+	}
+
+	private buildShortcuts(){
+		this.removeShortcuts();
 		// select/deselect all
-		this.shortcuts.addShortcut({ keys: 'Control.a' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortCuts['controlA'] = this.shortcuts.addShortcut({ keys: 'Control.a' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+			console.log('hi');
 			if(!this.selectComponent.evalCopySelectorAll(this.container)){
 				// not all components selected
 				this.selectComponent.buildCopySelectorAll(this.container);
@@ -133,13 +154,13 @@ export class GridComponent implements OnInit, OnDestroy {
 			this.selectComponent.buildCopySelectorAll
 		});
 		// copy selection
-		this.shortcuts.addShortcut({ keys: 'Control.c' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortCuts['controlC'] = this.shortcuts.addShortcut({ keys: 'Control.c' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			if(this.selectComponent.selectorList.length > 0){
 				this.selectComponent.copyComponent(false, this.container);
 			}
 		});
 		// paste selection
-		this.shortcuts.addShortcut({ keys: 'Control.v' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortCuts['controlV'] = this.shortcuts.addShortcut({ keys: 'Control.v' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			if(this.selectComponent.copyList.length > 0){
 				this.selectComponent.pasteComponent(this.container);
 				// save config
@@ -148,7 +169,7 @@ export class GridComponent implements OnInit, OnDestroy {
 			}
 		});
 		// delete selection
-		this.shortcuts.addShortcut({ keys: 'Control.d' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortCuts['controlD'] = this.shortcuts.addShortcut({ keys: 'Control.d' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			if(this.selectComponent.selectorList.length > 0){
 				this.selectComponent.removeComponent(false, this.container);
 				// save config
@@ -156,15 +177,15 @@ export class GridComponent implements OnInit, OnDestroy {
 			}
 		});
 		// undo 
-		this.shortcuts.addShortcut({ keys: 'Control.z' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortCuts['controlZ'] = this.shortcuts.addShortcut({ keys: 'Control.z' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			this.undoManager.undoChange();
 		});
 		// redo 
-		this.shortcuts.addShortcut({ keys: 'Control.y' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.shortCuts['controlY'] = this.shortcuts.addShortcut({ keys: 'Control.y' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
 			this.undoManager.redoChange();
 		});
 		// select rectangle
-		this.shortcuts.addShortcut({ keys: 'Shift' }, true).pipe(takeUntil(this.killShortcuts)).subscribe((e: Event)=>{
+		this.shortCuts['shift'] = this.shortcuts.addShortcut({ keys: 'Shift' }, true).pipe(takeUntil(this.killShortcuts)).subscribe((e: Event)=>{
 			this.shiftPress = e.type === 'keydown' ? true : false;
 			if(!this.shiftPress){
 				this.createComponent.removeSingleComponent('SelectRectangleComponent', this.container);
@@ -172,6 +193,14 @@ export class GridComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	// remove shortcuts
+	private removeShortcuts(){
+		for(const key of Object.keys(this.shortCuts)){
+			this.shortCuts[key].unsubscribe();
+		}
+	}
+
+	// load context menu
 	public loadContextMenu(e) {
 		this.createComponent.createSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer, {
 			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
@@ -179,6 +208,11 @@ export class GridComponent implements OnInit, OnDestroy {
 			source: 'grid',
 			container: this.container
 		});
+	}
+
+	// remove context menu
+	private removeContextMenu(){
+		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
 	}
 
 	private getParentDimensions() {
@@ -198,12 +232,14 @@ export class GridComponent implements OnInit, OnDestroy {
 		this.killShortcuts.complete();
 		// remove select rect
 		this.createComponent.removeSingleComponent('SelectRectangleComponent', this.container);
+		// unsubscribe
+		this.editSub.unsubscribe();
 	}
 
 	// refers to same logic as edit component
 	private saveComp(){
 		// removing the editor
-		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
+		this.removeContextMenu();
 		// add to change stack
 		this.undoManager.addChange();
 	}
