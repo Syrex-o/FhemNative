@@ -304,8 +304,8 @@
 		.component-details{
 			position: absolute;
 			top: 50%;
-			width: 150px;
-			height: 150px;
+			width: 180px;
+			height: 210px;
 			background: #fff;
 		    border-radius: 4px;
 		    box-shadow: 0 6px 30px 0px rgba(0, 0, 0, 0.3);
@@ -319,7 +319,7 @@
 				border-right: 1px solid #8e8e8e;
 				.triangle{
 					left: -20px;
-					border-width: 75px 20px 75px 0;
+					border-width: 105px 20px 105px 0;
 					border-color: transparent #fff transparent transparent;
 				}
 			}
@@ -329,7 +329,7 @@
 				border-left: 1px solid #8e8e8e;
 				.triangle{
 					right: -20px;
-					border-width: 75px 0 75px 20px;
+					border-width: 105px 0 105px 20px;
 					border-color: transparent transparent transparent #fff;
 				}
 			}
@@ -340,15 +340,33 @@
 				height: 0;
 				border-style: solid;
 			}
+			.fhem-userattr{
+				background: var(--btn-blue);
+				font-family: "Roboto", sans-serif;
+				outline: 0;
+				width: 100%;
+				border: 0;
+				padding: 8px;
+				color: #FFFFFF;
+				font-size: 14px;
+				transition: all 0.3 ease;
+				cursor: pointer;
+				margin-top: 5px;
+			}
 			.details-container{
 				margin-bottom: 15px;
 				.head{
 					text-align: center;
 					line-height: 15px;
 				}
+				.key{
+					display: inline-block;
+					width: 35%;
+				}
 				.value{
-					position: absolute;
-    				right: 8px;
+					position: relative;
+    				display: inline;
+    				margin-left: 10px;
 				}
 			}
 		}
@@ -388,6 +406,7 @@
 		color: green !important;
 	}
 	.context-menu{
+		user-select: none;
 		position: fixed;
 		z-index: 20004;
 		margin: 0;

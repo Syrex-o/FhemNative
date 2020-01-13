@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, AfterViewInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
 
 // Services
 import { StructureService } from '../../services/structure.service';
@@ -7,6 +7,9 @@ import { CreateComponentService } from '../../services/create-component.service'
 import { SelectComponentService } from '../../services/select-component.service';
 import { HelperService } from '../../services/helper.service';
 import { UndoRedoService } from '../../services/undo-redo.service';
+
+import { AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'edit-component',
@@ -42,6 +45,10 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 							<span class="key">{{detail.key}}:</span>
 							<span class="value">{{detail.value}}</span>
 						</div>
+					</div>
+					<div class="details-container">
+						<p class="head">FHEM Info:</p>
+						<button matRipple [matRippleColor]="'#d4d4d480'" class="fhem-userattr" (click)="showUserAttr()">{{ 'GENERAL.BUTTONS.SHOW' | translate }}</button>
 					</div>
 				</div>
 			</div>
@@ -180,7 +187,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 	`,
 	styleUrls: ['./create-style.scss']
 })
-export class EditComponentComponent implements AfterViewInit {
+export class EditComponentComponent implements AfterViewInit, OnDestroy {
 
 	constructor(
 		public structure: StructureService,
@@ -189,7 +196,9 @@ export class EditComponentComponent implements AfterViewInit {
 		private createComponent: CreateComponentService,
 		public selectComponent: SelectComponentService,
 		private helper: HelperService,
-		private undoManager: UndoRedoService) {
+		private undoManager: UndoRedoService,
+		private alertController: AlertController,
+		private translate: TranslateService) {
 	}
 
 	static key = 'EditComponentComponent';
@@ -221,7 +230,14 @@ export class EditComponentComponent implements AfterViewInit {
 	@HostListener('document:mousedown', ['$event.target'])
 	@HostListener('document:touchstart', ['$event.target'])
 	onClick(target) {
-		if (!this.ref.nativeElement.contains(target) && target.className.indexOf('ng-option') == -1 && target.className.indexOf('ng-value-icon') == -1 && target.className.indexOf('label') == -1) {
+		if (
+			!this.ref.nativeElement.contains(target) && 
+			target.className.indexOf('ng-option') === -1 && 
+			target.className.indexOf('ng-value-icon') === -1 && 
+			target.className.indexOf('label') === -1 && 
+			target.className.indexOf('ion-alert') === -1
+		) {
+			// remove menu
 			this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
 		}
 	}
@@ -236,18 +252,20 @@ export class EditComponentComponent implements AfterViewInit {
 						this.component.attributes.attr_arr_data[i].defaults = this.createComponent.getValues(this.component.REF, this.component.attributes.attr_arr_data[i].attr);
 					}
 				}
+				// change mode
+				this.settings.modeSub.next({showComponentConfig: true});
 			}
 			// alligning x and y values to fit in container
-				const menu = this.ref.nativeElement.querySelector('.context-menu');
-				const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
-				let x = 0; let y = 0;
-				if (this.x + menu.clientWidth >= container.width) {
-					x = -100;
-				}
-				if (this.y + menu.clientHeight >= container.height) {
-					y = -100;
-				}
-				menu.style.transform = 'translate3d(' + x + '%,' + y + '%, 0)';
+			const menu = this.ref.nativeElement.querySelector('.context-menu');
+			const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
+			let x = 0; let y = 0;
+			if (this.x + menu.clientWidth >= container.width) {
+				x = -100;
+			}
+			if (this.y + menu.clientHeight >= container.height) {
+				y = -100;
+			}
+			menu.style.transform = 'translate3d(' + x + '%,' + y + '%, 0)';
 		}, 0);
 	}
 
@@ -360,11 +378,38 @@ export class EditComponentComponent implements AfterViewInit {
 	public toggleComponentDetails(){
 		this.componentDetails.show = !this.componentDetails.show;
 		if(this.componentDetails.show){
-			const d = this.structure.getComponent(this.componentID);
+			const comp = this.structure.getComponent(this.componentID);
+			const defaultComp = this.createComponent.fhemComponents.find(x=> x.name === comp.name);
+			// component info
 			this.componentDetails.component = {
 				ID: this.componentID,
-				name: d.name
+				name: comp.name,
 			};
+			// fhem userAttr info
+			let attrValue = {long: '', short: ''};
+			let giveText = (attr, key, val)=>{
+				attrValue[attr] += val.attr.replace(key.replace('attr_', '')+'_', '') + ':' + ( Array.isArray(val.value) ? val.value[0] : val.value ) + ';';
+			}
+			for(const key of Object.keys(comp.attributes)){
+				comp.attributes[key].forEach((val)=>{
+					if(val.value !== ''){
+						// long text with all definitions
+						giveText('long', key, val);
+						// short text with comparison to defaults
+						if(
+							(Array.isArray(val.value) ? val.value[0] : val.value) !== 
+							(Array.isArray(defaultComp.component[val.attr]) ? defaultComp.component[val.attr][0] : defaultComp.component[val.attr])
+						){
+							giveText('short', key, val);
+						}
+					}
+				});
+			}
+			this.componentDetails.fhem = {
+				userAttr: 'FhemNative_'+comp.name.replace(' ', ''),
+				value: attrValue
+			};
+			// room info
 			this.componentDetails.room = {
 				ID: this.structure.currentRoom.ID,
 				UID: this.structure.currentRoom.UID,
@@ -374,11 +419,33 @@ export class EditComponentComponent implements AfterViewInit {
 			// set position to left or right
 			const menu = this.ref.nativeElement.querySelector('.context-menu');
 			const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
-			if(this.x + menu.clientWidth + 170 >= container.width){
+			if(this.x + menu.clientWidth + 200 >= container.width){
 				this.componentDetails.class = 'left';
 			}else{
 				this.componentDetails.class = 'right';
 			}
 		}
+	}
+
+	//
+	async showUserAttr(){
+		const alert = await this.alertController.create({
+			header: 'FhemNative userAttr Definition:',
+			message:
+				'userAttr: ' + this.componentDetails.fhem.userAttr + '<br><hr><br>' +
+				this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.TITLE') + '<br>' +
+				'<span class="des">'+ this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.INFO') +'</span>' +
+				this.componentDetails.fhem.value.short + '<br><hr><br>' +
+				this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.TITLE') + '<br>' +
+				'<span class="des">'+ this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.INFO') +'</span>' +
+				this.componentDetails.fhem.value.long,
+			cssClass: 'allow-text-select wider ' + this.settings.app.theme
+		});
+  		await alert.present();
+	}
+
+	ngOnDestroy(){
+		// change mode
+		this.settings.modeSub.next({showComponentConfig: false});
 	}
 }
