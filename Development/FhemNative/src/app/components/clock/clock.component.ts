@@ -20,10 +20,10 @@ import { SettingsService } from '../../services/settings.service';
 				<ng-container *ngIf="arr_data_style[0] === 'digital'">
 					<svg class="date" viewBox="0 0 62 18">
 						<text [attr.fill]="style_hourColor" [attr.x]="displayValue('ss') ? 0 : 10" y="15" *ngIfOnce="displayValue('HH')" class="hour">{{digitalClock.HH}}</text>
-						<text [attr.fill]="style_color" [attr.x]="displayValue('ss') ? 16 : 27" y="15" *ngIfOnce="displayValue('mm')">:</text>
-						<text [attr.fill]="style_minuteColor" [attr.x]="displayValue('ss') ? 21 : 32" y="15" y="15" *ngIfOnce="displayValue('mm')" class="min">{{digitalClock.mm}}</text>
-						<text [attr.fill]="style_color" x="39" y="15" *ngIfOnce="displayValue('ss')">:</text>
-						<text [attr.fill]="style_secondColor" x="44" y="15" *ngIfOnce="displayValue('ss')" class="sec">{{digitalClock.ss}}</text>
+						<text [attr.fill]="style_color" [attr.x]="displayValue('ss') ? 17 : 27" y="15" *ngIfOnce="displayValue('mm')">:</text>
+						<text [attr.fill]="style_minuteColor" [attr.x]="displayValue('ss') ? 22 : 32" y="15" y="15" *ngIfOnce="displayValue('mm')" class="min">{{digitalClock.mm}}</text>
+						<text [attr.fill]="style_color" x="40" y="15" *ngIfOnce="displayValue('ss')">:</text>
+						<text [attr.fill]="style_secondColor" x="45" y="15" *ngIfOnce="displayValue('ss')" class="sec">{{digitalClock.ss}}</text>
 					</svg>
 				</ng-container>
 				<ng-container *ngIf="arr_data_style[0] === 'analog'">
@@ -57,6 +57,7 @@ import { SettingsService } from '../../services/settings.service';
 		.date{
 			width: 100%;
 			height: 100%;
+			user-select: none;
 		}
 
 		.date .tick,
