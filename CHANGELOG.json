@@ -249,6 +249,16 @@
       			{"TYPE": "FIX", "CHANGE": "Select box size for low configurable components"},
       			{"TYPE": "FIX", "CHANGE": "Listen Updates for 0 values"}
       		]
+    	},
+    	{
+      		"VERSION": "2.2.2",
+      		"DATE": "13.01.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "FhemNative userAttr display for fhem --> reachable from context menu"},
+      			{"TYPE": "NEW", "CHANGE": "Dynamic component attribute loader"},
+      			{"TYPE": "FIX", "CHANGE": "Clock component spacing"},
+      			{"TYPE": "FIX", "CHANGE": "Shortcuts only if needed"}
+      		]
     	}
 	]
 }
