@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.2.1';
+	public appVersion: string = '2.2.2';
 	// building default storage
 	public app: any = {};
 
@@ -39,8 +39,12 @@ export class SettingsService {
 		// indicates who initiated editing
 		roomEditFrom: null,
 		changeRoom: false,
+		// events
 		blockDefaultLoader: false,
-		fhemMenuMode: ''
+		fhemMenuMode: '',
+		// indicate different states
+		// component create/edit
+		showComponentConfig: false
 	};
 	// subscriber for modes
 	public modeSub = new Subject<any>();
@@ -59,7 +63,7 @@ export class SettingsService {
 		{name: 'enableEditing', default: true, toStorage: 'app'},
 		{name: 'enableUndoRedo', default: false, toStorage: 'app'},
 		{name: 'showTasks', dafult: false, toStorage: 'app'},
-		{name: 'loadFhemDevices', default: JSON.stringify({enable: true, option: 'Component'}), toStorage: 'app'},
+		{name: 'loadFhemDevices', default: JSON.stringify({dynamicComponentLoader: false, enable: true, option: 'Component'}), toStorage: 'app'},
 		{name: 'customColors', default: JSON.stringify([]), toStorage: false, callback: (data:any)=>{if(data.length > 0){this.componentColors = this.componentColors.concat(data)}}},
 		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
 		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: 'app'},
