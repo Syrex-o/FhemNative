@@ -257,7 +257,7 @@ export class CreateComponentComponent {
 	public addCompToRoom() {
 		this.settings.findNewColors([this.componentSelection.attributes.attr_style, this.componentSelection.attributes.attr_arr_style]);
 		const place = this.structure.getComponentContainer(this.container);
-
+		// push comp
 		this.createComponent.pushComponentToPlace(place, this.componentSelection);
 		// adding the new component to the current view
 		this.createComponent.loadRoomComponents([place[place.length - 1]], this.container, false);
@@ -268,14 +268,5 @@ export class CreateComponentComponent {
 		this.showPopup = false;
 		this.componentSelection = null;
 		this.pageIndex = 1;
-	}
-
-	public validateComponentSelection(comp) {
-		console.log(comp);
-		if (!this.container.element.nativeElement.parentNode.id.match(/(popup|swiper)/)) {
-			return true;
-		} else {
-			return !comp.name.match(/(Popup|Swiper)/);
-		}
 	}
 }
