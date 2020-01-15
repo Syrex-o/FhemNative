@@ -1,4 +1,4 @@
-# FhemNative MacOS
+# FhemNative Windows
 <img src="/images/icon.jpg" width="300" height="380" />
 
 Due to the large File Size, FhemNative Desktop Versions will be available on Google Drive
