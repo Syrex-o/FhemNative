@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
 import { TimeService } from '../../services/time.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'slider',
@@ -60,6 +61,15 @@ import { TimeService } from '../../services/time.service';
 							'background': style_thumbColor,
 							'left': arr_data_orientation[0] === 'horizontal' ? move+'%' : '50%', 'bottom': arr_data_orientation[0] === 'vertical' ? move+'%' : '0'
 						}">
+						<span
+							*ngIf="bool_data_showValueInThumb"
+							class="thumb-value"
+							[ngStyle]="{
+								'color': style_thumbValueColor,
+								'line-height.px': data_thumbWidth
+							}">
+							{{ displayAs(value)+data_labelExtension }}
+						</span>
 						<span 
 							class="pin" 
 							[ngClass]="showpin ? 'show' : 'hide'" 
@@ -138,6 +148,12 @@ import { TimeService } from '../../services/time.service';
 			border-radius: 50%;
 			z-index: 3;
 			cursor: pointer;
+		}
+		.thumb-value{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			text-align: center;
 		}
 		.horizontal .slider-thumb{
 			top: 50%;
@@ -284,7 +300,8 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 		private fhem: FhemService,
 		public settings: SettingsService,
 		private time: TimeService,
-		private ref: ElementRef) {}
+		private ref: ElementRef,
+		private native: NativeFunctionsService) {}
 	public minimumWidth = 200;
 	public minimumHeight = 30;
 	// Component ID
@@ -306,6 +323,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 	@Input() data_steps = '5';
 
 	@Input() bool_data_showPin = true;
+	@Input() bool_data_showValueInThumb = false;
 	@Input() bool_data_showTicks = false;
 	@Input() bool_data_updateOnMove = false;
 
@@ -320,6 +338,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 	@Input() style_tickColor = '#ddd';
 
 	@Input() style_iconColor = '#ddd';
+	@Input() style_thumbValueColor = '#ddd';
 	@Input() icon_sliderIcon = 'lightbulb';
 
 	// position information
@@ -372,12 +391,14 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 				{variable: 'data_thumbWidth', default: '25'},
 				{variable: 'data_steps', default: '5'},
 				{variable: 'bool_data_showPin', default: true},
+				{variable: 'bool_data_showValueInThumb', default: false},
 				{variable: 'bool_data_showTicks', default: false},
 				{variable: 'bool_data_updateOnMove', default: false},
 				{variable: 'style_thumbColor', default: '#ddd'},
 				{variable: 'style_fillColor', default: '#14a9d5'},
 				{variable: 'style_tickColor', default: '#ddd'},
 				{variable: 'style_iconColor', default: '#ddd'},
+				{variable: 'style_thumbValueColor', default: '#ddd'},
 				{variable: 'icon_sliderIcon', default: 'lightbulb'}
 			],
 			dimensions: {minX: 200, minY: 30}
@@ -555,6 +576,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 		} else {
 			this.fhem.set(this.fhemDevice.device, this.displayAs(val));
 		}
+		this.native.nativeClickTrigger();
 	}
 
 	private animateMove(from) {
@@ -562,11 +584,13 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 		const border = (this.arr_data_orientation[0] === 'horizontal') ?
 			Math.round(((parseInt(this.data_thumbWidth) / 2) / this.sliderEl.clientWidth) * 100) :
 			Math.round(((parseInt(this.data_thumbWidth) / 2) / this.sliderEl.clientHeight) * 100);
+
 		const to = (this.arr_data_style[0] === 'slider' || this.arr_data_style[0] === 'box') ? x - border : x;
 		const Ythis = this;
 		let pos = Math.round(this.getValuePercentage(from) * 100);
 		const id = setInterval(frame, 5);
-		const count = (from > to) ? -1 : 1;
+		const count = (pos > to) ? -1 : 1;
+
 		function frame() {
 			if (pos === to) {
 				clearInterval(id);
