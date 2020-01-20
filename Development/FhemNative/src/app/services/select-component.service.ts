@@ -30,8 +30,10 @@ export class SelectComponentService {
 	private addSelector(el, container){
 		if(!this.selectorList.find(x => x.ID === el.ID)){
 			el = JSON.parse(JSON.stringify(el));
-			el['selectorContainer'] = container;
-			this.selectorList.push(el);
+			if(!el.pinned){
+				el['selectorContainer'] = container;
+				this.selectorList.push(el);
+			}
 		}
 	}
 
@@ -49,14 +51,16 @@ export class SelectComponentService {
 		const selected = roomElements.find(x=> x.ID === ID);
 		if(selected){
 			const el = document.getElementById(selected.ID);
-			if(el.classList.contains('selected-for-copy')){
-				if(unselect){
-					this.renderer.removeClass(el, 'selected-for-copy');
-					this.removeSelector(ID);
+			if(!el.classList.contains('pinned')){
+				if(el.classList.contains('selected-for-copy')){
+					if(unselect){
+						this.renderer.removeClass(el, 'selected-for-copy');
+						this.removeSelector(ID);
+					}
+				}else{
+					this.renderer.addClass(el, 'selected-for-copy');
+					this.addSelector(selected, container);
 				}
-			}else{
-				this.renderer.addClass(el, 'selected-for-copy');
-				this.addSelector(selected, container);
 			}
 		}
 		this.removeContainerCopySelector(container, false);

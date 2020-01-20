@@ -55,6 +55,13 @@ import { TranslateService } from '@ngx-translate/core';
 			<p matRipple 
 				[matRippleColor]="'#d4d4d480'" 
 				*ngIf="source === 'component'" 
+				(click)="pinComponent()" 
+				class="select-item">
+				{{ component?.pinned ? ('GENERAL.EDIT_COMPONENT.MENU.UNPIN' | translate) : ('GENERAL.EDIT_COMPONENT.MENU.PIN' | translate) }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component'" 
 				(click)="sendToFront()" 
 				class="select-item">
 				{{ 'GENERAL.EDIT_COMPONENT.MENU.FOREGROUND' | translate }}
@@ -246,6 +253,21 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 		setTimeout(() => {
 			if (this.source === 'component') {
 				this.component = this.structure.getComponent(this.componentID);
+				const defaults = this.createComponent.seperateComponentValues(this.helper.find(this.createComponent.fhemComponents, 'REF', this.component.REF).item.component);
+				// look for new props in component
+				for(const key of Object.keys(defaults)){
+					// check for new attribute
+					if( !(key in this.component.attributes) ){
+						this.component.attributes[key] = defaults[key];
+					}
+					// assign default to new attribute
+					defaults[key].forEach((value)=>{
+						if( !this.component.attributes[key].find(x=> x.attr === value.attr) ){
+							console.log(value);
+							this.component.attributes[key].push(value);
+						}
+					});
+				}
 				// fix for arr_data function calling --> getting defaults
 				if (this.component.attributes.attr_arr_data && this.component.attributes.attr_arr_data.length > 0) {
 					for (let i = 0; i < this.component.attributes.attr_arr_data.length; i++) {
@@ -378,8 +400,8 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 	public toggleComponentDetails(){
 		this.componentDetails.show = !this.componentDetails.show;
 		if(this.componentDetails.show){
-			const comp = this.structure.getComponent(this.componentID);
-			const defaultComp = this.createComponent.fhemComponents.find(x=> x.name === comp.name);
+			let comp = this.structure.getComponent(this.componentID);
+			let defaultComp = this.createComponent.fhemComponents.find(x=> x.name === comp.name);
 			// component info
 			this.componentDetails.component = {
 				ID: this.componentID,
@@ -424,6 +446,23 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 			}else{
 				this.componentDetails.class = 'right';
 			}
+		}
+	}
+
+	// pin and unpin components
+	// block movement
+	public pinComponent(){
+		let comp = this.structure.getComponent(this.componentID);
+		if('pinned' in comp){
+			comp.pinned = !comp.pinned;
+		}else{
+			comp['pinned'] = true;
+		}
+		// add/remove pinned
+		if(comp.pinned){
+			document.getElementById(this.componentID).classList.add('pinned');
+		}else{
+			document.getElementById(this.componentID).classList.remove('pinned');
 		}
 	}
 
