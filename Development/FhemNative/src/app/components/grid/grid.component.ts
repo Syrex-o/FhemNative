@@ -143,7 +143,6 @@ export class GridComponent implements OnInit, OnDestroy {
 		this.removeShortcuts();
 		// select/deselect all
 		this.shortCuts['controlA'] = this.shortcuts.addShortcut({ keys: 'Control.a' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
-			console.log('hi');
 			if(!this.selectComponent.evalCopySelectorAll(this.container)){
 				// not all components selected
 				this.selectComponent.buildCopySelectorAll(this.container);
