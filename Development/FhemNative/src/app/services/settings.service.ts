@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.2.2';
+	public appVersion: string = '2.2.3';
 	// building default storage
 	public app: any = {};
 
@@ -58,11 +58,13 @@ export class SettingsService {
 	public appDefaults:Array<any> = [
 		{name: 'theme', default: 'dark', toStorage: 'app'},
 		{name: 'showToastMessages', default: true, toStorage: 'app'},
-		{name: 'responsiveResize', default: true, toStorage: 'app'},
+		{name: 'responsiveResize', default: false, toStorage: 'app'},
 		{name: 'checkUpdates', default: false, toStorage: 'app'},
 		{name: 'enableEditing', default: true, toStorage: 'app'},
 		{name: 'enableUndoRedo', default: false, toStorage: 'app'},
-		{name: 'showTasks', dafult: false, toStorage: 'app'},
+		{name: 'showTasks', default: false, toStorage: 'app'},
+		{name: 'hapticFeedback', default: JSON.stringify({enable: false, duration: 1}), toStorage: 'app'},
+		{name: 'acusticFeedback', default: JSON.stringify({enable: false, audio: '1'}), toStorage: 'app'},
 		{name: 'loadFhemDevices', default: JSON.stringify({dynamicComponentLoader: false, enable: true, option: 'Component'}), toStorage: 'app'},
 		{name: 'customColors', default: JSON.stringify([]), toStorage: false, callback: (data:any)=>{if(data.length > 0){this.componentColors = this.componentColors.concat(data)}}},
 		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
@@ -84,7 +86,8 @@ export class SettingsService {
 		{type: 'ion', icon: 'cloudy'}, {type: 'ion', icon: 'thunderstorm'}, {type: 'ion', icon: 'cloudy-night'}, {type: 'ion', icon: 'moon'},
 		{type: 'ion', icon: 'rainy'},{type: 'ion', icon: 'sunny'},{type: 'ion', icon: 'snow'},{type: 'ion', icon: 'power'},{type: 'ion', icon: 'radio'},
 		{type: 'ion', icon: 'switch'},{type: 'ion', icon: 'trash'},{type: 'ion', icon: 'logo-windows'},{type: 'ion', icon: 'add-circle'},
-		{type: 'ion', icon: 'checkmark-circle'},{type: 'ion', icon: 'close-circle'}, {type: 'ion', icon: 'walk'},
+		{type: 'ion', icon: 'checkmark-circle'},{type: 'ion', icon: 'close-circle'}, {type: 'ion', icon: 'walk'}, {type: 'ion', icon: 'play'}, {type: 'ion', icon: 'pause'},
+		{type: 'ion', icon: 'square'}, {type: 'ion', icon: 'fastforward'}, {type: 'ion', icon: 'skip-forward'}, {type: 'ion', icon: 'rewind'}, {type: 'ion', icon: 'skip-backward'},
 		// Font Awesome
 		{type: 'fas', icon: 'ellipsis-h'},
 		{type: 'fas', icon: 'angle-double-up'},
