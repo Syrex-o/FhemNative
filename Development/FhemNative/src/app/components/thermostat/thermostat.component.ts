@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'fhem-thermostat',
@@ -144,7 +145,8 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private fhem: FhemService,
-		public settings: SettingsService) {
+		public settings: SettingsService,
+		private native: NativeFunctionsService) {
 	}
 	private Thermostat: ElementRef;
 	// Component ID
@@ -342,6 +344,7 @@ export class ThermostatComponent implements OnInit, OnDestroy {
 		} else {
 			this.fhem.set(this.fhemDevice.device, val);
 		}
+		this.native.nativeClickTrigger();
 	}
 
 	private getValuePercentage(value) {

@@ -2,6 +2,7 @@ import { Component, Input, OnInit, HostListener } from '@angular/core';
 
 import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'fhem-select',
@@ -159,7 +160,8 @@ export class SelectComponent implements OnInit {
 
 	constructor(
 		private fhem: FhemService,
-		public settings: SettingsService) {
+		public settings: SettingsService,
+		private native: NativeFunctionsService) {
 	}
 	// Component ID
 	@Input() ID: number;
@@ -255,5 +257,6 @@ export class SelectComponent implements OnInit {
 		} else {
 			this.fhem.set(this.fhemDevice.device, val);
 		}
+		this.native.nativeClickTrigger();
 	}
 }

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'timepicker',
@@ -106,7 +107,8 @@ export class TimepickerComponent implements OnInit, OnDestroy, ControlValueAcces
 
 	constructor(
 		private fhem: FhemService,
-		public settings: SettingsService) {
+		public settings: SettingsService,
+		private native: NativeFunctionsService) {
 	}
 
 	// ControlValueAccessor
@@ -276,6 +278,7 @@ export class TimepickerComponent implements OnInit, OnDestroy, ControlValueAcces
 		} else {
 			this.fhem.set(this.fhemDevice.device, val);
 		}
+		this.native.nativeClickTrigger();
 	}
 
 	ngOnDestroy() {

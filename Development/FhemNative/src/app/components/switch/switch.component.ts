@@ -3,6 +3,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'switch',
@@ -154,7 +155,8 @@ export class SwitchComponent implements OnInit, ControlValueAccessor {
 
 	constructor(
 		public settings: SettingsService,
-		public fhem: FhemService) {
+		public fhem: FhemService,
+		private native: NativeFunctionsService) {
 
 	}
 	// Component ID
@@ -254,6 +256,7 @@ export class SwitchComponent implements OnInit, ControlValueAccessor {
 			} else {
 				this.fhem.set(this.fhemDevice.device, command);
 			}
+			this.native.nativeClickTrigger();
 		}
 	}
 }

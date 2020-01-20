@@ -5,6 +5,7 @@ import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
 import { StorageService } from '../../services/storage.service';
 import { ToastService } from '../../services/toast.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'fhem-colorpicker',
@@ -236,7 +237,8 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 		private fhem: FhemService,
 		public settings: SettingsService,
 		private toast: ToastService,
-		private storage: StorageService) {
+		private storage: StorageService,
+		private native: NativeFunctionsService) {
 	}
 	private Popup: ElementRef;
 	private canvas: any;
@@ -322,6 +324,7 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 		this.colorFavs.push('#' + this.color);
 		this.storage.changeSetting({name: 'colorFavs', change: this.colorFavs});
 		this.toast.addNotify('Farbe gespeichert.', '', false);
+		this.native.nativeClickTrigger();
 	}
 
 	public setFavColor(color) {
@@ -504,6 +507,7 @@ export class ColorpickerComponent implements OnInit, OnDestroy {
 		} else {
 			this.fhem.set(this.fhemDevice.device, val);
 		}
+		this.native.nativeClickTrigger();
 	}
 
 

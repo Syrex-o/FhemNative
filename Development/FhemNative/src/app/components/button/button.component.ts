@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { SettingsService } from '../../services/settings.service';
 import { FhemService } from '../../services/fhem.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'fhem-button',
@@ -97,7 +98,8 @@ export class ButtonComponent implements OnInit {
 
 	constructor(
 		public fhem: FhemService,
-		public settings: SettingsService) {}
+		public settings: SettingsService,
+		private native: NativeFunctionsService) {}
 	// Component ID
 	@Input() ID: number;
 
@@ -186,5 +188,6 @@ export class ButtonComponent implements OnInit {
 		} else {
 			this.fhem.sendCommand({command: this.data_sendCommand});
 		}
+		this.native.nativeClickTrigger();
 	}
 }

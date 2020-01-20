@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { SettingsService } from '../../services/settings.service';
 import { FhemService } from '../../services/fhem.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'fhem-circular-slider',
@@ -115,7 +116,8 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 
 	constructor(
 		public settings: SettingsService,
-		private fhem: FhemService) {
+		private fhem: FhemService,
+		private native: NativeFunctionsService) {
 		this.oldValue = this.value;
 	}
 	private svgRoot: ElementRef;
@@ -548,6 +550,7 @@ export class CircleSliderComponent implements AfterViewInit, OnDestroy {
 		} else {
 			this.fhem.set(this.fhemDevice.device, val);
 		}
+		this.native.nativeClickTrigger();
 	}
 
 	ngOnDestroy() {

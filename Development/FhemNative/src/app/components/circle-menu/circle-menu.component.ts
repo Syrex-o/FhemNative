@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ElementRef, HostListener } from '@angular/cor
 
 import { FhemService } from '../../services/fhem.service';
 import { SettingsService } from '../../services/settings.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 
 @Component({
 	selector: 'fhem-circle-menu',
@@ -113,7 +114,8 @@ export class CircleMenuComponent implements OnInit {
 	constructor(
 		private fhem: FhemService,
 		public settings: SettingsService,
-		private ref: ElementRef) {
+		private ref: ElementRef,
+		private native: NativeFunctionsService) {
 	}
 	// Component ID
 	@Input() ID: number;
@@ -213,5 +215,6 @@ export class CircleMenuComponent implements OnInit {
 		} else {
 			this.fhem.set(this.fhemDevice.device, command);
 		}
+		this.native.nativeClickTrigger();
 	}
 }
