@@ -73,6 +73,8 @@ export class Resize implements OnChanges, AfterViewInit {
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
 		if (this.editingEnabled) {
+			// block scroll
+			window.ontouchmove = event.preventDefault();
 			// one start 
 			this.startMove = true;
 
@@ -85,6 +87,8 @@ export class Resize implements OnChanges, AfterViewInit {
 			this.offset.right = window.innerWidth - (container.x + container.width);
 
 			const endMove = () => {
+				// enable scroll
+				window.ontouchmove = null;
 				window.removeEventListener('mousemove', whileMove);
 				window.removeEventListener('touchmove', whileMove);
 
@@ -140,8 +144,13 @@ export class Resize implements OnChanges, AfterViewInit {
 	ngOnChanges(changes: SimpleChanges) {
 		if (this.editingEnabled) {
 			this.buildResizeRect();
+			let comp = this.structure.getComponent(this.hostEl.id);
+			if(comp && comp.pinned){
+				this.hostEl.classList.add('pinned');
+			}
 		} else {
 			this.removeRect();
+			this.hostEl.classList.remove('pinned');
 		}
 	}
 
