@@ -259,6 +259,20 @@
       			{"TYPE": "FIX", "CHANGE": "Clock component spacing"},
       			{"TYPE": "FIX", "CHANGE": "Shortcuts only if needed"}
       		]
+    	},
+    	{
+      		"VERSION": "2.2.3",
+      		"DATE": "20.01.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Added media player icons"},
+      			{"TYPE": "NEW", "CHANGE": "Pin components to disable movement"},
+      			{"TYPE": "NEW", "CHANGE": "Vibration and sound from --> enable from settings"},
+      			{"TYPE": "NEW", "CHANGE": "New component attributes are automatically in edit menu"},
+      			{"TYPE": "FIX", "CHANGE": "Display context Menu too fast on little movements"},
+      			{"TYPE": "FIX", "CHANGE": "Disable scroll on component movement"},
+      			{"TYPE": "FIX", "CHANGE": "Slider Update infinity bug"},
+      			{"TYPE": "FIX", "CHANGE": "Settings back button color in bright mode"}
+      		]
     	}
 	]
 }

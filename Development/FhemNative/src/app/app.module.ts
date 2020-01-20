@@ -14,6 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
 // Plugins
 import { ToastrModule } from 'ngx-toastr';
 import { File } from '@ionic-native/file/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
@@ -39,6 +41,7 @@ import { BackButtonService } from './services/backButton.service';
 import { TimeService } from './services/time.service';
 import { UndoRedoService } from './services/undo-redo.service';
 import { TasksService } from './services/tasks.service';
+import { NativeFunctionsService } from './services/native-functions.service';
 // Logger
 import { LoggerModule } from './services/logger/logger.module';
 
@@ -73,11 +76,14 @@ import { LoggerModule } from './services/logger/logger.module';
 		TimeService,
 		UndoRedoService,
 		File,
+		Vibration,
+		NativeAudio,
 		ImagePicker,
 		WebView,
 		SocialSharing,
 		Chooser,
 		TasksService,
+		NativeFunctionsService,
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
 	],
 	bootstrap: [AppComponent]
