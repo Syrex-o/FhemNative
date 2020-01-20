@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 import { FhemService } from '../../services/fhem.service';
@@ -78,7 +78,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 		}
 	`]
 })
-export class ImageComponent implements OnInit {
+export class ImageComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private fhem: FhemService,
@@ -96,6 +96,8 @@ export class ImageComponent implements OnInit {
 	@Input() data_device: string;
 	@Input() data_reading: string;
 	@Input() data_url: string;
+	@Input() data_updateInterval: string = '10';
+	@Input() bool_data_cache: boolean = true;
 
 	// position information
 	@Input() width: number;
@@ -108,6 +110,8 @@ export class ImageComponent implements OnInit {
 	public src: string;
 	// enable phone selection
 	public fromPhone: boolean;
+	// interval
+	private interval: any;
 
 	static getSettings() {
 		return {
@@ -117,7 +121,9 @@ export class ImageComponent implements OnInit {
 			inputs: [
 				{variable: 'data_device', default: ''},
 				{variable: 'data_reading', default: 'state'},
-				{variable: 'data_url', default: ''}
+				{variable: 'data_url', default: ''},
+				{variable: 'data_updateInterval', default: '10'},
+				{variable: 'bool_data_cache', default: true}
 			],
 			dimensions: {minX: 100, minY: 100}
 		};
@@ -135,7 +141,17 @@ export class ImageComponent implements OnInit {
 			} else {
 				this.src = this.fhemDevice.readings[this.data_reading] ? this.fhemDevice.readings[this.data_reading].Value : false;
 			}
+			this.getImage(this.src);
 		});
+	}
+
+	// select image based on cache
+	private getImage(src){
+		if(!this.bool_data_cache){
+			this.interval = setInterval(()=>{
+				this.src = src +'?dummy=' + new Date().getTime();
+			}, parseInt(this.data_updateInterval) * 1000);
+		}
 	}
 
 	public selectImage() {
@@ -148,6 +164,12 @@ export class ImageComponent implements OnInit {
 				});
 				this.structure.saveRooms();
 			});
+		}
+	}
+
+	ngOnDestroy(){
+		if(this.interval !== undefined){
+			clearInterval(this.interval);
 		}
 	}
 }
