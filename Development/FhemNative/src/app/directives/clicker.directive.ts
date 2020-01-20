@@ -129,7 +129,9 @@ export class ClickerDirective implements OnInit, OnDestroy{
 				if (Math.abs(this.startMouse.x - this.currentMouse.x) < 20 && Math.abs(this.startMouse.y - this.currentMouse.y) < 20) {
 					this.longPressing = true;
 					if (this.source === 'component') {
-		  				this.createEditMenu(e);
+						if(this.selectComponent.selectorList.length === 0){
+							this.createEditMenu(e);
+						}
 		  			} else {
 		  				this.onLongClick.emit(e);
 		  			}
