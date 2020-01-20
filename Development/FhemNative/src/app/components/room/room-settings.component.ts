@@ -8,6 +8,7 @@ import { ToastService } from '../../services/toast.service';
 import { StorageService } from '../../services/storage.service';
 import { StructureService } from '../../services/structure.service';
 import { TasksService } from '../../services/tasks.service';
+import { NativeFunctionsService } from '../../services/native-functions.service';
 import { CreateComponentService } from '../../services/create-component.service';
 
 import { ModalController, Platform } from '@ionic/angular';
@@ -178,6 +179,43 @@ import { RoomComponent } from '../room/room.component';
 						[subTitle]="'GENERAL.SETTINGS.COMPONENTS.RESPONSIVE_RESIZE.INFO' | translate"
 						(onToggle)="settings.changeAppSetting('responsiveResize', $event)">
 					</switch>
+					<switch
+						[customMode]="true"
+						[(ngModel)]="settings.app.hapticFeedback.enable"
+						[label]="'GENERAL.SETTINGS.COMPONENTS.VIBRATION.ENABLE.TITLE' | translate"
+						[subTitle]="'GENERAL.SETTINGS.COMPONENTS.VIBRATION.ENABLE.INFO' | translate"
+						(onToggle)="settings.changeAppSettingJSON('hapticFeedback', 'enable', $event)">
+					</switch>
+					<div class="category-inner" *ngIf="settings.app.hapticFeedback.enable">
+						<p class="label-des">{{ 'GENERAL.SETTINGS.COMPONENTS.VIBRATION.DURATION.TITLE' | translate }}</p>
+						<p class="des">{{ 'GENERAL.SETTINGS.COMPONENTS.VIBRATION.DURATION.INFO' | translate }}</p>
+						<ion-select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+		                	[(ngModel)]="settings.app.hapticFeedback.duration" (ionChange)="settings.changeAppSettingJSON('hapticFeedback', 'duration', $event.detail.value)">
+					        <ion-select-option [value]="0.2">200ms</ion-select-option>
+					        <ion-select-option [value]="0.5">500ms</ion-select-option>
+					        <ion-select-option [value]="1">1s</ion-select-option>
+					        <ion-select-option [value]="2">2s</ion-select-option>
+					    </ion-select>
+					</div>
+					<switch
+						[customMode]="true"
+						[(ngModel)]="settings.app.acusticFeedback.enable"
+						[label]="'GENERAL.SETTINGS.COMPONENTS.SOUND.ENABLE.TITLE' | translate"
+						[subTitle]="'GENERAL.SETTINGS.COMPONENTS.SOUND.ENABLE.INFO' | translate"
+						(onToggle)="settings.changeAppSettingJSON('acusticFeedback', 'enable', $event)">
+					</switch>
+					<div class="category-inner" *ngIf="settings.app.acusticFeedback.enable">
+						<p class="label-des">{{ 'GENERAL.SETTINGS.COMPONENTS.SOUND.PATH.TITLE' | translate }}</p>
+						<p class="des">{{ 'GENERAL.SETTINGS.COMPONENTS.SOUND.PATH.INFO' | translate }}</p>
+						<ion-select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+		                	[(ngModel)]="settings.app.acusticFeedback.audio" 
+		                	(ionChange)="settings.changeAppSettingJSON('acusticFeedback', 'audio', $event.detail.value); native.playAudio($event.detail.value)">
+					        <ion-select-option [value]="'1'">1</ion-select-option>
+					        <ion-select-option [value]="'2'">2</ion-select-option>
+					        <ion-select-option [value]="'3'">3</ion-select-option>
+					        <ion-select-option [value]="'4'">4</ion-select-option>
+					    </ion-select>
+					</div>
 				</div>
 				<div class="category">
 					<p class="label">{{ 'GENERAL.SETTINGS.CHANGELOG.TITLE' | translate }}</p>
@@ -374,7 +412,6 @@ import { RoomComponent } from '../room/room.component';
 		button{
 			background: var(--btn-blue);
 			height: 40px;
-			color: #fff;
 			font-size: 1.1em;
 			margin-bottom: 8px;
 		}
@@ -409,7 +446,8 @@ import { RoomComponent } from '../room/room.component';
 		}
 		.dark p,
 		.dark ul,
-		.dark ion-select{
+		.dark ion-select,
+		.dark button{
 			color: var(--dark-p);
 		}
 		ion-content.dark,
@@ -466,7 +504,8 @@ export class SettingsRoomComponent {
 		private chooser: Chooser,
 		private createComponent: CreateComponentService,
 		private helper: HelperService,
-		private task: TasksService) {
+		private task: TasksService,
+		public native: NativeFunctionsService) {
 	}
 
 	public logWarning(event) {
