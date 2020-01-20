@@ -30,6 +30,10 @@
 		{
 			"from": "src/assets/i18n/",
 			"to": "assets/i18n"
+		},
+		{
+			"from": "src/assets/sounds/",
+			"to": "assets/sounds"
 		}
 	],
 	"win": {
