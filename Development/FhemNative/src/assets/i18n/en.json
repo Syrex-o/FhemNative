@@ -476,6 +476,14 @@
 				"data_url":{
 					"name": "Url",
 					"info": "External URL (otherwise it tries to find the URL in the reading) (if no url and reading is selected, a button for device image selection will be created)"
+				},
+				"data_updateInterval":{
+					"name": "Update interval",
+					"info": "Image update interval in seconds (in combination with no cache)"
+				},
+				"bool_data_cache":{
+					"name": "Cache",
+					"info": "Enable/Disable to cache images"
 				}
 			},
 			"TRANSLATOR":{
@@ -817,6 +825,10 @@
 					"name": "Show pin",
 					"info": "Show/hide value pin on move"
 				},
+				"bool_data_showValueInThumb":{
+					"name": "Show value in thumb",
+					"info": "Show/hide to display current value in thumb"
+				},
 				"bool_data_showTicks":{
 					"name": "Show ticks",
 					"info": "Show/hide ticks on the slider"
@@ -840,6 +852,10 @@
 				"style_iconColor":{
 					"name": "Icon color",
 					"info": "Color of the slider icon"
+				},
+				"style_thumbValueColor":{
+					"name": "Thumb value color",
+					"info": "Color of the value in thumb"
 				},
 				"icon_sliderIcon":{
 					"name": "Slider icon",
@@ -1404,6 +1420,26 @@
 				"RESPONSIVE_RESIZE":{
 					"TITLE": "Responsive resize",
 					"INFO": "Enable/disable responsive resizing of components."
+				},
+				"VIBRATION":{
+					"ENABLE": {
+						"TITLE": "Haptic feedback",
+						"INFO": "Enable/disable haptic feedback"
+					},
+					"DURATION":{
+						"TITLE": "Haptic feedback duration",
+						"INFO": "Duration of haptic feedback in seconds"
+					}
+				},
+				"SOUND":{
+					"ENABLE": {
+						"TITLE": "Acoustic feedback",
+						"INFO": "Enable/disable acoustic feedback"
+					},
+					"PATH":{
+						"TITLE": "Acoustic feedback selection",
+						"INFO": "Select the acoustic feedback sound"
+					}
 				}
 			},
 			"CHANGELOG":{
@@ -1540,6 +1576,8 @@
 			},
 			"MENU":{
 				"SETTINGS": "Settings",
+				"PIN": "Pin component",
+				"UNPIN": "Unpin component",
 				"FOREGROUND": "Put in foreground",
 				"BACKGROUND": "Put in background",
 				"COPY": "Copy",

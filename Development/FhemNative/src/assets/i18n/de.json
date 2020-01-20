@@ -476,6 +476,14 @@
 				"data_url":{
 					"name": "Url",
 					"info": "Externe URL (anderenfalls versucht IFrame eine URL im Reading zu finden) (ist nichts selektiert, kreiert Image einen Button, um Bilder vom Gerät auswählen zu können)"
+				},
+				"data_updateInterval":{
+					"name": "Updateinterval",
+					"info": "Bild Updateinterval (in Kombination mit keinem Cache)"
+				},
+				"bool_data_cache":{
+					"name": "Cache",
+					"info": "Aktivieren/deaktivieren des cachen von Bildern"
 				}
 			},
 			"TRANSLATOR":{
@@ -817,6 +825,10 @@
 					"name": "Zeige Pin",
 					"info": "Anzeigen/nicht anzeigen des Slider Pins"
 				},
+				"bool_data_showValueInThumb":{
+					"name": "Zeige Wert im Thumb",
+					"info": "Anzeigen/nicht anzeigen des aktuellen Wertes im Thumb"
+				},
 				"bool_data_showTicks":{
 					"name": "Zeige Ticks",
 					"info": "Anzeigen/nicht anzeigen der Slider Ticks"
@@ -840,6 +852,10 @@
 				"style_iconColor":{
 					"name": "Icon-Farbe",
 					"info": "Farbe des Slider Icons"
+				},
+				"style_thumbValueColor":{
+					"name": "Thumb-Wert Farbe",
+					"info": "Farbe des Wertes im Thumb"
 				},
 				"icon_sliderIcon":{
 					"name": "Slider Icon",
@@ -1404,6 +1420,26 @@
 				"RESPONSIVE_RESIZE":{
 					"TITLE": "Dynamische Größe anpassen",
 					"INFO": "Aktivieren/deaktivieren der dynamischen Größe für Komponenten."
+				},
+				"VIBRATION":{
+					"ENABLE": {
+						"TITLE": "Haptisches Feedback",
+						"INFO": "Aktivieren/deaktivieren des haptischen Feedbacks"
+					},
+					"DURATION":{
+						"TITLE": "Haptisches Feedback",
+						"INFO": "Länge des haptischen Feedbacks in Sekunden"
+					}
+				},
+				"SOUND":{
+					"ENABLE": {
+						"TITLE": "Akustisches Feedback",
+						"INFO": "Aktivieren/deaktivieren des akustischen Feedbacks"
+					},
+					"PATH":{
+						"TITLE": "Akustisches Feedback selektieren",
+						"INFO": "Auswahl eines akustischen Feedbacks"
+					}
 				}
 			},
 			"CHANGELOG":{
@@ -1540,6 +1576,8 @@
 			},
 			"MENU":{
 				"SETTINGS": "Einstellungen",
+				"PIN": "Komponente anpinnen",
+				"UNPIN": "Komponente loslösen",
 				"FOREGROUND": "In den Vordergrund",
 				"BACKGROUND": "In den Hintergrund",
 				"COPY": "Kopieren",
