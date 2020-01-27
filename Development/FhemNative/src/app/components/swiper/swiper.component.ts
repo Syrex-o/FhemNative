@@ -42,7 +42,7 @@ import { HelperService } from '../../services/helper.service';
 				    </ion-slides>
 				</div>
 			</fhem-container>
-			<button matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" *ngIf="settings.modes.roomEdit && this.editingEnabled" (click)="swiperEditMode()">
+			<button (click)="swiperEditMode()" matRipple [matRippleColor]="'#d4d4d480'" class="btn-round" *ngIf="settings.modes.roomEdit && this.editingEnabled">
 			    <ion-icon class="edit" name="create"></ion-icon>
 			</button>
 		</div>
@@ -77,6 +77,7 @@ import { HelperService } from '../../services/helper.service';
 		    border: none;
 		    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
 		    z-index: 101;
+		    pointer-events: all;
 		}
 		.btn-round:focus{
 			outline: 0px;
