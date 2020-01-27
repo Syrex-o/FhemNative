@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.2.3';
+	public appVersion: string = '2.2.4';
 	// building default storage
 	public app: any = {};
 
@@ -88,6 +88,7 @@ export class SettingsService {
 		{type: 'ion', icon: 'switch'},{type: 'ion', icon: 'trash'},{type: 'ion', icon: 'logo-windows'},{type: 'ion', icon: 'add-circle'},
 		{type: 'ion', icon: 'checkmark-circle'},{type: 'ion', icon: 'close-circle'}, {type: 'ion', icon: 'walk'}, {type: 'ion', icon: 'play'}, {type: 'ion', icon: 'pause'},
 		{type: 'ion', icon: 'square'}, {type: 'ion', icon: 'fastforward'}, {type: 'ion', icon: 'skip-forward'}, {type: 'ion', icon: 'rewind'}, {type: 'ion', icon: 'skip-backward'},
+		{type: 'ion', icon: 'shuffle'}, {type: 'ion', icon: 'repeat'},
 		// Font Awesome
 		{type: 'fas', icon: 'ellipsis-h'},
 		{type: 'fas', icon: 'angle-double-up'},
