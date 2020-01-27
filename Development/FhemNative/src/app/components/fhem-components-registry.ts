@@ -1,5 +1,6 @@
 import { BoxComponent } from './box/box.component';
 import { ButtonComponent } from './button/button.component';
+import { ButtonMultistateComponent } from './button-multistate/button-multistate.component';
 import { ChartComponent } from './chart/chart.component';
 import { CircleMenuComponent } from './circle-menu/circle-menu.component';
 import { CircleSliderComponent } from './circle-slider/circle-slider.component';
@@ -26,6 +27,7 @@ import { WeatherComponent } from './weather/weather.component';
 export const FHEM_COMPONENT_REGISTRY = [
 	BoxComponent,
 	ButtonComponent,
+	ButtonMultistateComponent,
 	ChartComponent,
 	CircleMenuComponent,
 	CircleSliderComponent,
