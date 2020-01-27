@@ -7,6 +7,7 @@ import { CreateComponentService } from '../services/create-component.service';
 import { SelectComponentService } from '../services/select-component.service';
 import { HelperService } from '../services/helper.service';
 import { ShortcutService } from '../services/shortcut.service';
+import { StructureService } from '../services/structure.service';
 
 @Directive({ selector: '[double-click]' })
 export class ClickerDirective implements OnInit, OnDestroy{
@@ -49,7 +50,8 @@ export class ClickerDirective implements OnInit, OnDestroy{
 		private selectComponent: SelectComponentService,
 		private ref: ElementRef,
 		private helper: HelperService,
-		private shortcuts: ShortcutService) {
+		private shortcuts: ShortcutService,
+		private structure: StructureService) {
 	}
 
 	ngOnInit(){
@@ -60,6 +62,9 @@ export class ClickerDirective implements OnInit, OnDestroy{
 
 	// create the menu for editing components
 	private createEditMenu(e){
+		// select dedicated component or group
+		this.selectComponent.buildCopySelector(this.ref.nativeElement.id, false, this.helper.find(this.createComponent.containerComponents, 'ID', this.ref.nativeElement.id).item.container);
+
 		this.createComponent.createSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer, {
 			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
@@ -69,13 +74,44 @@ export class ClickerDirective implements OnInit, OnDestroy{
 		});
 	}
 
+
+	// long press event
 	// double click event
-	@HostListener('click', ['$event'])
-  	onDblClick(e) {
-  		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
-  			this.clicker ++;
-  			setTimeout(() => {
-		  		if (this.clicker >= 2) {
+  	@HostListener('mousedown', ['$event'])
+  	@HostListener('touchstart', ['$event'])
+	onMouseDown(e) {
+		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
+			if(e.target.className.match(/grid/)){
+				// remove all selections
+				this.selectComponent.removeContainerCopySelector(false, true);
+			}
+			this.clicker ++;
+			// long press
+			this.startMouse = {
+				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
+				y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
+			};
+			this.currentMouse = this.startMouse;
+			
+			this.pressing = true;
+			this.longPressing = false;
+			this.timeout = setTimeout(() => {
+				// checking the location distance from start to current
+				if (Math.abs(this.startMouse.x - this.currentMouse.x) < 20 && Math.abs(this.startMouse.y - this.currentMouse.y) < 20) {
+					this.longPressing = true;
+					if (this.source === 'component') {
+						this.createEditMenu(e);
+		  			} else {
+		  				this.onLongClick.emit(e);
+		  			}
+				}
+			}, this.duration);
+
+			// double click
+			setTimeout(() => {
+				// grid click triggers twice
+				// component triggers once
+		  		if (this.clicker >= (e.target.className.match(/grid/) ? 3 : 2) ) {
 		  			this.doubleClicked = true;
 		  			// double click detected on component
 		  			if (this.source === 'component') {
@@ -90,8 +126,9 @@ export class ClickerDirective implements OnInit, OnDestroy{
 		  		}
 		  		this.clicker = 0;
 		  	}, 250);
-  		}
-  	}
+		}
+		this.evalComponentGroups();
+	}
 
   	// right click event
   	@HostListener('contextmenu', ['$event'])
@@ -109,36 +146,8 @@ export class ClickerDirective implements OnInit, OnDestroy{
   				this.selectComponent.buildCopySelector(this.ref.nativeElement.id, true, this.helper.find(this.createComponent.containerComponents, 'ID', this.ref.nativeElement.id).item.container);
   			}
   		}
+  		this.evalComponentGroups();
   	}
-
-  	// long press event
-  	@HostListener('touchstart', ['$event'])
-	@HostListener('mousedown', ['$event'])
-	onMouseDown(e) {
-		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
-			this.startMouse = {
-				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
-				y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
-			};
-			this.currentMouse = this.startMouse;
-			
-			this.pressing = true;
-			this.longPressing = false;
-			this.timeout = setTimeout(() => {
-				// checking the location distance from start to current
-				if (Math.abs(this.startMouse.x - this.currentMouse.x) < 20 && Math.abs(this.startMouse.y - this.currentMouse.y) < 20) {
-					this.longPressing = true;
-					if (this.source === 'component') {
-						if(this.selectComponent.selectorList.length === 0){
-							this.createEditMenu(e);
-						}
-		  			} else {
-		  				this.onLongClick.emit(e);
-		  			}
-				}
-			}, this.duration);
-		}
-	}
 
 	@HostListener('mousemove', ['$event'])
 	@HostListener('touchmove', ['$event'])
@@ -159,6 +168,18 @@ export class ClickerDirective implements OnInit, OnDestroy{
 		clearTimeout(this.timeout);
 		this.longPressing = false;
 		this.pressing = false;
+	}
+
+	// detect component groups and select all group components
+	private evalComponentGroups(){
+		if(this.source === 'component'){
+			let grouped: any = this.selectComponent.isGrouped(this.ref.nativeElement.id);
+			if(grouped){
+				this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][grouped.group].forEach((ID)=>{
+					this.selectComponent.buildCopySelector(ID, false, this.helper.find(this.createComponent.containerComponents, 'ID', this.ref.nativeElement.id).item.container);
+				});
+			}
+		}
 	}
 
 	ngOnDestroy(){
