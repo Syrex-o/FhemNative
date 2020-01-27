@@ -57,7 +57,7 @@ import { NativeFunctionsService } from '../../services/native-functions.service'
 						*ngIf="arr_data_style[0] === 'slider' || arr_data_style[0] === 'box' || arr_data_style[0] === 'volume'" 
 						class="slider-thumb" [ngStyle]="{
 							'width.px': data_thumbWidth, 
-							'height.px': data_thumbWidth, 
+							'height.px': data_thumbHeight, 
 							'background': style_thumbColor,
 							'left': arr_data_orientation[0] === 'horizontal' ? move+'%' : '50%', 'bottom': arr_data_orientation[0] === 'vertical' ? move+'%' : '0'
 						}">
@@ -66,7 +66,7 @@ import { NativeFunctionsService } from '../../services/native-functions.service'
 							class="thumb-value"
 							[ngStyle]="{
 								'color': style_thumbValueColor,
-								'line-height.px': data_thumbWidth
+								'line-height.px': data_thumbHeight
 							}">
 							{{ displayAs(value)+data_labelExtension }}
 						</span>
@@ -75,7 +75,7 @@ import { NativeFunctionsService } from '../../services/native-functions.service'
 							[ngClass]="showpin ? 'show' : 'hide'" 
 							[ngStyle]="{
 								'background':style_fillColor, 
-								'top': arr_data_orientation[0] === 'horizontal' ? (data_thumbWidth * -1)+'px' : '50%', 
+								'top': arr_data_orientation[0] === 'horizontal' ? (data_thumbHeight * -1)+'px' : '50%', 
 								'left': arr_data_orientation[0] === 'vertical' ? (data_thumbWidth * -1)+'px' : '50%'
 							}">
 							{{displayAs(value)+data_labelExtension}}
@@ -130,6 +130,7 @@ import { NativeFunctionsService } from '../../services/native-functions.service'
 			left: 0;
 			top: 50%;
 			transform: translate3d(0,-50%,0);
+			border-radius: 5px;
 		}
 		.slider-bg{
 			position: relative;
@@ -154,6 +155,7 @@ import { NativeFunctionsService } from '../../services/native-functions.service'
 			width: 100%;
 			height: 100%;
 			text-align: center;
+			pointer-events: none;
 		}
 		.horizontal .slider-thumb{
 			top: 50%;
@@ -320,6 +322,8 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 
 	@Input() data_sliderHeight:any = '5';
 	@Input() data_thumbWidth:any = '25';
+	@Input() data_thumbHeight:any = '25';
+
 	@Input() data_steps = '5';
 
 	@Input() bool_data_showPin = true;
@@ -389,6 +393,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 				{variable: 'arr_data_orientation', default: 'horizontal,vertical'},
 				{variable: 'data_sliderHeight', default: '5'},
 				{variable: 'data_thumbWidth', default: '25'},
+				{variable: 'data_thumbHeight', default: '25'},
 				{variable: 'data_steps', default: '5'},
 				{variable: 'bool_data_showPin', default: true},
 				{variable: 'bool_data_showValueInThumb', default: false},
@@ -510,7 +515,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 			const x: any = Math.round(this.getValuePercentage(this.value) * 100);
 
 			const w = (this.arr_data_orientation[0] === 'horizontal') ? this.sliderEl.clientWidth : this.sliderEl.clientHeight;
-			const border: any = Math.round(((parseInt(this.data_thumbWidth) / 2) / w) * 100);
+			const border: any = Math.round(((parseInt( (this.arr_data_orientation[0] === 'horizontal' ? this.data_thumbWidth : this.data_thumbHeight ) ) / 2) / w) * 100);
 
 			this.move = (this.arr_data_style[0].match(/slider|box|volume/)) ? x - border : x;
 
@@ -583,7 +588,7 @@ export class SliderComponent implements OnInit, OnDestroy, ControlValueAccessor 
 		const x = Math.round(this.getValuePercentage(this.value) * 100);
 		const border = (this.arr_data_orientation[0] === 'horizontal') ?
 			Math.round(((parseInt(this.data_thumbWidth) / 2) / this.sliderEl.clientWidth) * 100) :
-			Math.round(((parseInt(this.data_thumbWidth) / 2) / this.sliderEl.clientHeight) * 100);
+			Math.round(((parseInt(this.data_thumbHeight) / 2) / this.sliderEl.clientHeight) * 100);
 
 		const to = (this.arr_data_style[0] === 'slider' || this.arr_data_style[0] === 'box') ? x - border : x;
 		const Ythis = this;
