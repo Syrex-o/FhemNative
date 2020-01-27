@@ -18,8 +18,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 			[editingEnabled]="settings.modes.roomEdit"
 			[source]="'grid'"
 			(onDoubleClick)="loadContextMenu($event)"
-			(onRightClick)="loadContextMenu($event)"
-			(onLongClick)="loadContextMenu($event)">
+			(onRightClick)="loadContextMenu($event)">
 			<span *ngFor="let w of gridW; let i = index;" class="grid-line w" [ngStyle]="{'left.px': w, 'height.px': gridHeight}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
 			<span *ngFor="let h of gridH; let i = index;" class="grid-line h" [ngStyle]="{'top.px': h}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
 		</div>
