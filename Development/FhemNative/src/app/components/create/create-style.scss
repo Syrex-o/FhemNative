@@ -19,11 +19,50 @@
 			padding: 10px;
 			overflow-y: auto;
 			padding-bottom: 45px;
+			.header{
+				position: absolute;
+				height: 80px;
+				width: 100%;
+				left: 0;
+				top: 0;
+				box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.3);
+				.change-component{
+					position: absolute;
+				    top: 35px;
+				    width: 100%;
+				    height: 40px;
+				    p{
+				    	margin-top: 2px;
+					    margin-bottom: 10px;
+					    padding-left: 8px;
+					    width: calc(100% - 150px);
+					    white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+				    }
+				    .des{
+						color: var(--p-small) !important;
+						font-size: .8em;
+						margin-top: -10px;
+					}
+				}
+				ng-select{
+					width: 140px;
+				    position: absolute;
+				    top: 0;
+				    right: 10px;
+				}
+			}
 			h2{
 				text-align: center;
-				box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.3);
 				padding-bottom: 10px;
 				margin-top: 0px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			.content{
+				margin-top: 90px;
 			}
 		}
 		button:focus{
@@ -87,6 +126,14 @@
 			margin-top: 8px;
 			padding-left: 0px;
 			padding-right: 0px;
+		}
+		.head{
+			font-size: 1.2em;
+		}
+		.key,
+		.value{
+		    width: 150px;
+		    display: inline-block;
 		}
 	}
 	input{
@@ -297,79 +344,6 @@
 	}
 	.page-4-active .page-4{
 		transform: translate3d(0%, 0, 0);
-	}
-	// component details
-	.details{
-		position: relative;
-		.component-details{
-			position: absolute;
-			top: 50%;
-			width: 180px;
-			height: 210px;
-			background: #fff;
-		    border-radius: 4px;
-		    box-shadow: 0 6px 30px 0px rgba(0, 0, 0, 0.3);
-		    border-top: 1px solid #8e8e8e;
-		    border-bottom: 1px solid #8e8e8e;
-		    text-align: left;
-		    padding: 8px;
-			&.right{
-				right: 0;
-				transform: translate(calc(100% + 20px), -50%);
-				border-right: 1px solid #8e8e8e;
-				.triangle{
-					left: -20px;
-					border-width: 105px 20px 105px 0;
-					border-color: transparent #fff transparent transparent;
-				}
-			}
-			&.left{
-				left: 0;
-				transform: translate(calc(-100% - 20px), -50%);
-				border-left: 1px solid #8e8e8e;
-				.triangle{
-					right: -20px;
-					border-width: 105px 0 105px 20px;
-					border-color: transparent transparent transparent #fff;
-				}
-			}
-			.triangle{
-				position: absolute;
-				top: 0;
-				width: 0;
-				height: 0;
-				border-style: solid;
-			}
-			.fhem-userattr{
-				background: var(--btn-blue);
-				font-family: "Roboto", sans-serif;
-				outline: 0;
-				width: 100%;
-				border: 0;
-				padding: 8px;
-				color: #FFFFFF;
-				font-size: 14px;
-				transition: all 0.3 ease;
-				cursor: pointer;
-				margin-top: 5px;
-			}
-			.details-container{
-				margin-bottom: 15px;
-				.head{
-					text-align: center;
-					line-height: 15px;
-				}
-				.key{
-					display: inline-block;
-					width: 35%;
-				}
-				.value{
-					position: relative;
-    				display: inline;
-    				margin-left: 10px;
-				}
-			}
-		}
 	}
 
 	.dark .add-btn,
