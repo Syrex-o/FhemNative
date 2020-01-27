@@ -209,5 +209,55 @@ export class SelectComponentService {
 				this.helper.find(roomComponents, 'ID', el.ID).index, 1
 			);
 		});
+		this.removeGroups(removeList);
+	}
+
+	// remove unused groups on delete
+	private removeGroups(removeList: Array<any>){
+		// check if component is in group
+		let componentGroups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
+		if(componentGroups){
+			for(const [key, value] of Object.entries(componentGroups)){
+				if(value){
+					const group: any = value;
+					removeList.forEach((comp)=>{
+						if(group.includes(comp.ID)){
+							componentGroups[key].splice(group.indexOf(comp.ID), 1);
+						}
+					});
+					// check if group is now 1/empty and remove it
+					if(group.length <= 1){
+						delete this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][key];
+					}
+				}
+			}
+		}
+	}
+
+	// eval grouped components
+	// determine grouped components, component is in other groups
+	public isGrouped(ID){
+		let result: any = false;
+		let componentGroups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
+		if(componentGroups){
+			for(const [key, value] of Object.entries(componentGroups)){
+				if(value){
+					const group:any = value;
+					for(let i = 0; i < group.length; i++){
+						if(group[i] === ID){
+							result = {
+								group: key,
+								item: i
+							};
+							break;
+						}
+					}
+				}
+				if(result){
+					break;
+				}
+			}
+		}
+		return result;
 	}
 }

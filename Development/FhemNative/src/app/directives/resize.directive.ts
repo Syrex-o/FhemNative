@@ -73,8 +73,10 @@ export class Resize implements OnChanges, AfterViewInit {
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
 		if (this.editingEnabled) {
-			// block scroll
-			window.ontouchmove = event.preventDefault();
+			// block scroll only for movements of components
+			if(target && target.className && target.className.match(/(rect|overlay-move)/)){
+				window.ontouchmove = event.preventDefault();
+			}
 			// one start 
 			this.startMove = true;
 
@@ -89,6 +91,8 @@ export class Resize implements OnChanges, AfterViewInit {
 			const endMove = () => {
 				// enable scroll
 				window.ontouchmove = null;
+
+				// remove listeners
 				window.removeEventListener('mousemove', whileMove);
 				window.removeEventListener('touchmove', whileMove);
 
@@ -98,9 +102,8 @@ export class Resize implements OnChanges, AfterViewInit {
 	        	// save the item position, if the element was moved
 	   			if (this.moved) {
 	   				this.moved = false;
-	   				if(this.selectComponent.selectorList.length === 1){
-						this.selectComponent.removeCopySelector(this.hostEl.id);
-					}
+					this.selectComponent.removeContainerCopySelector(false, true);
+
 					this.elemList.elements.forEach((elem, i)=>{
 						const selected = this.structure.getComponent(elem.id).position;
 						this.structure.saveItemPosition({
@@ -144,10 +147,12 @@ export class Resize implements OnChanges, AfterViewInit {
 	ngOnChanges(changes: SimpleChanges) {
 		if (this.editingEnabled) {
 			this.buildResizeRect();
-			let comp = this.structure.getComponent(this.hostEl.id);
-			if(comp && comp.pinned){
-				this.hostEl.classList.add('pinned');
-			}
+			setTimeout(()=>{
+				let comp = this.structure.getComponent(this.hostEl.id);
+				if(comp && comp.pinned){
+					this.hostEl.classList.add('pinned');
+				}
+			}, 0);
 		} else {
 			this.removeRect();
 			this.hostEl.classList.remove('pinned');
@@ -256,8 +261,8 @@ export class Resize implements OnChanges, AfterViewInit {
 			this.elemList.components.push(bounding);
 			this.elemList.width.push(bounding.width);
 			this.elemList.height.push(bounding.height);
-			this.elemList.top.push(bounding.y);
-			this.elemList.left.push(bounding.x);
+			this.elemList.top.push(bounding.y - this.offset.top);
+			this.elemList.left.push(bounding.x - this.offset.left);
 		});
 	}
 
@@ -329,7 +334,7 @@ export class Resize implements OnChanges, AfterViewInit {
 				this.elemList.elements[i].style.height = this.elemList.height[i] + 'px';
 
 				// top maximal and minimal
-				const top = this.roundToGrid((d.y - this.mouse.y) + (elem.top - this.offset.top) + this.scroller);
+				const top = this.roundToGrid(((d.y - this.mouse.y + elem.top) - this.offset.top) + this.scroller);
 				this.elemList.top[i] = (top >= 0 && height >= this.minimumHeight) ? top : this.elemList.top[i];
 				this.elemList.elements[i].style.top = this.elemList.top[i] + 'px';
 			});
