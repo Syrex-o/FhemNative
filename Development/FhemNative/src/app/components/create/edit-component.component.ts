@@ -8,7 +8,6 @@ import { SelectComponentService } from '../../services/select-component.service'
 import { HelperService } from '../../services/helper.service';
 import { UndoRedoService } from '../../services/undo-redo.service';
 
-import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -18,40 +17,17 @@ import { TranslateService } from '@ngx-translate/core';
 			<p matRipple 
 				[matRippleColor]="'#d4d4d480'" 
 				*ngIf="source === 'component'" 
-				(click)="showSettings = true;" 
+				(click)="toggleComponentSettings()" 
 				class="select-item settings">
 				{{ 'GENERAL.EDIT_COMPONENT.MENU.SETTINGS' | translate }}
 			</p>
-			<div class="details">
-				<p matRipple 
-					[matRippleColor]="'#d4d4d480'" 
-					*ngIf="source === 'component'" 
-					(click)="toggleComponentDetails()" 
-					class="select-item top">
-					{{ 'GENERAL.EDIT_COMPONENT.MENU.DETAILS' | translate }}
-				</p>
-				<div class="component-details" *ngIf="componentDetails.show" [ngClass]="componentDetails.class">
-					<span class="triangle"></span>
-					<div class="details-container">
-						<p class="head">{{ 'GENERAL.DICTIONARY.COMPONENT' | translate }}:</p>
-						<div class="details-row" *ngFor="let detail of componentDetails.component | keyvalue">
-							<span class="key">{{detail.key}}:</span>
-							<span class="value">{{detail.value}}</span>
-						</div>
-					</div>
-					<div class="details-container">
-						<p class="head">{{ 'GENERAL.DICTIONARY.ROOM' | translate }}:</p>
-						<div class="details-row" *ngFor="let detail of componentDetails.room | keyvalue">
-							<span class="key">{{detail.key}}:</span>
-							<span class="value">{{detail.value}}</span>
-						</div>
-					</div>
-					<div class="details-container">
-						<p class="head">FHEM Info:</p>
-						<button matRipple [matRippleColor]="'#d4d4d480'" class="fhem-userattr" (click)="showUserAttr()">{{ 'GENERAL.BUTTONS.SHOW' | translate }}</button>
-					</div>
-				</div>
-			</div>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component'" 
+				(click)="toggleComponentDetails()" 
+				class="select-item top">
+				{{ 'GENERAL.EDIT_COMPONENT.MENU.DETAILS' | translate }}
+			</p>
 			<p matRipple 
 				[matRippleColor]="'#d4d4d480'" 
 				*ngIf="source === 'component'" 
@@ -95,6 +71,13 @@ import { TranslateService } from '@ngx-translate/core';
 			</p>
 			<p matRipple 
 				[matRippleColor]="'#d4d4d480'" 
+				*ngIf="source === 'component' && component && selectComponent.selectorList.length > 1" 
+				class="select-item"
+				(click)="groupComponents(selectComponent.isGrouped(componentID))">
+				{{ !selectComponent.isGrouped(componentID) ? ('GENERAL.EDIT_COMPONENT.MENU.GROUP' | translate) : ('GENERAL.EDIT_COMPONENT.MENU.UNGROUP' | translate) }}
+			</p>
+			<p matRipple 
+				[matRippleColor]="'#d4d4d480'" 
 				*ngIf="selectComponent.copyList.length > 0 && source !== 'component'" 
 				class="select-item" 
 				(click)="pasteComp()">
@@ -117,63 +100,99 @@ import { TranslateService } from '@ngx-translate/core';
 			(onConfirm)="saveComponent()"
 			[ngClass]="settings.app.theme">
 			<div class="create-container edit">
-				<h2>{{ 'GENERAL.CREATE_COMPONENT.PAGE_2_INFO' | translate }} {{'COMPONENTS.'+[component.name]+'.NAME' | translate}}</h2>
-				<p>{{ 'GENERAL.EDIT_COMPONENT.EDIT.TITLE' | translate }}</p>
-				<div class="config-data" *ngFor="let data of component.attributes.attr_data">
-					<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
-					<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
-					<input [(ngModel)]="data.value" placeholder="{{data.value}}">
-		      		<span class="bar"></span>
+				<div class="header">
+					<h2>{{ 'GENERAL.CREATE_COMPONENT.PAGE_2_INFO' | translate }} {{'COMPONENTS.'+[component.name]+'.NAME' | translate}}</h2>
+					<div class="change-component">
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.SWITCH.TITLE' | translate }}</p>
+						<p class="des">{{ 'GENERAL.EDIT_COMPONENT.MENU.SWITCH.INFO' | translate }}</p>
+						<ng-select [items]="componentList.components"
+							bindLabel="name"
+							bindValue="ID"
+							[(ngModel)]="componentList.selected"
+							[searchable]="false"
+							[clearable]="false"
+							(change)="changeSelectedComponent($event)">
+							<ng-template ng-option-tmp let-item="item" let-index="index">
+							   	<span class="label">{{item.name}}</span>
+							</ng-template>
+						</ng-select>
+					</div>
 				</div>
-				<div class="config-data toggle" *ngFor="let data of component.attributes.attr_bool_data">
-					<switch
-						[customMode]="true"
-						[(ngModel)]="data.value"
-						[label]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate"
-						[subTitle]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate"
-						[padding]="false">
-					</switch>
-				</div>
-				<div class="config-data" *ngFor="let data of component.attributes.attr_arr_data">
-					<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
-					<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
-					<ng-select [items]="data.defaults"
-						[searchable]="false"
-					    [(ngModel)]="data.value[0]">
-					    <ng-template ng-option-tmp let-item="item" let-index="index">
-					       	<span class="label">{{item}}</span>
-					    </ng-template>
-					</ng-select>
-				</div>
-				<div class="config-data" *ngFor="let icon of component.attributes.attr_icon">
-					<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.name' | translate }}</p>
-					<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
-					<ng-select [items]="settings.icons"
-						[searchable]="false"
-						bindLabel="icon"
-						bindValue="icon"
-						placeholder="icon.value"
-						[(ngModel)]="icon.value">
-						<ng-template ng-option-tmp let-item="item" let-index="index">
-						    <ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
-						    <fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
-						    <span class="label">{{item.icon}}</span>
-						</ng-template>
-					</ng-select>
-				</div>
-				<div class="style" *ngIf="component.attributes.attr_style?.length > 0">
-					<p>{{ 'GENERAL.EDIT_COMPONENT.EDIT.STYLE' | translate }}</p>
-					<div class="config-data" *ngFor="let style of component.attributes.attr_style">
-						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
-						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
-						<ng-select [items]="settings.componentColors" 
-							[(ngModel)]="style.value" 
-							[addTag]="true">
-					        <ng-template ng-option-tmp let-item="item" let-index="index">
-					          	<span class="color" [style.background]="item"></span>
-					           	<span class="color-label">{{item}}</span>
-					        </ng-template>
-					    </ng-select>
+				<div class="content">
+					<p>{{ 'GENERAL.EDIT_COMPONENT.EDIT.TITLE' | translate }}</p>
+					<div class="config-data" *ngFor="let data of component.attributes.attr_data">
+						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
+						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
+						<input [(ngModel)]="data.value" placeholder="{{data.value}}">
+			      		<span class="bar"></span>
+					</div>
+					<div class="config-data toggle" *ngFor="let data of component.attributes.attr_bool_data">
+						<switch
+							[customMode]="true"
+							[(ngModel)]="data.value"
+							[label]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate"
+							[subTitle]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate"
+							[padding]="false">
+						</switch>
+					</div>
+					<div class="config-data" *ngFor="let data of component.attributes.attr_arr_data">
+						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate }}</p>
+						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate }}</p>
+						<ng-select [items]="data.defaults"
+							[searchable]="false"
+						    [(ngModel)]="data.value[0]">
+						    <ng-template ng-option-tmp let-item="item" let-index="index">
+						       	<span class="label">{{item}}</span>
+						    </ng-template>
+						</ng-select>
+					</div>
+					<div class="config-data" *ngFor="let icon of component.attributes.attr_icon">
+						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.name' | translate }}</p>
+						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
+						<ng-select [items]="settings.icons"
+							[searchable]="false"
+							bindLabel="icon"
+							bindValue="icon"
+							placeholder="icon.value"
+							[(ngModel)]="icon.value">
+							<ng-template ng-option-tmp let-item="item" let-index="index">
+							    <ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
+							    <fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
+							    <span class="label">{{item.icon}}</span>
+							</ng-template>
+						</ng-select>
+					</div>
+					<div class="config-data" *ngFor="let icon of component.attributes.attr_arr_icon">
+						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.name' | translate }}</p>
+						<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
+						<ng-select [items]="settings.icons"
+							[searchable]="false"
+							bindLabel="icon"
+							bindValue="icon"
+							placeholder="icon.value"
+							[multiple]="true"
+							[(ngModel)]="icon.value">
+							<ng-template ng-option-tmp let-item="item" let-index="index">
+							    <ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
+							    <fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
+							    <span class="label">{{item.icon}}</span>
+							</ng-template>
+						</ng-select>
+					</div>
+					<div class="style" *ngIf="component.attributes.attr_style?.length > 0">
+						<p>{{ 'GENERAL.EDIT_COMPONENT.EDIT.STYLE' | translate }}</p>
+						<div class="config-data" *ngFor="let style of component.attributes.attr_style">
+							<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
+							<p class="des">{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>
+							<ng-select [items]="settings.componentColors" 
+								[(ngModel)]="style.value" 
+								[addTag]="true">
+						        <ng-template ng-option-tmp let-item="item" let-index="index">
+						          	<span class="color" [style.background]="item"></span>
+						           	<span class="color-label">{{item}}</span>
+						        </ng-template>
+						    </ng-select>
+						</div>
 					</div>
 					<div class="config-data" *ngFor="let style of component.attributes.attr_arr_style">
 						<p>{{ 'COMPONENTS.'+[component.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
@@ -182,12 +201,51 @@ import { TranslateService } from '@ngx-translate/core';
 							[(ngModel)]="style.value" 
 							[multiple]="true"
 							[addTag]="true">
-					        <ng-template ng-option-tmp let-item="item" let-index="index">
-					          	<span class="color" [style.background]="item"></span>
-					           	<span class="color-label">{{item}}</span>
-					        </ng-template>
-					    </ng-select>
+						    <ng-template ng-option-tmp let-item="item" let-index="index">
+						      	<span class="color" [style.background]="item"></span>
+						       	<span class="color-label">{{item}}</span>
+						    </ng-template>
+						</ng-select>
 					</div>
+				</div>
+			</div>
+		</picker>
+		<picker
+			*ngIf="component && componentDetails?.fhem"
+			[height]="'65%'"
+			[confirmBtn]="'GENERAL.BUTTONS.OKAY' | translate"
+			[showCancelBtn]="false"
+			[(ngModel)]="componentDetails.show"
+			[ngClass]="settings.app.theme">
+			<div class="create-container edit">
+				<h2>{{ 'GENERAL.EDIT_COMPONENT.MENU.DETAILS' | translate }}: {{'COMPONENTS.'+[component.name]+'.NAME' | translate}}</h2>
+				<div class="config-data">
+					<p class="head">{{ 'GENERAL.DICTIONARY.COMPONENT' | translate }}:</p>
+					<div class="details-row" *ngFor="let detail of componentDetails.component | keyvalue">
+						<span class="key">{{detail.key}}:</span>
+						<span class="value">{{detail.value}}</span>
+					</div>
+				</div>
+				<div class="config-data">
+					<p class="head">{{ 'GENERAL.DICTIONARY.ROOM' | translate }}:</p>
+					<div class="details-row" *ngFor="let detail of componentDetails.room | keyvalue">
+						<span class="key">{{detail.key}}:</span>
+						<span class="value">{{detail.value}}</span>
+					</div>
+				</div>
+				<div class="config-data">
+					<p class="head">FhemNative userAttr Definition:</p>
+					<div class="details-row">
+						<span class="key">userAttr:</span>
+						<span class="value">{{componentDetails.fhem.userAttr}}</span>
+					</div>
+					<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.TITLE' | translate }}</p>
+					<p class="des">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.INFO' | translate }}</p>
+					<p>{{componentDetails.fhem.value.short}}</p>
+
+					<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.TITLE' | translate }}</p>
+					<p class="des">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.INFO' | translate }}</p>
+					<p>{{componentDetails.fhem.value.long}}</p>
 				</div>
 			</div>
 		</picker>
@@ -204,7 +262,6 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 		public selectComponent: SelectComponentService,
 		private helper: HelperService,
 		private undoManager: UndoRedoService,
-		private alertController: AlertController,
 		private translate: TranslateService) {
 	}
 
@@ -233,6 +290,12 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 		show: false
 	};
 
+	// component list to select from
+	public componentList: any = {
+		components: [],
+		selected: null
+	};
+
 	// @HostListener('document:click', ['$event'])
 	@HostListener('document:mousedown', ['$event.target'])
 	@HostListener('document:touchstart', ['$event.target'])
@@ -252,28 +315,11 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 	ngAfterViewInit() {
 		setTimeout(() => {
 			if (this.source === 'component') {
-				this.component = this.structure.getComponent(this.componentID);
-				const defaults = this.createComponent.seperateComponentValues(this.helper.find(this.createComponent.fhemComponents, 'REF', this.component.REF).item.component);
-				// look for new props in component
-				for(const key of Object.keys(defaults)){
-					// check for new attribute
-					if( !(key in this.component.attributes) ){
-						this.component.attributes[key] = defaults[key];
-					}
-					// assign default to new attribute
-					defaults[key].forEach((value)=>{
-						if( !this.component.attributes[key].find(x=> x.attr === value.attr) ){
-							console.log(value);
-							this.component.attributes[key].push(value);
-						}
-					});
-				}
-				// fix for arr_data function calling --> getting defaults
-				if (this.component.attributes.attr_arr_data && this.component.attributes.attr_arr_data.length > 0) {
-					for (let i = 0; i < this.component.attributes.attr_arr_data.length; i++) {
-						this.component.attributes.attr_arr_data[i].defaults = this.createComponent.getValues(this.component.REF, this.component.attributes.attr_arr_data[i].attr);
-					}
-				}
+				// get all compoennts for selection menu
+				this.componentList.components = this.structure.getComponentContainer(this.container);
+				this.componentList.selected = this.componentID;
+				// get component values
+				this.getComponentData(this.componentID);
 				// change mode
 				this.settings.modeSub.next({showComponentConfig: true});
 			}
@@ -291,8 +337,44 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 		}, 0);
 	}
 
+	public toggleComponentSettings(){
+		this.getComponentData(this.componentID); 
+		this.componentList.selected = this.componentID;
+		this.showSettings = true;
+	}
+
+	public changeSelectedComponent(event){
+		this.getComponentData(this.componentList.selected);
+	}
+
+	// get the relevant component info
+	private getComponentData(id){
+		this.component = this.structure.getComponent(id);
+		const defaults = this.createComponent.seperateComponentValues(this.helper.find(this.createComponent.fhemComponents, 'REF', this.component.REF).item.component);
+		// look for new props in component
+		for(const key of Object.keys(defaults)){
+			// check for new attribute
+			if( !(key in this.component.attributes) ){
+				this.component.attributes[key] = defaults[key];
+			}
+			// assign default to new attribute
+			defaults[key].forEach((value)=>{
+				if( !this.component.attributes[key].find(x=> x.attr === value.attr) ){
+					this.component.attributes[key].push(value);
+				}
+			});
+		}
+		// fix for arr_data function calling --> getting defaults
+		if (this.component.attributes.attr_arr_data && this.component.attributes.attr_arr_data.length > 0) {
+			for (let i = 0; i < this.component.attributes.attr_arr_data.length; i++) {
+				this.component.attributes.attr_arr_data[i].defaults = this.createComponent.getValues(this.component.REF, this.component.attributes.attr_arr_data[i].attr);
+			}
+		}
+	}
+
 	// addjusting z-index to front
 	public sendToFront() {
+		this.getComponentData(this.componentID);
 		const roomComponents = this.structure.getComponentContainer(this.container);
 		for (let i = 0; i < roomComponents.length; i++) {
 			if (this.component.ID !== roomComponents[i].ID) {
@@ -307,6 +389,7 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 
 	// addjusting z-index to back
 	public sendToBack() {
+		this.getComponentData(this.componentID);
 		const roomComponents = this.structure.getComponentContainer(this.container);
 		for (let i = 0; i < roomComponents.length; i++) {
 			if (this.component.ID !== roomComponents[i].ID) {
@@ -383,7 +466,7 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 			}
 		}
 		this.settings.findNewColors([this.component.attributes.attr_style, this.component.attributes.attr_arr_style]);
-		this.createComponent.removeFhemComponent(this.componentID);
+		this.createComponent.removeFhemComponent(this.componentList.selected);
 		this.createComponent.loadRoomComponents([this.component], this.container, false);
 		this.saveComp();
 	}
@@ -398,6 +481,7 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 
 	// select component details
 	public toggleComponentDetails(){
+		this.getComponentData(this.componentID);
 		this.componentDetails.show = !this.componentDetails.show;
 		if(this.componentDetails.show){
 			let comp = this.structure.getComponent(this.componentID);
@@ -437,50 +521,63 @@ export class EditComponentComponent implements AfterViewInit, OnDestroy {
 				UID: this.structure.currentRoom.UID,
 				name: this.structure.currentRoom.name
 			};
-
-			// set position to left or right
-			const menu = this.ref.nativeElement.querySelector('.context-menu');
-			const container = this.createComponent.currentRoomContainer.element.nativeElement.parentNode.getBoundingClientRect();
-			if(this.x + menu.clientWidth + 200 >= container.width){
-				this.componentDetails.class = 'left';
-			}else{
-				this.componentDetails.class = 'right';
-			}
 		}
 	}
 
 	// pin and unpin components
 	// block movement
 	public pinComponent(){
-		let comp = this.structure.getComponent(this.componentID);
-		if('pinned' in comp){
-			comp.pinned = !comp.pinned;
+		let pinner = (item)=>{
+			if(item.pinned){
+				document.getElementById(item.ID).classList.add('pinned');
+				this.selectComponent.removeCopySelector(item.ID);
+			}else{
+				document.getElementById(item.ID).classList.remove('pinned');
+			}
+		};
+		// pin/unpin selected component
+		let baseComp = this.structure.getComponent(this.componentID);
+		if('pinned' in baseComp){
+			baseComp.pinned = !baseComp.pinned;
 		}else{
-			comp['pinned'] = true;
+			baseComp['pinned'] = true;
 		}
-		// add/remove pinned
-		if(comp.pinned){
-			document.getElementById(this.componentID).classList.add('pinned');
-		}else{
-			document.getElementById(this.componentID).classList.remove('pinned');
+		pinner(baseComp);
+
+		// assign pinning to all selected components
+		this.selectComponent.selectorList.map(x=> x.ID).forEach((id)=>{
+			let comp = this.structure.getComponent(id);
+			comp['pinned'] = baseComp['pinned'];
+			pinner(comp);
+		});
+
+		// detect grouping and modify pinning
+		const isGrouped = this.selectComponent.isGrouped(baseComp.ID);
+		if(isGrouped && !baseComp.pinned){
+			this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group].forEach((id)=>{
+				let comp = this.structure.getComponent(id);
+				comp['pinned'] = baseComp['pinned'];
+				pinner(comp);
+			});
 		}
 	}
 
-	//
-	async showUserAttr(){
-		const alert = await this.alertController.create({
-			header: 'FhemNative userAttr Definition:',
-			message:
-				'userAttr: ' + this.componentDetails.fhem.userAttr + '<br><hr><br>' +
-				this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.TITLE') + '<br>' +
-				'<span class="des">'+ this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.INFO') +'</span>' +
-				this.componentDetails.fhem.value.short + '<br><hr><br>' +
-				this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.TITLE') + '<br>' +
-				'<span class="des">'+ this.translate.instant('GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.INFO') +'</span>' +
-				this.componentDetails.fhem.value.long,
-			cssClass: 'allow-text-select wider ' + this.settings.app.theme
-		});
-  		await alert.present();
+	// group/ungroup components
+	public groupComponents(isGrouped){
+		if(isGrouped){
+			delete this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group];
+		}else{
+			// check for groups
+			if(!this.structure.rooms[this.structure.currentRoom.ID]['groupComponents']){
+				this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'] = {};
+			}
+			const groups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
+			const lastKey = Object.keys(groups)[ Object.keys(groups).length - 1 ];
+			// if groups are given, select last group integer + 1
+			groups['group' +( lastKey ? ( parseInt(lastKey.match(/\d+/g)[0]) + 1 ) : 1 ) ] = this.selectComponent.selectorList.map(x=> x.ID);
+		}
+		// add to change stack
+		this.undoManager.addChange();
 	}
 
 	ngOnDestroy(){
