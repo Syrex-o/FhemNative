@@ -106,6 +106,67 @@
 				}
 			}
 		},
+		"Button Multistate":{
+			"NAME": "Button Multistate",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"data_currentState":{
+					"name": "Current state",
+					"info": "Reading for the current state"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "List of get values to rotate"
+				},
+				"data_setOn":{
+					"name": "Set on",
+					"info": "List of set values to rotate"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label to display in the button (default: Fhem device name)"
+				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border Radius of the button"
+				},
+				"data_iconSize":{
+					"name": "Icon size",
+					"info": "Size of the icon in the button"
+				},
+				"bool_data_iconOnly":{
+					"name": "Show icon only",
+					"info": "Enable/disable to display icon only"
+				},
+				"arr_icon_icons":{
+					"name": "Icons",
+					"info": "List of icons to rotate"
+				},
+				"arr_style_labelColors":{
+					"name": "Label colors",
+					"info": "Colors of the label to rotate"
+				},
+				"arr_style_buttonColors":{
+					"name": "Background colors",
+					"info": "Button background colors to rotate"
+				},
+				"arr_style_iconColors":{
+					"name": "Icon colors",
+					"info": "Icon color to rotate"
+				}
+			}
+		},
 		"Chart":{
 			"NAME": "Chart",
 			"INPUTS":{
@@ -816,6 +877,10 @@
 				"data_thumbWidth":{
 					"name": "Thumb width",
 					"info": "Width of the slider thumb"
+				},
+				"data_thumbHeight":{
+					"name": "Thumb height",
+					"info": "height of the slider thumb"
 				},
 				"data_steps":{
 					"name": "Steps",
@@ -1581,6 +1646,8 @@
 				"FOREGROUND": "Put in foreground",
 				"BACKGROUND": "Put in background",
 				"COPY": "Copy",
+				"GROUP": "Group",
+				"UNGROUP": "Ungroup",
 				"SELECT": "Select",
 				"UNSELECT": "Deselect",
 				"SELECT_ALL": "Select all",
@@ -1597,6 +1664,10 @@
 						"TITLE": "Full definition",
 						"INFO": "Full component definition."
 					}
+				},
+				"SWITCH":{
+					"TITLE": "Switch component",
+					"INFO": "Quickly change the selected component"
 				}
 			}
 		},

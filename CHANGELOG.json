@@ -273,6 +273,29 @@
       			{"TYPE": "FIX", "CHANGE": "Slider Update infinity bug"},
       			{"TYPE": "FIX", "CHANGE": "Settings back button color in bright mode"}
       		]
+    	},
+    	{
+      		"VERSION": "2.2.4",
+      		"DATE": "27.01.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Button Multistate component"},
+      			{"TYPE": "NEW", "CHANGE": "Added more music player icons"},
+      			{"TYPE": "NEW", "CHANGE": "Added quick component switch selection menu"},
+      			{"TYPE": "NEW", "CHANGE": "Components can be grouped now"},
+      			{"TYPE": "NEW", "CHANGE": "Component Details moved to extra picker"},
+      			{"TYPE": "NEW", "CHANGE": "Slider Height is now seperatly configurable"},
+      			{"TYPE": "NEW", "CHANGE": "arr_icon for multiple icon selection"},
+      			{"TYPE": "FIX", "CHANGE": "Visible Pin in edit Mode while switching rooms"},
+      			{"TYPE": "FIX", "CHANGE": "Slider Bug to select Thumb, while value is in thumb"},
+      			{"TYPE": "FIX", "CHANGE": "Pinned component gets removed from selected list, when other components are selected and pin is activated"},
+      			{"TYPE": "FIX", "CHANGE": "Color selection for multi color components"},
+      			{"TYPE": "FIX", "CHANGE": "Double click to edit component is working again"},
+      			{"TYPE": "FIX", "CHANGE": "Positioning bug of components for top offset property"},
+      			{"TYPE": "FIX", "CHANGE": "Positioning bug of components for left offset property in containers"},
+      			{"TYPE": "FIX", "CHANGE": "Creation of context menu based on different click events"},
+      			{"TYPE": "FIX", "CHANGE": "Swiper edit on mobile"},
+      			{"TYPE": "DEL", "CHANGE": "Component Details Menu as side menu"}
+      		]
     	}
 	]
 }

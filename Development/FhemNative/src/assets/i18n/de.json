@@ -106,6 +106,67 @@
 				}
 			}
 		},
+		"Button Multistate":{
+			"NAME": "Button Multistate",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts"
+				},
+				"data_reading":{
+					"name": "Reading Name",
+					"info": "Name des Fhem Readings"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name des set Befehls (falls benötigt)"
+				},
+				"data_currentState":{
+					"name": "Aktueller Zustand",
+					"info": "Reading des aktuellen Zustands"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "List von get Werten zum rotieren"
+				},
+				"data_setOn":{
+					"name": "Set on",
+					"info": "Liste von set Werten zum rotieren"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label das im Button angezeigt werden soll (Standard: Fhem Geräte Name)"
+				},
+				"data_borderRadius":{
+					"name": "Rand-Radius",
+					"info": "Radius vom Rand des Buttons"
+				},
+				"data_iconSize":{
+					"name": "Icon Größe",
+					"info": "Größe des Icons im Button"
+				},
+				"bool_data_iconOnly":{
+					"name": "Nur Icon anzeigen",
+					"info": "Aktivieren/deaktivieren, dass nur das Icon im Button angezeigt wird"
+				},
+				"arr_icon_icons":{
+					"name": "Icons",
+					"info": "Liste von Icons zum rotieren"
+				},
+				"arr_style_labelColors":{
+					"name": "Label-Farben",
+					"info": "Farbe des Labels im Button zum rotieren"
+				},
+				"arr_style_buttonColors":{
+					"name": "Hintergrundfarben",
+					"info": "Hintergrundfarben des Buttons zum rotieren"
+				},
+				"arr_style_iconColors":{
+					"name": "Icon Farben",
+					"info": "Icon Farben zum rotieren"
+				}
+			}
+		},
 		"Chart":{
 			"NAME": "Chart",
 			"INPUTS":{
@@ -816,6 +877,10 @@
 				"data_thumbWidth":{
 					"name": "Thumb Breite",
 					"info": "Breite des Slider-Thumbs"
+				},
+				"data_thumbHeight":{
+					"name": "Thumb Höhe",
+					"info": "Höhe des Slider-Thumbs"
 				},
 				"data_steps":{
 					"name": "Schritte",
@@ -1581,6 +1646,8 @@
 				"FOREGROUND": "In den Vordergrund",
 				"BACKGROUND": "In den Hintergrund",
 				"COPY": "Kopieren",
+				"GROUP": "Gruppieren",
+				"UNGROUP": "Gruppierung aufheben",
 				"SELECT": "Selektieren",
 				"UNSELECT": "Nicht Selektieren",
 				"SELECT_ALL": "Alles selektieren",
@@ -1597,6 +1664,10 @@
 						"TITLE": "Komplettdefinition",
 						"INFO": "Komplette Definition der Komponente."
 					}
+				},
+				"SWITCH":{
+					"TITLE": "Komponente wechseln",
+					"INFO": "Zu bearbeitende Komponente schnell wechseln"
 				}
 			}
 		},
