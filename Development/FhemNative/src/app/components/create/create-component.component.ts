@@ -92,6 +92,23 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 								</ng-select>
 							</div>
 						</div>
+						<div class="config-data" *ngFor="let icon of componentSelection.attributes.attr_arr_icon">
+							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[icon.attr]+'.name' | translate }}</p>
+							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[icon.attr]+'.info' | translate }}</p>
+							<ng-select [items]="settings.icons"
+								[searchable]="false"
+								bindLabel="icon"
+								bindValue="icon"
+								[multiple]="true"
+								placeholder="icon.value"
+								[(ngModel)]="icon.value">
+								<ng-template ng-option-tmp let-item="item" let-index="index">
+									<ion-icon *ngIf="item.type === 'ion'" [name]="item.icon"></ion-icon>
+									<fa-icon *ngIf="item.type != 'ion'" [icon]="[item.type, item.icon]"></fa-icon>
+									<span class="label">{{item.icon}}</span>
+								</ng-template>
+							</ng-select>
+						</div>
 						<div class="config-data" *ngFor="let style of componentSelection.attributes.attr_style">
 							<p>{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.name' | translate }}</p>
 							<p class="des">{{ 'COMPONENTS.'+[componentSelection.comp.name]+'.INPUTS.'+[style.attr]+'.info' | translate }}</p>

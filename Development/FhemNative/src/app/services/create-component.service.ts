@@ -215,6 +215,13 @@ export class CreateComponentService {
 					value: `${value}`
 				});
 			}
+			if (`${key}`.substr(0, 8) === 'arr_icon') {
+				res['attr_arr_icon'] = res['attr_arr_icon'] || [];
+				res['attr_arr_icon'].push({
+					attr: `${key}`,
+					value: `${value}`.split(',')
+				});
+			}
 		}
 		return res;
 	}
