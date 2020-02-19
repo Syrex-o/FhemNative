@@ -38,17 +38,6 @@ export class UndoRedoService {
 		});
 	}
 
-	public cancelChanges(){
-		// remove fhem components
-		this.removeFhemComponents();
-		// apply old structure
-		this.structure.rooms = this.roomBackup;
-		// load relevant components
-		this.loadRoomStructure();
-		// reset values
-		this.resetValues();
-	}
-
 	private loadRoomStructure(){
 		// filling current room in structure
 		this.structure.currentRoom = this.structure.getCurrentRoom().item;
@@ -128,11 +117,24 @@ export class UndoRedoService {
 		this.dataRedoArray = [];
 		this.roomBackup = [];
 		this.currentStack = -1;
+		this.selectComponent.copyList = [];
+	}
+
+	public cancelChanges(){
+		// remove fhem components
+		this.removeFhemComponents();
+		// apply old structure
+		this.structure.rooms = this.roomBackup;
+		// load relevant components
+		this.loadRoomStructure();
+		// reset values
+		this.resetValues();
 	}
 
 	public applyChanges(){
 		this.structure.saveRooms();
 		// reset values
 		this.resetValues();
+
 	}
 }
