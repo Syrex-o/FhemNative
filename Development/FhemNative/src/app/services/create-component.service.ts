@@ -144,7 +144,7 @@ export class CreateComponentService {
 	// popup components are in the same container
 	// popup components are removed on popup close
 	// same for slider
-	public removeFhemComponent(componentID) {
+	public removeFhemComponent(componentID: string) {
 		const component = this.helper.find(this.containerComponents, 'ID', componentID);
 		if (component) {
 			component.item.container.remove(component.item.container.indexOf(component.item.REF));
@@ -152,12 +152,47 @@ export class CreateComponentService {
 		}
 	}
 
-	public findFhemComponent(componentID) {
+	// find fhem component by ID
+	public findFhemComponent(componentID: string) {
 		const res = this.helper.find(this.containerComponents, 'ID', componentID);
 		if (res) {
 			res.item = res.item.REF;
 		}
 		return res;
+	}
+
+	// get a formatted component
+	// new values + given values
+	public getFormattedComponent(componentID: string){
+		// get the component
+		let component = this.structure.getComponent(componentID);
+		// get component defaults
+		const componentDefault = this.fhemComponents.find(x=> x.REF === component.REF);
+		const defaults = this.seperateComponentValues(componentDefault.component);
+		// look for new props in component
+		for(const key of Object.keys(defaults)){
+			// check for new attribute
+			if( !(key in component.attributes) ){
+				component.attributes[key] = defaults[key];
+			}
+			// assign default to new attribute
+			defaults[key].forEach((value)=>{
+				if( !component.attributes[key].find(x=> x.attr === value.attr) ){
+					component.attributes[key].push(value);
+				}
+			});
+		}
+		// fix for arr_data function calling --> getting defaults
+		if (component.attributes.attr_arr_data && component.attributes.attr_arr_data.length > 0) {
+			for (let i = 0; i < component.attributes.attr_arr_data.length; i++) {
+				component.attributes.attr_arr_data[i].defaults = this.getValues(component.REF, component.attributes.attr_arr_data[i].attr);
+			}
+		}
+		// assign values, to ensure menu is created correctly
+		component['comp'] = {name: component.name, type: componentDefault.type};
+		component['dimensions'] = componentDefault.dimensions;
+
+		return component;
 	}
 
 	// used to get default values for changing components

@@ -190,8 +190,7 @@ export class SelectComponentService {
 		// get room components
 		const roomComponents = this.structure.getComponentContainer(container);
 		const removeList = [];
-		// remove edit component before slice, to skip selection text error
-		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
+		
 		roomComponents.forEach((el)=>{
 			if(this.evalCopySelector(el.ID)){
 				removeList.push(JSON.parse(JSON.stringify(el)));
