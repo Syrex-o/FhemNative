@@ -17,8 +17,6 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '~ngx-toastr/toastr';
-@import "~codemirror/lib/codemirror";
-@import "~codemirror/theme/material";
 // Directive styles
 [ripple] {
     .base {
@@ -140,14 +138,6 @@
         width: 35px;
         left: 0px;
         top: 0px;
-    }
-}
-
-// code styles
-.CodeMirror{
-    height: 75vh;
-    .cm-error{
-        background: transparent;
     }
 }
 

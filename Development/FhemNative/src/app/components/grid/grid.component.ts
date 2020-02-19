@@ -200,7 +200,7 @@ export class GridComponent implements OnInit, OnDestroy {
 
 	// load context menu
 	public loadContextMenu(e) {
-		this.createComponent.createSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer, {
+		this.createComponent.createSingleComponent('ContextMenuComponent', this.createComponent.currentRoomContainer, {
 			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
 			source: 'grid',
@@ -210,7 +210,7 @@ export class GridComponent implements OnInit, OnDestroy {
 
 	// remove context menu
 	private removeContextMenu(){
-		this.createComponent.removeSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer);
+		this.createComponent.removeSingleComponent('ContextMenuComponent', this.createComponent.currentRoomContainer);
 	}
 
 	private getParentDimensions() {
