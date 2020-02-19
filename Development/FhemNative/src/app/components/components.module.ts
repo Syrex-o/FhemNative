@@ -20,17 +20,14 @@ import { RoomComponent } from './room/room.component';
 import { SettingsRoomComponent } from './room/room-settings.component';
 import { TasksRoomComponent } from './tasks/room-tasks.component';
 
-// code
-import { CodemirrorModule } from '@ctrl/ngx-codemirror';
-
 import { GridComponent } from './grid/grid.component';
 import { SelectRectangleComponent } from './grid/select-rectangle.component';
 import { PickerComponent } from './picker/picker.component';
 import { FhemMenuComponent } from './menu/fhem-menu.component';
 import { ButtonContainerComponent } from './menu/button-container.component';
 import { DraggableMenuComponent } from './menu/draggable-menu.component';
-import { CreateComponentComponent } from './create/create-component.component';
-import { EditComponentComponent } from './create/edit-component.component';
+import { ContextMenuComponent } from './menu/context-menu.component';
+import { CreateEditComponentComponent } from './create/create-edit-component.component';
 import { CreateRoomComponent } from './create/create-room.component';
 import { FhemContainerComponent } from './fhem-container/fhem-container.component';
 
@@ -61,7 +58,6 @@ export function createTranslateLoader(http: HttpClient) {
 		DragDropModule,
 		HttpClientModule,
 		FontAwesomeModule,
-		CodemirrorModule,
 		TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -76,12 +72,12 @@ export function createTranslateLoader(http: HttpClient) {
 		TasksRoomComponent,
 		GridComponent,
 		SelectRectangleComponent,
-		CreateComponentComponent,
-		EditComponentComponent,
+		CreateEditComponentComponent,
 		CreateRoomComponent,
 		FhemMenuComponent,
 		ButtonContainerComponent,
 		DraggableMenuComponent,
+		ContextMenuComponent,
 		PickerComponent,
 		FhemContainerComponent,
 		FHEM_COMPONENT_REGISTRY
@@ -111,8 +107,8 @@ export function createTranslateLoader(http: HttpClient) {
 		TasksRoomComponent,
 		GridComponent,
 		SelectRectangleComponent,
-		CreateComponentComponent,
-		EditComponentComponent,
+		CreateEditComponentComponent,
+		ContextMenuComponent,
 		FHEM_COMPONENT_REGISTRY
 	]
 })
