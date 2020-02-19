@@ -7,6 +7,7 @@ import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
 import { TasksService } from '../../services/tasks.service';
 import { CreateComponentService } from '../../services/create-component.service';
+import { SelectComponentService } from '../../services/select-component.service';
 
 import { Subscription } from 'rxjs';
 
@@ -28,6 +29,10 @@ import { Subscription } from 'rxjs';
 		<create-room *ngIf="settings.modes.roomEdit"></create-room>
 		<div [ngClass]="settings.app.theme" class="content" [attr.id]="'room_'+structure.currentRoom.ID">
 			<ng-container class="container" #container></ng-container>
+			<button *ngIf="settings.modes.roomEdit" matRipple [matRippleColor]="'#d4d4d480'" class="add-btn btn-round" (click)="createComponentMenu()">
+				<span class="line top"></span>
+				<span class="line bottom"></span>
+			</button>
 		</div>
 	`,
 	styles: [`
@@ -68,6 +73,34 @@ import { Subscription } from 'rxjs';
 		    z-index: 100;
 		    font-size: 25px;
 		}
+		.add-btn{
+			position: fixed;
+		    bottom: 8px;
+		    right: 8px;
+		    margin-right: 0px;
+		}
+		.add-btn .line{
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 60%;
+			height: 5px;
+			background: var(--gradient);
+			border-radius: 5px;
+			transition: all .3s ease;
+		}
+		.line.top{
+			transform: translate3d(-50%, -50%,0);
+		}
+		.line.bottom{
+			transform: translate3d(-50%, -50%,0) rotate(90deg);
+		}
+		.add-btn:hover .line.top{
+			transform: translate3d(-50%, -50%,0) rotate(90deg);
+		}
+		.add-btn:hover .line.bottom{
+			transform: translate3d(-50%, -50%,0) rotate(180deg);
+		}
 
 		.btn-round .edit{
 			color: var(--btn-blue);
@@ -105,6 +138,7 @@ export class RoomComponent implements OnDestroy {
 		public settings: SettingsService,
 		private platform: Platform,
 		private createComponent: CreateComponentService,
+		private selectComponent: SelectComponentService,
 		private zone: NgZone,
 		private route: ActivatedRoute,
 		private task: TasksService) {
@@ -152,10 +186,17 @@ export class RoomComponent implements OnDestroy {
 		});
 	}
 
+	// create component menu
+	public createComponentMenu(){
+		this.createComponent.createSingleComponent('CreateEditComponentComponent', this.container, {
+			container: this.container,
+			type: 'create'
+		});
+	}
+
 	private createHelpers() {
 		if(this.structure.canEdit(this.structure.getCurrentRoom().item.ID)){
 			this.createComponent.createSingleComponent('GridComponent', this.container, {container: this.container});
-			this.createComponent.createSingleComponent('CreateComponentComponent', this.container, {container: this.container});
 		}else{
 			this.removeHelpers();
 		}
@@ -163,7 +204,6 @@ export class RoomComponent implements OnDestroy {
 
 	private removeHelpers() {
 		this.createComponent.removeSingleComponent('GridComponent', this.container);
-		this.createComponent.removeSingleComponent('CreateComponentComponent', this.container);
 	}
 
 	private loadRoomComponents() {
@@ -178,6 +218,8 @@ export class RoomComponent implements OnDestroy {
 			if (this.settings.modes.roomEdit) {
 				this.createHelpers();
 			}
+			// clear selection list 
+			this.selectComponent.selectorList = [];
 		});
 	}
 
