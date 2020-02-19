@@ -7,6 +7,7 @@ import { HelperService } from './helper.service';
 import { StructureService } from './structure.service';
 import { ToastService } from './toast.service';
 import { TimeService } from './time.service';
+import { NativeFunctionsService } from './native-functions.service';
 
 import { Subject, Subscription } from 'rxjs';
 
@@ -73,7 +74,9 @@ export class TasksService {
 		{variable: 'hide_component', value: ''},
 		{variable: 'hide_room', value: ''},
 		{variable: 'change_room', value: ''},
-		{variable: 'show_alert', value: ''}
+		{variable: 'show_alert', value: ''},
+		{variable: 'play_sound', value: ''},
+		{variable: 'vibration', value: ''}
 	];
 
 	constructor(
@@ -82,7 +85,8 @@ export class TasksService {
 		private helper: HelperService,
 		private structure: StructureService,
 		private toast: ToastService,
-		private time: TimeService){
+		private time: TimeService,
+		private native: NativeFunctionsService){
 
 		this.tasksLoadedSub.subscribe(next=>{
 			this.tasksLoaded = next;
@@ -96,6 +100,16 @@ export class TasksService {
 				name: 'tasks',
 				default: JSON.stringify([])
 			}).then((res:Array<any>)=>{
+				// check if task output is object
+				// used because of old structure, when only one output was possible
+				res.forEach((item)=>{
+					for(const key of Object.keys(item.attributes)){
+						if(item.attributes[key].output && !Array.isArray(item.attributes[key].output) ){
+							const val = item.attributes[key].output;
+							item.attributes[key].output = [val];
+						}
+					}
+				});
 				this.tasks = res;
 				resolve(res);
 			});
@@ -115,7 +129,7 @@ export class TasksService {
 							{variable: 'reading', value: 'state'}
 						],
 						compare: { operator: '=', to: '' },
-						output: {}
+						output: {variable: '', value: ''}
 					}
 				},
 				name: name,
@@ -223,82 +237,109 @@ export class TasksService {
 
 	private analyseTasks(devices){
 		this.tasks.forEach((task, i)=>{
+			// blocking indicator
+			let block = false;
+			// loop over conditions (IF, ELSE)
 			for( const [condition, value] of Object.entries(task.attributes)){
-				// blocking indicator
-				let block = false;
-				// check for fhem
-				if(task.attributes[condition].name === 'Fhem'){
-					// get device from task
-					const taskDevice = task.attributes[condition].inputs.find(x=> x.variable === 'device');
-					if(taskDevice && taskDevice.value !== ''){
-						const device = devices.find(x=> x.device === taskDevice.value);
-						if(device){
-							const reading = task.attributes[condition].inputs.find(x=> x.variable === 'reading');
-							if(reading && reading.value !== ''){
-								// check for reading presence
-								if( !(reading.value in device.readings) ){
-									// reading is not in device
-									if(task.attributes[condition].compare.operator === 'reading_not_available'){
-										block = true;
+				if(condition.match(/IF/g)){
+					// check for fhem
+					if(task.attributes[condition].name === 'Fhem'){
+						// get device from task
+						const taskDevice = task.attributes[condition].inputs.find(x=> x.variable === 'device');
+						if(taskDevice && taskDevice.value !== ''){
+							const device = devices.find(x=> x.device === taskDevice.value);
+							if(device){
+								const reading = task.attributes[condition].inputs.find(x=> x.variable === 'reading');
+								if(reading && reading.value !== ''){
+									// check for reading presence
+									if( !(reading.value in device.readings) ){
+										// reading is not in device
+										if(task.attributes[condition].compare.operator === 'reading_not_available'){
+											block = true;
+										}
+									}else{
+										// reading is in device
+										block = this.propertyChecker(
+											device.readings[reading.value].Value,
+											task.attributes[condition].compare.operator, 
+											task.attributes[condition].compare.to
+										);
 									}
-								}else{
-									// reading is in device
-									block = this.propertyChecker(
-										device.readings[reading.value].Value,
-										task.attributes[condition].compare.operator, 
-										task.attributes[condition].compare.to
-									);
 								}
 							}
 						}
 					}
-				}
-				// check for time
-				if(task.attributes[condition].name === 'Time'){
-					block = this.propertyChecker(
-						this.time.local().timeMin,
-						task.attributes[condition].compare.operator,
-						this.time.times(task.attributes[condition].compare.to).toMin,
-					);
-					this.timeChangeListener();
-				}
-				// check for weekday
-				if(task.attributes[condition].name === 'Weekday'){
-					block = this.propertyChecker(
-						this.time.local().weekdayTextShort,
-						task.attributes[condition].compare.operator,
-						task.attributes[condition].compare.to
-					);
-				}
-				// evaluate the blocker
-				if(block){
-					if(task.attributes[condition].output.variable === 'hide_room'){
-						this.hideList.rooms.push(task.attributes[condition].output.value);
+					// check for time
+					if(task.attributes[condition].name === 'Time'){
+						let d = new Date(task.attributes[condition].compare.to);
+						let min = d.getHours() * 60 + d.getMinutes();
+
+						block = this.propertyChecker(
+							this.time.local().timeMin,
+							task.attributes[condition].compare.operator,
+							min,
+						);
+						this.timeChangeListener();
 					}
-					if(task.attributes[condition].output.variable === 'hide_component'){
-						this.hideList.components.push(task.attributes[condition].output.value);
-					}
-					if(task.attributes[condition].output.variable === 'change_room'){
-						// detect if room exists to switch
-						// detect if current room is room to switch to
-						const room = this.helper.find(this.structure.rooms, 'UID', task.attributes[condition].output.value);
-						if(room && this.structure.getCurrentRoom().item.ID !== room.item.ID){
-							this.structure.navigateTo(room.item.name+'_'+room.item.ID);
-						}
-					}
-					if(task.attributes[condition].output.variable === 'show_alert'){
-						this.toast.showAlert(
-							'Alert',
-							task.attributes[condition].output.value,
-							false
+					// check for weekday
+					if(task.attributes[condition].name === 'Weekday'){
+						block = this.propertyChecker(
+							this.time.local().weekdayTextShort,
+							task.attributes[condition].compare.operator,
+							task.attributes[condition].compare.to
 						);
 					}
+					// evaluate the blocker
+					if(block){
+						this.outputHandler(task.attributes[condition].output);
+					}
 				}
+			}
+			// check for else block
+			if(!block && task.attributes.ELSE){
+				this.outputHandler(task.attributes.ELSE.output);
 			}
 		});
 		// all tasks evaluated
 		this.tasksLoadedSub.next(true);
 		this.taskSub.next(this.hideList);
+	}
+
+	// handle output
+	// only use this handler for true block conditions
+	// hide rooms, components...
+	private outputHandler(outputs){
+		outputs.forEach((output)=>{
+			// hide room
+			if(output.variable === 'hide_room' && !this.hideList.rooms.includes(output.value)){
+				this.hideList.rooms.push(output.value);
+			}
+			// hide component
+			if(output.variable === 'hide_component' && !this.hideList.rooms.includes(output.value)){
+				this.hideList.components.push(output.value);
+			}
+			// change room
+			if(output.variable === 'change_room'){
+				// detect if room exists to switch
+				// detect if current room is room to switch to
+				const room = this.helper.find(this.structure.rooms, 'UID', output.value);
+				if(room && this.structure.getCurrentRoom().item.ID !== room.item.ID){
+					this.structure.navigateTo(room.item.name+'_'+room.item.ID);
+				}
+			}
+			// show toast
+			if(output.variable === 'show_alert'){
+				this.toast.showAlert('Alert', output.value, false);
+			}
+			// play sound
+			if(output.variable === 'play_sound'){
+				this.native.playAudio(output.value);
+			}
+			// vibrate
+			if(output.variable === 'vibration'){
+				this.native.vibrate(output.value);
+			}
+		});
 	}
 
 	// fhem listener
@@ -327,6 +368,14 @@ export class TasksService {
 	private propertyChecker(value:any, operator:string, compareTo:any){
 		value = value.toString().toLowerCase();
 		compareTo = compareTo.toString().toLowerCase();
+
+		let numTest = (test:any)=>{
+			if(isNaN(test)){
+				return test;
+			}else{
+				return parseFloat(test);
+			}
+		}
 		//check the operators
 		if(operator === '='){
 			if(value === compareTo){
@@ -339,12 +388,12 @@ export class TasksService {
 			}
 		}
 		if(operator === '>'){
-			if(value > compareTo){
+			if(numTest(value) > numTest(compareTo)){
 				return true;
 			}
 		}
 		if(operator === '<'){
-			if(value < compareTo){
+			if(numTest(value) < numTest(compareTo)){
 				return true;
 			}
 		}
