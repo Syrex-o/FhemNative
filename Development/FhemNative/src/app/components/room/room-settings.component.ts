@@ -190,7 +190,8 @@ import { RoomComponent } from '../room/room.component';
 						<p class="label-des">{{ 'GENERAL.SETTINGS.COMPONENTS.VIBRATION.DURATION.TITLE' | translate }}</p>
 						<p class="des">{{ 'GENERAL.SETTINGS.COMPONENTS.VIBRATION.DURATION.INFO' | translate }}</p>
 						<ion-select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-		                	[(ngModel)]="settings.app.hapticFeedback.duration" (ionChange)="settings.changeAppSettingJSON('hapticFeedback', 'duration', $event.detail.value)">
+		                	[(ngModel)]="settings.app.hapticFeedback.duration" 
+		                	(ionChange)="settings.changeAppSettingJSON('hapticFeedback', 'duration', $event.detail.value)">
 					        <ion-select-option [value]="0.2">200ms</ion-select-option>
 					        <ion-select-option [value]="0.5">500ms</ion-select-option>
 					        <ion-select-option [value]="1">1s</ion-select-option>
