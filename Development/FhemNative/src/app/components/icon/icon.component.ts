@@ -25,7 +25,7 @@ import { SettingsService } from '../../services/settings.service';
 					</ion-icon>
 					<fa-icon
 						*ngIf="settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type != 'ion'"
-						[icon]="[settings.iconFinder((fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)).type, (fhemDevice ? (fhemDevice.readings[data_reading].Value === data_getOn ? icon_iconOn : icon_iconOff) : icon_iconOn)]"
+						[icon]="(fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? icon_iconOn : icon_iconOff) : icon_iconOn)"
 						[ngStyle]="{'color': (fhemDevice ? (fhem.deviceReadingActive(fhemDevice, data_reading, data_getOn) ? style_iconColorOn : style_iconColorOff) : style_iconColorOn )}">
 					</fa-icon>
 					<span 
