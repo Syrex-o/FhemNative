@@ -25,7 +25,7 @@ import {
 
 export class SettingsService {
 	// current App Version
-	public appVersion: string = '2.2.4';
+	public appVersion: string = '2.2.5';
 	// building default storage
 	public app: any = {};
 
@@ -44,7 +44,9 @@ export class SettingsService {
 		fhemMenuMode: '',
 		// indicate different states
 		// component create/edit
-		showComponentConfig: false
+		showComponentConfig: false,
+		// component test mode
+		componentTest: false
 	};
 	// subscriber for modes
 	public modeSub = new Subject<any>();

@@ -2,6 +2,7 @@
 	"COMPONENTS":{
 		"Box":{
 			"NAME": "Box",
+			"DES": "Eine einfache box, um Komponenten in Räumen zu strukturieren",
 			"INPUTS":{
 				"data_headline": {
 					"name": "Kopfzeile",
@@ -31,6 +32,7 @@
 		},
 		"Button":{
 			"NAME": "Button",
+			"DES": "Ein einfacher Button, um zwischen 2 Zuständen in FHEM zu wechseln, oder einen direkten Befhel zu senden.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -108,6 +110,7 @@
 		},
 		"Button Multistate":{
 			"NAME": "Button Multistate",
+			"DES": "Ein Button, um zwischen verschiedenen Werten in FHEM zu wechseln.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -169,6 +172,7 @@
 		},
 		"Chart":{
 			"NAME": "Chart",
+			"DES": "Ein Chart, um Diagramme aus FHEM Log Files zu erstellen.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Log Geräte Name",
@@ -225,6 +229,7 @@
 		},
 		"Circle Menu":{
 			"NAME": "Circle Menu",
+			"DES": "Ein Menü, dass bis zu sechs Werte halten kann und sich in die gewünschte Richtung ausbreitet.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -274,6 +279,7 @@
 		},
 		"Circle Slider":{
 			"NAME": "Circle Slider",
+			"DES": "Ein kreisförmiger Slider, um numerische Werte an FHEM zu senden.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -355,6 +361,7 @@
 		},
 		"Clock":{
 			"NAME": "Clock",
+			"DES": "Eine Uhr, die entweder digital oder analog dargestellt werden kann.",
 			"INPUTS": {
 				"arr_data_style": {
 					"name": "Uhren Style",
@@ -388,6 +395,7 @@
 		},
 		"Color Picker":{
 			"NAME": "Color Picker",
+			"DES": "Ein Menü, dass Farbwerte und Helligkeit an FHEN sendet.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -452,6 +460,7 @@
 		},
 		"IFrame":{
 			"NAME": "I Frame",
+			"DES": "Ein Rahmen, um andere Webinhalte anzeigen zu können.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Geräte Name",
@@ -476,6 +485,7 @@
 		},
 		"Icon":{
 			"NAME": "Icon",
+			"DES": "Ein Icon, dass auf verschiedene Werte in FHEM reagieren kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -525,6 +535,7 @@
 		},
 		"Image":{
 			"NAME": "Image",
+			"DES": "Ein Bild, dass Bilder auf FHEM Readings, externen URL´s oder vom Gerät anzeigen kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Geräte Name",
@@ -553,6 +564,7 @@
 		},
 		"Kodi":{
 			"NAME": "Kodi Remote",
+			"DES": "Eine Fernbedienung für KODI Geräte.",
 			"INPUTS":{
 				"data_ip":{
 					"name": "IP",
@@ -574,6 +586,7 @@
 		},
 		"Label":{
 			"NAME": "Label",
+			"DES": "Ein Label, dass FHEM Werte oder eigenen Text anzeigen kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -630,6 +643,7 @@
 		},
 		"Line":{
 			"NAME": "Line",
+			"DES": "Eine Linie, die benutzt werden kann, um Räume zu strukturieren.",
 			"INPUTS":{
 				"arr_data_orientation":{
 					"name": "Orientierung",
@@ -655,6 +669,7 @@
 		},
 		"MediaList":{
 			"NAME": "Media List",
+			"DES": "Eine Liste des FHEM MeadiaList Moduls.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -687,6 +702,7 @@
 		},
 		"Pinpad":{
 			"NAME": "Pinpad",
+			"DES": "Ein Pinpad, um Alarmstati zu ändern",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -739,6 +755,7 @@
 		},
 		"Popup":{
 			"NAME": "Popup",
+			"DES": "Ein Popup, dass mit anderen Komponenten gefüllt werden kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -792,6 +809,7 @@
 		},
 		"Select":{
 			"NAME": "Select",
+			"DES": "Ein Selektionsmenü, dass FHEM oder manuelle Listen dargestellen kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -829,6 +847,7 @@
 		},
 		"Slider":{
 			"NAME": "Slider",
+			"DES": "Ein Slider, der numerische und Zeit Werte ändern kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -930,6 +949,7 @@
 		},
 		"Sprinkler":{
 			"NAME": "Sprinkler",
+			"DES": "Ein Modul, dass die Bewässerung steuern kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -1089,6 +1109,7 @@
 		},
 		"Swiper":{
 			"NAME": "Swiper",
+			"DES": "Ein Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
 			"INPUTS":{
 				"data_headline": {
 					"name": "Kopfzeile",
@@ -1126,6 +1147,7 @@
 		},
 		"Switch":{
 			"NAME": "Switch",
+			"DES": "Ein einfacher Switch, der zwischen zwei Zuständen in FHEM wechseln kann.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -1187,6 +1209,7 @@
 		},
 		"Thermostat":{
 			"NAME": "Thermostat",
+			"DES": "Ein Thermostat, dass Temperaturwerte anzeigt und animiert.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -1248,6 +1271,7 @@
 		},
 		"Time Picker":{
 			"NAME": "Time Picker",
+			"DES": "Ein Menü, um Zeiten auszuwählen.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -1293,6 +1317,7 @@
 		},
 		"Weather":{
 			"NAME": "Wetter",
+			"DES": "Eine Komponente, die den Wetterbericht aus verschiedenen FHEM Modulen anzeigt.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device Name",
@@ -1597,12 +1622,26 @@
 				"TITLE": "Task konfigurieren"
 			},
 			"CHANGE_TASK": {
-				"TITLE": "Task-Typ auswählen",
-				"INFO": "Wechsel zwischen verschiedenen Task Typen",
 				"MISSING":{
 					"TITLE": "Fehlende Werte",
 					"INFO": "Es fehlen Eingabewerte in der Task-Definition. Bitte stell sicher, dass alle Felder Gefüllt sind."
 				}
+			},
+			"REMOVE_TASK":{
+				"TITLE": "Task entfernen",
+				"INFO": "Sind sie sicher den Task zu löschen?"
+			},
+			"ADD_OUTPUT":{
+				"TITLE": "Output hinzufügen",
+				"INFO": "Output Parameter hinzufügen"
+			},
+			"ADD_ELSE":{
+				"TITLE": "Else Block hinzufügen",
+				"INFO": "Else Kondition hinzufügen"
+			},
+			"REMOVE_ELSE":{
+				"TITLE": "Else Block entfernen",
+				"INFO": "Else Kondition entfernen"
 			}
 		},
 		"CREATE_ROOM":{
@@ -1624,21 +1663,27 @@
 		"CHANGE_ROOM":{
 			"TITLE": "Raum bearbeiten:"
 		},
-		"CREATE_COMPONENT":{
-			"POPUP_HEADER": "Komponente hinzufügen:",
-			"PAGE_1_INFO": "Komponente auswählen:",
-			"PAGE_2_INFO": "Fhem Gerät konfigurieren:",
-			"PAGE_3_INFO": "Style konfigurieren:",
-			"PAGE_4_INFO": "Konfiguration testen:",
-			"PAGE_4_STYLE_COMPONENT": "Style Komponente:",
-			"PAGE_4_NOT_FOUND": "nicht gefunden.",
-			"NO_COMPONENT_SELECTED": "Bitte wähle zuerst eine Komponente."
+		"COMPONENT":{
+			"GENERAL":{
+				"CONFIG": "Komponente konfigurieren: ",
+				"SELECT": "Komponente auswählen:"
+			},
+			"CREATE":{
+				"SELECT": "Komponente zum erstellen selektieren:"
+			},
+			"EDIT":{
+				"PREVIEW": {
+					"TITLE": "Komponenten Preview",
+					"INFO": "Anzeigen/nicht anzeigen der Komponenten Preview"
+				},
+				"CONFIG_DATA": "Komponenten Attribute konfigurieren:",
+				"CONFIG_ICON": "Komponenten Icons konfigurieren:",
+				"CONFIG_STYLE": "Komponenten Style konfigurieren:",
+				"CONFIG_TEST": "Komponenten Konfiguration testen:",
+				"NO_COMPONENT": "Bitte wähle zuerst eine Komponente."
+			}
 		},
 		"EDIT_COMPONENT":{
-			"EDIT":{
-				"TITLE": "Einstellungen des Geräts:",
-				"STYLE": "Style des Geräts:"
-			},
 			"MENU":{
 				"SETTINGS": "Einstellungen",
 				"PIN": "Komponente anpinnen",

@@ -2,6 +2,7 @@
 	"COMPONENTS":{
 		"Box":{
 			"NAME": "Box",
+			"DES": "A simple Box, to structure components in rooms.",
 			"INPUTS":{
 				"data_headline": {
 					"name": "Headline",
@@ -31,6 +32,7 @@
 		},
 		"Button":{
 			"NAME": "Button",
+			"DES": "A simple Button to toggle 2 different states in FHEM, or directly send a command to FHEM.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -108,6 +110,7 @@
 		},
 		"Button Multistate":{
 			"NAME": "Button Multistate",
+			"DES": "A Button to switch between different states in FHEM.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -169,6 +172,7 @@
 		},
 		"Chart":{
 			"NAME": "Chart",
+			"DES": "A Chart, to create diagrams out of FHEM log files.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Log device name",
@@ -225,6 +229,7 @@
 		},
 		"Circle Menu":{
 			"NAME": "Circle Menu",
+			"DES": "A menu, that can hold up to six values and expands in a desired direction.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -274,6 +279,7 @@
 		},
 		"Circle Slider":{
 			"NAME": "Circle Slider",
+			"DES": "A circular slider, to send numeric values to FHEM.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -355,6 +361,7 @@
 		},
 		"Clock":{
 			"NAME": "Clock",
+			"DES": "A clock, that can be either digital or analog.",
 			"INPUTS": {
 				"arr_data_style": {
 					"name": "Clock style",
@@ -388,6 +395,7 @@
 		},
 		"Color Picker":{
 			"NAME": "Color Picker",
+			"DES": "A color selection menu, to change colors and brightness in FHEM.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -452,6 +460,7 @@
 		},
 		"IFrame":{
 			"NAME": "I Frame",
+			"DES": "A frame, to implement other web interfaces.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -476,6 +485,7 @@
 		},
 		"Icon":{
 			"NAME": "Icon",
+			"DES": "An icon, that can respond to different values in FHEM.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -525,6 +535,7 @@
 		},
 		"Image":{
 			"NAME": "Image",
+			"DES": "An image, that can display FHEM reading URL´s, external URL´s or images from the device.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -553,6 +564,7 @@
 		},
 		"Kodi":{
 			"NAME": "Kodi Remote",
+			"DES": "A remote control, for KODI devices.",
 			"INPUTS":{
 				"data_ip":{
 					"name": "IP",
@@ -574,6 +586,7 @@
 		},
 		"Label":{
 			"NAME": "Label",
+			"DES": "A label, that can display FHEM values or own text.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -630,6 +643,7 @@
 		},
 		"Line":{
 			"NAME": "Line",
+			"DES": "A line, that can be used to structure rooms.",
 			"INPUTS":{
 				"arr_data_orientation":{
 					"name": "Orientation",
@@ -655,6 +669,7 @@
 		},
 		"MediaList":{
 			"NAME": "Media List",
+			"DES": "A list from the FHEM MediaList module.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -687,6 +702,7 @@
 		},
 		"Pinpad":{
 			"NAME": "Pinpad",
+			"DES": "A pinpad, to switch alarm states.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -739,6 +755,7 @@
 		},
 		"Popup":{
 			"NAME": "Popup",
+			"DES": "A popup, that can be filled with other components.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -792,6 +809,7 @@
 		},
 		"Select":{
 			"NAME": "Select",
+			"DES": "A selection menu, that can hold FHEM or manual lists.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -829,6 +847,7 @@
 		},
 		"Slider":{
 			"NAME": "Slider",
+			"DES": "A linear slider, that can change numeric and time values.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -930,6 +949,7 @@
 		},
 		"Sprinkler":{
 			"NAME": "Sprinkler",
+			"DES": "A sprinkler module, that can trigger irregation cycles.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -1089,6 +1109,7 @@
 		},
 		"Swiper":{
 			"NAME": "Swiper",
+			"DES": "A swipable container, that can have different pages and can hold components.",
 			"INPUTS":{
 				"data_headline": {
 					"name": "Headline",
@@ -1126,6 +1147,7 @@
 		},
 		"Switch":{
 			"NAME": "Switch",
+			"DES": "A simple switch to toggle 2 different states in FHEM.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -1187,6 +1209,7 @@
 		},
 		"Thermostat":{
 			"NAME": "Thermostat",
+			"DES": "A thermostat, that can display and animate temperature values.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -1248,6 +1271,7 @@
 		},
 		"Time Picker":{
 			"NAME": "Time Picker",
+			"DES": "A menu, for time selection.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -1293,6 +1317,7 @@
 		},
 		"Weather":{
 			"NAME": "Weather",
+			"DES": "A component, to display the weather forecast from FHEM modules.",
 			"INPUTS":{
 				"data_device": {
 					"name": "Device name",
@@ -1597,12 +1622,26 @@
 				"TITLE": "Configure task"
 			},
 			"CHANGE_TASK": {
-				"TITLE": "Select task type",
-				"INFO": "Switch between different task types",
 				"MISSING":{
 					"TITLE": "Missing values",
 					"INFO": "There are missing Input values in the task definition. Please ensure, that all fields are filled."
 				}
+			},
+			"REMOVE_TASK":{
+				"TITLE": "Remove task",
+				"INFO": "Are you sure about removing this task?"
+			},
+			"ADD_OUTPUT":{
+				"TITLE": "Add Output",
+				"INFO": "Add Output Parameter"
+			},
+			"ADD_ELSE":{
+				"TITLE": "Add Else Block",
+				"INFO": "Add Else Condition"
+			},
+			"REMOVE_ELSE":{
+				"TITLE": "Remove Else Block",
+				"INFO": "Remove Else Condition"
 			}
 		},
 		"CREATE_ROOM":{
@@ -1624,21 +1663,27 @@
 		"CHANGE_ROOM":{
 			"TITLE": "Edit room:"
 		},
-		"CREATE_COMPONENT":{
-			"POPUP_HEADER": "Add component:",
-			"PAGE_1_INFO": "Select component:",
-			"PAGE_2_INFO": "Configure Fhem Device:",
-			"PAGE_3_INFO": "Configure Style:",
-			"PAGE_4_INFO": "Test configuration:",
-			"PAGE_4_STYLE_COMPONENT": "Style component:",
-			"PAGE_4_NOT_FOUND": "not found.",
-			"NO_COMPONENT_SELECTED": "Please select a component first."
+		"COMPONENT":{
+			"GENERAL":{
+				"CONFIG": "Configure component: ",
+				"SELECT": "Select a component:"
+			},
+			"CREATE":{
+				"SELECT": "Select a component to create:"
+			},
+			"EDIT":{
+				"PREVIEW": {
+					"TITLE": "Component preview",
+					"INFO": "Show/hide component preview"
+				},
+				"CONFIG_DATA": "Configure Component Attributes:",
+				"CONFIG_ICON": "Configure Component Icons:",
+				"CONFIG_STYLE": "Configure Component Style:",
+				"CONFIG_TEST": "Test Component Configuration:",
+				"NO_COMPONENT": "Please select a component first."
+			}
 		},
 		"EDIT_COMPONENT":{
-			"EDIT":{
-				"TITLE": "Settings of the device:",
-				"STYLE": "Style of the device:"
-			},
 			"MENU":{
 				"SETTINGS": "Settings",
 				"PIN": "Pin component",

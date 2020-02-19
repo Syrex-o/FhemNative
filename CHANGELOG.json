@@ -296,6 +296,28 @@
       			{"TYPE": "FIX", "CHANGE": "Swiper edit on mobile"},
       			{"TYPE": "DEL", "CHANGE": "Component Details Menu as side menu"}
       		]
-    	}
+    	},
+    	{
+      		"VERSION": "2.2.5",
+      		"DATE": "19.02.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Tasks support multiple outputs"},
+      			{"TYPE": "NEW", "CHANGE": "Tasks support else condition"},
+      			{"TYPE": "NEW", "CHANGE": "Tasks deletion Notification"},
+      			{"TYPE": "NEW", "CHANGE": "Tasks sound/vibration output"},
+      			{"TYPE": "NEW", "CHANGE": "New component creation menu"},
+      			{"TYPE": "NEW", "CHANGE": "New context menu"},
+      			{"TYPE": "NEW", "CHANGE": "New component configuraion test"},
+      			{"TYPE": "NEW", "CHANGE": "Component Test area in component edit menu"},
+      			{"TYPE": "NEW", "CHANGE": "New component demo in configuration"},
+      			{"TYPE": "FIX", "CHANGE": "Task time compare operators (> and <)"},
+      			{"TYPE": "FIX", "CHANGE": "Fixed Icon component"},
+      			{"TYPE": "FIX", "CHANGE": "Task time setter"},
+      			{"TYPE": "FIX", "CHANGE": "Swiper Pager show/hide"},
+      			{"TYPE": "FIX", "CHANGE": "Device in component details"},
+      			{"TYPE": "FIX", "CHANGE": "Copy/Paste components from one room to another --> resize error"},
+      			{"TYPE": "DEL", "CHANGE": "Fhem Notify Editor from tasks"}
+      		]
+    	},
 	]
 }
