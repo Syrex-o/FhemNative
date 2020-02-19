@@ -8,6 +8,7 @@ import { SelectComponentService } from '../services/select-component.service';
 import { HelperService } from '../services/helper.service';
 import { ShortcutService } from '../services/shortcut.service';
 import { StructureService } from '../services/structure.service';
+import { SettingsService } from '../services/settings.service';
 
 @Directive({ selector: '[double-click]' })
 export class ClickerDirective implements OnInit, OnDestroy{
@@ -51,7 +52,8 @@ export class ClickerDirective implements OnInit, OnDestroy{
 		private ref: ElementRef,
 		private helper: HelperService,
 		private shortcuts: ShortcutService,
-		private structure: StructureService) {
+		private structure: StructureService,
+		private settings: SettingsService) {
 	}
 
 	ngOnInit(){
@@ -65,7 +67,7 @@ export class ClickerDirective implements OnInit, OnDestroy{
 		// select dedicated component or group
 		this.selectComponent.buildCopySelector(this.ref.nativeElement.id, false, this.helper.find(this.createComponent.containerComponents, 'ID', this.ref.nativeElement.id).item.container);
 
-		this.createComponent.createSingleComponent('EditComponentComponent', this.createComponent.currentRoomContainer, {
+		this.createComponent.createSingleComponent('ContextMenuComponent', this.createComponent.currentRoomContainer, {
 			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
 			source: this.source,
@@ -80,7 +82,7 @@ export class ClickerDirective implements OnInit, OnDestroy{
   	@HostListener('mousedown', ['$event'])
   	@HostListener('touchstart', ['$event'])
 	onMouseDown(e) {
-		if (this.editingEnabled && e.target.className.match(/grid|overlay-move/)) {
+		if (this.editingEnabled && !this.settings.modes.componentTest && e.target.className.match(/grid|overlay-move/)) {
 			if(e.target.className.match(/grid/)){
 				// remove all selections
 				this.selectComponent.removeContainerCopySelector(false, true);

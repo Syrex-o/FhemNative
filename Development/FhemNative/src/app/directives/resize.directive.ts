@@ -72,7 +72,7 @@ export class Resize implements OnChanges, AfterViewInit {
 	@HostListener('mousedown', ['$event', '$event.target'])
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
-		if (this.editingEnabled) {
+		if (this.editingEnabled && !this.settings.modes.componentTest) {
 			// block scroll only for movements of components
 			if(target && target.className && target.className.match(/(rect|overlay-move)/)){
 				window.ontouchmove = event.preventDefault();
@@ -145,7 +145,7 @@ export class Resize implements OnChanges, AfterViewInit {
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		if (this.editingEnabled) {
+		if (this.editingEnabled && !this.settings.modes.componentTest) {
 			this.buildResizeRect();
 			setTimeout(()=>{
 				let comp = this.structure.getComponent(this.hostEl.id);
@@ -163,52 +163,54 @@ export class Resize implements OnChanges, AfterViewInit {
 		// resize component if needed
 		if (this.settings.app.responsiveResize) {
 			const component = this.structure.getComponent(this.hostEl.id);
-			const position = component.position;
-			let scaler;
-			if (component.createScaler) {
-				scaler = component.createScaler;
-			} else {
-				// backward compatibility for components without createScaler
-				scaler = {width: window.innerWidth, height: window.innerHeight};
-				component.createScaler = scaler;
-				this.structure.saveRooms();
-			}
-			if (window.innerWidth !== scaler.width || window.innerHeight !== scaler.height) {
-				const width = parseInt(position.width);
-				const left = parseInt(position.left ? position.left : 0);
+			if(component){
+				const position = component.position;
+				let scaler;
+				if (component.createScaler) {
+					scaler = component.createScaler;
+				} else {
+					// backward compatibility for components without createScaler
+					scaler = {width: window.innerWidth, height: window.innerHeight};
+					component.createScaler = scaler;
+					this.structure.saveRooms();
+				}
+				if (window.innerWidth !== scaler.width || window.innerHeight !== scaler.height) {
+					const width = parseInt(position.width);
+					const left = parseInt(position.left ? position.left : 0);
 
-				let w = Math.round(this.roundToGrid(width / scaler.width * window.innerWidth));
-				const l = Math.round(this.roundToGrid(left / scaler.width * window.innerWidth));
+					let w = Math.round(this.roundToGrid(width / scaler.width * window.innerWidth));
+					const l = Math.round(this.roundToGrid(left / scaler.width * window.innerWidth));
 
-  				// check, that components are not smaller that allowed
-  				w = w >= this.minimumWidth ? w : this.minimumWidth;
+	  				// check, that components are not smaller that allowed
+	  				w = w >= this.minimumWidth ? w : this.minimumWidth;
 
-  				// adding transition style: like in popup
-  				this.hostEl.style.transition = 'all .3s cubic-bezier(.17,.67,.54,1.3)';
+	  				// adding transition style: like in popup
+	  				this.hostEl.style.transition = 'all .3s cubic-bezier(.17,.67,.54,1.3)';
 
-  				this.hostEl.style.width = w + 'px';
-  				this.hostEl.style.left = l + 'px';
+	  				this.hostEl.style.width = w + 'px';
+	  				this.hostEl.style.left = l + 'px';
 
-  				// removing transition style
-  				const timeout = setTimeout(() => {
-  					this.hostEl.style.transition = 'all 0ms linear';
-  				}, 300);
+	  				// removing transition style
+	  				const timeout = setTimeout(() => {
+	  					this.hostEl.style.transition = 'all 0ms linear';
+	  				}, 300);
 
-  				// save options
-  				component.createScaler = {width: window.innerWidth, height: window.innerHeight};
-				this.structure.saveItemPosition({
-					item: component.position,
-					dimensions: {
-						width: w,
-						left: l
-					},
-				}, true);
-				this.onResize.emit({
-					width: w, 
-					height: parseInt(this.hostEl.style.height),
-					left: l,
-					top: parseInt(this.hostEl.style.top)
-				});
+	  				// save options
+	  				component.createScaler = {width: window.innerWidth, height: window.innerHeight};
+					this.structure.saveItemPosition({
+						item: component.position,
+						dimensions: {
+							width: w,
+							left: l
+						},
+					}, true);
+					this.onResize.emit({
+						width: w, 
+						height: parseInt(this.hostEl.style.height),
+						left: l,
+						top: parseInt(this.hostEl.style.top)
+					});
+				}
 			}
 		}
 	}
