@@ -34,7 +34,7 @@ import { HelperService } from '../../services/helper.service';
 					<ion-slides
 						[options]="sliderOpts"
 						(ionSlideDidChange)="getSliderIndex()"
-						pager="bool_data_showPager"
+						[pager]="bool_data_showPager"
 						#slides [ngStyle]="{'background-color': style_backgroundColor, 'height': (data_headline && data_headline !== '') ? 'calc(100% - 35px)' : '100%'}">
 				      	<ion-slide *ngFor="let page of pages" [attr.id]="'swiper_'+page.ID+'_'+ID">
 				      		<ng-container #container></ng-container>
