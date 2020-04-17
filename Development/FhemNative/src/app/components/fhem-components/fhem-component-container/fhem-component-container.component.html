@@ -1,0 +1,82 @@
+<div 
+	class="fhem-component-container"
+	resize
+	clicker
+	[source]="'component'"
+	[editingEnabled]="editable"
+	[minimumWidth]="minimumWidth"
+	[minimumHeight]="minimumHeight"
+	id="{{specs.ID}}"
+	[ngStyle]="{
+		'width': position?.width, 
+		'height': position?.height, 
+		'top': position?.top, 
+		'left': position?.left,
+		'z-index': position?.zIndex,
+		'transform': specs.ID === 'TEST_COMPONENT' ? 'translate(-50%, -50%)' : 'translate(0, 0)'
+	}">
+	<ng-template [ngIf]="(task.hideList.components.indexOf(specs.ID)) > -1" [ngIfElse]="AVAILABLE_CONTAINER">
+		<!-- Hide Component -->
+	</ng-template>
+
+	<ng-template #AVAILABLE_CONTAINER>
+		<ng-template [ngIf]="specs.available" [ngIfElse]="CONNECTED_CONTAINER">
+			<!-- Template to render fhem device if device and reading are present -->
+			<ng-container *ngIf="deviceState.connected && deviceState.devicePresent && deviceState.readingPresent; else CONNECTED_CONTAINER">
+				<ng-container *ngTemplateOutlet="RENDER_CONTAINER"></ng-container>
+			</ng-container>
+		</ng-template>
+	</ng-template>
+
+	<ng-template #CONNECTED_CONTAINER>
+		<!-- Fallback to fhem connection for Components where only a fhem connection is needed (define by specs.connected) -->
+		<ng-template [ngIf]="specs.connected" [ngIfElse]="OFFLINE_CONTAINER">
+			<ng-container *ngIf="deviceState.connected; else OFFLINE_CONTAINER">
+				<ng-container *ngTemplateOutlet="RENDER_CONTAINER"></ng-container>
+			</ng-container>
+		</ng-template>
+	</ng-template>
+
+	<ng-template #OFFLINE_CONTAINER>
+		<!-- Fallback to offline for Components noconnection is needed (define by specs.offline) -->
+
+		<ng-template [ngIf]="specs.offline" [ngIfElse]="LOADING">
+			<ng-container *ngTemplateOutlet="RENDER_CONTAINER"></ng-container>
+		</ng-template>
+	</ng-template>
+
+	<ng-template #LOADING>
+		<ng-template [ngIf]="!deviceState.testDone" [ngIfElse]="UNAVAILABLE">
+			<div class="unavailable">
+				<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+			</div>
+		</ng-template>
+	</ng-template>
+
+	<ng-template #UNAVAILABLE>
+		<div class="unavailable">
+			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="error"
+				*ngIf="!deviceState.connected">
+					{{ 'GENERAL.ERRORS.CONNECTION.NO_CONNECTION' | translate }}
+					{{ 'GENERAL.ERRORS.CONNECTION.CONNECTION_HELPER' | translate }}
+			</p>
+			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="error"
+				*ngIf="deviceState.connected &&
+				!deviceState.devicePresent">
+					{{ 'GENERAL.ERRORS.NOT_FOUND.DEVICE_NOT_FOUND' | translate }}
+					{{ 'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate }}
+			</p>
+			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="error"
+				*ngIf="deviceState.connected &&
+				deviceState.devicePresent &&
+				!deviceState.readingPresent">
+					{{ 'GENERAL.ERRORS.NOT_FOUND.READING_NOT_FOUND' | translate }}
+					{{ 'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate }}
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #RENDER_CONTAINER>
+		<ng-content></ng-content>
+	</ng-template>
+</div>
