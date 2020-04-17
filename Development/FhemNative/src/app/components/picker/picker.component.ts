@@ -1,159 +1,117 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
+// Services
 import { SettingsService } from '../../services/settings.service';
-import { BackButtonService } from '../../services/backButton.service';
+import { BackButtonService } from '../../services/back-button.service';
 
-// Translator
-import { TranslateService } from '@ngx-translate/core';
+// Animation
+import { PopupPicker } from '../../animations/animations';
+import { PickerContent } from '../../animations/animations';
 
 @Component({
 	selector: 'picker',
-	template: `
-		<div class="picker {{location}} {{settings.app.theme}}" *ngIf="show" [ngClass]="animate ? 'show' : 'hide'">
-				<button class="picker-bg" (click)="closePicker(false)"></button>
-				<div class="picker-inner" [ngStyle]="{'height': height, 'width': width}">
-					<div class="picker-header">
-							<button matRipple [matRippleColor]="'#d4d4d480'" *ngIf="showConfirmBtn" class="confirm btn" (click)="confirm()">{{confirmBtn}}</button>
-							<button matRipple [matRippleColor]="'#d4d4d480'" *ngIf="showCancelBtn" class="cancel btn" (click)="closePicker(true)">{{cancelBtn}}</button>
-					</div>
-					<div class="picker-content">
-							<ng-content></ng-content>
-					</div>
-				</div>
-		</div>
-	`,
-	styles: [`
-		.picker{
-			width: 100%;
-			height: 100%;
-			position: fixed;
-			overflow: hidden;
-			top: 0;
-			left: 0;
-			z-index: 20005;
-		}
-		button:focus{
-			outline: 0px;
-		}
-		.picker-bg{
-			width: 100%;
-			height: 100%;
-			background: rgba(0,0,0,0.2);
-			will-change: opacity;
-			opacity: 0;
-			transition: all .2s ease-out;
-		}
-		.picker.show .picker-bg{
-			opacity: 1;
-		}
-		.picker-inner{
-			position: absolute;
-			will-change: transform;
-			background: #fff;
-			transition: all .2s ease-out;
-		}
-		.picker.top .picker-inner{
-			top: 0;
-			transform: translate3d(0,-100%,0);
-		}
-		.picker.bottom .picker-inner{
-			bottom: 0;
-			transform: translate3d(0,100%,0);
-		}
-		.picker.bottom.show .picker-inner,
-		.picker.top.show .picker-inner{
-			transform: translate3d(0,0%,0);
-		}
-		.picker-header{
-			width: 100%;
-			height: 35px;
-			padding-right: 8px;
-		}
-		.btn{
-			min-width: 50px;
-			height: 100%;
-			font-size: 16px;
-			font-weight: 500;
-			background: transparent;
-			color: #14a9d5;
-			float: right;
-		}
-		.picker-content{
-			position: absolute;
-			width: 100%;
-			height: calc(100% - 45px);
-			bottom: 0;
-			overflow-y: auto;
-		}
-		.dark .picker-inner{
-			background: var(--dark-bg);
-		}
-	`],
-	providers: [{provide: NG_VALUE_ACCESSOR, useExisting: PickerComponent, multi: true}]
+	templateUrl: './picker.component.html',
+  	styleUrls: ['./picker.component.scss'],
+  	animations: [ PopupPicker, PickerContent ],
+  	providers: [{provide: NG_VALUE_ACCESSOR, useExisting: PickerComponent, multi: true}]
 })
 
-export class PickerComponent implements ControlValueAccessor {
-		public show = false;
-		public animate = false;
+export class PickerComponent {
+	// params for picker
+	@Input() height: string|number = 50;
+	// Input for custom z-index
+	@Input() zIndex: number = 101;
 
-		@Input() width = '100%';
-		@Input() height = '250px';
+	// Picker Config
+	// Backdrop
+	@Input() backdropDismiss: boolean = true;
 
-		@Input() confirmBtn: string;
-		@Input() showConfirmBtn = true;
-		@Input() cancelBtn: string;
-		@Input() showCancelBtn = true;
+	// Conform Button
+	@Input() showConfirmBtn: boolean = true;
+	@Input() confirmButtonDismiss: boolean = true;
+	@Input() confirmBtn: string;
 
-		@Input() priority = 2;
+	// Cancel Button
+	@Input() showCancelBtn: boolean = true;
+	@Input() cancelButtonDismiss: boolean = true;
+	@Input() cancelBtn: string;
 
-		@Output() onOpen: EventEmitter<any> = new EventEmitter();
-		@Output() onClose: EventEmitter<any> = new EventEmitter();
-		@Output() onConfirm: EventEmitter<any> = new EventEmitter();
-		@Output() onCancel: EventEmitter<any> = new EventEmitter();
+	// choose animation style of the popup
+	// (from-top, from-bottom)
+	@Input() animation: string = 'from-bottom';
 
-		@Input() location = 'bottom';
+	// Events
+	@Output() onOpen = new EventEmitter();
+    @Output() onClose = new EventEmitter();
+    @Output() onConfirm = new EventEmitter();
+    @Output() onCancel = new EventEmitter();
 
-		onTouched: () => void = () => {};
-		onChange: (_: any) => void = (_: any) => {};
-		updateChanges() {this.onChange(this.show); }
-		registerOnChange(fn: any): void {this.onChange = fn; }
-		registerOnTouched(fn: any): void {this.onTouched = fn; }
+	// Value handler
+	showPicker: boolean = false;
 
-		writeValue(value) {
-			this.show = value;
-			if (value) {
-				this.onOpen.emit();
-				this.backBtn.handle(this.priority).then(() => {
-					this.closePicker(false);
-				});
-				this.updateChanges();
-				setTimeout(() => {this.animate = true; });
-			}
+	onTouched: () => void = () => {};
+	onChange: (_: any) => void = (_: any) => {};
+	updateChanges() {this.onChange(this.showPicker); }
+	registerOnChange(fn: any): void {this.onChange = fn; }
+	registerOnTouched(fn: any): void {this.onTouched = fn; }
+
+	// Back button handle ID
+	private handleID: string = '_' + Math.random().toString(36).substr(2, 9);
+
+	writeValue(value) {
+		const previousState = this.showPicker;
+		this.showPicker = value;
+		if (value) {
+			this.onOpen.emit();
+			this.updateChanges();
+			this.assignBackHandle();
+
 		}
-
-		constructor(
-			public settings: SettingsService,
-			private backBtn: BackButtonService,
-			private translate: TranslateService) {
-			this.confirmBtn = this.confirmBtn ? this.confirmBtn : this.translate.instant('GENERAL.BUTTONS.CONFIRM');
-			this.cancelBtn = this.cancelBtn ? this.cancelBtn : this.translate.instant('GENERAL.BUTTONS.CANCEL');
+		// change in model
+		if(previousState && !this.showPicker){
+			this.closePicker(this.backdropDismiss || this.cancelButtonDismiss);
 		}
+  	}
 
-		public closePicker(emit) {
-			this.animate = false;
-			this.backBtn.removeHandle(this.priority);
-			if (emit) { this.onCancel.emit(); }
-			setTimeout(() => {
-					this.show = false;
-					this.updateChanges();
-					this.onClose.emit();
-			}, 200);
+  	ngOnChanges(changes: SimpleChanges){
+		// check for changes in dismiss properties
+		if(this.showPicker && (changes.backdropDismiss || changes.cancelButtonDismiss)){
+			this.assignBackHandle();
 		}
+	}
 
-		public confirm() {
-			this.onConfirm.emit();
-			this.closePicker(false);
+	private assignBackHandle(){
+		// handle back Button
+		this.backBtn.removeHandle(this.handleID);
+		// only when backdrop or close is enabled
+		if(this.backdropDismiss || this.cancelButtonDismiss){
+			this.backBtn.handle(this.handleID, ()=>{
+				this.closePicker(true);
+			});
 		}
+	}
+
+  	closePicker(allowed){
+  		if(allowed){
+  			this.showPicker = false;
+  			this.updateChanges();
+  			this.onClose.emit();
+  			this.backBtn.removeHandle(this.handleID);
+  		}
+  	}
+
+  	confirm(){
+  		this.onConfirm.emit();
+  		this.closePicker(this.confirmButtonDismiss);
+  	}
+
+  	cancel(){
+  		this.onCancel.emit();
+  		this.closePicker(this.cancelButtonDismiss);
+  	}
+
+  	constructor(
+  		public settings: SettingsService,
+  		private backBtn: BackButtonService){}
 }
