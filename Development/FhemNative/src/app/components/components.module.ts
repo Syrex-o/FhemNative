@@ -1,46 +1,41 @@
-import { CommonModule } from '@angular/common';
-import { MatRippleModule } from '@angular/material/core';
-import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+// Http Requests
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { NgSelectModule } from '@ng-select/ng-select';
+// Angular Material
+import { MatRippleModule } from '@angular/material/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
+// Ionic
+import { IonicModule } from '@ionic/angular';
 // FontAwesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
-// Components
-import { RoomComponent } from './room/room.component';
-import { SettingsRoomComponent } from './room/room-settings.component';
-import { TasksRoomComponent } from './tasks/room-tasks.component';
-
-import { GridComponent } from './grid/grid.component';
-import { SelectRectangleComponent } from './grid/select-rectangle.component';
-import { PickerComponent } from './picker/picker.component';
-import { FhemMenuComponent } from './menu/fhem-menu.component';
-import { ButtonContainerComponent } from './menu/button-container.component';
-import { DraggableMenuComponent } from './menu/draggable-menu.component';
-import { ContextMenuComponent } from './menu/context-menu.component';
-import { CreateEditComponentComponent } from './create/create-edit-component.component';
-import { CreateRoomComponent } from './create/create-room.component';
-import { FhemContainerComponent } from './fhem-container/fhem-container.component';
-
-// Fhem Components
-import { FHEM_COMPONENT_REGISTRY } from './fhem-components-registry';
 
 // Directives
 import { DirectivesModule } from '../directives/directives.module';
 
+// Components
+import { MenuButtonContainerComponent } from './menu-button-container/menu-button-container.component';
+import { FhemComponentContainerComponent } from './fhem-components/fhem-component-container/fhem-component-container.component';
+import { RoomComponent } from './room/room.component';
+import { PopupComponent } from './popup/popup.component';
+import { PickerComponent } from './picker/picker.component';
+import { SwitchComponent } from './switch/switch.component';
+import { SelectComponent } from './select/select.component';
+import { FhemMenuComponent } from './fhem-menu/fhem-menu.component';
+import { TimepickerComponent } from './timepicker/timepicker.component';
+import { IconComponent } from './icon/icon.component';
+
 // Services
-import { CreateComponentService } from '../services/create-component.service';
+import { ComponentLoaderService } from '../services/component-loader.service';
 import { SelectComponentService } from '../services/select-component.service';
-import { ShortcutService } from '../services/shortcut.service';
+
+// Translate
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -48,14 +43,9 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
 	imports: [
-		RouterModule,
-		CommonModule,
 		IonicModule,
-		FormsModule,
-		MatRippleModule,
+		RouterModule,
 		DirectivesModule,
-		NgSelectModule,
-		DragDropModule,
 		HttpClientModule,
 		FontAwesomeModule,
 		TranslateModule.forRoot({
@@ -64,52 +54,43 @@ export function createTranslateLoader(http: HttpClient) {
                 useFactory: (createTranslateLoader),
                 deps: [HttpClient]
             }
-        })
+        }),
+        FormsModule,
+        DragDropModule,
+        MatRippleModule
 	],
 	declarations: [
+		MenuButtonContainerComponent,
+		FhemComponentContainerComponent,
 		RoomComponent,
-		SettingsRoomComponent,
-		TasksRoomComponent,
-		GridComponent,
-		SelectRectangleComponent,
-		CreateEditComponentComponent,
-		CreateRoomComponent,
+		PopupComponent,
 		FhemMenuComponent,
-		ButtonContainerComponent,
-		DraggableMenuComponent,
-		ContextMenuComponent,
 		PickerComponent,
-		FhemContainerComponent,
-		FHEM_COMPONENT_REGISTRY
+		SwitchComponent,
+		SelectComponent,
+		TimepickerComponent,
+		IconComponent
 	],
 	providers:[
-		CreateComponentService,
-		SelectComponentService,
-		ShortcutService
+		ComponentLoaderService,
+		SelectComponentService
 	],
 	exports: [
-		RoomComponent,
-		PickerComponent,
-		SettingsRoomComponent,
-		TasksRoomComponent,
+		MenuButtonContainerComponent,
+		FhemComponentContainerComponent,
+		SwitchComponent,
+		SelectComponent,
+		PopupComponent,
 		FhemMenuComponent,
-		ButtonContainerComponent,
-		DraggableMenuComponent,
+		TimepickerComponent,
+		IconComponent,
+		DirectivesModule,
 		TranslateModule,
-		NgSelectModule,
+		DragDropModule,
 		MatRippleModule,
 		FontAwesomeModule,
-		FHEM_COMPONENT_REGISTRY
-	],
-	entryComponents: [
-		RoomComponent,
-		SettingsRoomComponent,
-		TasksRoomComponent,
-		GridComponent,
-		SelectRectangleComponent,
-		CreateEditComponentComponent,
-		ContextMenuComponent,
-		FHEM_COMPONENT_REGISTRY
+		FormsModule,
+		PickerComponent
 	]
 })
 export class ComponentsModule {}

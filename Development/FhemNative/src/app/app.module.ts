@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -11,81 +10,81 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-// Plugins
+// Ionic Plugins
+import { IonicStorageModule } from '@ionic/storage';
+
+// Other Plugins
 import { ToastrModule } from 'ngx-toastr';
-import { File } from '@ionic-native/file/ngx';
-import { Vibration } from '@ionic-native/vibration/ngx';
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { Chooser } from '@ionic-native/chooser/ngx';
-
-// Directives
-import { DirectivesModule } from './directives/directives.module';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { HotkeyModule } from 'angular2-hotkeys';
 // Components
 import { ComponentsModule } from './components/components.module';
 
-// Ionic and Electron Storage
-import { IonicStorageModule } from '@ionic/storage';
-
 // Services
 import { FhemService } from './services/fhem.service';
-import { StructureService } from './services/structure.service';
-import { StorageService } from './services/storage.service';
 import { SettingsService } from './services/settings.service';
+import { StorageService } from './services/storage.service';
+import { StructureService } from './services/structure.service';
+import { TaskService } from './services/task.service';
 import { ToastService } from './services/toast.service';
-import { BackButtonService } from './services/backButton.service';
-import { TimeService } from './services/time.service';
+import { VersionService } from './services/version.service';
 import { UndoRedoService } from './services/undo-redo.service';
-import { TasksService } from './services/tasks.service';
+import { BackButtonService } from './services/back-button.service';
+import { HotKeyService } from './services/hotkey.service';
+import { TimeService } from './services/time.service';
+import { ElectronService } from './services/electron.service';
+import { FileManagerService } from './services/file-manager.service';
 import { NativeFunctionsService } from './services/native-functions.service';
+
 // Logger
 import { LoggerModule } from './services/logger/logger.module';
 
+// Plugins
+import { File } from '@ionic-native/file/ngx';
+import { Chooser } from '@ionic-native/chooser/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
 @NgModule({
-	declarations: [
-		AppComponent
-	],
-	imports: [
-		BrowserModule,
-		FormsModule,
-		ComponentsModule,
-		BrowserAnimationsModule,
-		ToastrModule.forRoot(),
-		IonicModule.forRoot(),
-		IonicStorageModule.forRoot(),
-		AppRoutingModule,
-		// Directives
-		DirectivesModule,
-		DragDropModule,
-		// Logger
+  	declarations: [AppComponent],
+  	imports: [
+      	BrowserModule,
+      	BrowserAnimationsModule,
+      	ToastrModule.forRoot(),
+      	IonicModule.forRoot(),
+      	IonicStorageModule.forRoot(),
+      	HotkeyModule.forRoot(),
+      	AppRoutingModule,
+      	ComponentsModule,
+      	// FhemNative Logger
 		LoggerModule
-	],
-	providers: [
-		StatusBar,
-		SplashScreen,
-		FhemService,
-		StructureService,
-		StorageService,
-		SettingsService,
-		ToastService,
-		BackButtonService,
-		TimeService,
-		UndoRedoService,
-		File,
-		Vibration,
-		NativeAudio,
-		ImagePicker,
-		WebView,
-		SocialSharing,
-		Chooser,
-		TasksService,
-		NativeFunctionsService,
-		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-	],
-	bootstrap: [AppComponent]
+  	],
+  	providers: [
+    	StatusBar,
+    	SplashScreen,
+    	{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    	// FhemNative Services
+    	FhemService,
+    	SettingsService,
+    	StorageService,
+    	StructureService,
+    	TaskService,
+    	ToastService,
+    	VersionService,
+    	UndoRedoService,
+    	BackButtonService,
+    	HotKeyService,
+    	TimeService,
+      ElectronService,
+      FileManagerService,
+      NativeFunctionsService,
+    	// Plugins
+    	File,
+      Chooser,
+    	Vibration,
+    	NativeAudio,
+    	SocialSharing
+  	],
+  	bootstrap: [AppComponent]
 })
 export class AppModule {}

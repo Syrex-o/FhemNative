@@ -1,107 +1,48 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy, HostListener, Input } from '@angular/core';
+import { Component, NgModule, ViewChild, ElementRef, OnInit, OnDestroy, HostListener, Input } from '@angular/core';
 
-import { takeUntil } from 'rxjs/operators';
-import { Observable, Subject, Subscription } from 'rxjs';
+// Components
+import { ComponentsModule } from '../components.module';
 
+// Services
 import { SettingsService } from '../../services/settings.service';
-import { CreateComponentService } from '../../services/create-component.service';
+import { StructureService } from '../../services/structure.service';
+import { ComponentLoaderService } from '../../services/component-loader.service';
 import { SelectComponentService } from '../../services/select-component.service';
-import { ShortcutService } from '../../services/shortcut.service';
+import { HotKeyService } from '../../services/hotkey.service';
 import { UndoRedoService } from '../../services/undo-redo.service';
 
 @Component({
-	selector: 'grid',
-	template: `
-		<div
-			class="grid"
-			double-click
-			[editingEnabled]="settings.modes.roomEdit"
-			[source]="'grid'"
-			(onDoubleClick)="loadContextMenu($event)"
-			(onRightClick)="loadContextMenu($event)">
-			<span *ngFor="let w of gridW; let i = index;" class="grid-line w" [ngStyle]="{'left.px': w, 'height.px': gridHeight}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
-			<span *ngFor="let h of gridH; let i = index;" class="grid-line h" [ngStyle]="{'top.px': h}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
-		</div>
-	`,
-	styles: [`
-		.grid{
-			min-height: 100%;
-			width: 100%;
-			position: absolute;
-			left: 0;
-			top: 0;
-		}
-		.grid-line{
-		    position: absolute;
-		    background: #ddd;
-		    opacity: 0.2;
-		}
-		.grid-line.w{
-		    width: 1px;
-		    height: 100%;
-		}
-		.grid-line.h{
-		    width: 100%;
-		    height: 1px;
-		    left: 0;
-		}
-		.grid-line.w.bold{
-		    width: 2px;
-		    transform: translateX(-1px);
-		}
-		.grid-line.h.bold{
-		    height: 2px;
-		    transform: translateY(-1px);
-		}
-	`]
+  	selector: 'grid',
+  	templateUrl: './grid.component.html',
+  	styleUrls: ['./grid.component.scss']
 })
+export default class GridComponent implements OnInit, OnDestroy {
+	// input of the container, where grid is created
+	@Input() container: any;
 
-export class GridComponent implements OnInit, OnDestroy {
-	private killShortcuts = new Subject<void>();
+	// grid properties
+	gridW: Array<number>;
+  	gridH: Array<number>;
+  	// Grid Height
+  	gridHeight = 0;
 
-	private shortCuts: any = {};
-
-	// listen to editing
-	private editSub: Subscription;
-
+	// shift press
 	private shiftPress: boolean = false;
 
-	constructor(
-		public settings: SettingsService,
-		private createComponent: CreateComponentService,
+  	constructor(
+		private settings: SettingsService,
+		private structure: StructureService,
+		private componentLoader: ComponentLoaderService,
 		private selectComponent: SelectComponentService,
-		private shortcuts: ShortcutService,
+		private hotKey: HotKeyService,
 		private undoManager: UndoRedoService) {
 	}
 
-	static key = 'GridComponent';
-	@Input() container;
-
-	private Grid: ElementRef;
-	// Grid Elements
-	public gridW: Array<any>;
-  	public gridH: Array<any>;
-  	// Grid Height
-  	public gridHeight = 0;
-  	public gridHeightPopup = 0;
-
-  	// parent container
-  	// used for width and height
-  	private parent: any;
-
-	private scrollL = this.scroll.bind(this);
-
-	@HostListener('window:resize', ['$event'])
-	onResize(e) {
-		this.buildGrid();
-	}
-
-	// rectangle press creation
 	@HostListener('touchstart', ['$event'])
 	@HostListener('mousedown', ['$event'])
 	onMouseDown(e) {
 		if(this.shiftPress){
-			this.createComponent.createSingleComponent('SelectRectangleComponent', this.container, {
+			this.componentLoader.createSingleComponent('SelectRectangleComponent', this.componentLoader.containerStack[0].container, {
 				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 				y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
 				container: this.container
@@ -109,39 +50,34 @@ export class GridComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	private scroll(e) {
-		if (e) {
-			if (e.target.scrollHeight !== this.gridHeight) {
-				this.buildGrid();
-			}
-		}
+	// remove selection rect
+	private removeSelectRect(){
+		this.componentLoader.removeDynamicComponent('SelectRectangleComponent');
 	}
 
 	ngOnInit() {
+		// initially build grid
 		this.buildGrid();
-		// scroll listener
-		setTimeout(() => {
-			document.getElementById(this.container.element.nativeElement.parentNode.id).addEventListener('scroll', this.scrollL);
-		}, 0);
-
-		// add shortcuts
-		this.buildShortcuts();
-		// listen to mode changes
-		this.editSub = this.settings.modeSub.subscribe(next =>{
-			if(next.hasOwnProperty('showComponentConfig')){
-				if(next.showComponentConfig){
-					this.removeShortcuts();
-				}else{
-					this.buildShortcuts();
-				}
-			}
+		// subscribe to component resize and move changes
+		this.selectComponent.addHandle('ALL_GRID', 'move', (dimensions)=>{
+			this.buildGrid();
 		});
-	}
+		this.selectComponent.addHandle('ALL_GRID', 'resize', (dimensions)=>{
+			this.buildGrid();
+		});
 
-	private buildShortcuts(){
-		this.removeShortcuts();
-		// select/deselect all
-		this.shortCuts['controlA'] = this.shortcuts.addShortcut({ keys: 'Control.a' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		// build shift shortcut
+		this.hotKey.add('GRIDdown' , 'shift', (ID: string)=>{
+			this.shiftPress = true;
+		}, 'keydown');
+		this.hotKey.add('GRIDup', 'shift', (ID: string)=>{
+			this.shiftPress = false;
+			this.removeSelectRect();
+		}, 'keyup');
+
+		// create shortcuts
+		// select all
+		this.hotKey.add('GRID_CONTROL_A', 'mod+a', (ID: string)=>{
 			if(!this.selectComponent.evalCopySelectorAll(this.container)){
 				// not all components selected
 				this.selectComponent.buildCopySelectorAll(this.container);
@@ -149,58 +85,49 @@ export class GridComponent implements OnInit, OnDestroy {
 				// all components are selected
 				this.selectComponent.removeContainerCopySelector(this.container, true);
 			}
-			this.selectComponent.buildCopySelectorAll
 		});
 		// copy selection
-		this.shortCuts['controlC'] = this.shortcuts.addShortcut({ keys: 'Control.c' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.hotKey.add('GRID_CONTROL_C', 'mod+c', (ID: string)=>{
 			if(this.selectComponent.selectorList.length > 0){
-				this.selectComponent.copyComponent(false, this.container);
+				this.selectComponent.copyComponent('', this.container);
 			}
-		});
+		}, 'keydown');
 		// paste selection
-		this.shortCuts['controlV'] = this.shortcuts.addShortcut({ keys: 'Control.v' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.hotKey.add('GRID_CONTROL_V', 'mod+v', (ID: string)=>{
 			if(this.selectComponent.copyList.length > 0){
 				this.selectComponent.pasteComponent(this.container);
 				// save config
 				this.saveComp();
 				this.selectComponent.removeContainerCopySelector(this.container, true);
 			}
-		});
+		}, 'keydown');
 		// delete selection
-		this.shortCuts['controlD'] = this.shortcuts.addShortcut({ keys: 'Control.d' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.hotKey.add('GRID_CONTROL_D', 'mod+d', (ID: string)=>{
 			if(this.selectComponent.selectorList.length > 0){
-				this.selectComponent.removeComponent(false, this.container);
+				this.selectComponent.removeComponent('');
 				// save config
 				this.saveComp();
 			}
-		});
+		}, 'keydown');
 		// undo 
-		this.shortCuts['controlZ'] = this.shortcuts.addShortcut({ keys: 'Control.z' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		this.hotKey.add('GRID_CONTROL_Z', 'mod+z', (ID: string)=>{
 			this.undoManager.undoChange();
-		});
-		// redo 
-		this.shortCuts['controlY'] = this.shortcuts.addShortcut({ keys: 'Control.y' }, false).pipe(takeUntil(this.killShortcuts)).subscribe(()=>{
+		}, 'keydown');
+		// redo
+		this.hotKey.add('GRID_CONTROL_Y', 'mod+y', (ID: string)=>{
 			this.undoManager.redoChange();
-		});
-		// select rectangle
-		this.shortCuts['shift'] = this.shortcuts.addShortcut({ keys: 'Shift' }, true).pipe(takeUntil(this.killShortcuts)).subscribe((e: Event)=>{
-			this.shiftPress = e.type === 'keydown' ? true : false;
-			if(!this.shiftPress){
-				this.createComponent.removeSingleComponent('SelectRectangleComponent', this.container);
-			}
-		});
+		}, 'keydown');
 	}
 
-	// remove shortcuts
-	private removeShortcuts(){
-		for(const key of Object.keys(this.shortCuts)){
-			this.shortCuts[key].unsubscribe();
-		}
+	// deselect all components
+	deselectComponents(){
+		this.selectComponent.removeContainerCopySelector(this.componentLoader.currentContainer, true);
 	}
 
-	// load context menu
-	public loadContextMenu(e) {
-		this.createComponent.createSingleComponent('ContextMenuComponent', this.createComponent.currentRoomContainer, {
+	// create context menu
+	createContextMenu(e){
+		// component is created in room --> base level container in stack
+		this.componentLoader.createSingleComponent('ContextMenuComponent', this.componentLoader.containerStack[0].container, {
 			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
 			source: 'grid',
@@ -208,56 +135,50 @@ export class GridComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	// remove context menu
-	private removeContextMenu(){
-		this.createComponent.removeSingleComponent('ContextMenuComponent', this.createComponent.currentRoomContainer);
-	}
-
-	private getParentDimensions() {
-		this.parent = {
-			width: this.container.element.nativeElement.parentNode.clientWidth,
-			height: this.container.element.nativeElement.parentNode.scrollHeight
-		};
-	}
-
-	ngOnDestroy() {
-		if (this.container.element.nativeElement.parentNode.id) {
-			document.getElementById(this.container.element.nativeElement.parentNode.id).removeEventListener('scroll', this.scrollL);
+	private buildGrid(){
+		const parent: HTMLElement = this.container.element.nativeElement.parentNode;
+		const parentW = parent.clientWidth;
+		const parentH = parent.scrollHeight;
+		//  reset values
+		this.gridHeight = parentH;
+		this.gridW = [];
+	  	this.gridH = [];
+	  	const WS = Math.floor(parentW / this.settings.app.grid.gridSize);
+	  	const HS = Math.floor(parentH / this.settings.app.grid.gridSize);
+	  	for (let i = 1; i <= WS; i++) {
+		    this.gridW.push(this.settings.app.grid.gridSize * i);
 		}
-
-		// remove shortcuts
-		this.killShortcuts.next();
-		this.killShortcuts.complete();
-		// remove select rect
-		this.createComponent.removeSingleComponent('SelectRectangleComponent', this.container);
-		// unsubscribe
-		this.editSub.unsubscribe();
+		for (let i = 1; i <= HS; i++) {
+			this.gridH.push(this.settings.app.grid.gridSize * i);
+		}
 	}
 
 	// refers to same logic as edit component
 	private saveComp(){
-		// removing the editor
-		this.removeContextMenu();
 		// add to change stack
 		this.undoManager.addChange();
 	}
 
-	private buildGrid() {
-		setTimeout(() => {
-			this.getParentDimensions();
-			this.gridW = [];
-	  		this.gridH = [];
-	  		const gridW = this.parent.width;
-	  		const gridH = this.parent.height;
-	  		this.gridHeight = gridH;
-			const WS = Math.floor(gridW / this.settings.app.grid.gridSize);
-	  		const HS = Math.floor(gridH / this.settings.app.grid.gridSize);
-	  		for (let i = 1; i <= WS; i++) {
-		      	this.gridW.push(this.settings.app.grid.gridSize * i);
-		    }
-		 	for (let i = 1; i <= HS; i++) {
-		      	this.gridH.push(this.settings.app.grid.gridSize * i);
-		    }
-		}, 0);
+	ngOnDestroy(){
+		this.selectComponent.removeHandle('ALL_GRID', 'move');
+		this.selectComponent.removeHandle('ALL_GRID', 'resize');
+		// remove hotkeys
+		this.hotKey.remove('GRIDdown');
+		this.hotKey.remove('GRIDup');
+		this.hotKey.remove('GRID_CONTROL_A');
+		this.hotKey.remove('GRID_CONTROL_C');
+		this.hotKey.remove('GRID_CONTROL_V');
+		this.hotKey.remove('GRID_CONTROL_D');
+		this.hotKey.remove('GRID_CONTROL_Z');
+		this.hotKey.remove('GRID_CONTROL_Y');
+
+		// remove rect
+		this.removeSelectRect();
 	}
 }
+
+@NgModule({
+	imports: [ComponentsModule],
+  	declarations: [GridComponent]
+})
+class GridComponentModule {}

@@ -1,172 +1,192 @@
 import { Component } from '@angular/core';
-import { MenuController, Platform, ModalController } from '@ionic/angular';
+import { RouterOutlet } from '@angular/router';
 
+import { Platform, MenuController, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-// Room Component for routing
-import { RoomComponent } from './components/room/room.component';
-import { SettingsRoomComponent } from './components/room/room-settings.component';
-import { TasksRoomComponent } from './components/tasks/room-tasks.component';
+// Drag and Drop
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 // Services
-import { StructureService } from './services/structure.service';
+import { LoggerService } from './services/logger/logger.service';
 import { FhemService } from './services/fhem.service';
+import { UndoRedoService } from './services/undo-redo.service';
 import { SettingsService } from './services/settings.service';
-import { ToastService } from './services/toast.service';
-import { TasksService } from './services/tasks.service';
+import { StructureService } from './services/structure.service';
+import { VersionService } from './services/version.service';
+import { TaskService } from './services/task.service';
+import { ComponentLoaderService } from './services/component-loader.service';
 
-// Translator
-import { TranslateService } from '@ngx-translate/core';
+// Room Component
+import { RoomComponent } from './components/room/room.component';
 
-import { FHEM_COMPONENT_REGISTRY } from './components/fhem-components-registry';
-
-// Http request for app version check
-import { HttpClient } from '@angular/common/http';
+// Animation
+import { menuStagger } from './animations/animations';
 
 @Component({
-	selector: 'app-root',
-	templateUrl: 'app.component.html',
-	styleUrls: ['app.component.scss']
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
+  animations: [menuStagger]
 })
 export class AppComponent {
-	constructor(
-		private platform: Platform,
-		private splashScreen: SplashScreen,
-		private statusBar: StatusBar,
-		public structure: StructureService,
-		private fhem: FhemService,
-		public settings: SettingsService,
-		public menu: MenuController,
-		public modalController: ModalController,
-		private http: HttpClient,
-		private toast: ToastService,
-		private translate: TranslateService,
-		private task: TasksService) {
-		// load room structure
-		this.structure.loadRooms(RoomComponent, true);
-		// initialize app
-		this.initializeApp();
-		// loading fhem components to structure
-		this.structure.fhemComponents = FHEM_COMPONENT_REGISTRY;
-		// load app App Defaults
-		this.settings.loadDefaults(this.settings.appDefaults).then(()=>{
-			// loading rooms from storage
-			if(this.settings.IPsettings.IP !== ''){
-				// connect to fhem
-				this.fhem.connectFhem().then((e) => {
-					// listen to tasks
-					if(this.settings.app.showTasks){
-						this.task.listen();
-					}
-				}).catch((e) => {
-					if (e.type === 'error') {
-						this.fhem.disconnect();
-						this.fhem.noReconnect = true;
-						this.settings.modes.fhemMenuMode = 'ip-config';
-					}
-				});
-			}
+	// Ionic menu state
+	menuState: boolean = false;
 
-			// check app for updates
-			if(this.settings.app.checkUpdates){
-				this.checkForUpdate();
+  	constructor(
+    	private platform: Platform,
+    	private menu: MenuController,
+    	private modalController: ModalController,
+    	private splashScreen: SplashScreen,
+    	private statusBar: StatusBar,
+    	private version: VersionService,
+    	public settings: SettingsService,
+    	public structure: StructureService,
+    	public task: TaskService,
+    	private fhem: FhemService,
+    	private logger: LoggerService,
+    	private undoManager: UndoRedoService,
+    	private componentLoader: ComponentLoaderService) {
+  		// load room structure
+		this.structure.loadRooms(true, RoomComponent);
+
+    	this.initializeApp();
+    	// load app App Defaults
+		settings.loadDefaults().then(()=>{
+			this.logger.info('App Settings loaded');
+			// initialize fhem
+			if(this.settings.connectionProfiles[0].IP !== ''){
+				this.fhem.connectFhem();
 			}
-			// style status bar accourding to style for IOS
-			if(this.platform.is('ios')){
-				if(this.settings.app.theme === 'dark'){
-					this.statusBar.backgroundColorByHexString('#18252B');
-				}else{
-					this.statusBar.backgroundColorByHexString('#FFFFFF');
-				}
+			// listen to tasks
+			if(this.settings.app.showTasks){
+				this.task.listen();
 			}
+		});
+  	}
+
+  	initializeApp() {
+    	this.platform.ready().then(() => {
+    		this.logger.info('FhemNative fully loaded');
+      		this.statusBar.styleDefault();
+      		this.splashScreen.hide();
+    	});
+  	}
+
+  	// switch room
+	switchRoom(name: string, ID: number, reload?: boolean){
+		this.logger.info('Switch room to: ' + name);
+
+		const roomToSwitch = this.structure.rooms.find(x=> x.ID === ID);
+		this.structure.navigateToRoom(name, ID, {
+			name: name,
+			ID: ID,
+			UID: roomToSwitch.UID,
+			reload: reload || false
+		});
+		this.menu.close();
+	}
+
+	// show submenu items
+	toggleSubMenu(event){
+		event.target.parentNode.parentNode.classList.toggle('show-submenu');
+	}
+
+	// edit button
+	edit(){
+		// tell the indicator, that editing was triggered from room with ID
+		this.settings.modeSub.next({
+			roomEdit: true,
+			roomEditFrom: this.structure.currentRoom.ID
 		});
 	}
 
-	// check for app updates on github
-	private checkForUpdate(){
-		const baseUrl = "https://api.github.com/repos/Syrex-o/FhemNative/git/trees/master";
-		this.http.get(baseUrl).subscribe((res:any)=>{
-			const builds = res.tree.find(x=>x.path === 'Builds');
-			this.http.get(builds.url).subscribe((b:any)=>{
-				if(b){
-					// get current android version
-					if(this.platform.is('android')){
-						const androidPath = b.tree.find(x=>x.path === 'Android');
-						this.http.get(androidPath.url).subscribe((ver:any)=>{
-							if(ver){
-								this.evaluateVersions(ver.tree, 'Android');
-							}
-						});
-					}
-					if(this.platform.is('ios')){
-						const iosPath = b.tree.find(x=>x.path === 'IOS');
-						this.http.get(iosPath.url).subscribe((ver:any)=>{
-							if(ver){
-								this.evaluateVersions(ver.tree, 'IOS');
-							}
-						});
-					}
-					// get electron versions
-					else{
-						if(window.navigator.userAgent.indexOf("Mac") !== -1){
-							const macosPath = b.tree.find(x=>x.path === 'MacOS');
-							this.http.get(macosPath.url).subscribe((ver:any)=>{
-								if(ver){
-									this.evaluateVersions(ver.tree, 'MacOS');
-								}
-							});
-						}
-						if(window.navigator.userAgent.indexOf("Windows") !== -1){
-							const windowsPath = b.tree.find(x=>x.path === 'Windows');
-							this.http.get(windowsPath.url).subscribe((ver:any)=>{
-								if(ver){
-									this.evaluateVersions(ver.tree, 'Windows');
-								}
-							});
-						}
-					}
-				}
-			});
+	// Edit specific room
+	editRoom(ID: number) {
+		this.logger.info('Editing room: ' + this.structure.rooms[ID].name);
+		this.componentLoader.createSingleComponent('CreateEditRoomComponent', this.componentLoader.containerStack[0].container, {
+			type: 'edit',
+			ID: ID
 		});
+		this.menu.close();
 	}
 
-	private evaluateVersions(versions: Array<any>, buildPlatform: string){
-		const lastVersion = parseInt(versions[versions.length -1].path.match(/\d+/g).join(''));
-		const currentVersion = parseInt(this.settings.appVersion.match(/\d+/g).join(''));
-		if(lastVersion > currentVersion){
-			this.toast.addNotify(this.translate.instant('GENERAL.VERSIONS.NEW.TITLE'), this.translate.instant('GENERAL.VERSIONS.NEW.INFO'), true).then((click)=>{
-				if(click){
-					window.open('https://github.com/Syrex-o/FhemNative/blob/master/Builds/'+buildPlatform+'/'+versions[versions.length -1].path, '_system', 'location=yes');
-				}
-			});
+	// remove room
+	removeRoom(ID) {
+		const room = JSON.parse(JSON.stringify(this.structure.rooms[ID]));
+		this.structure.rooms.splice(ID, 1);
+		this.logger.info('Removed room: ' + room.name);
+		// check if group room was deleted and current route is in group room
+		const inGroup: boolean = room.groupRooms && room.groupRooms.find(el => el.ID === this.structure.currentRoom.ID) ? true : false;
+		this.structure.modifyRooms();
+		// inform undo manager
+		this.undoManager.addChange();
+		// navigate if current room was removed
+		// navigate if in group after changes
+		if(ID === this.structure.currentRoom.ID || inGroup){
+			this.switchRoom(this.structure.rooms[0].name, this.structure.rooms[0].ID, true);
 		}
 	}
 
-	initializeApp() {
-		this.platform.ready().then(() => {
-			// this.statusBar.styleDefault();
-			if(this.platform.is('ios')){
-				this.statusBar.overlaysWebView(false);
+  	// drop room in list
+	drop(event: CdkDragDrop<string[]>, subMenu: any) {
+		if(event.previousIndex !== event.currentIndex){
+			// move items
+			moveItemInArray((!subMenu ? this.structure.structuredRooms : subMenu.groupRooms), event.previousIndex, event.currentIndex);
+			this.logger.info('Room order changed');
+			this.structure.modifyRooms();
+			// inform undo manager
+			this.undoManager.addChange();
+			// navigate if current room was moved
+			// change room, if room was moved to level 0
+			if(!subMenu){
+				if(event.previousIndex === this.structure.currentRoom.ID || event.currentIndex === 0){
+					this.switchRoom(this.structure.rooms[0].name, this.structure.rooms[0].ID, true);
+				}
+			}else{
+				// navigate if current room was moved, while moving in group
+				const group = subMenu.groupRooms;
+				const currentIndex = group.findIndex(x => x.ID === this.structure.currentRoom.ID);
+				// check if item in submenu was moved and is current room
+				if(currentIndex > -1 && ( event.previousIndex === currentIndex || event.currentIndex === 0 )){
+					this.switchRoom(group[0].name, group[0].ID, true);
+				}
 			}
-			this.splashScreen.hide();
-		});
+		}
 	}
 
-	async openSettings() {
-		this.menu.close();
+  	async openSettings() {
+  		this.logger.info('Switch room to: Settings');
+  		this.menu.close();
+
+  		let comp;
+  		await this.componentLoader.loadDynamicComponent('settings/settings', false).then((ComponentType: any)=>{
+  			comp = ComponentType;
+  		});
+
 		const modal = await this.modalController.create({
-			component: SettingsRoomComponent,
+			component: comp,
+			backdropDismiss: false,
 			cssClass: 'modal-fullscreen'
 		});
 		return await modal.present();
 	}
 
-	async openTasks() {
-		this.menu.close();
-		const modal = await this.modalController.create({
-			component: TasksRoomComponent,
+  	async openTasks(){
+  		this.logger.info('Switch room to: Tasks');
+  		this.menu.close();
+
+  		let comp;
+  		await this.componentLoader.loadDynamicComponent('tasks/tasks', false).then((ComponentType: any)=>{
+  			comp = ComponentType;
+  		});
+
+  		const modal = await this.modalController.create({
+			component: comp,
+			backdropDismiss: false,
 			cssClass: 'modal-fullscreen'
 		});
 		return await modal.present();
-	}
+  	}
 }
