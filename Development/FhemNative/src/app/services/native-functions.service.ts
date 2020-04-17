@@ -41,12 +41,12 @@ export class NativeFunctionsService {
 	}
 
 	// vibration
-	public vibrate(dur){
+	public vibrate(dur: number){
 		this.vibration.vibrate(dur);
 	}
 
 	// play sound
-	public playAudio(id){
+	public playAudio(id: string){
 		this.audio.play(id);
 	}
 }

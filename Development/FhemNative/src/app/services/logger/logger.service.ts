@@ -9,17 +9,25 @@ export class LoggerService implements ErrorHandler {
 
 	constructor(private injector: Injector) { }
 
-	private addToLog(type, message) {
+	log(type: string, message: any) {
 		const m = new Date + ' ' + type + ': ' + message;
+		const settings = this.injector.get(SettingsService).app;
 		const log = this.injector.get(SettingsService).log;
-		if (log.isActive) {
-			log.events.push(m);
+		if (settings.enableLog) {
+			log.push(m);
 		}
+	}
 
+	info(message: string){
+		this.log('INFO', message);
+	}
+
+	error(message: string){
+		this.log('ERROR', message);
 	}
 
 	handleError(error: Error) {
-    	this.addToLog('ERROR', error);
+    	this.log('ERROR', error);
     	console.error(error);
   	}
 }

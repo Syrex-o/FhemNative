@@ -1,37 +1,35 @@
-import { Directive, Input, ElementRef, OnChanges, SimpleChanges, Output, EventEmitter, AfterViewInit, Renderer2, HostListener } from '@angular/core';
+import { Directive, Input, ElementRef, OnChanges, SimpleChanges, EventEmitter, OnInit, Renderer2, HostListener } from '@angular/core';
 
+// Services
+import { ComponentLoaderService } from '../services/component-loader.service';
+import { SelectComponentService } from '../services/select-component.service';
 import { SettingsService } from '../services/settings.service';
 import { StructureService } from '../services/structure.service';
-import { CreateComponentService } from '../services/create-component.service';
-import { SelectComponentService } from '../services/select-component.service';
 import { UndoRedoService } from '../services/undo-redo.service';
 
 @Directive({ selector: '[resize]' })
-export class Resize implements OnChanges, AfterViewInit {
-	private hostEl;
-	private resizeRect: any;
+export class ResizeDirective implements OnChanges, OnInit {
+	// reference to the element
+	private hostEl: HTMLElement;
+	// resize rect
+	private resizeRect: HTMLElement;
+	// container of the current element
+	private container: HTMLElement;
 
-	@Input() editingEnabled = false;
-	@Input() minimumWidth = 100;
-	@Input() minimumHeight = 50;
-
-	@Output() resized = new EventEmitter();
-	@Output() onResize = new EventEmitter();
-	@Output() onMove = new EventEmitter();
-
-	private elemContainer: any;
-
-	private mouse: any = {x: 0, y: 0};
-	private scroller = 0;
-
-	private offset: any = {top: 56, left: 0, right: 0};
-
-	private moved = false;
-
+	// movement properties
 	// trigger once per movement
 	private startMove: boolean = false;
-
-	// Testing
+	// determine if element was moved
+	private moved: boolean = false;
+	// determine if element was resized
+	private resized: boolean = false;
+	// mouse
+	private mouse: any = {x: 0, y: 0};
+	// scroll position
+	private scroller = 0;
+	// offset
+	private offset: any = {top: 56, left: 0, right: 0};
+	// list of elements from selection
 	private elemList: any = {
 		elements: [],
 		components: [],
@@ -40,128 +38,171 @@ export class Resize implements OnChanges, AfterViewInit {
 		top: [],
 		left: []
 	};
+	// rescale timeout
+	private rescaleTimeout: any;
+
+
+	// Input to determine if editing should be available
+	@Input() editingEnabled: boolean = false;
+	// component info
+	@Input() minimumWidth: number;
+	@Input() minimumHeight: number;
 
 	constructor(
 		private ref: ElementRef,
+		private renderer: Renderer2,
+		private componentLoader: ComponentLoaderService,
+		private selectComponent: SelectComponentService,
 		private settings: SettingsService,
 		private structure: StructureService,
-		private renderer: Renderer2,
-		private createComponent: CreateComponentService,
-		private selectComponent: SelectComponentService,
-		private undoManager: UndoRedoService) {
+		private undoManager: UndoRedoService){
+		// create the reference
 		this.hostEl = ref.nativeElement;
 	}
 
-	ngAfterViewInit() {
-		this.createComponent.containerComponents.find((x) => {
-			if (x.ID === this.hostEl.id) {
-				this.elemContainer = this.structure.getComponentContainerRaw(x);
-			}
-		});
-		// detect device and size changes
-		setTimeout(() => {
-			this.responseToDeviceChange();
-		}, 0);
+	ngOnInit() {
+		this.container = this.hostEl.parentElement.parentElement.parentElement;
+		// check for resize
+		this.resizeElemFromWindow();
 	}
 
+	ngOnChanges(changes: SimpleChanges) {
+		if(this.editingEnabled){
+			this.buildResizeRect();
+			// assign pinner if needed
+			setTimeout(()=>{
+				let comp = this.structure.getComponent(this.hostEl.id);
+				if(comp && comp.pinned){
+					this.renderer.addClass(this.hostEl, 'pinned');
+				}
+			});
+		}else{
+			this.removeRect();
+			this.renderer.removeClass(this.hostEl, 'pinned');
+		}
+	}
+
+	// resize event
 	@HostListener('window:resize')
-	windowResizer(): void {
-		this.responseToDeviceChange();
+	onWindowResize(){
+		this.resizeElemFromWindow();
 	}
 
+	// mouse/touch movement
 	@HostListener('mousedown', ['$event', '$event.target'])
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
-		if (this.editingEnabled && !this.settings.modes.componentTest) {
+		if(this.editingEnabled){
 			// block scroll only for movements of components
 			if(target && target.className && target.className.match(/(rect|overlay-move)/)){
 				window.ontouchmove = event.preventDefault();
 			}
 			// one start 
 			this.startMove = true;
-
-			this.getStartPos(event);
-
-	    	// getting container offsets
-	  		const container: any = document.getElementById(this.elemContainer.element.nativeElement.parentNode.id).getBoundingClientRect();
-			this.offset.top = container.y;
-			this.offset.left = container.x;
-			this.offset.right = window.innerWidth - (container.x + container.width);
+			// get the starting properties
+			this.mouse.x = event.pageX || (event.touches ? event.touches[0].clientX : 0);
+			this.mouse.y = event.pageY || (event.touches ? event.touches[0].clientY : 0);
+			this.offset = {top: 56, left: 0, right: 0};
+			// get container properties
+			const container: ClientRect = this.container.getBoundingClientRect();
+			this.offset.top = container.top;
+			this.offset.left = container.left;
+			this.offset.right = window.innerWidth - (container.left + container.width);
 
 			const endMove = () => {
-				// enable scroll
+				// enable scroll again
 				window.ontouchmove = null;
-
 				// remove listeners
 				window.removeEventListener('mousemove', whileMove);
 				window.removeEventListener('touchmove', whileMove);
-
 	   			window.removeEventListener('mouseup', endMove);
 	   			window.removeEventListener('touchend', endMove);
 
-	        	// save the item position, if the element was moved
-	   			if (this.moved) {
-	   				this.moved = false;
-					this.selectComponent.removeContainerCopySelector(false, true);
-
-					this.elemList.elements.forEach((elem, i)=>{
+	   			// save the item position, if the element was moved
+	   			if (this.moved || this.resized) {
+	   				// deselect all components
+					this.selectComponent.removeContainerCopySelector(this.container, true);
+					// loop items
+	   				this.loopItems(this.elemList.elements, (elem, i)=>{
+	   					const dimensions = {
+							width: this.elemList.width[i],
+							height: this.elemList.height[i],
+							top: this.elemList.top[i],
+							left: this.elemList.left[i]
+						}
+						// callbacks of resize and move
+						if(this.moved){
+							this.selectComponent.handles.next({ID: elem.id, forHandle: 'move', dimensions: dimensions});
+						}else{
+							this.selectComponent.handles.next({ID: elem.id, forHandle: 'resize', dimensions: dimensions});
+						}
+						// save the new position
 						const selected = this.structure.getComponent(elem.id).position;
 						this.structure.saveItemPosition({
 							item: selected,
-							dimensions: {
-								width: this.elemList.width[i],
-								height: this.elemList.height[i],
-								top: this.elemList.top[i],
-								left: this.elemList.left[i]
-							}
+							dimensions: dimensions
 						}, false);
-						this.emitHostEvent('resized', i);
-					});
-					// add change event
+	   				});
+	   				// add change event
 					this.undoManager.addChange();
-				}
-			};
+	   				// reset values
+	   				this.moved = false;
+	   				this.resized = false;
+	   			}
+			}
+
 			const whileMove = (e) => {
-				if(!this.selectComponent.evalCopySelector(this.hostEl.id) && this.startMove){
-					this.selectComponent.removeContainerCopySelector(false, true);
-					this.selectComponent.buildCopySelector(this.hostEl.id, false, this.elemContainer);
-				}
 				if(this.startMove){
-					this.getItemPos(e);
+					this.selectComponent.buildCopySelectorForRelevant(this.hostEl.id);
+					// get the item position
+					this.getItemPos();
 				}
 				this.startMove = false;
 				if (target.className === 'overlay-move') {
-					this.mover(e);
-				} else {
-					this.resizer(e, target);
+					this.moveComponents(e);
+				}else{
+					this.resizeComponents(e, target);
 				}
-	        };
+			}
+
 			window.addEventListener('mousemove', whileMove);
 	  		window.addEventListener('mouseup', endMove);
-
 	  		window.addEventListener('touchmove', whileMove);
 	  		window.addEventListener('touchend', endMove);
 		}
 	}
 
-	ngOnChanges(changes: SimpleChanges) {
-		if (this.editingEnabled && !this.settings.modes.componentTest) {
-			this.buildResizeRect();
-			setTimeout(()=>{
-				let comp = this.structure.getComponent(this.hostEl.id);
-				if(comp && comp.pinned){
-					this.hostEl.classList.add('pinned');
-				}
-			}, 0);
-		} else {
-			this.removeRect();
-			this.hostEl.classList.remove('pinned');
-		}
-	}
-
-	private responseToDeviceChange() {
-		// resize component if needed
+	// resize elem based on needs
+	resizeElemFromWindow(){
 		if (this.settings.app.responsiveResize) {
+			// transform component
+			let transformer = ( component: any, attributes: {[key: string]: string | null} )=>{
+				if(this.rescaleTimeout) clearTimeout(this.rescaleTimeout);
+				this.rescaleTimeout = setTimeout(()=>{
+					// adding transition style: like in popup
+		  			this.hostEl.style.transition = 'all .3s cubic-bezier(.17,.67,.54,1.3)';
+
+		  			// filter attributes for not null
+		  			attributes = Object.entries(attributes).reduce((a,[k,v]) => (v === null ? a : {...a, [k]:v}), {});
+		  			console.log(attributes);
+
+		  			for(const [key, value] of Object.entries(attributes)){
+		  				this.hostEl.style[key] = value;
+		  			}
+		  			// save values
+		  			component.createScaler = {width: window.innerWidth, height: window.innerHeight};
+		  			this.structure.saveItemPosition({
+		  				item: component.position,
+		  				dimensions: attributes
+		  			}, true);
+
+		  			// reset style attr
+		  			const timeout = setTimeout(() => {
+	  					this.hostEl.style.transition = 'all 0ms linear';
+	  				}, 300);
+				}, 300);
+			}
+			// find component
 			const component = this.structure.getComponent(this.hostEl.id);
 			if(component){
 				const position = component.position;
@@ -174,47 +215,61 @@ export class Resize implements OnChanges, AfterViewInit {
 					component.createScaler = scaler;
 					this.structure.saveRooms();
 				}
+
+				let newComponentPosition: {[key: string]: string | null} = {
+					width: null, height: null, top: null, left: null
+				}
+
+				// find components with different create scaler
 				if (window.innerWidth !== scaler.width || window.innerHeight !== scaler.height) {
-					const width = parseInt(position.width);
-					const left = parseInt(position.left ? position.left : 0);
+					// const w = parseInt(position.width);
+					// const h = parseInt(position.height);
+					// const t = parseInt(position.height);
+					// const l = parseInt(position.height);
 
-					let w = Math.round(this.roundToGrid(width / scaler.width * window.innerWidth));
-					const l = Math.round(this.roundToGrid(left / scaler.width * window.innerWidth));
+					// const distanceRight = scaler.width - l - w;
+					// const distanceLeft = l;
 
-	  				// check, that components are not smaller that allowed
-	  				w = w >= this.minimumWidth ? w : this.minimumWidth;
+					// const maxWidth = (window.innerWidth - distanceLeft - distanceRight);
+					// const maxHeight = window.innerHeight;
 
-	  				// adding transition style: like in popup
-	  				this.hostEl.style.transition = 'all .3s cubic-bezier(.17,.67,.54,1.3)';
 
-	  				this.hostEl.style.width = w + 'px';
-	  				this.hostEl.style.left = l + 'px';
+					// let scale = Math.min(maxWidth / w, maxHeight / h);
+					// // round to 2 digits
+					// // scale = Math.round((scale + Number.EPSILON) * 100) / 100;
 
-	  				// removing transition style
-	  				const timeout = setTimeout(() => {
-	  					this.hostEl.style.transition = 'all 0ms linear';
-	  				}, 300);
+					// // // new width
+					// let newWidth: number = Math.round(this.roundToGrid(w * scale));
+					// newWidth = newWidth >= this.minimumWidth ? newWidth : this.minimumWidth;
+					// if(newWidth !== w){
+					// 	newComponentPosition.width = newWidth + 'px';
+					// }
+					// // new height
+					// let newHeight: number = Math.round(this.roundToGrid(h * scale));
+					// newWidth = newWidth >= this.minimumHeight ? newHeight : this.minimumHeight;
+					// if(newHeight !== h){
+					// 	newComponentPosition.height = newHeight + 'px';
+					// }
+					// // new top
+					// let newTop: number = Math.round(this.roundToGrid( * scale));
+					// newWidth = newWidth >= this.minimumHeight ? newHeight : this.minimumHeight;
+					// if(newHeight !== h){
+					// 	newComponentPosition.height = newHeight + 'px';
+					// }
 
-	  				// save options
-	  				component.createScaler = {width: window.innerWidth, height: window.innerHeight};
-					this.structure.saveItemPosition({
-						item: component.position,
-						dimensions: {
-							width: w,
-							left: l
-						},
-					}, true);
-					this.onResize.emit({
-						width: w, 
-						height: parseInt(this.hostEl.style.height),
-						left: l,
-						top: parseInt(this.hostEl.style.top)
-					});
+					// // find components otside of the view after alignment
+					// if(parseInt(position.left) + newWidth > window.innerWidth){
+					// 	let newLeft = window.innerWidth - newWidth;
+					// 	newComponentPosition.left = (newLeft >= 0 ? newLeft : 0) + 'px';
+					// }
+					// // transform component
+					// transformer(component, newComponentPosition);
 				}
 			}
 		}
 	}
 
+	// rectangle to move elements
 	private buildResizeRect() {
 		if (!this.resizeRect) {
 			this.resizeRect = this.renderer.createElement('div');
@@ -233,7 +288,8 @@ export class Resize implements OnChanges, AfterViewInit {
 			);
 		}
 	}
-
+	
+	// remove resize rect
 	private removeRect() {
 		if (this.resizeRect) {
 			this.renderer.removeChild(this.hostEl, this.resizeRect);
@@ -241,14 +297,16 @@ export class Resize implements OnChanges, AfterViewInit {
 		}
 	}
 
-	private getStartPos(e) {
-		// mouse Position
-		this.mouse.x = e.pageX || (e.touches ? e.touches[0].clientX : 0);
-		this.mouse.y = e.pageY || (e.touches ? e.touches[0].clientY : 0);
-		this.offset = {top: 56, left: 0, right: 0};
+	// selection list looper
+	private loopItems(list: Array<any>, callback?: any){
+		list.forEach((item, i)=>{
+			callback(item, i);
+		});
 	}
 
-	private getItemPos(e){
+	// get position of selected elements
+	private getItemPos(){
+		// reset values
 		this.elemList.elements = [];
 		this.elemList.components = [];
 		this.elemList.width = [];
@@ -256,114 +314,122 @@ export class Resize implements OnChanges, AfterViewInit {
 		this.elemList.top = [];
 		this.elemList.left = [];
 
-		this.selectComponent.selectorList.forEach((selector)=>{
-			const el = document.getElementById(selector.ID);
-			const bounding:any = el.getBoundingClientRect();
+		this.selectComponent.selectorList.forEach((component)=>{
+			const el = document.getElementById(component.ID);
+			const bounding: ClientRect = el.getBoundingClientRect();
+			// add elements
 			this.elemList.elements.push(el);
 			this.elemList.components.push(bounding);
 			this.elemList.width.push(bounding.width);
 			this.elemList.height.push(bounding.height);
-			this.elemList.top.push(bounding.y - this.offset.top);
-			this.elemList.left.push(bounding.x - this.offset.left);
+			this.elemList.top.push(bounding.top - this.offset.top);
+			this.elemList.left.push(bounding.left - this.offset.left);
 		});
 	}
 
-	// relevant callback (onmove, onresize)
-	private emitHostEvent(callbackEvent, index){
-		this[callbackEvent].emit({top: this.elemList.top[index], left: this.elemList.left[index], width: this.elemList.width[index], height: this.elemList.height[index]});
-	}
-
-	private mover(e) {
+	// component mover
+	private moveComponents(e){
 		e.preventDefault();
 		const d = {
 			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
 		};
-		this.scroller = this.evaluateScroller();
-
+		this.scroller = this.scrollPosition();
 		// move each element in stack
-		this.elemList.components.forEach((elem, i)=>{
+		this.loopItems(this.elemList.components, (elem, i)=>{
 			// left positioning
 			const left = this.roundToGrid((d.x - this.mouse.x + elem.left) - this.offset.left);
 			this.elemList.left[i] = (left >= 0 && left + elem.width + this.offset.left <= (window.innerWidth - this.offset.right)) ? left : this.elemList.left[i];
 			this.elemList.elements[i].style.left = this.elemList.left[i] + 'px';
-
 			// top positioning
 			const top = this.roundToGrid(((d.y - this.mouse.y + elem.top) - this.offset.top) + this.scroller);
 			this.elemList.top[i] = (top >= 0) ? top : this.elemList.top[i];
 			this.elemList.elements[i].style.top = this.elemList.top[i] + 'px';
-
-			// emit onMove event
-			this.emitHostEvent('onMove', i);
 		});
+		// calc difference to check if movement happened
 		this.moved = true;
 	}
 
-	private resizer(e, target) {
+	// component resizer
+	private resizeComponents(e, target){
 		e.preventDefault();
 		const d = {
 			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
 			y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
 		};
-		this.scroller = this.evaluateScroller();
+		this.scroller = this.scrollPosition();
+
+		let width = 0, height = 0, left = 0, top = 0;
 
 		if(target.className.match(/(rect.*(-right|right-))/)){
-			this.elemList.components.forEach((elem, i)=>{
+			this.loopItems(this.elemList.components, (elem, i)=>{
 				// width maximal and minimal
-				const width = this.roundToGrid(elem.width + (d.x - this.mouse.x));
+				width = this.roundToGrid(elem.width + (d.x - this.mouse.x));
 				this.elemList.width[i] = (width + elem.left <= (window.innerWidth - this.offset.right) && width >= this.minimumWidth) ? width : this.elemList.width[i];
 				this.elemList.elements[i].style.width = this.elemList.width[i] + 'px';
 			});
+			this.resized = true;
 		}
 		if(target.className.match(/(rect.*(-left|left-))/)){
-			this.elemList.components.forEach((elem, i)=>{
+			this.loopItems(this.elemList.components, (elem, i)=>{
 				// width maximal and minimal
-				const width = this.roundToGrid(elem.width - (d.x - this.mouse.x));
+				width = this.roundToGrid(elem.width - (d.x - this.mouse.x));
 				this.elemList.width[i] = (width >= this.minimumWidth && this.elemList.left[i] > 0) ? width : this.elemList.width[i];
 				this.elemList.elements[i].style.width = this.elemList.width[i] + 'px';
 
 				// left maximal and minimal
-				const left = this.roundToGrid(((d.x - this.mouse.x) + elem.left) - this.offset.left);
+				left = this.roundToGrid(((d.x - this.mouse.x) + elem.left) - this.offset.left);
 				this.elemList.left[i] = (left >= 0 && width >= this.minimumWidth) ? left : this.elemList.left[i];
 				this.elemList.elements[i].style.left = this.elemList.left[i] + 'px';
 			});
+			this.resized = true;
 		}
 		if(target.className.match(/(rect.*(top-))/)){
-			this.elemList.components.forEach((elem, i)=>{
+			this.loopItems(this.elemList.components, (elem, i)=>{
 				// height maximal and minimal
-				const height = this.roundToGrid(elem.height - (d.y - this.mouse.y));
+				height = this.roundToGrid(elem.height - (d.y - this.mouse.y));
 				this.elemList.height[i] = (height >= this.minimumHeight && this.elemList.top[i] > 0) ? height : this.elemList.height[i];
 				this.elemList.elements[i].style.height = this.elemList.height[i] + 'px';
 
 				// top maximal and minimal
-				const top = this.roundToGrid(((d.y - this.mouse.y + elem.top) - this.offset.top) + this.scroller);
+				top = this.roundToGrid(((d.y - this.mouse.y + elem.top) - this.offset.top) + this.scroller);
 				this.elemList.top[i] = (top >= 0 && height >= this.minimumHeight) ? top : this.elemList.top[i];
 				this.elemList.elements[i].style.top = this.elemList.top[i] + 'px';
 			});
+			this.resized = true;
 		}
 		if(target.className.match(/(rect.*(bottom-))/)){
-			this.elemList.components.forEach((elem, i)=>{
-				const height = this.roundToGrid(elem.height + (d.y - this.mouse.y));
+			this.loopItems(this.elemList.components, (elem, i)=>{
+				// height maximal and minimal
+				height = this.roundToGrid(elem.height + (d.y - this.mouse.y));
 				this.elemList.height[i] = (height >= this.minimumHeight) ? height : this.elemList.height[i];
 				this.elemList.elements[i].style.height = this.elemList.height[i] + 'px';
 			});
+			this.resized = true;
 		}
-		// emit onResize
-		this.elemList.components.forEach((elem, i)=>{
-			if (this.elemList.width[i] > this.minimumWidth && this.elemList.height[i] > this.minimumHeight) {
-				this.emitHostEvent('onResize', i);
-			}
-		});
-
-		this.moved = true;
+		// detect changes
+		if(width !== 0 || height !== 0 || left !== 0 || top !== 0){
+			// loop items
+	   		this.loopItems(this.elemList.elements, (elem, i)=>{
+	   			const dimensions = {
+					width: this.elemList.width[i],
+					height: this.elemList.height[i],
+					top: this.elemList.top[i],
+					left: this.elemList.left[i]
+				}
+				this.selectComponent.handles.next({ID: elem.id, forHandle: 'whileResize', dimensions: dimensions});
+			});
+		}
 	}
 
+	// move and resize based on grid
 	private roundToGrid(p) {
 		const n = this.settings.app.grid.gridSize;
   		return (this.settings.app.grid.enabled ? (p % n < n / 2 ? p - (p % n) : p + n - (p % n)) : p );
   	}
 
-  	private evaluateScroller() {
-  		return document.getElementById(this.elemContainer.element.nativeElement.parentNode.id).scrollTop;
-  	}
+	// evaluate the scroll position
+	private scrollPosition(){
+		return this.container.scrollTop;
+	}
 }

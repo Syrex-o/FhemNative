@@ -1,6 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Subject } from 'rxjs';
 
+// Services
+import { LoggerService } from './logger/logger.service';
 import { SettingsService } from './settings.service';
 import { StructureService } from './structure.service';
 import { ToastService } from './toast.service';
@@ -8,396 +10,652 @@ import { ToastService } from './toast.service';
 // Translator
 import { TranslateService } from '@ngx-translate/core';
 
+interface FhemDevice {
+	id: number,
+	device: string,
+	readings: any,
+	internals: any,
+	attributes: any
+};
+
+interface ListenDevice {
+	id: string,
+	device: string,
+	handler?: any
+}
+
 @Injectable({
 	providedIn: 'root'
 })
 
 export class FhemService {
+	// fhem connection state
+	public connectedSub = new Subject<boolean>();
+	public connected: boolean = false;
 
-	// device subscription and total device list;
-	public devicesSub = new Subject<any>();
+	// device subscriptions
+	public deviceListSub = new Subject<any>();
+	public deviceUpdateSub = new Subject<any>();
 	public deviceGetSub = new Subject<any>();
-	public devicesListSub = new Subject<any>();
-	public devices: Array<any> = [];
 
-	// connection state
-	public connected = false;
+	// Fhem device list
+	public devices: Array<FhemDevice> = [];
+	// list of devices to listen for changes
+	private listenDevices: Array<ListenDevice> = [];
+	// combining changes to reduce messages
+    private toasterDevices: string[] = [];
 
-	// devices loaded callback
-	public loadedDevices = new Subject<boolean>();
-	public devicesLoaded = false;
-
+	// connection 
 	private socket: any;
+	// current connection profile
+	private currentProfile: number = 0;
 
+	// connection tries
 	private tries: number = 0;
 	private maxTries: number = 10;
 
 	// no Reconnect
-	public noReconnect = false;
-	private timeout:any;
+	public noReconnect: boolean = false;
+	private timeout: any;
 
-	// list of device to listen for changes
-	private listenDevices: Array<any> = [];
-
-	// combining changes to reduce messages
-    private combinedDevices: Array<any> = [];
-
-    constructor(
+	constructor(
+		private logger: LoggerService,
 		private settings: SettingsService,
 		private structure: StructureService,
 		private toast: ToastService,
-		private translate: TranslateService,
-		private zone: NgZone) {
-
-    	// subscribe to load Event (all devices loaded)
-      	this.loadedDevices.subscribe(next => {
-      		const pre = this.devicesLoaded;
-      		this.devicesLoaded = next;
-      		if (next && pre !== this.devicesLoaded) {
-      			this.toast.addToast(
-      				this.translate.instant('GENERAL.FHEM.TITLE'),
-      				this.translate.instant('GENERAL.FHEM.FETCHED_ALL_DEVICES'),
-      				'success'
-      			);
-      		}
-      	});
-      	// subscribe to eventchanges
-      	this.devicesSub.subscribe(next => {
-      		const index = this.findIndex(this.devices, 'device', next.found.device);
-      		if (index !== null) {
-      			for (const key in next.found.readings) {
-      				if (next.found.readings.hasOwnProperty(key)) {
-      					// STATE exception
-      					if (next.change.changed.STATE) {
-      						const val = next.change.changed.STATE;
-      						this.devices[index].readings.state.Value = val;
-      						this.devices[index].readings.state.Time = new Date;
-      					}
-      					if (next.change.changed[key] !== undefined) {
-      						const val = next.change.changed[key];
-      						this.devices[index].readings[key].Value = val;
-      						this.devices[index].readings[key].Time = new Date;
-      					}
-      				}
-      			}
-      			let timerRuns = false;
-      			if (!this.combinedDevices.includes(next.found.device)) {
-      				this.combinedDevices.push(next.found.device);
-      				if (!timerRuns) {
-	      				timerRuns = true;
-	      				setTimeout(() => {
-	      					if (this.combinedDevices.length > 0) {
-	      						this.toast.addToast(
-	      							this.translate.instant('GENERAL.FHEM.TITLE'),
-	      							this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + this.combinedDevices.join(', '),
-	      							'info'
-	      						);
-	      						this.combinedDevices = [];
-	      					}
-	      					timerRuns = false;
-	      				}, 300);
-	      			}
-      			}
-      		}
-      	});
-    }
-
-    private connectionEvaluator() {
-    	// set connection default to websocket
-    	let result = 'websocket';
-    	if (this.settings.IPsettings.type) {
-    		if (this.settings.IPsettings.type === 'Fhemweb') {
-				result = 'fhemweb';
+		private zone: NgZone,
+		private translate: TranslateService) {
+		// connection subscription
+		this.connectedSub.subscribe((next: boolean) => {
+			// update the connection state
+			this.connected = next;
+		});
+		// device update subscription
+		this.deviceUpdateSub.subscribe((device: FhemDevice)=>{
+			// inform logger
+			this.logger.info('Value update received for: ' + device.device);
+			// match handles
+			this.listenDevices.forEach((listenDevice: ListenDevice)=>{
+				if(listenDevice.device === device.device && listenDevice.handler){
+					listenDevice.handler(device);
+				}
+			});
+			// inform abaout device update
+			let timerRuns = false;
+			if (!this.toasterDevices.includes(device.device)) {
+				this.toasterDevices.push(device.device);
+				if (!timerRuns) {
+	      			timerRuns = true;
+	      			setTimeout(() => {
+	      				if (this.toasterDevices.length > 0) {
+	      					this.toast.addToast(
+	      						this.translate.instant('GENERAL.FHEM.TITLE'),
+	      						this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + this.toasterDevices.join(', '),
+	      						'info'
+	      					);
+	      				}
+	      				this.toasterDevices = [];
+	      				timerRuns = false;
+	      			}, 300);
+	      		}
 			}
-			   if (this.settings.IPsettings.type === 'MQTT') {
-				result = 'mqtt';
-			}
-    	}
-    	return result;
-    }
+		});
+	}
 
-    public connectFhem() {
-    	return new Promise((resolve, reject) => {
-    		this.establishConnection().then((e) => {
-    			const type = this.connectionEvaluator();
-    			// get all devices for desired connection type
-    			this.listDevices(this.settings.app.loadFhemDevices.enable ? '.*' : this.getRelevantDevices());
-    			// initialize events
-    			if (type === 'websocket' || type === 'fhemweb') {
-	    			this.websocketEvents();
-	    		}
-    			resolve(e);
-			}).catch((e) => {
+	// seperate component devices into array
+	// needs string of data_device
+	public seperateDevices(device){
+		return device.replace(/\s/g, '').split(',');
+	}
+
+	// get the connection type
+	private connectionType(){
+		return this.settings.connectionProfiles[this.currentProfile].type.toLowerCase();
+	}
+
+	// connect to fhem server
+	public connectFhem(reconnect?: boolean) {
+		return new Promise((resolve, reject) => {
+			if(!reconnect){
+				this.currentProfile = 0;
+			}else{
+				if(this.settings.connectionProfiles[this.currentProfile + 1]){
+					this.currentProfile++;
+				}else{
+					this.currentProfile = 0;
+				}
+			}
+
+			this.logger.info('Start connecting to Fhem');
+			this.logger.info('Try connecting with profile:  ' + this.currentProfile);
+			// build the connection
+			this.buildRelevantConnection().then((e)=>{
+				// load initial devices
+				this.listDevices(this.getRelevantDevices());
+				resolve(e);
+			}).catch((e)=>{
 				reject(e);
 			});
-    	});
-    }
+		});
+	}
 
-    public listDevices(attr){
-    	const type = this.connectionEvaluator();
-    	if (type === 'websocket') {
-    		this.socket.send(JSON.stringify(
-	    		{type: 'command', payload: {command: 'list', arg: attr}}
-	    	));
-    	}
-    	if (type === 'fhemweb') {
-	    	this.socket.send('jsonlist2 '+ attr);
-	    }
-    }
-
-    private getRelevantDevices(){
-    	let list: any= [];
-
-    	let test = (obj)=>{
-    		if(obj && obj.value !== '' && !list.includes(obj.value)){
-    			list.push(obj.value);
-    		}
-    	}
-
-    	this.structure.rooms.forEach((room)=>{
-    		this.structure.modifyComponentList(room.components,  (cb)=>{
-    			if(cb.attributes.attr_data){
-    				test(cb.attributes.attr_data.find(x=> x.attr === 'data_device'));
-    			}
-    		});
-    	});
-
-    	list = '('+list.join('|')+')';
-    	// add fhem defined relevant components , if needed
-    	if(this.settings.app.loadFhemDevices.option === 'Fhem_Defined'){
-    		list = 'group=FhemNative,'+list
-    	}
-    	
-    	return list;
-    }
-
-    private establishConnection() {
-    	// establish the connection based on settings
-    	return new Promise((resolve, reject) => {
+	// establish a connection, based on the connection type
+	private buildRelevantConnection(){
+		return new Promise((resolve, reject) => {
 			if (!this.connected) {
 				let url;
 				// get the desired url for fhem connection
-				const type = this.connectionEvaluator();
-				if (type === 'websocket') {
-					// external websocket connection
-					url = (this.settings.IPsettings.WSS ? 'wss://' : 'ws://') + 
-					(this.settings.IPsettings.basicAuth ? this.settings.IPsettings.USER + ':' + this.settings.IPsettings.PASSW + '@' : '' ) + 
-					this.settings.IPsettings.IP + ':' + this.settings.IPsettings.PORT;
+				const type = this.connectionType();
+				if(type.match(/websocket|fhemweb/)){
+					url = (this.settings.connectionProfiles[this.currentProfile].WSS ? 'wss://' : 'ws://') + 
+					(this.settings.connectionProfiles[this.currentProfile].basicAuth ? this.settings.connectionProfiles[this.currentProfile].USER + ':' + this.settings.connectionProfiles[this.currentProfile].PASSW + '@' : '' ) + 
+					this.settings.connectionProfiles[this.currentProfile].IP + ':' + this.settings.connectionProfiles[this.currentProfile].PORT;
 
-					this.socket = new WebSocket(url, ['json']);
+					this.socket = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url + '?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now())
 				}
-				if (type === 'fhemweb') {
-					// fhemweb connection
-					url = (this.settings.IPsettings.WSS ? 'wss://' : 'ws://') + 
-					(this.settings.IPsettings.basicAuth ? this.settings.IPsettings.USER + ':' + this.settings.IPsettings.PASSW + '@' : '' ) + 
-					this.settings.IPsettings.IP + ':' + this.settings.IPsettings.PORT +
-					'?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now();
+				if(type === 'mqtt'){
 
-					this.socket = new WebSocket(url);
 				}
 				// clearing device lists
 				this.devices = [];
 				this.listenDevices = [];
-				if (type === 'websocket' || type === 'fhemweb') {
+				if (type.match(/websocket|fhemweb/)) {
 					// websocket connection
-					this.socket.onopen = (e) => {
-						this.connected = true;
-						this.toast.addToast(
-							this.translate.instant('GENERAL.FHEM.TITLE'),
-							this.translate.instant('GENERAL.FHEM.CONNECTED'),
-							'success'
-						);
+					this.socket.onopen = (e)=>{
+						this.connectionOpenHandler(e);
 						resolve(e);
-					};
-					this.socket.onclose = () => {
-						this.connected = false;
-						this.loadedDevices.next(false);
-						this.reconnect();
-						this.toast.addToast(
-							this.translate.instant('GENERAL.FHEM.TITLE'),
-							this.translate.instant('GENERAL.FHEM.DISCONNECT'),
-							'error'
-						);
-					};
-					this.socket.onerror = (e) => {
-						this.reconnect();
-						this.toast.addToast(
-							this.translate.instant('GENERAL.FHEM.TITLE'),
-							this.translate.instant('GENERAL.FHEM.ERROR'),
-							'error'
-						);
-						reject(e);
-					};
-				}
-				// timeout for connection
-				if(this.timeout){
-					clearTimeout(this.timeout);
-				}
-				this.timeout = setTimeout(() => {
-					// check if connection ever was established
-					if (!this.connected) {
-						this.noReconnect = true;
-						this.toast.addToast(
-							this.translate.instant('GENERAL.FHEM.TITLE'),
-							this.translate.instant('GENERAL.FHEM.TIMEOUT'),
-							'error'
-						);
-						reject({type: 'timeout'});
-						this.tries = 0;
 					}
-				}, 3000);
+					this.socket.onclose = (e) => {
+						this.connectionCloseHandler(e);
+
+					}
+					this.socket.onerror = (e) => {
+						this.connectionErrorHandler(e);
+						reject(e);
+					}
+				}
+				this.timeoutHandler();
 			}
 		});
-    }
+	}
 
-    private reconnect(){
-    	if (!this.noReconnect) {
-    		this.tries ++;
+	// timeout for profiles handler
+	private timeoutHandler(){
+		if(this.timeout) clearTimeout(this.timeout);
+
+		this.timeout = setTimeout(()=>{
+			if(!this.connected && !this.noReconnect){
+				// profile failed
+				this.logger.error('Connection timeout to Fhem with profile: ' + this.currentProfile);
+				this.toast.addToast(this.translate.instant('GENERAL.FHEM.TITLE'), this.translate.instant('GENERAL.FHEM.TIMEOUT'), 'error');
+
+				if(this.tries <= this.maxTries){
+					this.reconnect();
+				}
+			}
+		}, 1500);
+	}
+
+	// handle connection open
+	private connectionOpenHandler(e){
+		this.logger.info('Connected to Fhem');
+		this.connectedSub.next(true);
+
+		this.websocketEvents();
+		this.toast.addToast(
+			this.translate.instant('GENERAL.FHEM.TITLE'),
+			this.translate.instant('GENERAL.FHEM.CONNECTED'),
+			'success'
+		);
+	}
+
+	// handle connection open
+	private connectionCloseHandler(e){
+		this.logger.info('Disconnected from Fhem');
+		this.connectedSub.next(false);
+		// clear listen devices
+		this.listenDevices = [];
+		// reconnect to fhem
+		this.reconnect();
+		this.toast.addToast(
+			this.translate.instant('GENERAL.FHEM.TITLE'),
+			this.translate.instant('GENERAL.FHEM.DISCONNECT'),
+			'error'
+		);
+	}
+
+	// handle connection errors
+	private connectionErrorHandler(e){
+		this.logger.error('An Error occured during the connection process');
+		this.connectedSub.next(false);
+		// clear listen devices
+		this.listenDevices = [];
+		// reconnect to fhem
+		this.reconnect();
+		this.toast.addToast(
+			this.translate.instant('GENERAL.FHEM.TITLE'),
+			this.translate.instant('GENERAL.FHEM.ERROR'),
+			'error'
+		);
+	}
+
+	// reconnect handler
+	private reconnect(){
+		this.logger.info('Try reconnecting to Fhem');
+		if (!this.noReconnect) {
+			this.tries ++;
     		if(this.tries <= this.maxTries){
     			const timeout = setTimeout(() => {
-					this.connectFhem();
-				}, 1000);
-    		}
+					this.connectFhem(true);
+				}, 500);
+			}else{
+				this.noReconnect = true;
+				this.tries = 0;
+			}
+		}
+		this.connectedSub.next(false);
+	}
+
+	// disconnect
+	public disconnect() {
+    	if(this.connected){
+    		this.socket.close();
     	}
     }
 
-    private websocketEvents() {
-    	const type = this.connectionEvaluator();
-    	// list of catched devices
-    	let listDevices = [];
-    	this.socket.onmessage = (e) => {
-    		let msg = e.data;
-    		// desired websocket message handling
-    		if (type === 'websocket') {
-    			msg = JSON.parse(msg);
-    			if (msg.type === 'listentry') {
+	// get the list of relevant devices
+	private getRelevantDevices(){
+		let list: string[] = [];
 
-    				// search for reply device in device list
-    				const device = this.find(this.devices, 'device', msg.payload.name);
-    				if(msg.payload.attributes){
-    					const push = {
-							id: parseInt(msg.payload.internals.NR),
-				      		device: msg.payload.name,
-				      		readings: this.objResolver(msg.payload.readings, 1),
-				      		internals: msg.payload.internals,
-				      		attributes: msg.payload.attributes
-						}
-    					listDevices.push(push);
-    					// detect new device
-    					if(!device){
-    						this.devices.push(push);
-    					}
-    					if(msg.payload.num === listDevices.length){
-	    					this.returnListDevices(listDevices);
-    						listDevices = [];
+    	if(this.settings.app.fhemDeviceLoader === 'Component'){
+    		// loop rooms for components
+	    	this.structure.getAllComponents().forEach((item)=>{
+	    		// check for devices in components
+	    		if(item.component && item.component.attributes.attr_data && item.component.attributes.attr_data.find(x=> x.attr === 'data_device')){
+	    			// device is present in component
+	    			const devices: string[] = this.seperateDevices(item.component.attributes.attr_data.find(x=> x.attr === 'data_device').value);
+	    			devices.forEach((device: string)=>{
+	    				// check if device is already in list
+	    				if(!list.includes(device)){
+	    					list.push(device);
 	    				}
-    				}
-    				// all devices loaded
-    				if ((this.devices.length === msg.payload.num) || (!this.settings.app.loadFhemDevices.enable && this.devices.length === 0) || (this.settings.app.loadFhemDevices.option === 'Fhem_defined' && this.devices.length === msg.payload.num -1)) {
-    					this.loadedDevices.next(true);
-    					// this.returnListDevices(this.settings.app.loadFhemDevices.option === 'Fhem_defined' ? msg.payload.num - 1 : msg.payload.num);
-    				}
-    			}
-    			if (msg.type === 'event') {
-    				const found = this.find(this.listenDevices, 'device', msg.payload.name);
-    				if (found) {
-    					const res = msg.payload;
-						res.changed = this.objResolver(res.changed, 2);
-						this.devicesSub.next({found, change: res});
-    				}
-    			}
-    			if (msg.type === 'getreply') {
-					const found = this.find(this.listenDevices, 'device', msg.payload.device);
-					if (found) {
-						this.deviceGetSub.next(msg);
-					}
-				}
-    		}
-    		// Fhemweb reply
-    		if (type === 'fhemweb') {
-    			let lines = msg.split(/\n/);
-      			lines = lines.filter(s => s != '' && s != '[""]');
-      			if (lines.length > 0) {
-      				// evaluation for: get all devices
-      				if (lines.length === 1) {
-						msg = JSON.parse(msg);
-						if (this.IsJsonString(msg)) {
-							// normal reply
-							msg = JSON.parse(msg);
-							if(msg.Results.length === 0){
-								// initially loaded 0 devices
-								if(this.devices.length === 0){
-									this.loadedDevices.next(true);
-								}
-							}else{
-								// keep track of new devices
-								let newDevices = 0;
-								listDevices = [];
-								// detect if initial load
-								msg.Results.forEach((result, i)=>{
-									const index = this.findIndex(this.devices, 'device', msg.Results[i].Name);
-									// device push
-									const push = {
-										id: parseInt(msg.Results[i].Internals.NR),
-			      						device: msg.Results[i].Name,
-			      						readings: this.objResolver(msg.Results[i].Readings, 1),
-			      						internals: msg.Results[i].Internals,
-			      						attributes: msg.Results[i].Attributes
-									}
-									listDevices.push(push);
-									if(index !== null){
-										// device already found
-										this.devices[index].readings = this.objResolver(msg.Results[i].Readings, 1);
-									}else{
-										// new device
-										newDevices++;
-										this.devices.push(push);
-									}
-									if (i === msg.Results.length - 1) {
-										this.loadedDevices.next(true);
-										this.returnListDevices(listDevices);
-									}
-								});
-							}
-						} else {
-							// get reply
-							const result = {payload: {
-								device: '',
-								property: '',
-								value: ''
-							}};
+	    			});
+	    		}
+	    	});
+	    	return list.length > 0 ? '('+list.join('|')+')' : '';
+    	}else{
+    		// all devices should be loaded
+    		return '.*';
+    	}
+	}
+
+	// websocket event handler
+	// handle fhemweb and external websocket
+	private websocketEvents(){
+		const type: string = this.connectionType();
+		// list of catched devices
+    	let listDevices: Array<FhemDevice> = [];
+    	const message = this.socket.onmessage = (e)=>{
+    		// initial message
+	    	let msg = e.data;
+	    	// handle external websocket
+	    	if (type === 'websocket') {
+	    		msg = JSON.parse(msg);
+	    		if (msg.type === 'listentry') {
+	    			if(msg.payload.attributes){
+						listDevices.push(this.deviceTransformer(msg.payload, false));
+						if(msg.payload.num === listDevices.length){
+							this.deviceListSub.next(listDevices);
+							listDevices = [];
 						}
-      				} else {
-      					// evaluation of changes
-      					const change = {changed: {}};
-      					const device = JSON.parse(lines[0])[0];
-      					const found = this.find(this.listenDevices, 'device', device);
-      					if (found) {
-      						// skipping 0 --> 0 is device
+	    			}
+	    		}
+	    		if (msg.type === 'event') {
+	    			// device update
+	    			if(this.listenDevices.find(x=> x.device === msg.payload.name)){
+	    				// device is in listen list
+	    				this.updateListenDevice(msg.payload.name, msg.payload.changed);
+	    			}
+	    		}
+	    		if (msg.type === 'getreply') {
+	    			// get command answer
+	    			if(this.listenDevices.find(x=> x.device === msg.payload.device)){
+	    				// format the reply, for easy use
+	    				const device = msg.payload.device;
+	    				// check if value received
+	    				if(msg.payload.value){
+	    					const splitText = msg.payload.value.split(/\r\n|\r|\n/).length;
+		    				let value = [];
+		    				for (let i = 0; i < splitText; i++) {
+		    					const line = msg.payload.value.split(/\r\n|\r|\n/)[i];
+	  							if (line !== '') {
+	  								value.push(line);
+	  							}
+	  						}
+	  						this.deviceGetSub.next({
+	  							device: device,
+	  							value: value
+	  						});
+	    				}
+	    			}
+	    		}
+	    	}
+	    	// handle fhemweb
+	    	if (type === 'fhemweb') {
+	    		let lines: string[] = msg.split(/\n/).filter(s => s !== '' && s !== '[""]');
+	    		if (lines.length > 0) {
+	    			// evaluation for: get all devices
+	      			if (lines.length === 1) {
+	      				msg = JSON.parse(msg);
+
+		    			if (this.IsJsonString(msg)) {
+		    				// normal reply
+							msg = JSON.parse(msg);
+							// keep track of new devices
+							listDevices = [];
+							msg.Results.forEach((result:any)=>{
+								listDevices.push(this.deviceTransformer(result, true));
+							});
+							this.deviceListSub.next(listDevices);
+		    			}else{
+		    				// get reply
+		    				const device = msg[0].split(/\r\n|\r|\n/)[0];
+		    				const splitText = msg[0].split(/\r\n|\r|\n/).length;
+	    					let value = [];
+	    					for (let i = 0; i < splitText; i++) {
+		    					const line = msg[0].split(/\r\n|\r|\n/)[i];
+	  							if (line !== '') {
+	  								value.push(line);
+	  							}
+	  						}
+	  						this.deviceGetSub.next({
+	  							device: device,
+	  							value: value
+	  						});
+		    			}
+	      			}else{
+	      				// evaluation of changes
+	      				// device got an update
+	      				const device = JSON.parse(lines[0])[0];
+	      				const change = {};
+	      				if(this.listenDevices.find(x=> x.device === device)){
+	      					// listen to device
 	      					for (let i = 1; i < lines.length; i += 2) {
 	      						const prop = JSON.parse(lines[i])[0].match(/([^-]+(?=))$/)[0];
 	      						const value = JSON.parse(lines[i])[1];
-	      						change.changed[prop] = value;
+	      						change[prop] = value;
 	      					}
-      						this.devicesSub.next({found, change: this.objResolver(change, 2)});
-      					}
+	      					this.updateListenDevice(device, change);
+	      				}
+	      			}
+	    		}
+	    	}
+    	}
+	}
+
+	// device transformer
+	// determines already found devices and creates unique standard
+	private deviceTransformer(device: any, capital: boolean){
+		const deviceName = capital ? device.Name : device.name;
+		const readings = this.objResolver( (capital ? device.Readings : device.readings), 1);
+		const push: FhemDevice = {
+			id: capital ? device.Internals.NR : device.internals.NR,
+			device: deviceName,
+			readings: readings,
+			internals: capital ? device.Internals : device.internals,
+			attributes: capital ? device.Attributes : device.attributes
+		};
+		// determine, if device is already present
+		const index: number = this.devices.findIndex(x => x.device === deviceName);
+		if(index > -1){
+			// device already found
+			this.devices[index].readings = readings;
+		}else{
+			// new device
+			this.devices.push(push);
+		}
+		return push;
+	}
+
+	// device updater
+	// update fhem devices and look for listen device
+	// only update devices, that FhemNative listens to
+	private updateListenDevice(deviceName: string, change: any){
+		const index = this.devices.findIndex(x=> x.device === deviceName);
+		if(index > -1){
+			change = this.objResolver(change, 2);
+			for (const key in this.devices[index].readings) {
+				if (this.devices[index].readings.hasOwnProperty(key)) {
+					// STATE exception
+					if(change.STATE) {
+						const val = change.STATE;
+						this.devices[index].readings.state.Value = val;
+						this.devices[index].readings.state.Time = new Date;
+					}
+					if (change[key] !== undefined) {
+      					const val = change[key];
+      					this.devices[index].readings[key].Value = val;
+      					this.devices[index].readings[key].Time = new Date;
       				}
-      			}
-    		}
-    	};
+				}
+			}
+			this.deviceUpdateSub.next(this.devices[index]);
+		}
+	}
+
+	// get device from fhem
+	// dirty allows to send fhem device list command even, if device is already present
+	public getDevice(id: string, deviceName: string, callback?: any, dirty?: boolean){
+		return new Promise((resolve) => {
+			if(!this.connected){
+				let gotReply: boolean = false;
+				// wait for connection
+				const sub = this.connectedSub.subscribe((state: boolean)=>{
+					gotReply = true;
+					if(state){
+						sub.unsubscribe();
+						this.listen(id, deviceName, callback, dirty).then(device=> resolve(device));
+					}else{
+						if(this.noReconnect){
+							sub.unsubscribe();
+							resolve(null);
+						}
+					}
+				});
+				setTimeout(()=>{
+					if(!gotReply){
+						sub.unsubscribe();
+						resolve(null);
+					}
+				}, 5000);
+			}else{
+				this.listen(id, deviceName, callback, dirty).then(device=> resolve(device));
+			}
+		});
+	}
+
+	// list for device requests --> send multiple devices at once, to reduce calls
+	private askForDevices: string[] = [];
+	// device listener
+	// add the device to listen list and call callback, if needed
+	public listen(id: string, deviceName: string, callback?: any, dirty?: boolean){
+		return new Promise((resolve)=>{
+			// connection type
+			const type = this.connectionType();
+			// handle subscriptions
+			let subscribeHandler = ()=>{
+				if(!this.listenDevices.find(x => x.id === id)){
+					this.listenDevices.push({id: id, device: deviceName, handler: callback});
+					if(type === 'websocket'){
+						this.sendCommand({command: 'subscribe',arg: device.id,type: '.*',name,changed: ''});
+					}
+				}
+			}
+
+			// search for device in existing list
+			let device = this.devices.find(x => x.device === deviceName);
+			if(device && !dirty){
+				subscribeHandler();
+				resolve(device);
+			}else{
+				// push to ask list
+				if(deviceName && !this.askForDevices.includes(deviceName)){
+					this.askForDevices.push(deviceName);
+				}
+
+				// list device handler
+				// determine if device was found
+				let gotReply: boolean = false;
+				const sub = this.deviceListSub.subscribe((next)=>{
+					device = next.find(x => x.device === deviceName);
+					if(device){
+						gotReply = true;
+						sub.unsubscribe();
+						subscribeHandler();
+						resolve(device);
+					}
+				});
+				setTimeout(()=>{
+					if(!gotReply){
+						sub.unsubscribe();
+						// no reply --> no device found
+						resolve(null);
+					}
+				}, 1000);
+				// prevent multiple calls
+				// send just one request for all getDevice requests
+				setTimeout(()=>{
+					if(this.askForDevices.length > 0){
+						// build copy
+						let deviceList: any = this.askForDevices;
+						// reset ask array
+						this.askForDevices = [];
+
+						// build request array
+						deviceList = deviceList.length > 1 ? '('+deviceList.join('|')+')' : deviceList.join();
+
+						// send list command, to get device
+						if (type === 'fhemweb') {
+							this.socket.send('jsonlist2 ' + deviceList);
+						}
+						if(type === 'websocket'){
+							this.sendCommand({command: 'list', arg: deviceList});
+						}
+					}
+				});
+			}
+		});
+	}
+
+	// remove device and stop listen, if no other listener for same device is present
+	public removeDevice(id: string){
+		const index = this.listenDevices.findIndex(x=> x.id === id);
+		if(index > -1){
+			this.listenDevices.splice(index, 1);
+		}
+	}
+
+	// look for device and subscribe to changes
+	public deviceReadingFinder(deviceName: string, reading: string|null){
+		const device = this.devices.find(x => x.device === deviceName);
+		return (
+    		// check for device
+    		device ? (
+    			// check if reading is used
+    			!reading && reading !== '' ? true : (
+    				// reading is used and has to be checked
+    				device.readings[reading] ? true : false
+    			)
+    		) : false
+    	);
+	}
+
+	// send commands
+	public sendCommand(cmd) {
+    	const type = this.connectionType();
+    	if (type === 'websocket') {
+    		this.socket.send(JSON.stringify({
+	            type: 'command',
+	            payload: cmd
+	        }));
+    	}
+    	if (type === 'fhemweb') {
+    		this.socket.send(cmd.command);
+    	}
     }
 
-    private returnListDevices(devices){
-    	this.zone.run(()=>{
-    		if(devices.length > 0){
-	    		this.devicesListSub.next(devices);
-	    	}else{
-	    		this.devicesListSub.next([]);
+    // set
+    public set(device, value) {
+        this.sendCommand({
+            command: 'set ' + device + ' ' + value
+        });
+    }
+
+    // get
+    public get(device, property) {
+    	return new Promise((resolve)=>{
+    		let gotReply: boolean = false;
+    		// subscribe to get listener
+    		const sub = this.deviceGetSub.subscribe((data)=>{
+    			gotReply = true;
+    			sub.unsubscribe();
+    			// check if the reply is for the correct device
+    			if(data.device === device){
+    				resolve(data.value);
+    			}
+    		});
+    		// check for reply
+    		setTimeout(()=>{
+				if(!gotReply){
+					sub.unsubscribe();
+					// no reply --> no device found
+					resolve(null);
+				}
+			}, 1000);
+    		// send get request
+    		const type = this.connectionType();
+	    	if (type === 'websocket') {
+	    		this.sendCommand({
+		            command: 'get',
+		            device,
+		            property
+		        });
+	    	}
+	    	if (type === 'fhemweb') {
+	    		this.sendCommand({
+	    			command: 'get ' + device + ' ' + property
+	    		});
 	    	}
     	});
     }
+    // set reading
+    public setReading(device, reading, value) {
+        this.sendCommand({
+            command: 'setReading ' + device + ' ' + reading + ' ' + value
+        });
+    }
+    // set attr
+    public setAttr(device, prop, value) {
+        this.sendCommand({
+            command: 'set ' + device + ' ' + prop + ' ' + value
+        });
+    }
 
-    // test for json
+
+	// send list command to fhem for relevant connection type
+	public listDevices(value: string){
+		const type = this.connectionType();
+		if (type === 'websocket') {
+    		this.socket.send(JSON.stringify(
+	    		{type: 'command', payload: {command: 'list', arg: value}}
+	    	));
+    	}
+    	if (type === 'fhemweb') {
+	    	this.socket.send('jsonlist2 '+ value);
+	    }
+	}
+
+	// test for json
     public IsJsonString(str) {
     	try {
 	        JSON.parse(str);
@@ -419,138 +677,8 @@ export class FhemService {
     	return false;
     }
 
-    public getDevice(device, reading) {
-    	return new Promise((resolve, reject) => {
-    		if (!this.devicesLoaded) {
-    			const sub = this.loadedDevices.subscribe((state) => {
-					if (state) {
-						sub.unsubscribe();
-						// check if reading is present before building listener
-						resolve(this.deviceReadingFinder(device, reading) ? this.listen(device) : null);
-					}
-				});
-    		} else {
-				resolve(this.deviceReadingFinder(device, reading) ? this.listen(device) : null);
-			}
-    	});
-    }
-
-    public deviceReadingFinder(device, reading) {
-    	const dev = this.find(this.devices, 'device', device);
-    	return (
-    		// check for device
-    		dev ? (
-    			// check if reading is used
-    			!reading && reading !== '' ? true : (
-    				// reading is used and has to be checked
-    				dev.readings[reading] ? true : false
-    			)
-    		) : false
-    	);
-    }
-
-    public listen(name) {
-    	const found = this.find(this.devices, 'device', name);
-    	if (found) {
-    		const type = this.connectionEvaluator();
-    		found.readings = this.objResolver(found.readings, 1);
-    		if (!this.find(this.listenDevices, 'device', name)) {
-    			this.listenDevices.push(found);
-    			// subsribe based on type
-    			if (type === 'websocket') {
-    				this.sendCommand({
-			    		command: 'subscribe',
-			    		arg: found.id,
-			    		type: '.*',
-			    		name,
-			    		changed: ''
-			    	});
-			    	// getting device info
-			    	this.sendCommand({
-			    		command: 'list',
-			    		arg: name
-			    	});
-    			}
-    			if (type === 'fhemweb') {
-    				this.socket.send('jsonlist2 ' + name);
-    			}
-    		}
-    	}
-    	return found;
-    }
-
-    public sendCommand(cmd) {
-    	const type = this.connectionEvaluator();
-    	if (type === 'websocket') {
-    		this.socket.send(JSON.stringify({
-	            type: 'command',
-	            payload: cmd
-	        }));
-    	}
-    	if (type === 'fhemweb') {
-    		this.socket.send(cmd.command);
-    	}
-    }
-
-    public disconnect() {
-    	if(this.connected){
-    		this.socket.close();
-    	}
-	}
-
-	public setReading(device, reading, value) {
-        this.sendCommand({
-            command: 'setReading ' + device + ' ' + reading + ' ' + value
-        });
-    }
-
-    public setAttr(device, prop, value) {
-        this.sendCommand({
-            command: 'set ' + device + ' ' + prop + ' ' + value
-        });
-    }
-
-    public set(device, value) {
-        this.sendCommand({
-            command: 'set ' + device + ' ' + value
-        });
-    }
-
-    public get(device, property) {
-    	const type = this.connectionEvaluator();
-    	if (type === 'websocket') {
-    		this.sendCommand({
-	            command: 'get',
-	            device,
-	            property
-	        });
-    	}
-    	if (type === 'fhemweb') {
-    		this.sendCommand({
-    			command: 'get ' + device + ' ' + property
-    		});
-    	}
-    }
-
-    public find(array, key, value) {
-		for (let i = 0; i < array.length; i++) {
-	    	if (array[i][key] === value) {
-	    		return array[i];
-	      	}
-	    }
-	 return null;
-	}
-
-	public findIndex(array, key, value) {
-		for (let i = 0; i < array.length; i++) {
-	    	if (array[i][key] === value) {
-	    		return i;
-	      	}
-	    }
-	 return null;
-	}
-
-	public objResolver(obj, level) {
+    // websocket reply transformer
+    public objResolver(obj, level) {
 		const keys = Object.keys(obj);
 		const result = {};
 		for (let i = 0; i < keys.length; i++) {
@@ -558,19 +686,10 @@ export class FhemService {
 			if (level === 1) {
 				result[keys[i]] = {Value: '', Time: ''};
 				result[keys[i]].Time = obj[keys[i]].Time;
-				result[keys[i]].Value = (val === 'true' || val === 'false') ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
+				result[keys[i]].Value = (val === 'true' || val === 'false' || this.IsJsonString(val)) ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
 			} else {
-				result[keys[i]] = (val === 'true' || val === 'false') ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
+				result[keys[i]] = (val === 'true' || val === 'false' || this.IsJsonString(val)) ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
 			}
-		}
-		return result;
-	}
-
-	public replyHandler(base, change) {
-		const changeKeys = Object.keys(change);
-		const result = base;
-		for (let i = 0; i < changeKeys.length; i++) {
-			result[changeKeys[i]].Value = change[changeKeys[i]];
 		}
 		return result;
 	}

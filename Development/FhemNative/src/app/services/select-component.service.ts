@@ -1,116 +1,82 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { Subject } from 'rxjs';
+
 // Services
 import { StructureService } from './structure.service';
-import { HelperService } from './helper.service';
-import { CreateComponentService } from './create-component.service';
+import { ComponentLoaderService } from './component-loader.service';
+
+interface Handle { ID: string, callback: any }
+interface HandleUpdate { ID: string, forHandle: string, dimensions: any }
 
 @Injectable({
 	providedIn: 'root'
 })
 
 export class SelectComponentService {
+	// renderer reference
 	private renderer: Renderer2;
 
 	// list of selected components
 	public selectorList: Array<any> = [];
 	// list of copy components
-	// gets filled from editComponent
 	public copyList: Array<any> = [];
 
+	// handles for resize/move
+	public handles = new Subject<HandleUpdate>();
+	// item move handler
+	private moveHandles: Array<{ID: string, callback: any}> = [];
+	// item resize handler
+	private resizeHandles: Array<{ID: string, callback: any}> = [];
+	// item while resize handler
+	private whileResizeHandles: Array<{ID: string, callback: any}> = [];
+
 	constructor(
+		private rendererFactory: RendererFactory2,
 		private structure: StructureService,
-		private helper: HelperService,
-		private createComponent: CreateComponentService,
-		private rendererFactory: RendererFactory2){
+		private componentLoader: ComponentLoaderService){
 		// create renderer in service
 		this.renderer = rendererFactory.createRenderer(null, null);
+		// subscription to Handles
+		this.handles.subscribe((handleUpdate: HandleUpdate)=>{
+			this[handleUpdate.forHandle + 'Handles'].forEach((handle: Handle)=>{
+				if(handle.ID === handleUpdate.ID){
+					handle.callback(handleUpdate.dimensions);
+				}
+				// trigger to all events
+				if(handle.ID.match(/ALL/g)){
+					handle.callback(handleUpdate.dimensions);
+				}
+			});
+		});
+	}
+
+	// add handle event, because 
+	public addHandle(ID: string, forHandle: string, callback: any){
+		if(!this[forHandle + 'Handles'].find(x => x.ID === ID)){
+			this[forHandle + 'Handles'].push({ID: ID, callback: callback});
+		}
+	}
+
+	// remove handle event
+	public removeHandle(ID: string, forHandle: string){
+		const index = this[forHandle + 'Handles'].findIndex(x=> x.ID === ID);
+		if(index > -1){
+			this[forHandle + 'Handles'].splice(index, 1);
+		}
 	}
 
 	// receives full element properties
-	private addSelector(el, container){
-		if(!this.selectorList.find(x => x.ID === el.ID)){
-			el = JSON.parse(JSON.stringify(el));
-			if(!el.pinned){
-				el['selectorContainer'] = container;
-				this.selectorList.push(el);
-			}
+	private addSelector(component: any){
+		if(!this.selectorList.find(x => x.ID === component.ID)){
+			this.selectorList.push(component);
 		}
 	}
 
 	// receives only ID to remove
-	private removeSelector(ID){
+	private removeSelector(ID: string){
 		if(this.selectorList.findIndex(x=> x.ID === ID) > -1){
 			this.selectorList.splice(this.selectorList.findIndex(x=> x.ID === ID), 1);
 		}
-	}
-
-	// build the copy selector
-	// unselect selected elements if needed
-	public buildCopySelector(ID: string, unselect: boolean, container: any){
-		const roomElements = this.structure.getComponentContainer(container);
-		const selected = roomElements.find(x=> x.ID === ID);
-		if(selected){
-			const el = document.getElementById(selected.ID);
-			if(!el.classList.contains('pinned')){
-				if(el.classList.contains('selected-for-copy')){
-					if(unselect){
-						this.renderer.removeClass(el, 'selected-for-copy');
-						this.removeSelector(ID);
-					}
-				}else{
-					this.renderer.addClass(el, 'selected-for-copy');
-					this.addSelector(selected, container);
-				}
-			}
-		}
-		this.removeContainerCopySelector(container, false);
-	}
-
-	// build the copy selector for all components in one container
-	public buildCopySelectorAll(container){
-		const roomElements = this.structure.getComponentContainer(container);
-		roomElements.forEach((el)=>{
-			this.buildCopySelector(el.ID, false, container);
-		});
-		this.removeContainerCopySelector(container, false);
-	}
-
-	// remove the selector in any container
-	public removeCopySelector(ID){
-		const el = document.getElementById(ID);
-		this.renderer.removeClass(el, 'selected-for-copy');
-		this.removeSelector(ID);
-	}
-
-	// removes the copy selectors from all other containers
-	// enables fast changes between different containers
-	// defines if all should be removed or just the ones outside the container
-	// container must not be defined for all removal
-	public removeContainerCopySelector(container, all: boolean){
-		const containerComponents = container ? this.structure.getComponentContainer(container) : false;
-		const selectorList = Array.from(document.querySelectorAll('.selected-for-copy'), x=> x.id);
-
-		selectorList.forEach((selector)=>{
-			if(all){
-				this.removeCopySelector(selector);
-			}else{
-				if(containerComponents && !containerComponents.find(x=>x.ID === selector)){
-					this.removeCopySelector(selector);
-				}
-			}
-		});
-	}
-
-	public reconstructCopySelectorList(){
-		setTimeout(()=>{
-			this.selectorList.forEach((selector)=>{
-				if(this.structure.getComponent(selector.ID) === null){
-					this.selectorList = [];
-				}else{
-					this.buildCopySelector(selector.ID, false, selector.selectorContainer);
-				}
-			});
-		}, 0);
 	}
 
 	// evaluate if component has selector
@@ -119,34 +85,99 @@ export class SelectComponentService {
 		return element.classList.contains('selected-for-copy') ? true : false;
 	}
 
-	// evaluate all components in container
-	public evalCopySelectorAll(container){
+	// evaluate all components in container for selector
+	public evalCopySelectorAll(container: any){
 		const containerComponents = this.structure.getComponentContainer(container);
 		let allSelected: boolean = true;
-
-		for(const comp of containerComponents){
-			if(!this.evalCopySelector(comp.ID)){
-				allSelected = false;
-				break;
+		if(containerComponents && containerComponents.length > 0){
+			for(const comp of containerComponents){
+				if(!this.evalCopySelector(comp.ID)){
+					allSelected = false;
+					break;
+				}
 			}
+		}else{
+			// container is empty
+			allSelected = false;
 		}
 		return allSelected;
 	}
 
+	// build the copy selector for all components in one container
+	public buildCopySelectorAll(container: any){
+		const roomElements = this.structure.getComponentContainer(container);
+		roomElements.forEach((el)=>{
+			this.buildCopySelector(el.ID, false);
+		});
+		this.removeContainerCopySelector(container, false);
+	}
+
+	// build the copy selector
+	// unselect selected elements if needed
+	// dirty allows selection, even if component is pinned
+	public buildCopySelector(ID: string, unselect: boolean, dirty?: boolean){
+		const el: HTMLElement = document.getElementById(ID);
+		const component: any = this.structure.getComponent(ID);
+		if(component && el){
+			if(!el.classList.contains('pinned') || dirty){
+				if(el.classList.contains('selected-for-copy')){
+					if(unselect){
+						this.renderer.removeClass(el, 'selected-for-copy');
+						this.removeSelector(ID);
+					}
+				}else{
+					this.renderer.addClass(el, 'selected-for-copy');
+					this.addSelector(component);
+				}
+			}
+		}
+		this.removeContainerCopySelector(this.componentLoader.currentContainer, false);
+	}
+
+	// build copy selector for grouped components
+	// dirty allows selection, even if component is pinned
+	public buildCopySelectorForRelevant(ID: string, unselect?: boolean, dirty?: boolean){
+		if(this.isGrouped(ID)){
+			let componentGroups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
+			if(componentGroups){
+				for(const [key, value] of Object.entries(componentGroups)){
+					if(value){
+						const group: string[] = value;
+						if(value.includes(ID)){
+							group.forEach((componentID: string)=>{
+								if(unselect){
+									// fallback to not unselect and select at the same time 
+									// due to same components in different groups
+									this.removeCopySelector(componentID);
+								}else{
+									this.buildCopySelector(componentID, false, dirty);
+								}
+							});
+						}
+					}
+				}
+			}
+		}
+		else{
+			// component is not grouped
+			// just build copy selector
+			this.buildCopySelector(ID, unselect || false, dirty);
+		}
+	}
+
 	// copy a component
-	public copyComponent(ID, container){
+	public copyComponent(ID: string, container: any){
 		// clear the copy List
 		this.copyList = [];
 		// build copy selector for selected elem
 		// if id is passed
 		// shortcuts don´t pass id
-		if(ID){
-			this.buildCopySelector(ID, false, container);
+		if(ID !== ''){
+			this.buildCopySelector(ID, false);
 		}
 		// build copy without constructor
 		const temp = [];
 		this.selectorList.forEach((item)=>{
-			// this.selectComponent.selectorList
 			let obj = {};
 			for (const [key, value] of Object.entries(item)) {
 				if(key !== 'selectorContainer'){
@@ -160,55 +191,103 @@ export class SelectComponentService {
 	}
 
 	// paste the relevant components to container
-	public pasteComponent(container){
+	public pasteComponent(container: any){
 		// get room components
 		const roomComponents = this.structure.getComponentContainer(container);
 		// get the selected elements from selector service
 		const copyList = JSON.parse(JSON.stringify(this.copyList));
+		// detect grouping
+		let isGrouped = this.isGroupedAny(copyList);
+		// get the group reference
+		const group: string[] = isGrouped ? this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group] : [];
+		// placeholder for new group of copied components
+		let newGroup: Array<any> = [];
+
 		// build new ID for every nested component
 		this.structure.modifyComponentList(copyList, (copy)=>{
-			copy.ID = this.helper.UIDgenerator();
+			// detect grouping in copy
+			if(group.includes(copy.ID)){
+				copy.ID = '_' + Math.random().toString(36).substr(2, 9);
+				newGroup.push(copy);
+			}else{
+				// component is not in a group
+				copy.ID = '_' + Math.random().toString(36).substr(2, 9);
+			}
 		});
 
 		copyList.forEach((copy)=>{
-			// setting new position to 20 px below current position
-			// position elements in swiper and popup on top, to find them
-			copy.position.top = container.element.nativeElement.parentNode.id.match(/(popup|swiper)/) ? 0 : parseInt(copy.position.top)+ 20 + 'px';
-			copy.position.left = container.element.nativeElement.parentNode.id.match(/(popup|swiper)/) ? 0 : parseInt(copy.position.left) + 'px';
+			// get the container of the component
+			// position elements 20px below
+			copy.position.top = parseInt(copy.position.top) + 20 + 'px';
 
+			// add new component to room
 			roomComponents.push(copy);
-			this.createComponent.loadRoomComponents([copy], container, false);
-			// timeout fix for component availability
-			setTimeout(()=>{
-				this.buildCopySelector(copy.ID, false, container);
-			}, 0);
+			// load the new component
+			this.componentLoader.loadRoomComponents([copy], container, false).then(()=>{
+				// assign selector to new component
+				setTimeout(()=>{
+					this.buildCopySelector(copy.ID, false);
+				});
+			});
 		});
+
+		// apply grouping if needed
+		if(newGroup.length > 1){
+			this.groupComponents('', newGroup);
+		}
 	}
 
 	// remove the relevant components to container
-	public removeComponent(component, container){
+	public removeComponent(ID: string){
 		// get room components
-		const roomComponents = this.structure.getComponentContainer(container);
+		const roomComponents = this.structure.getComponentContainer(this.componentLoader.currentContainer);
 		const removeList = [];
-		
-		roomComponents.forEach((el)=>{
-			if(this.evalCopySelector(el.ID)){
-				removeList.push(JSON.parse(JSON.stringify(el)));
+
+		if(ID !== ''){
+			this.buildCopySelector(ID, false);
+		}
+		this.selectorList.forEach((component)=>{
+			removeList.push(JSON.parse(JSON.stringify(component)));
+		});
+		// remove the selected elements
+		removeList.forEach((component)=>{
+			// find component in container
+			const index = roomComponents.findIndex(x => x.ID === component.ID);
+			if(index > -1){
+				this.componentLoader.removeDynamicComponent(component.ID);
+				this.removeCopySelector(component.ID);
+				roomComponents.splice(index, 1);
 			}
 		});
-		// check if selected component is the only one in container
-		if(component && removeList.length === 0){
-			removeList.push(JSON.parse(JSON.stringify(component)));
-		}
-		// remove the selected elements
-		removeList.forEach((el)=>{
-			this.createComponent.removeFhemComponent(el.ID);
-			this.removeCopySelector(el.ID);
-			roomComponents.splice(
-				this.helper.find(roomComponents, 'ID', el.ID).index, 1
-			);
-		});
 		this.removeGroups(removeList);
+	}
+
+	// group components
+	// custom list is used, to build group for specific list
+	public groupComponents(componentID: string, customList?: Array<any>){
+		const isGrouped = this.isGroupedAny();
+		if(isGrouped && componentID !== ''){
+			// ungroup
+			// remove selection from group
+			// except the current component
+			this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group].forEach((componentID: string)=>{
+				if(componentID !== componentID){
+					this.removeCopySelector(componentID);
+				}
+			});
+			// delete the group
+			delete this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group];
+		}else{
+			// group
+			// check if groups exist and create the container
+			if(!this.structure.rooms[this.structure.currentRoom.ID]['groupComponents']){
+				this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'] = {};
+			}
+			const groups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
+			const lastKey = Object.keys(groups)[ Object.keys(groups).length - 1 ];
+			// if groups are given, select last group integer + 1
+			groups['group' +( lastKey ? ( parseInt(lastKey.match(/\d+/g)[0]) + 1 ) : 1 ) ] = (customList || this.selectorList).map(x=> x.ID);
+		}
 	}
 
 	// remove unused groups on delete
@@ -233,9 +312,36 @@ export class SelectComponentService {
 		}
 	}
 
+	// remove the selector in any container
+	public removeCopySelector(ID: string){
+		const el = document.getElementById(ID);
+		this.renderer.removeClass(el, 'selected-for-copy');
+		this.removeSelector(ID);
+	}
+
+	// removes the copy selectors from all other containers
+	// enables fast changes between different containers
+	// defines if all should be removed or just the ones outside the container
+	// container must not be defined for all removal
+	public removeContainerCopySelector(container: any, all: boolean){
+		const containerComponents = container ? this.structure.getComponentContainer(container) : false;
+		// build selector list to untouch selector array first
+		const selectorList = Array.from(document.querySelectorAll('.selected-for-copy'), x=> x.id);
+
+		selectorList.forEach((selector)=>{
+			if(all){
+				this.removeCopySelector(selector);
+			}else{
+				if(containerComponents && !containerComponents.find(x=>x.ID === selector)){
+					this.removeCopySelector(selector);
+				}
+			}
+		});
+	}
+
 	// eval grouped components
 	// determine grouped components, component is in other groups
-	public isGrouped(ID){
+	public isGrouped(ID: string){
 		let result: any = false;
 		let componentGroups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
 		if(componentGroups){
@@ -255,6 +361,20 @@ export class SelectComponentService {
 				if(result){
 					break;
 				}
+			}
+		}
+		return result;
+	}
+
+	// detect if any of the selected components is grouped
+	// can receive Array as well --> detect grouping in copys
+	public isGroupedAny(arr?: Array<any>){
+		let result: any = false;
+		for(const selector of arr || this.selectorList){
+			let group = this.isGrouped(selector.ID);
+			if(group){
+				result = group;
+				break;
 			}
 		}
 		return result;
