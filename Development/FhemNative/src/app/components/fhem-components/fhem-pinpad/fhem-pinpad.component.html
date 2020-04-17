@@ -1,0 +1,86 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="200"
+	[minimumHeight]="270">
+	<div class="pinpad">
+		<div class="pinpad-valid" *ngIf="fhemDevice?.readings[data_pin]" colorizer [theme]="settings.app.theme" [style]="['background', 'secondary']">
+			<div class="pinpad-header">
+				<table class="dot-container">
+					<tr>
+						<td *ngFor="let dot of pin; let i = index">
+							<span class="dot" [ngClass]="(enteredPin.length >= i + 1 ? 'active' : 'not-active')"></span>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="pinpad-content">
+				<div class="state-container">
+					<p
+						*ngIf="falseCounter.toString() !== data_tries"
+						[ngClass]="(fhemDevice.readings[data_reading].Value === data_getOn ? 'on' : 'off')"
+						class="state">{{(fhemDevice.readings[data_reading].Value === data_getOn ? data_labelOnText: data_labelOffText)}}
+					</p>
+					<p
+						*ngIf="falseCounter.toString() === data_tries"
+						class="false-text">{{falseText}}
+					</p>
+				</div>
+				<div class="btns">
+					<table>
+						<tr>
+							<td *ngFor="let num of [1,2,3]">
+								<button 
+									colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
+									class="btn" matRipple [matRippleColor]="'#d4d4d480'" (click)="enterNum(num)">{{num}}
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td *ngFor="let num of [4,5,6]">
+								<button 
+									colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
+									class="btn" matRipple [matRippleColor]="'#d4d4d480'" (click)="enterNum(num)">{{num}}
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td *ngFor="let num of [7,8,9]">
+								<button 
+									colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
+									class="btn" matRipple [matRippleColor]="'#d4d4d480'" (click)="enterNum(num)">{{num}}
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button 
+									colorizer [theme]="settings.app.theme" [style]="['color', 'text']" (click)="removeNum()"
+									class="btn" matRipple [matRippleColor]="'#d4d4d480'">
+									<ion-icon name="arrow-back"></ion-icon>
+								</button>
+							</td>
+							<td>
+								<button 
+									colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
+									class="btn" matRipple [matRippleColor]="'#d4d4d480'" (click)="enterNum(0)">0
+								</button>
+							</td>
+							<td>
+								<button 
+									colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
+									class="btn" matRipple [matRippleColor]="'#d4d4d480'" (click)="setOn()">
+									<ion-icon name="key"></ion-icon>
+								</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" *ngIf="!fhemDevice?.readings[data_pin]">
+			{{'COMPONENTS.Pinpad.TRANSLATOR.NO_PIN_READING' | translate}}
+			{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
+		</p>
+	</div>
+</fhem-component-container>

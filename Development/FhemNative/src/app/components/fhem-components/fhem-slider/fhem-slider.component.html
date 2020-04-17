@@ -1,0 +1,138 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="arr_data_orientation[0] === 'horizontal' ? 200 : 30"
+	[minimumHeight]="arr_data_orientation[0] === 'horizontal' ? 30 : 200">
+	<div class="slider">
+		<!-- Basic slider -->
+		<ng-container *ngIf="arr_data_style[0] === 'slider'">
+			<div class="slider-container drag-item slider-one" [ngClass]="arr_data_orientation[0]"
+				[ngStyle]="{
+					'background': style_backgroundColor,
+					'height': arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%',
+					'width': arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : '100%'
+				}">
+				<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider-one', thumb: true, pin: true}"></ng-container>
+			</div>
+		</ng-container>
+		<!-- Slider Box -->
+		<ng-container *ngIf="arr_data_style[0] === 'box'">
+			<div class="slider-container box" [ngClass]="arr_data_orientation[0]" [style.background]="style_backgroundColor">
+				<button [ngStyle]="styles.baseBtnReduceStyle" matRipple [matRippleColor]="'#d4d4d480'" class="slider-box-btn left" (click)="setStep('reduce')">
+					<ion-icon [style.color]="style_iconColor" name="remove"></ion-icon>
+				</button>
+				<div class="slider-box-inner drag-item slider-two"
+					[ngStyle]="{
+						'height': arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% - 80px)',
+						'width': arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% - 80px)'
+					}">
+					<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider-two', thumb: true, pin: false}"></ng-container>
+				</div>
+				<button [ngStyle]="styles.baseBtnAddStyle" matRipple [matRippleColor]="'#d4d4d480'" class="slider-box-btn right" (click)="setStep('add')">
+					<ion-icon [style.color]="style_iconColor" name="add"></ion-icon>
+				</button>
+			</div>
+		</ng-container>
+		<!-- IOS Slider -->
+		<ng-container *ngIf="arr_data_style[0] === 'ios-slider'">
+			<div class="slider-container ios drag-item" [ngClass]="arr_data_orientation[0]" [style.background]="style_backgroundColor">
+				<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider-three', thumb: false, pin: false}"></ng-container>
+				<icon [icon]="icon_sliderIcon" [style.color]="style_iconColor" [ngStyle]="styles.baseIconStyle"></icon>
+			</div>
+		</ng-container>
+		<!-- Tick Slider -->
+		<ng-container *ngIf="arr_data_style[0] === 'tick-slider'">
+			<div class="slider-container tick-slider slider-four" [ngClass]="arr_data_orientation[0]">
+				<div class="tick-slider-slide-container drag-item slider-four"
+					[ngStyle]="{
+						'background': style_backgroundColor,
+						'height': arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%',
+						'width': arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : '100%'
+					}">
+					<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider-four', thumb: true, pin: true}"></ng-container>
+				</div>
+				<div class="tick-container"
+					[ngStyle]="{
+						'height': arr_data_orientation[0] === 'horizontal' ? '50%' : '100%',
+						'width': arr_data_orientation[0] === 'horizontal' ? '100%' : '50%'
+					}">
+					<span class="tick" *ngFor="let tick of data_ticks"
+						[ngStyle]="{
+							'left': arr_data_orientation[0] === 'horizontal' ?
+								( styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'initial',
+							'right': arr_data_orientation[0] === 'horizontal' ?
+								( !styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'0px',
+							'bottom': arr_data_orientation[0] === 'vertical' ?
+								( styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'0px',
+							'top': arr_data_orientation[0] === 'vertical' ?
+								( !styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'0px',
+							'background': styles.move >= ((100 / (data_ticks.length - 1)) * tick) ? style_tickColor : style_backgroundColor,
+							'height': arr_data_orientation[0] === 'horizontal' ? 
+								( styles.move >= ((100 / (data_ticks.length - 1)) * tick) ? '100%' : '50%' ) : 
+								'2px',
+							'width': arr_data_orientation[0] === 'vertical' ?
+								( styles.move >= ((100 / (data_ticks.length - 1)) * tick) ? '100%' : '50%' ) : 
+								'2px'
+						}">
+					</span>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</fhem-component-container>
+
+<ng-template #SLIDER_ACTIVE let-class let-thumb="thumb" let-pin="pin">
+	<div class="slider-bg drag-item"
+		[ngClass]="class"
+		[style.background]="style_fillColor"
+		[style.height.%]="arr_data_orientation[0] === 'horizontal' ? 100 : styles.move"
+		[style.width.%]="arr_data_orientation[0] === 'horizontal' ? styles.move : 100"
+		[ngStyle]="styles.baseSliderStyle">
+		<ng-container *ngIf="thumb">
+			<ng-container *ngTemplateOutlet="THUMB; context: {$implicit: class, pin: pin}"></ng-container>	
+		</ng-container>	
+	</div>
+</ng-template>
+
+<ng-template #THUMB let-class let-pin="pin">
+	<div class="slider-thumb drag-item"
+		[ngClass]="class"
+		[ngStyle]="{
+			'background': style_thumbColor,
+			'width.px': data_thumbWidth,
+			'height.px': data_thumbHeight,
+			'left': arr_data_orientation[0] === 'horizontal' ? 'calc('+ styles.baseThumbStyle.left +' - '+ (data_thumbWidth / 2) +'px)' : '50%',
+			'top': arr_data_orientation[0] === 'horizontal' ? '50%' : 'calc('+ styles.baseThumbStyle.top +' - '+ (data_thumbHeight / 2)  +'px)'
+		}">
+		<span 
+			*ngIf="bool_data_showValueInThumb" class="thumb-value"
+			[ngStyle]="{
+				'color': style_thumbValueColor,
+				'line-height': (arr_data_orientation[0] === 'horizontal' ? data_thumbHeight : data_thumbWidth) + 'px'
+			}">{{displayAs(value) + data_labelExtension}}
+		</span>
+		<ng-container *ngIf="pin">
+			<ng-container *ngTemplateOutlet="PIN; context: {$implicit: class}"></ng-container>
+		</ng-container>
+	</div>
+</ng-template>
+
+<ng-template #PIN let-class>
+	<span 
+		colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="slider-pin" [ngClass]="class" [class.show]="styles.showPin"
+		[ngStyle]="{
+			'background': style_fillColor,
+			'top': arr_data_orientation[0] === 'horizontal' ? (data_thumbHeight * -1) + 'px' : '50%',
+			'left': arr_data_orientation[0] === 'vertical' ? (data_thumbWidth * -1) + 'px' : '50%'
+		}">
+		{{displayAs(value) + data_labelExtension}}
+		<span class="pin-arrow" [style.borderTopColor]="style_fillColor"></span>
+	</span>
+</ng-template>
+
+
+

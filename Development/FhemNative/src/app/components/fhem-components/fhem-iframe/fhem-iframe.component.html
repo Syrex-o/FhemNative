@@ -1,0 +1,15 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="100"
+	[minimumHeight]="100">
+	<div class="iframe">
+		<iframe *ngIf="(src && fhemDevice) || (src && !fhemDevice)" [src]="src" [frameBorder]="bool_data_showBorder ? 1 : 0"></iframe>
+		<p 
+			colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+			*ngIf="src === '' || !src" class="error">
+			{{'COMPONENTS.IFrame.TRANSLATOR.NO_URL' | translate}}
+			{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
+		</p>
+	</div>
+</fhem-component-container>

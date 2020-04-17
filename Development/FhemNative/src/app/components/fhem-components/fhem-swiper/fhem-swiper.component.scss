@@ -1,0 +1,28 @@
+:host{
+	.swiper{
+		width: inherit;
+		height: inherit;
+		p{
+			text-align: center;
+			margin: 0;
+			line-height: 35px;
+		}
+		.btn-round{
+			position: absolute;
+		    top: 0;
+		    right: 0;
+		    z-index: 101;
+		}
+		.content{
+			position: relative;
+			height: 100%;
+			width: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+			.container{
+				width: inherit;
+				height: inherit;
+			}
+		}
+	}
+}

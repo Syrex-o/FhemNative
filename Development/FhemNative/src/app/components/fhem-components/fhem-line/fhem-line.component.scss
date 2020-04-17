@@ -1,0 +1,19 @@
+:host{
+	.line{
+		width: inherit;
+		height: inherit;
+		.line-item{
+			position: absolute;
+			&.horizontal{
+				width: 100%;
+				top: 50%;
+				left: 0;
+			}
+			&.vertical{
+				height: 100%;
+				left: 50%;
+				top: 0;
+			}
+		}
+	}
+}

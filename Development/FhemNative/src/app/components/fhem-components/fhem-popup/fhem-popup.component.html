@@ -1,0 +1,39 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="30"
+	[minimumHeight]="30">
+	<button 
+		class="popup btn-round outer" 
+		matRipple [matRippleColor]="'#d4d4d480'"
+		[style.background]="popupState ? style_backgroundColorOn : style_backgroundColorOff"
+		(click)="togglePopup()">
+		<icon 
+			[icon]="popupState ? icon_iconOn : icon_iconOff"
+			[style.color]="popupState ? style_iconColorOn : style_iconColorOff">
+		</icon>
+	</button>
+</fhem-component-container>
+<popup 
+	[(ngModel)]="popupState"
+	[width]="data_width"
+	[height]="data_height"
+	[backdropDismiss]="allowBackdrop"
+	[closeButtonDismiss]="allowCloseButton"
+	[animation]="bool_data_customAnimation ? arr_data_animationStyle[0] : 'scale'"
+	[invertAnimation]="bool_data_customAnimation ? bool_data_invertAnimation : false"
+	(onOpen)="popupOpened()"
+	(onClose)="popupClosed()">
+	<div header>
+		<h1 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ (data_headline !== '' ? data_headline : data_device) }}</h1>
+		<button 
+			colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
+			matRipple [matRippleColor]="'#d4d4d480'" class="btn-round inner blue" 
+			*ngIf="showEditButton && settings.app.enableEditing && !settings.modes.roomEdit" (click)="editPopup()">
+			<ion-icon name="create"></ion-icon>
+		</button>
+	</div>
+	<div body class="content" [attr.id]="'container@' + 'popup_@' + ID">
+		<ng-container class="container" #container></ng-container>
+	</div>
+</popup>

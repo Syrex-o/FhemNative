@@ -1,0 +1,18 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, offline: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="30"
+	[minimumHeight]="30">
+	<div class="icon" [class.show-indicator]="bool_data_showIndocator && fhemDevice && fhemDevice.readings[data_indicatorReading]">
+		<span 
+			class="indicator" 
+			*ngIf="bool_data_showIndocator && fhemDevice && fhemDevice.readings[data_indicatorReading]"
+			[ngStyle]="{'color': style_indicatorColor, 'background-color': style_indicatorBackgroundColor}">
+			{{fhemDevice.readings[data_indicatorReading].Value}}
+		</span>
+		<icon 
+			[icon]="iconState ? icon_iconOn : icon_iconOff"
+			[style.color]="iconState ? style_iconColorOn : style_iconColorOff">
+		</icon>
+	</div>
+</fhem-component-container>

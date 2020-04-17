@@ -1,0 +1,16 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="80"
+	[minimumHeight]="30">
+	<div class="select">
+		<selector
+			*ngIf="items.length > 0 || alias.length > 0"
+			[items]="alias.length > 0 ? alias : items"
+			[searchable]="false"
+			[(ngModel)]="selected"
+			(onValueChange)="changeSelection($event)">
+			
+		</selector>
+	</div>
+</fhem-component-container>

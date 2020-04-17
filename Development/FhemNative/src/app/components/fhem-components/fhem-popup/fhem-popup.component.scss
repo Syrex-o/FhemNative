@@ -1,0 +1,33 @@
+:host{
+	.popup{
+		width: inherit;
+		height: inherit;
+		icon{
+			width: 90%;
+		    height: 90%;
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		}
+	}
+	.btn-round{
+		position: absolute;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    &.inner{
+	    	right: 80px;
+	    }
+	}
+	.content{
+		position: relative;
+		height: 100%;
+		width: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		.container{
+			width: inherit;
+			height: inherit;
+		}
+	}
+}

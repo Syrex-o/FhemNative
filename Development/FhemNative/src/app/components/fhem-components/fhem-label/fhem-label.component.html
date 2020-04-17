@@ -1,0 +1,25 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="60"
+	[minimumHeight]="40">
+	<div class="label">
+		<p 
+			colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+			class="error" *ngIf="!label || label === ''">
+			{{'COMPONENTS.Label.TRANSLATOR.NO_LABEL' | translate}}
+			{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
+		</p>
+		<p
+			*ngIf="label || label !== ''"
+			class="label-item"
+			[ngStyle]="{
+				'font-size.px': data_size, 
+				'font-weight': data_fontWeight, 
+				'color': fhemDevice ? getValueColor() : style_color,
+				'text-align': arr_data_textAlign[0]
+			}">
+			{{ label + data_labelExtension }}
+		</p>
+	</div>
+</fhem-component-container>
