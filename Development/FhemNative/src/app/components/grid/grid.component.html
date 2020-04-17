@@ -1,0 +1,9 @@
+<div 
+	clicker [source]="'grid'" [editingEnabled]="true" 
+	(onContextClick)="createContextMenu($event)"
+	(onLongClick)="createContextMenu($event)"
+	(onDoubleClick)="createContextMenu($event)"
+	class="grid" (click)="deselectComponents()">
+	<span *ngFor="let w of gridW; let i = index;" class="grid-line w" [ngStyle]="{'left.px': w, 'height.px': gridHeight}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
+	<span *ngFor="let h of gridH; let i = index;" class="grid-line h" [ngStyle]="{'top.px': h}" [ngClass]="(i+1) % 7 == 0 ? 'bold' : ''"></span>
+</div>

@@ -1,0 +1,19 @@
+<div @PopupPicker class="picker-container {{animation}}" *ngIf="showPicker" [style.z-index]="zIndex">
+	<div colorizer [theme]="settings.app.theme" [style]="['background', 'secondary-op']" class="picker-backdrop" (click)="closePicker(backdropDismiss)"></div>
+	<div 
+		colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
+		[@PickerContent]="animation"
+		[ngStyle]="{'height.%': height}"
+		class="picker-content">
+		<div class="picker-header">
+			<div class="header-left">
+				<ng-content select="[header]"></ng-content>
+			</div>
+			<button matRipple [matRippleColor]="'#d4d4d480'" *ngIf="showConfirmBtn" class="confirm btn" (click)="confirm()">{{ confirmBtn || ('GENERAL.BUTTONS.CONFIRM' | translate) }}</button>
+			<button matRipple [matRippleColor]="'#d4d4d480'" *ngIf="showCancelBtn" class="cancel btn" (click)="cancel()">{{ cancelBtn || ('GENERAL.BUTTONS.CANCEL' | translate) }}</button>
+		</div>
+		<div class="picker-body">
+			<ng-content select="[body]"></ng-content>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,74 @@
+:host{
+	.thermostat{
+		width: inherit;
+		height: inherit;
+		// basic thermostat
+		.thermostat-one{
+			width: 100%;
+			height: 100%;
+			line{
+				stroke: #fff;
+			}
+			.dragger{
+				cursor: pointer;
+				ellipse,
+				path{
+					fill: #ddd;
+				}
+				text{
+					user-select: none;
+					font-size: 1.7em;
+					position: absolute;
+					transform: translate3d(-25px,0,0);
+				}
+				.dragTip{
+					transform: translate3d(-245px, -380px,0);
+					transform-origin: 20% 50%;
+				}
+			}
+			#liquid{
+				position: absolute;
+				transform: translate3d(-160%, -80%,0);
+				&.animate{
+					animation: mover 1s linear infinite;
+				}
+			}
+		}
+		// circular-one
+		.thermostat-two{
+			width: 100%;
+			height: 100%;
+			z-index: 2;
+			user-select: none;
+			.tick{
+				stroke-width: 1;
+			}
+			.temp{
+				font-size: 4rem;
+				font-weight: 400;
+				dominant-baseline: central;
+				font-variant-numeric: tabular-nums;
+			}
+			.control{
+				transform-origin: 50% 50%;
+				.track {
+				  	fill: none;
+				  	transform-origin: 50% 50%;
+				}
+				.handle{
+					cursor: pointer;
+				}
+			}
+		}
+	}
+
+	// animations
+	@keyframes mover{
+		0%{
+			transform: translate3d(-100%, -80%,0);
+		}
+		100%{
+			transform: translate3d(-180%, -80%,0);
+		}
+	}
+}

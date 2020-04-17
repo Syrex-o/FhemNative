@@ -1,0 +1,18 @@
+<div class="timepicker-container">
+	<button class="btn" (click)="openPicker()" matRipple [matRippleColor]="'#d4d4d480'">
+		<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{label}}</p>
+		<ion-datetime 
+			colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+			#datetime class="time"
+			[displayFormat]="timeFormat"
+			[pickerFormat]="timeFormat"
+			[(ngModel)]="value"
+			[cancelText]="cancelBtn"
+			[doneText]="confirmBtn"
+			[hourValues]="timeVals.hours"
+			[minuteValues]="timeVals.mins"
+			(ionChange)="updateTime($event)"
+			(ionCancel)="closePicker()">
+		</ion-datetime>
+	</button>
+</div>

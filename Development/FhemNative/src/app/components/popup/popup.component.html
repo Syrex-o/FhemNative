@@ -1,0 +1,30 @@
+<div @PopupPicker class="popup-container" *ngIf="showPopup">
+	<div colorizer [theme]="settings.app.theme" [style]="['background', 'secondary-op']" class="popup-backdrop" (click)="closePopup(backdropDismiss)"></div>
+	<div 
+		colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
+		[@PopupContent]="toggleAnimation"
+		[ngStyle]="{'width.%': width,'height.%': height}"
+		class="popup-content">
+		<div 
+			class="popup-header">
+			<div class="header-left">
+				<ng-content select="[header]"></ng-content>
+			</div>
+			<div class="header-right" *ngIf="showCloseButton">
+				<button 
+					colorizer [theme]="settings.app.theme" [style]="['background', 'secondary']"
+					matRipple [matRippleColor]="'#d4d4d480'"
+					class="close-container" 
+					(click)="closePopup(closeButtonDismiss)">
+					<div class="close">
+						<span colorizer [theme]="settings.app.theme" [style]="['background', 'text']" class="line top"></span>
+						<span colorizer [theme]="settings.app.theme" [style]="['background', 'text']" class="line bottom"></span>
+					</div>
+				</button>
+			</div>
+		</div>
+		<div class="popup-body">
+			<ng-content select="[body]"></ng-content>
+		</div>
+	</div>
+</div>

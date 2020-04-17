@@ -1,0 +1,40 @@
+<div class="switch-container" [ngStyle]="{'border-bottom': showBorder ? ('1px solid ' + borderColor) : '0px'}" [class.padding]="padding" [class.full-height]="fullHeight">
+	<!-- Standard toggle -->
+	<ng-container *ngIf="switchStyle === 'toggle'">
+		<ng-container *ngTemplateOutlet="TOGGLE"></ng-container>
+	</ng-container>
+	<ng-container *ngIf="switchStyle === 'toggle-outline'">
+		<ng-container *ngTemplateOutlet="TOGGLE_OUTLINE"></ng-container>
+	</ng-container>
+</div>
+
+<!-- Standard toggle -->
+<ng-template #TOGGLE>
+	<ng-container *ngTemplateOutlet="LABELS"></ng-container>
+	<button 
+		class="toggle inline"
+		(click)="toggle()"
+		[class.on]="toggleState"
+		[style.background]="toggleState ? colorOn : colorOff">
+		<span [style.background]="toggleState ? thumbColorOn : thumbColorOff"></span>
+	</button>
+</ng-template>
+<!-- Outline toggle -->
+<ng-template #TOGGLE_OUTLINE>
+	<ng-container *ngTemplateOutlet="LABELS"></ng-container>
+	<button 
+		class="toggle outline"
+		(click)="toggle()"
+		[class.on]="toggleState"
+		[style.background]="toggleState ? colorOn : colorOff">
+		<span [style.background]="toggleState ? thumbColorOn : thumbColorOff"></span>
+	</button>
+</ng-template>
+
+<!-- Toggle Text -->
+<ng-template #LABELS>
+	<div class="label-container" [class.title-only]="!subTitle || subTitle === ''">
+		<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="title">{{label}}</p>
+		<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="subtitle" *ngIf="subTitle && subTitle !== ''">{{subTitle}}</p>
+	</div>
+</ng-template>

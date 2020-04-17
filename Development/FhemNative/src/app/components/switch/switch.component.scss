@@ -1,0 +1,86 @@
+:host{
+	.switch-container{
+		position: relative;
+		width: 100%;
+		min-height: 45px;
+		&.padding{
+			padding-left: 8px;
+		}
+		// toggles
+		button{
+			background-color: transparent;
+			margin-right: 8px;
+			padding: 0;
+		}
+		.toggle{
+			position: absolute;
+			right: 0;
+			height: 100%;
+			width: 70px;
+			cursor: pointer;
+			user-select: none;
+			top: 50%;
+		    transform: translate3d(0,-50%,0);
+			&.inline{
+				border-radius: 2em;
+		    	padding: 2px;
+		    	width: 36px;
+		    	height: 14px;
+			}
+			&.outline{
+				width: 50px;
+				height: 26px;
+				border: 0.5px solid #ddd;
+				border-radius: 2em;
+			}
+			&.on{
+				span{
+					transform: translate3d(0,-50%,0);
+				}
+			}
+		}
+		span{
+			position: absolute;
+			top: 50%;
+			transform: translate3d(-100%,-50%,0);
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+			transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		}
+		// labels
+		.label-container{
+			position: absolute;
+			width: calc(100% - 70px);
+			height: 100%;
+			text-align: left;
+			p{
+				position: absolute;
+				width: 100%;
+				margin: 0;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				transform: translateY(-50%);
+			}
+			.title{
+				top: calc(50% - 10px);
+				font-size: 1.1em;
+			}
+			.subtitle{
+				top: calc(50% + 10px);
+				font-size: 13px;
+				line-height: 15px;
+			}
+			&.title-only{
+				.title{
+					top: 50%;
+				}
+			}
+		}
+		&.full-height{
+			height: 100%;
+		}
+	}
+}
