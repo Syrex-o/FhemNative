@@ -1,8 +1,8 @@
 {
   "_from": "cordova-sqlite-storage",
-  "_id": "cordova-sqlite-storage@3.3.0",
+  "_id": "cordova-sqlite-storage@4.0.0",
   "_inBundle": false,
-  "_integrity": "sha512-RBgGAe8rf/k54JC12xtt/14PxJrh42C4ISd+P8fqZq5Kw6JfQGh/55/VTsjI29rInl5jO5fwpYee/InGYlmI9w==",
+  "_integrity": "sha512-/n5KT3TyRAC7QRe9A4Sn7bMpdsBJ6aMmHat2PsMxFZBot45SOxbAEgfGmXtq0e7OEdVzk573sIn42bLS6lNLjQ==",
   "_location": "/cordova-sqlite-storage",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-sqlite-storage/-/cordova-sqlite-storage-3.3.0.tgz",
-  "_shasum": "f52580102559e5d0b822ffa3170b5bcfdb326846",
+  "_resolved": "https://registry.npmjs.org/cordova-sqlite-storage/-/cordova-sqlite-storage-4.0.0.tgz",
+  "_shasum": "50a4ac0f4d198fa9837079805572457bc839d9c8",
   "_spec": "cordova-sqlite-storage",
-  "_where": "/Users/macos/Desktop/Ionic/FhemNative/FhemNative",
+  "_where": "/Users/macos/Desktop/FhemNative/Development/FhemNative",
   "author": {
     "name": "various"
   },
@@ -40,7 +40,7 @@
     ]
   },
   "dependencies": {
-    "cordova-sqlite-storage-dependencies": "2.1.0"
+    "cordova-sqlite-storage-dependencies": "2.1.1"
   },
   "deprecated": false,
   "description": "Native interface to SQLite for PhoneGap/Cordova - cordova-sqlite-storage plugin version",
@@ -69,5 +69,5 @@
     "prepare-js": "coffee -p SQLitePlugin.coffee.md > www/SQLitePlugin.js",
     "prepare-spec": "node scripts/prepareSpec.js"
   },
-  "version": "3.3.0"
+  "version": "4.0.0"
 }

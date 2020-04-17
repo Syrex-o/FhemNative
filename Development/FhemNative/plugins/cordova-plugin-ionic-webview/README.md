@@ -72,6 +72,15 @@ Default value is `http`
 
 Configures the Scheme the app uses to load the content.
 
+#### ResolveServiceWorkerRequests
+
+```xml
+<preference name="ResolveServiceWorkerRequests" value="true" />
+```
+
+Default value is `false`
+
+Enable to resolve requests made by Service Workers through the local server.
 
 #### MixedContentMode
 
@@ -124,6 +133,14 @@ Set to false to stop WKWebView suspending in background too eagerly.
 ```
 
 Whether to use a dark styled keyboard on iOS
+
+#### ScrollEnabled
+
+```xml
+<preference name="ScrollEnabled" value="true" />
+```
+
+Ionic apps work better if the WKWebView is not scrollable, so the scroll is disabled by default, but can be enabled with this preference. This only affects the main ScrollView of the WKWebView, so only affects the body, not other scrollable components.
 
 ## Plugin Requirements
 

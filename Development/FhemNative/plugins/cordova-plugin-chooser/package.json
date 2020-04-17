@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-chooser",
-  "_id": "cordova-plugin-chooser@1.2.5",
+  "_id": "cordova-plugin-chooser@1.2.7",
   "_inBundle": false,
-  "_integrity": "sha512-md5ZT3Q3aIV/G0VJNWifsYc/aObNijlAO2reOh7ZOv0UvjqLPvbhapkDsKx7852nGUQeS0MFlhJ6SDNlNl7ftQ==",
+  "_integrity": "sha512-Djpxxa+LwwgRaAT5Ba18/bai5bucrJTrah1M2H8FxubgKkLm980OXmVnqzGwI92x111VJnMQx53QGbZyBNWgbA==",
   "_location": "/cordova-plugin-chooser",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-chooser/-/cordova-plugin-chooser-1.2.5.tgz",
-  "_shasum": "869c758857f660cc124193c261a0f130ba23e96b",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-chooser/-/cordova-plugin-chooser-1.2.7.tgz",
+  "_shasum": "af920f9e29c9f793151fd313135f2048353f76a7",
   "_spec": "cordova-plugin-chooser",
-  "_where": "/Users/macos/Desktop/Ionic/FhemNative/FhemNative",
+  "_where": "/Users/macos/Desktop/FhemNative/Development/FhemNative",
   "author": {
     "name": "Cyph, Inc.",
     "email": "cordova-plugin-chooser@cyph.com",
@@ -60,5 +60,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.2.5"
+  "version": "1.2.7"
 }

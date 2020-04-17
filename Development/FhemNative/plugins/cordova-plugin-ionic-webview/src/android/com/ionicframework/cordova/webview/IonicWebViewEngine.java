@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.webkit.ServiceWorkerController;
+import android.webkit.ServiceWorkerClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -31,6 +33,7 @@ public class IonicWebViewEngine extends SystemWebViewEngine {
 
   private WebViewLocalServer localServer;
   private String CDV_LOCAL_SERVER;
+  private String scheme;
   private static final String LAST_BINARY_VERSION_CODE = "lastBinaryVersionCode";
   private static final String LAST_BINARY_VERSION_NAME = "lastBinaryVersionName";
 
@@ -60,7 +63,7 @@ public class IonicWebViewEngine extends SystemWebViewEngine {
     parser.parse(cordova.getActivity());
 
     String hostname = preferences.getString("Hostname", "localhost");
-    String scheme = preferences.getString("Scheme", "http");
+    scheme = preferences.getString("Scheme", "http");
     CDV_LOCAL_SERVER = scheme + "://" + hostname;
 
     localServer = new WebViewLocalServer(cordova.getActivity(), hostname, true, parser, scheme);
@@ -78,6 +81,19 @@ public class IonicWebViewEngine extends SystemWebViewEngine {
     String path = prefs.getString(IonicWebView.CDV_SERVER_PATH, null);
     if (!isDeployDisabled() && !isNewBinary() && path != null && !path.isEmpty()) {
       setServerBasePath(path);
+    }
+
+    boolean setAsServiceWorkerClient = preferences.getBoolean("ResolveServiceWorkerRequests", false);
+    ServiceWorkerController controller = null;
+
+    if (setAsServiceWorkerClient && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        controller = ServiceWorkerController.getInstance();
+        controller.setServiceWorkerClient(new ServiceWorkerClient(){
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebResourceRequest request) {
+                return localServer.shouldInterceptRequest(request.getUrl(), request);
+            }
+        });
     }
   }
 
@@ -138,7 +154,7 @@ public class IonicWebViewEngine extends SystemWebViewEngine {
         view.stopLoading();
         // When using a custom scheme the app won't load if server start url doesn't end in /
         String startUrl = CDV_LOCAL_SERVER;
-        if (!CDV_LOCAL_SERVER.startsWith(WebViewLocalServer.httpsScheme) && !CDV_LOCAL_SERVER.startsWith(WebViewLocalServer.httpScheme)) {
+        if (!scheme.equalsIgnoreCase(WebViewLocalServer.httpsScheme) && !scheme.equalsIgnoreCase(WebViewLocalServer.httpScheme)) {
           startUrl += "/";
         }
         view.loadUrl(startUrl);

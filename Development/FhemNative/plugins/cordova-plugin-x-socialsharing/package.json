@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-x-socialsharing",
-  "_id": "cordova-plugin-x-socialsharing@5.6.0",
+  "_id": "cordova-plugin-x-socialsharing@5.6.4",
   "_inBundle": false,
-  "_integrity": "sha512-z/8XqFf9tK34gIv3TA+FwNwyLX3Wv5cCi/74/HpfP30dAjwTpFzFXXeoWhpckJwDGTKoP3DnBCZLGKuo4kxBfQ==",
+  "_integrity": "sha512-bBjWY9TgoH1CMK4P26zLT1D9rVcvI9LoIEGUjmwdLGiBP+IWo7RXu90RM1xHmVjG5hVLgmic5XyWc665ye8aRQ==",
   "_location": "/cordova-plugin-x-socialsharing",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-x-socialsharing/-/cordova-plugin-x-socialsharing-5.6.0.tgz",
-  "_shasum": "b0ba7a155688b43e15494859ddbeacb8968e0281",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-x-socialsharing/-/cordova-plugin-x-socialsharing-5.6.4.tgz",
+  "_shasum": "92b87dc9daddfa8d1db4692257b1968f60e61ee6",
   "_spec": "cordova-plugin-x-socialsharing",
-  "_where": "/Users/macos/Desktop/Ionic/FhemNative/FhemNative",
+  "_where": "/Users/macos/Desktop/FhemNative/Development/FhemNative",
   "author": {
     "name": "Eddy Verbruggen - @EddyVerbruggen"
   },
@@ -74,5 +74,5 @@
     "url": "git+https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git"
   },
   "types": "./types/index.d.ts",
-  "version": "5.6.0"
+  "version": "5.6.4"
 }

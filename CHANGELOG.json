@@ -328,7 +328,10 @@
       			{"TYPE": "NEW", "CHANGE": "Update to Ionic 5"},
       			{"TYPE": "NEW", "CHANGE": "Alignment to Android Color Sheme"},
       			{"TYPE": "NEW", "CHANGE": "Redesign of Popup component"},
-      			{"TYPE": "NEW", "CHANGE": "Popup animations"}
+      			{"TYPE": "NEW", "CHANGE": "Popup animations"},
+      			{"TYPE": "NEW", "CHANGE": "Task change recognition"},
+      			{"TYPE": "NEW", "CHANGE": "Task fhem device handler"},
+      			{"TYPE": "NEW", "CHANGE": "Update components are now able to reload, to ensure they are fresh after connection loss"},
       		]
     	}
 	]

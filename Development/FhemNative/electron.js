@@ -3,10 +3,13 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
+
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
+
 let win, serve
 const args = process.argv.slice(1)
 serve = args.some(val => val === '--serve')
+
 function createWindow() {
     win = new BrowserWindow({
         width: 1800,
