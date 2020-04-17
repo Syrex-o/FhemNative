@@ -1,0 +1,33 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: null, reading: null, offline: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="100"
+	[minimumHeight]="100"
+	outside-click (onOutsideClick)="outsideClick($event)">
+	<div class="tabs">
+		<button 
+			colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
+			matRipple [matRippleColor]="'#d4d4d480'" class="btn-round inner blue" 
+			*ngIf="showEditButton && settings.app.enableEditing && settings.modes.roomEdit" (click)="editTabs()">
+			<ion-icon name="create"></ion-icon>
+		</button>
+		<ul class="tab-header">
+			<li *ngFor="let page of pages; first as isFirst; last as isLast"
+				matRipple [matRippleColor]="'#d4d4d480'"
+				(click)="switchTab(page)"
+				[class.first]="isFirst"
+				[class.last]="isLast"
+				[class.active]="page === activePage"
+				[ngStyle]="{'background-color': page === activePage ? (arr_style_backGroundColors[page] || arr_style_backGroundColors[0]) : 'transparent'}">
+				<icon [icon]="arr_icon_icons[page] || arr_icon_icons[0]" [style.color]="arr_style_iconColors[page] || arr_style_iconColors[0]"></icon>
+			</li>
+		</ul>
+		<div class="tab-content-container">
+			<div class="tab-content" [class.active]="page === activePage" *ngFor="let page of pages" [style.background-color]="arr_style_backGroundColors[page] || arr_style_backGroundColors[0]">
+				<div class="content" [attr.id]="'container@' + page + '_tabs_@' + ID">
+					<ng-container class="container" #container></ng-container>
+				</div>
+			</div>
+		</div>
+	</div>
+</fhem-component-container>
