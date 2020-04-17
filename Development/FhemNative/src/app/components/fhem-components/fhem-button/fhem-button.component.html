@@ -1,0 +1,33 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, connected: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="30"
+	[minimumHeight]="30">
+	<button 
+		matRipple [matRippleColor]="'#d4d4d480'"
+		(click)="sendCmd()"
+		class="button"
+		[ngStyle]="{
+			'background-color': style_buttonColor,
+			'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
+			'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
+			'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,
+			'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius
+		}">
+		<p 
+			*ngIf="!bool_data_iconOnly" 
+			class="label" [ngStyle]="{
+				'color': style_labelColor,
+				'width': 'calc(100% - '+ data_iconSize +'px - 16px)'
+			}">{{data_label}}</p>
+		<icon 
+			[class.icon-only]="bool_data_iconOnly"
+			[icon]="buttonState ? icon_iconOn : icon_iconOff"
+			[style.color]="buttonState ? style_iconColorOn : style_iconColorOff"
+			[ngStyle]="{
+				'width.px': data_iconSize,
+				'height.px': data_iconSize
+			}">
+		</icon>
+	</button>
+</fhem-component-container>

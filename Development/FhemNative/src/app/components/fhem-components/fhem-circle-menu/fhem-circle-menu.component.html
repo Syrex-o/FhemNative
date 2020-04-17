@@ -1,0 +1,48 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, forceReload: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="30"
+	[minimumHeight]="30"
+	outside-click (onOutsideClick)="closeMenu()">
+	<div class="circle-menu">
+		<button 
+			matRipple [matRippleColor]="'#d4d4d480'"
+			(click)="toggleMenu()"
+			class="button"
+			[ngStyle]="{
+				'background-color': style_buttonColor,
+				'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
+				'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
+				'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,
+				'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius
+			}">
+			<icon 
+				[icon]="icon_icon"
+				[style.color]="buttonState ? style_iconColorOn : style_iconColorOff">
+			</icon>
+		</button>
+		<div class="circle-menu-items" [ngClass]="buttonState ? 'show' : 'hide'">
+			<div
+				*ngFor="let item of items; let i = index"
+				class="circle-menu-item"
+				matRipple [matRippleColor]="'#d4d4d480'"
+				(click)="select(i)"
+				[ngStyle]="{
+					'background-color': item === currentValue ? style_activeColor : style_buttonColor,
+					'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
+					'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
+					'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,
+					'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius,
+					'transform': buttonState ? translator(arr_data_expandStyle[0], i) : 'translate(0px,0px)',
+					'opacity': buttonState ? 1 : 0,
+					'transition-delay': buttonState ? (i * 0.04)+'s' : '0s'
+				}">
+				<p [ngStyle]="{
+					'color': style_labelColor,
+					'line-height': height
+					}"
+				>{{item}}</p>
+			</div>
+		</div>
+	</div>
+</fhem-component-container>

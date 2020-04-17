@@ -1,0 +1,52 @@
+:host{
+	.circle-menu{
+		width: inherit;
+		height: inherit;
+		.button{
+			width: inherit;
+			height: inherit;
+			icon{
+				width: 95%;
+			    height: 95%;
+			    position: absolute;
+			    top: 50%;
+			    left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+		.circle-menu-items{
+			position: absolute;
+			transform: translate(-50%,-50%);
+			width: 100%;
+			height: 100%;
+			top: 50%;
+			left: 50%;
+			z-index: -1;
+			.circle-menu-item{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				transition: all .3s cubic-bezier(0.50, -1, 0.50, 2);
+				transform: translate(0px,0px);
+				z-index: 0;
+				overflow: hidden;
+				border: 1px solid #3e3e3e;
+				box-shadow: 0 3px 6px 0 rgba(0,0,0,.1), 0 1px 3px 0 rgba(0,0,0,.08);
+				cursor: pointer;
+				p{
+					user-select: none;
+					position: absolute;
+				    left: 50%;
+				    top: 50%;
+				    font-weight: 100%;
+				    height: 100%;
+				    margin: 0;
+				    width: 100%;
+				    transform: translate(-50%, -50%);
+				    font-size: 20px;
+				    text-align: center;
+				}
+			}
+		}
+	}
+}
