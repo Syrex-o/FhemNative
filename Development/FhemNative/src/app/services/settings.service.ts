@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
 // Services
 import { StorageService } from './storage.service';
-import { HelperService } from './helper.service';
-// Translator
 import { TranslateService } from '@ngx-translate/core';
 
 // Font Awesome Icons
@@ -15,64 +12,27 @@ import {
 	faEllipsisH, faAngleDoubleDown, faAngleDoubleUp, faAngleDoubleLeft, faAngleDoubleRight,
 	faBath, faBus, faCalendar, faCalendarAlt, faCalendarCheck, faDoorOpen, faDoorClosed,
 	faFan, faLightbulb, faThermometerEmpty, faThermometerHalf, faThermometerFull,
-	faTemperatureLow, faTemperatureHigh
+	faTemperatureLow, faTemperatureHigh, faWindowRestore, faClipboardCheck, faClipboard, 
+	faClipboardList, faPaste, faObjectGroup, faObjectUngroup, faFileExport, faFileImport
 } from '@fortawesome/free-solid-svg-icons';
 
+// Interfaces
+interface AppSetting {
+	name: string,
+	default: any,
+	toStorage: boolean,
+	callback?: (data:any)=> any
+}
 
 @Injectable({
 	providedIn: 'root'
 })
 
 export class SettingsService {
-	// current App Version
-	public appVersion: string = '2.2.5';
 	// building default storage
 	public app: any = {};
-
-	// building ip settings
-	public IPsettings: any = {};
-
-	// app modes
-	public modes: any = {
-		// indicated edit mode
-		roomEdit: false,
-		// indicates who initiated editing
-		roomEditFrom: null,
-		changeRoom: false,
-		// events
-		blockDefaultLoader: false,
-		fhemMenuMode: '',
-		// indicate different states
-		// component create/edit
-		showComponentConfig: false,
-		// component test mode
-		componentTest: false
-	};
-	// subscriber for modes
-	public modeSub = new Subject<any>();
-
-	// app error events -- for export to file
-	public log: any = {
-		isActive: false,
-		events: []
-	};
-
-	public appDefaults:Array<any> = [
-		{name: 'theme', default: 'dark', toStorage: 'app'},
-		{name: 'showToastMessages', default: true, toStorage: 'app'},
-		{name: 'responsiveResize', default: false, toStorage: 'app'},
-		{name: 'checkUpdates', default: false, toStorage: 'app'},
-		{name: 'enableEditing', default: true, toStorage: 'app'},
-		{name: 'enableUndoRedo', default: false, toStorage: 'app'},
-		{name: 'showTasks', default: false, toStorage: 'app'},
-		{name: 'hapticFeedback', default: JSON.stringify({enable: false, duration: 1}), toStorage: 'app'},
-		{name: 'acusticFeedback', default: JSON.stringify({enable: false, audio: '1'}), toStorage: 'app'},
-		{name: 'loadFhemDevices', default: JSON.stringify({dynamicComponentLoader: false, enable: true, option: 'Component'}), toStorage: 'app'},
-		{name: 'customColors', default: JSON.stringify([]), toStorage: false, callback: (data:any)=>{if(data.length > 0){this.componentColors = this.componentColors.concat(data)}}},
-		{name: 'language', default: 'en', toStorage: 'app', callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
-		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: 'app'},
-		{name: 'IPsettings', default: JSON.stringify({IP: '', PORT: '8080', WSS: false, type: 'Websocket', basicAuth: false, USER: '', PASSW: ''}), toStorage: false, callback: (data:any)=> {if(data.IP === ''){this.modes.fhemMenuMode = 'ip-config'}}}
-	];
+	// fhem connection profiles
+	public connectionProfiles: Array<any> = [];
 
 	// Available Icons for FhemNative
 	public icons:Array<any> = [
@@ -82,14 +42,16 @@ export class SettingsService {
 		{type: 'ion', icon: 'bicycle'},{type: 'ion', icon: 'boat'},{type: 'ion', icon: 'bonfire'},{type: 'ion', icon: 'book'},
 		{type: 'ion', icon: 'briefcase'},{type: 'ion', icon: 'bug'},{type: 'ion', icon: 'build'},{type: 'ion', icon: 'cafe'},
 		{type: 'ion', icon: 'calendar'},{type: 'ion', icon: 'call'},{type: 'ion', icon: 'camera'},{type: 'ion', icon: 'car'},
-		{type: 'ion', icon: 'clock'},{type: 'ion', icon: 'cog'},{type: 'ion', icon: 'contact'},{type: 'ion', icon: 'contacts'},
+		{type: 'ion', icon: 'copy'}, {type: 'ion', icon: 'download'},
+		{type: 'ion', icon: 'time'},{type: 'ion', icon: 'cog'},{type: 'ion', icon: 'person-circle'},{type: 'ion', icon: 'people-circle'},
 		{type: 'ion', icon: 'desktop'},{type: 'ion', icon: 'flower'},{type: 'ion', icon: 'images'},{type: 'ion', icon: 'information-circle'},
-		{type: 'ion', icon: 'key'},{type: 'ion', icon: 'keypad'},{type: 'ion', icon: 'lock'},{type: 'ion', icon: 'map'},{type: 'ion', icon: 'partly-sunny'},
+		{type: 'ion', icon: 'key'},{type: 'ion', icon: 'keypad'},{type: 'ion', icon: 'lock-closed'},{type: 'ion', icon: 'lock-open'},{type: 'ion', icon: 'map'},
+		{type: 'ion', icon: 'partly-sunny'}, {type: 'ion', icon: 'pin'},
 		{type: 'ion', icon: 'cloudy'}, {type: 'ion', icon: 'thunderstorm'}, {type: 'ion', icon: 'cloudy-night'}, {type: 'ion', icon: 'moon'},
 		{type: 'ion', icon: 'rainy'},{type: 'ion', icon: 'sunny'},{type: 'ion', icon: 'snow'},{type: 'ion', icon: 'power'},{type: 'ion', icon: 'radio'},
-		{type: 'ion', icon: 'switch'},{type: 'ion', icon: 'trash'},{type: 'ion', icon: 'logo-windows'},{type: 'ion', icon: 'add-circle'},
+		{type: 'ion', icon: 'toggle'},{type: 'ion', icon: 'trash'},{type: 'ion', icon: 'logo-windows'},{type: 'ion', icon: 'add-circle'},
 		{type: 'ion', icon: 'checkmark-circle'},{type: 'ion', icon: 'close-circle'}, {type: 'ion', icon: 'walk'}, {type: 'ion', icon: 'play'}, {type: 'ion', icon: 'pause'},
-		{type: 'ion', icon: 'square'}, {type: 'ion', icon: 'fastforward'}, {type: 'ion', icon: 'skip-forward'}, {type: 'ion', icon: 'rewind'}, {type: 'ion', icon: 'skip-backward'},
+		{type: 'ion', icon: 'square'}, {type: 'ion', icon: 'play-forward'}, {type: 'ion', icon: 'play-skip-forward'}, {type: 'ion', icon: 'play-back'}, {type: 'ion', icon: 'play-skip-back'},
 		{type: 'ion', icon: 'shuffle'}, {type: 'ion', icon: 'repeat'},
 		// Font Awesome
 		{type: 'fas', icon: 'ellipsis-h'},
@@ -110,6 +72,15 @@ export class SettingsService {
 		{type: 'fas', icon: 'thermometer-full'},
 		{type: 'fas', icon: 'temperature-low'},
 		{type: 'fas', icon: 'temperature-high'},
+		{type: 'fas', icon: 'window-restore'},
+		{type: 'fas', icon: 'clipboard'},
+		{type: 'fas', icon: 'clipboard-check'},
+		{type: 'fas', icon: 'clipboard-list'},
+		{type: 'fas', icon: 'paste'},
+		{type: 'fas', icon: 'object-group'},
+		{type: 'fas', icon: 'object-ungroup'},
+		{type: 'fas', icon: 'file-export'},
+		{type: 'fas', icon: 'file-import'}
 	];
 
 	// Available component colors for FhemNative
@@ -126,13 +97,65 @@ export class SettingsService {
 	];
 
 	// user added colors
-	private customColors: Array<any> = [];
+	private customColors: string[] = [];
+
+	// app modes
+	public modes: any = {
+		// indicated edit mode
+		roomEdit: false,
+		// indicates who initiated editing
+		roomEditFrom: null,
+		// events
+		fhemMenuMode: ''
+	};
+	// subscriber for modes
+	public modeSub = new Subject<any>();
+
+	// app error events -- for export to file
+	public log: Array<any> = [];
+
+	// app defaults
+	public appDefaults:Array<AppSetting> = [
+		// Theme of the App
+		{name: 'theme', default: 'dark', toStorage: true},
+		// Custom color theming colors
+		{name: 'customTheme', default: JSON.stringify({primary: '#18252B', secondary: '#0A0F12', text: '#fff', des: '#d4d4d4'}), toStorage: true},
+		// allow toast messages
+		{name: 'showToastMessages', default: true, toStorage: true},
+		// responsive resizing to size components
+		{name: 'responsiveResize', default: false, toStorage: true},
+		// update checking from github
+		{name: 'checkUpdates', default: false, toStorage: true},
+		// enable room and component editing
+		{name: 'enableEditing', default: true, toStorage: true},
+		// undo and redo 
+		{name: 'enableUndoRedo', default: false, toStorage: true},
+		// task service 
+		{name: 'showTasks', default: false, toStorage: true},
+		// keep fhem connection alive
+		{name: 'keepConnected', default: false, toStorage: true},
+		// logging
+		{name: 'enableLog', default: false, toStorage: true},
+		// grid to move components
+		{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: true},
+		// haptic feedback on events
+		{name: 'hapticFeedback', default: JSON.stringify({enable: false, duration: 1}), toStorage: true},
+		// acustic feedback on events
+		{name: 'acusticFeedback', default: JSON.stringify({enable: false, audio: '1'}), toStorage: true},
+		// which devices to load from fhem --> component devices or all --> support end for fhem defined
+		{name: 'fhemDeviceLoader', default: 'Component', toStorage: true},
+		// custom component colors 
+		{name: 'customColors', default: JSON.stringify([]), toStorage: false, callback: (data:any)=>{if(data.length > 0){this.componentColors = this.componentColors.concat(data)}}},
+		// app language
+		{name: 'language', default: 'en', toStorage: true, callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
+		// fhem connection profiles
+		{name: 'connectionProfiles', default: JSON.stringify([]), toStorage: false, callback: (data)=>{if(data.length === 0){ this.connectionProfiles = [{IP: '', PORT: '8080', WSS: false, type: 'Websocket', basicAuth: false, USER: '', PASSW: ''}]; this.modes.fhemMenuMode = 'ip-config' }}}
+	];
 
 	constructor(
 		private storage: StorageService,
 		private translate: TranslateService,
-		private helper: HelperService,
-		private library: FaIconLibrary) {
+		private library: FaIconLibrary){
 		// listen to mode changes
 		this.modeSub.subscribe(next => {
 			for (const [key, value] of Object.entries(next)) {
@@ -142,13 +165,68 @@ export class SettingsService {
 		// Add FontAwesome Icons to library
 		library.addIcons(
 			faEllipsisH, faAngleDoubleDown, faAngleDoubleUp, faAngleDoubleLeft, faAngleDoubleRight, faBath, faBus, faCalendar, faCalendarAlt, faCalendarCheck,
-			faDoorOpen, faDoorClosed, faFan, faLightbulb, faThermometerEmpty, faThermometerHalf, faThermometerFull, faTemperatureLow, faTemperatureHigh
+			faDoorOpen, faDoorClosed, faFan, faLightbulb, faThermometerEmpty, faThermometerHalf, faThermometerFull, faTemperatureLow, faTemperatureHigh, faWindowRestore,
+			faClipboardCheck, faClipboard, faClipboardList, faPaste, faObjectGroup, faObjectUngroup, faFileExport, faFileImport
 		);
 	}
 
-	// find icon
-	public iconFinder(name){
-		return this.helper.find(this.icons, 'icon', name).item;
+	// load app defaults
+	public loadDefaults(){
+		return new Promise((resolve)=>{
+			this.appDefaults.forEach((setting: AppSetting, index: number)=>{
+				this.storage.setAndGetSetting({
+					name: setting.name,
+					default: setting.default
+				}).then((res:any)=>{
+					if(setting.toStorage){
+						// loading to desired storage
+						this.app[setting.name] = res;
+					}else{
+						// loading to dedicated variable
+						this[setting.name] = res;
+					}
+					// check if new props added to a json setting
+					if(this.testJSON(setting.default)){
+						// default json options detected
+						const jsonSetting: Object = JSON.parse(setting.default);
+						let newProperties: boolean = false;
+						for (const [key, value] of Object.entries(jsonSetting)) {
+							if(res[key] === undefined){
+								// new property found
+								newProperties = true;
+								if(setting.toStorage){
+									this.app[setting.name][key] = value;
+								}else{
+									this[setting.name][key] = value;
+								}
+							}
+						}
+						if(newProperties){
+							if(setting.toStorage){
+								this.storage.changeSetting({
+									name: setting.name,
+									change: JSON.stringify(this.app[setting.name])
+								});
+							}else{
+								this.storage.changeSetting({
+									name: setting.name,
+									change: JSON.stringify(this[setting.name])
+								});
+							}
+						}
+					}
+					// determine callbacks
+					if(setting.callback){
+						setting.callback( (setting.toStorage ? this.app[setting.name] : this[setting.name]) );
+					}
+					//
+					if(index === this.appDefaults.length -1){
+						// IP
+						resolve();
+					}
+				});
+			});
+		});
 	}
 
 	// find new colors
@@ -161,12 +239,12 @@ export class SettingsService {
 					// check for array
 					if(Array.isArray(attr.value)){
 						attr.value.forEach((singleValue)=>{
-							if(!this.componentColors.includes(singleValue) && !newColors.includes(singleValue) && this.helper.checkValidHex(singleValue)){
+							if(!this.componentColors.includes(singleValue) && !newColors.includes(singleValue) && this.checkValidHex(singleValue)){
 								newColors.push(singleValue);
 							}
 						});
 					}else{
-						if(!this.componentColors.includes(attr.value) && !newColors.includes(attr.value) && this.helper.checkValidHex(attr.value)){
+						if(!this.componentColors.includes(attr.value) && !newColors.includes(attr.value) && this.checkValidHex(attr.value)){
 							newColors.push(attr.value);
 						}
 					}
@@ -184,74 +262,14 @@ export class SettingsService {
 		}
 	}
 
-	// load default app settings
-	public loadDefaults(defaults){
-		return new Promise((resolve) => {
-			for (let i = 0; i < defaults.length; i++) {
-				this.storage.setAndGetSetting({
-					name: defaults[i].name,
-					default: defaults[i].default
-				}).then((res:any)=>{
-					if(defaults[i].toStorage){
-						// loading to desired storage
-						this[defaults[i].toStorage][defaults[i].name] = res;
-					}else{
-						// loading to dedicated variable
-						this[defaults[i].name] = res;
-					}
-					// check if new props added to a json setting
-					if(this.helper.testJSON(defaults[i].default)){
-						// default json options detected
-						const jsonSetting = JSON.parse(defaults[i].default);
-						let newProperties: boolean = false;
-						for (const [key, value] of Object.entries(jsonSetting)) {
-							if(res[key] === undefined){
-								// new property found
-								newProperties = true;
-								if(defaults[i].toStorage){
-									this[defaults[i].toStorage][defaults[i].name][key] = value;
-								}else{
-									this[defaults[i].name][key] = value;
-								}
-							}
-						}
-						if(newProperties){
-							if(defaults[i].toStorage){
-								this.storage.changeSetting({
-									name: defaults[i].name,
-									change: JSON.stringify(this[defaults[i].toStorage][defaults[i].name])
-								});
-							}else{
-								this.storage.changeSetting({
-									name: defaults[i].name,
-									change: JSON.stringify(this[defaults[i].name])
-								});
-							}
-						}
-					}
-					// determine callbacks
-					if(defaults[i].callback){
-						defaults[i].callback( (defaults[i].toStorage ? this[defaults[i].toStorage][defaults[i].name] : this[defaults[i].name]) );
-					}
-					if(i === defaults.length -1){
-						resolve()
-					}
-				});
-			}
-		});
+	// test for json
+	private testJSON(str) {
+		try { JSON.parse(str); } catch (e) { return false; }
+		return true;
 	}
 
-	public changeAppSetting(storage, value) {
-		this.storage.changeSetting({name: storage, change: value}).then((res) => {this.app[storage] = res; });
-	}
-
-	public changeAppSettingJSON(storage, jsonProp, value) {
-		this.app[storage][jsonProp] = value;
-		this.storage.changeSetting({
-			name: storage,
-			change: JSON.stringify(this.app[storage])
-		}).then((res) => {
-			this.app[storage] = res;
-		});
+	// check valid hex codes
+	public checkValidHex(str){
+		return (/^#([0-9A-F]{3}){1,2}$/i).test(str);
 	}
 }
