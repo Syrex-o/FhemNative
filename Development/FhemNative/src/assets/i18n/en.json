@@ -10,7 +10,23 @@
 				},
 				"data_borderRadius":{
 					"name": "Border radius",
-					"info": "Border Radius of the box"
+					"info": "Border radius of the box"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the box top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the box top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the box bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the box bottom right"
 				},
 				"style_headerColor":{
 					"name": "Header color",
@@ -27,6 +43,10 @@
 				"bool_data_showShadow":{
 					"name": "Show shadow",
 					"info": "Show/hide box shadow"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
 				}
 			}
 		},
@@ -74,6 +94,22 @@
 					"name": "Border radius",
 					"info": "Border Radius of the button"
 				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the button top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the button top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the button bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the button bottom right"
+				},
 				"data_iconSize":{
 					"name": "Icon size",
 					"info": "Size of the icon in the button"
@@ -89,6 +125,10 @@
 				"bool_data_iconOnly":{
 					"name": "Show icon only",
 					"info": "Enable/disable to display icon only"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
 				},
 				"style_iconColorOn":{
 					"name": "Icon color on",
@@ -144,6 +184,22 @@
 					"name": "Border radius",
 					"info": "Border Radius of the button"
 				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the button top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the button top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the button bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the button bottom right"
+				},
 				"data_iconSize":{
 					"name": "Icon size",
 					"info": "Size of the icon in the button"
@@ -151,6 +207,10 @@
 				"bool_data_iconOnly":{
 					"name": "Show icon only",
 					"info": "Enable/disable to display icon only"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
 				},
 				"arr_icon_icons":{
 					"name": "Icons",
@@ -178,25 +238,17 @@
 					"name": "Log device name",
 					"info": "Name of the Fhem device"
 				},
+				"data_dbDevice":{
+					"name": "Log device and reading from DbLog",
+					"info": "Log device and reading, that should be selected from DbLog (Exp. device:reading)"
+				},
 				"data_logFile":{
 					"name": "Log file name",
 					"info": "Name of a specific log file to choose (if needed)"
 				},
-				"data_reading":{
-					"name": "Log reading 1",
-					"info": "Name of the reading in the log file"
-				},
-				"data_reading2":{
-					"name": "Log reading 2",
-					"info": "Name of the second reading in the log file (if needed)"
-				},
-				"data_maxY":{
-					"name": "Max Y",
-					"info": "max. Y-axis value, to fix the axis (default: max value of the Y-axis data)"
-				},
-				"data_labelExtension":{
-					"name": "Label extension",
-					"info": "Ending for the Y-Axis label (Exp. %)"
+				"arr_data_dbtype":{
+					"name": "FHEM-module type",
+					"info": "Fhem module, that should be used"
 				},
 				"bool_data_getCurrent":{
 					"name": "Get current log",
@@ -205,25 +257,39 @@
 				"bool_data_zoomBothAxis":{
 					"name": "Zoom both axis",
 					"info": "Enable/disable zooming in both axis of the chart"
-				},
-				"arr_data_chartType":{
-					"name": "Chart type 1",
-					"info": "Style of the chart for the first reading"
-				},
-				"arr_data_chartType2":{
-					"name": "Chart type 2",
-					"info": "Style of the chart for the second reading"
-				},
-				"arr_data_timeFormat":{
-					"name": "Time format",
-					"info": "Time format of the X-Axis"
-				},
-				"arr_data_colorSet":{
-					"name": "Color set",
-					"info": "Color sheme of the charts"
 				}
 			},
 			"TRANSLATOR":{
+				"ADD":{
+					"HEADER": "Add graph",
+					"INFO": "Add new Graph and configure",
+					"SELECT_CHART": "Select chart type",
+					"SELECT_READING": "Select reading from FHEM",
+					"SELECT_COLOR": "Select color for graph",
+					"SELECT_AXIS": "Select axis for graph",
+					"SELECT_LABEL": "Show/hide label",
+					"SELECT_LABEL_DES": "Show/hide labels on points on graph",
+					"SELECT_ENDING": "Select label ending",
+					"SELECT_AGG": "Select aggregation"
+				},
+				"AXIS":{
+					"HEADER": "Configure axis",
+					"X":{
+						"HEADER": "X-axis",
+						"TIME_FORMAT": "Time format of X Axis"
+					},
+					"Y":{
+						"HEADER": "Y-axis",
+						"LEFT_MAX": "Left axis max. Y",
+						"LEFT_MIN": "Left axis min. Y",
+						"RIGHT_MAX": "Right axis max. Y",
+						"RIGHT_MIN": "Right axis min. Y",
+						"LEFT_EXTENSION": "Left axis label ending",
+						"RIGHT_EXTENSION": "Right axis label ending"
+					}
+				},
+				"REMOVE": "delete graph",
+				"SELECT_DATA": "Select data:",
 				"NO_DATA": "No data was found."
 			}
 		},
@@ -267,6 +333,30 @@
 					"name": "Value 6",
 					"info": "6. value of the multi menu (optional)"
 				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border Radius of the button"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the button top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the button top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the button bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the button bottom right"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
+				},
 				"arr_data_expandStyle":{
 					"name": "Expand style",
 					"info": "Direction where the menu should unfold"
@@ -274,6 +364,22 @@
 				"icon_icon":{
 					"name": "Icon",
 					"info": "Desired icon of the menu"
+				},
+				"style_iconColorOn":{
+					"name": "Icon color on",
+					"info": "Icon color for ON state"
+				},
+				"style_iconColorOff":{
+					"name": "Icon color off",
+					"info": "Icon color for OFF state"
+				},
+				"style_buttonColor":{
+					"name": "Background color",
+					"info": "Button background color"
+				},
+				"style_labelColor":{
+					"name": "Label color",
+					"info": "Color of the labels in the button"
 				}
 			}
 		},
@@ -427,7 +533,23 @@
 				},
 				"data_borderRadius":{
 					"name": "Border radius",
-					"info": "Border radius of the color preview in %"
+					"info": "Border radius of the color preview"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the color preview top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the color preview top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the color preview bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the color preview bottom right"
 				},
 				"data_headline":{
 					"name": "Headline",
@@ -445,6 +567,10 @@
 					"name": "Color output",
 					"info": "Definition of the color output"
 				},
+				"arr_data_animationStyle":{
+					"name": "Popup animation",
+					"info": "Selection of the popup animation"
+				},
 				"bool_data_showSlider":{
 					"name": "Show slider",
 					"info": "Show/hide slider (Slider reading needed)"
@@ -452,6 +578,18 @@
 				"bool_data_updateOnMove":{
 					"name": "Update on move",
 					"info": "Activate/deactivate sending of values continiously on move"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
+				},
+				"bool_data_customAnimation":{
+					"name": "Custom popup Aaimation",
+					"info": "Enable/disable custom popup animation"
+				},
+				"bool_data_invertAnimation":{
+					"name": "Invert popup OFF animation",
+					"info": "Enable/disable invert popup animation"
 				}
 			},
 			"TRANSLATOR":{
@@ -530,6 +668,10 @@
 				"style_indicatorBackgroundColor":{
 					"name": "Indicator background color",
 					"info": "Background color of the indicator"
+				},
+				"bool_data_showIndocator":{
+					"name": "Show/hide indicator",
+					"info": "Show/hide indicator for seperate reading"
 				}
 			}
 		},
@@ -753,6 +895,72 @@
 				"NO_PIN_READING": "No reading for pin found."
 			}
 		},
+		"Picker":{
+			"NAME": "Picker",
+			"DES": "A picker, that can be filled with other components.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "State of the reading in ON state"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "State of the reading in OFF state"
+				},
+				"data_headline":{
+					"name": "Headline",
+					"info": "Headline of the picker"
+				},
+				"data_cancelText":{
+					"name": "Close text",
+					"info": "Label of the close button"
+				},
+				"data_height":{
+					"name": "Picker Height",
+					"info": "Height of the picker in %"
+				},
+				"arr_data_animationStyle":{
+					"name": "Picker animation",
+					"info": "Selection of the picker animation"
+				},
+				"bool_data_openOnReading":{
+					"name": "Open on reading",
+					"info": "Enable/disable to open picker on reading"
+				},
+				"icon_iconOn":{
+					"name": "Icon on",
+					"info": "Desired Icon for ON state"
+				},
+				"icon_iconOff":{
+					"name": "Icon off",
+					"info": "Desired Icon for OFF state"
+				},
+				"style_iconColorOn":{
+					"name": "Icon color on",
+					"info": "Icon color for ON state"
+				},
+				"style_iconColorOff":{
+					"name": "Icon color off",
+					"info": "Icon color for OFF state"
+				},
+				"style_backgroundColorOn":{
+					"name": "Background color on",
+					"info": "Background color for ON state"
+				},
+				"style_backgroundColorOff":{
+					"name": "Background color off",
+					"info": "Background color for OFF state"
+				}
+			}
+		},
 		"Popup":{
 			"NAME": "Popup",
 			"DES": "A popup, that can be filled with other components.",
@@ -785,9 +993,21 @@
 					"name": "Popup Height",
 					"info": "Height of the popup in %"
 				},
+				"arr_data_animationStyle":{
+					"name": "Popup animation",
+					"info": "Selection of the popup animation"
+				},
 				"bool_data_openOnReading":{
 					"name": "Open on reading",
 					"info": "Enable/disable to open popup on reading"
+				},
+				"bool_data_customAnimation":{
+					"name": "Custom popup Aaimation",
+					"info": "Enable/disable custom popup animation"
+				},
+				"bool_data_invertAnimation":{
+					"name": "Invert popup OFF animation",
+					"info": "Enable/disable invert popup animation"
 				},
 				"icon_iconOn":{
 					"name": "Icon on",
@@ -804,6 +1024,14 @@
 				"style_iconColorOff":{
 					"name": "Icon color off",
 					"info": "Icon color for OFF state"
+				},
+				"style_backgroundColorOn":{
+					"name": "Background color on",
+					"info": "Background color for ON state"
+				},
+				"style_backgroundColorOff":{
+					"name": "Background color off",
+					"info": "Background color for OFF state"
 				}
 			}
 		},
@@ -843,6 +1071,10 @@
 					"name": "Placeholder",
 					"info": "Placeholder. if no current value is available"
 				}
+			},
+			"TRANSLATOR":{
+				"NO_ITEMS": "No items found",
+				"ADD": "Add:"
 			}
 		},
 		"Slider":{
@@ -913,13 +1145,13 @@
 					"name": "Show value in thumb",
 					"info": "Show/hide to display current value in thumb"
 				},
-				"bool_data_showTicks":{
-					"name": "Show ticks",
-					"info": "Show/hide ticks on the slider"
-				},
 				"bool_data_updateOnMove":{
 					"name": "Update on move",
 					"info": "Activate/deactivate sending of values continiously on move"
+				},
+				"style_backgroundColor":{
+					"name": "Background color",
+					"info": "Background color of the slider"
 				},
 				"style_thumbColor":{
 					"name": "Thumb color",
@@ -1125,7 +1357,7 @@
 				},
 				"bool_data_showBorder":{
 					"name": "Show border",
-					"info": "Show/hide switch border"
+					"info": "Show/hide swiper border"
 				},
 				"bool_data_showPager":{
 					"name": "Show pager",
@@ -1179,15 +1411,27 @@
 				},
 				"data_label":{
 					"name": "Label",
-					"info": "Label to display in the button (default: Fhem device name)"
+					"info": "Label to display in the switch (default: Fhem device name)"
+				},
+				"data_subLabel":{
+					"name": "Sub label",
+					"info": "Display of sub label"
 				},
 				"bool_data_showBorder":{
 					"name": "Show border",
 					"info": "Show/hide switch border"
 				},
+				"bool_data_customLabels":{
+					"name": "Custom labels",
+					"info": "Enable/disable user defined labels"
+				},
 				"arr_data_buttonStyle":{
 					"name": "Switch style",
 					"info": "Style of the switch"
+				},
+				"style_borderColor":{
+					"name": "Border color",
+					"info": "Border color of the switch, for seperation"
 				},
 				"style_colorOn":{
 					"name": "Color on",
@@ -1204,6 +1448,50 @@
 				"style_thumbColorOff":{
 					"name": "Thumb color off",
 					"info": "Color of the thumb in OFF state"
+				}
+			}
+		},
+		"Table":{
+			"NAME": "Table",
+			"DES": "A table, that displays readings from FHEM.",
+			"INPUTS": {
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				}
+			},
+			"TRANSLATOR":{
+				"CONFIG":{
+					"TABLE":{
+						"TITLE": "Config table",
+						"INFO": "Configure the table header"
+					},
+					"READINGS": {
+						"TITLE": "Select readings",
+						"INFO": "select readings, that should be displayed in the table"
+					}
+				}
+			}
+		},
+		"Tabs":{
+			"NAME": "Tabs",
+			"DES": "A tabs container, that can be filled with other components",
+			"INPUTS":{
+				"data_pages": {
+					"name": "Pages",
+					"info": "Amount of pages of the tabs component"
+				},
+				"arr_icon_icons":{
+					"name": "Icons",
+					"info": "A list of icons (for every tab)"
+				},
+				"arr_style_iconColors":{
+					"name": "Icon colors",
+					"info": "A list of icon colors"
+				},
+				"arr_style_backGroundColors":{
+					"name": "Background colors",
+					"info": "A list of background colors (for every tab)"
 				}
 			}
 		},
@@ -1239,6 +1527,10 @@
 					"name": "Threshold",
 					"info": "Event reduction. Only send every n command to FHEM (in combination with updateOnMove)"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the thermostat"
+				},
 				"data_labelExtension":{
 					"name": "Label extension",
 					"info": "Ending of the value label (Exp. %)"
@@ -1266,6 +1558,18 @@
 				"style_gradientColor4":{
 					"name": "Gradient color 4",
 					"info": "Color of ther 4. gradient step"
+				},
+				"style_backgroundColorOne":{
+					"name": "Background color",
+					"info": "Background color of the round slider"
+				},
+				"style_tickColor":{
+					"name": "Tick color",
+					"info": "Tick color of the round slider"
+				},
+				"style_thumbColor":{
+					"name": "Thumb color",
+					"info": "Thumb color of the round slider"
 				}
 			}
 		},
@@ -1373,10 +1677,6 @@
 			},
 			"SETTINGS_SAVED_TITLE": "Settings saved:",
 			"SETTINGS_SAVED_INFO": "Settings saved under: ",
-			"LOG_STARTED_TITLE": "A log file is going to be generated",
-			"LOG_STARTED_INFO": "Errors getting saved until the Logger is deactivated.",
-			"LOG_ENDED_TITLE": "Log file saved:",
-			"LOG_ENDED_INFO": "Log file saved under: ",
 			"NO_CHANGELOG_PRESENT": "No changelog available.",
 			"WEEKDAYS":{
 				"MONDAY": "Monday",
@@ -1390,7 +1690,9 @@
 			},
 			"AS": "as",
 			"AND": "and",
-			"TO": "to"
+			"TO": "to",
+			"YES": "Yes",
+			"NO": "No"
 		},
 		"SETTINGS":{
 			"TITLE": "Settings",
@@ -1398,8 +1700,7 @@
 				"TITLE": "FHEM Settings",
 				"WEBSOCKET":{
 					"TITLE": "Websocket Settings",
-					"INFO": "Configure the websocket connection.",
-					"BUTTON": "Change IP Settings"
+					"INFO": "Configure the websocket connection."
 				},
 				"EXPORT":{
 					"TITLE": "Export Settings",
@@ -1415,7 +1716,6 @@
 				"IMPORT":{
 					"TITLE": "Import Settings",
 					"INFO": "Import of room-, component- and FHEM settings.",
-					"BUTTON": "Select JSON",
 					"MESSAGES":{
 						"SUCCESS": {
 							"TITLE": "Import was successful.",
@@ -1437,16 +1737,16 @@
 					"INFO": "Automatically generate devices from FHEM to dedicated rooms.",
 					"BUTTON": "Generate devices"
 				},
-				"LOAD_ALL_DEVICES":{
-					"TITLE": "Load all Fhem devices",
-					"INFO": "Enable/disable to load all Fhem devices on app start."
+				"ALWAYS_ON":{
+					"TITLE": "Keep connection",
+					"INFO": "Keep FHEM connection always on, even in background"
 				},
 				"LOAD_WHICH_DEVICES":{
 					"TITLE": "Define device loader",
 					"INFO": "Which devices should be loaded on app start?",
 					"OPTIONS":{
-						"Component": "1:  Devices that are used in components.",
-						"Fhem_Defined": "2: 1. + Devices that are defined in Fhem."
+						"ALL": "Load all Fhem devices.",
+						"Component": "Devices that are used in components."
 					}
 				},
 				"DYNAMIC_COMPONENT_LOADER":{
@@ -1461,8 +1761,10 @@
 					"INFO": "Change App theme.",
 					"OPTIONS":{
 						"DARK": "Dark",
-						"BRIGHT": "Bright"
-					}
+						"BRIGHT": "Bright",
+						"CUSTOM": "Custom"
+					},
+					"CHANGE_INFO": "After editing the app needs to reaload, to aply color changes."
 				},
 				"LANGUAGE":{
 					"TITLE": "Language",
@@ -1494,7 +1796,11 @@
 				},
 				"LOG":{
 					"TITLE": "Write Log-File",
-					"INFO": "Activate/deactivate logging."
+					"INFO": "Activate/deactivate logging.",
+					"EXPORT":{
+						"TITLE": "Log-File export",
+						"INFO": "Export of the Log file"
+					}
 				}
 			},
 			"COMPONENTS":{
@@ -1569,9 +1875,7 @@
 							"STORAGE": "Native storage",
 							"FILE": "Native device file access",
 							"SOCIALSHARING": "Sharing of device files",
-							"CHOOSER": "Selecting device files",
-							"IMAGEPICKER": "Selecting images from device",
-							"WEBVIEW": "Access to webview functions"
+							"CHOOSER": "Selecting device files"
 						},
 						"EXTERNAL":{
 							"TITLE": "External libraries:",
@@ -1599,6 +1903,10 @@
 					"TITLE": "Help others/Report bugs/Feature requests",
 					"INFO": "Hilf the community, reporte your known bugs and place requests in the FHEM forum."
 				}
+			},
+			"ADVANCED":{
+				"TITLE": "Advanced options",
+				"INFO": "Show the advanced options of FhemNative."
 			}
 		},
 		"TASKS":{
@@ -1644,11 +1952,27 @@
 				"INFO": "Remove Else Condition"
 			}
 		},
+		"RESET":{
+			"TITLE": "Factory reset",
+			"REVERT":{
+				"TITLE": "Back to factory settings",
+				"INFO": "Reset all FhemNative settings to factory defaults.",
+				"BUTTON": "Reset",
+				"SURE": "Are you sure, you want to reset FhemNative to factory defaults?"
+			},
+			"DONE":{
+				"TITLE": "Settings resetted",
+				"INFO": "All settings were resetted to factory defaults."
+			}
+		},
 		"CREATE_ROOM":{
 			"TITLE": "Create room:",
 			"ROOM_NAME": "Room name",
 			"ROOM_ICON": "Room icon:",
-			"NO_ROOM_NAME": "Please give the room a name,",
+			"NO_ROOM_NAME": {
+				"TITLE": "No room name",
+				"INFO": "Please give the room a name."
+			},
 			"ROOM_CREATED": "Room created.",
 			"USE_AS_GROUP":{
 				"TITLE": "Use room as Menu",
@@ -1681,6 +2005,13 @@
 				"CONFIG_STYLE": "Configure Component Style:",
 				"CONFIG_TEST": "Test Component Configuration:",
 				"NO_COMPONENT": "Please select a component first."
+			},
+			"CUSTOM_INPUTS":{
+				"INFO": "The component has advanced configuration properties.",
+				"DES": "Please create the component first and configure the custom properties directly in the component.",
+				"PICKER": {
+					"HEADER": "Advanced configuration:"
+				}
 			}
 		},
 		"EDIT_COMPONENT":{
@@ -1700,6 +2031,8 @@
 				"PASTE": "Paste",
 				"DELETE": "Delete",
 				"DETAILS": "Component details",
+				"EXPORT": "Export",
+				"IMPORT": "Import",
 				"DEF_DETAILS":{
 					"SHORT": {
 						"TITLE": "Short definition",
@@ -1713,12 +2046,41 @@
 				"SWITCH":{
 					"TITLE": "Switch component",
 					"INFO": "Quickly change the selected component"
+				},
+				"EXPORT_COMPONENT":{
+					"SUCCESS": {
+						"TITLE": "Components exported",
+						"INFO": "Components are exported and available under: "
+					},
+					"ERROR": {
+						"TITLE": "Components not exported",
+						"INFO": "Components can´t be exported. An error occured."
+					}
+				},
+				"IMPORT_COMPONENT":{
+					"SUCCESS": {
+						"TITLE": "Components imported",
+						"INFO": "Components were successfully imported."
+					},
+					"ERROR": {
+						"TITLE": "Components not imported",
+						"INFO": "Components can´t be imported. An error occured."
+					}
 				}
 			}
 		},
 		"FHEM_MENU":{
 			"CONNECTION":{
 				"TITLE": "IP settings",
+				"PROFILE":{
+					"HEADER": "FhemNative profile",
+					"TITLE": "Add profile",
+					"INFO": "Add connection profile",
+					"DELETE":{
+						"TITLE": "Delete profile",
+						"INFO": "Delete connection profile"
+					}
+				},
 				"IP":{
 					"TITLE": "IP address",
 					"INFO": "IP address of the Fhem server"
@@ -1752,7 +2114,6 @@
 		"ERRORS":{
 			"CONNECTION":{
 				"NO_CONNECTION": "No connection to Fhem.",
-				"NO_DEVICELIST": "Devicelist was not loaded.",
 				"CONNECTION_HELPER": "Please review your IP settings."
 			},
 			"NOT_FOUND":{
@@ -1769,12 +2130,6 @@
 			"TIMEOUT": "Connection timeout to Fhem.",
 			"FETCHED_ALL_DEVICES": "Fetched all devices.",
 			"DEVICE_UPDATE": "Updated values of: "
-		},
-		"VERSIONS":{
-			"NEW":{
-				"TITLE": "New version available",
-				"INFO": "New version of FhemNative is available on GitHub. Click here to visit GitHub."
-			}
 		}
 	}
 }

@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 
 // Ionic and Electron Storage
 import { Storage } from '@ionic/storage';
-import { HelperService } from './helper.service';
+
+// Interfaces
+interface Setting {
+	name: string,
+	default?: any,
+	change?: any
+}
 
 @Injectable({
 	providedIn: 'root'
@@ -10,25 +16,22 @@ import { HelperService } from './helper.service';
 
 export class StorageService {
 
-	constructor(
-		private storage: Storage,
-		private helper: HelperService) {
-	}
+	constructor(private storage: Storage) {}
 
 	// used to get setting or to define a default setting
 	// needs object of {name: '', default: ''}
-	public setAndGetSetting(obj) {
+	public setAndGetSetting(obj: Setting ) {
 		return new Promise((resolve) => {
-			this.storage.get(obj.name).then((value) => {
-				if (value === undefined || value === null) {
+			this.storage.get(obj.name).then((value:any) => {
+				if(value === null){
 					// setting is not defined jet
 					// setting gets defined and default is resolved after saving
 					this.storage.set(obj.name, obj.default).then(() => {
-						resolve(this.helper.testJSON(obj.default) ? JSON.parse(obj.default) : obj.default);
+						resolve(this.testJSON(obj.default) ? JSON.parse(obj.default) : obj.default);
 					});
-				} else {
+				}else{
 					// setting is present and has a value
-					resolve(this.helper.testJSON(value) ? JSON.parse(value) : value);
+					resolve(this.testJSON(value) ? JSON.parse(value) : value);
 				}
 			});
 		});
@@ -36,10 +39,10 @@ export class StorageService {
 
 	// used to update setting
 	// needs object of {name: '', change: ''}
-	public changeSetting(obj) {
+	public changeSetting(obj: Setting) {
 		return new Promise((resolve) => {
 			this.storage.set(obj.name, obj.change).then(() => {
-				resolve(this.helper.testJSON(obj.change) ? JSON.parse(obj.change) : obj.change);
+				resolve(this.testJSON(obj.change) ? JSON.parse(obj.change) : obj.change);
 			});
 		});
 	}
@@ -47,14 +50,15 @@ export class StorageService {
 	// used to get a desired settings value
 	// returnes null if undefined
 	// needs name
-	public getSetting(name) {
+	public getSetting(name: string) {
 		return new Promise((resolve) => {
 			this.storage.get(name).then((value) => {
-				resolve(this.helper.testJSON(value) ? JSON.parse(value) : value);
+				resolve(this.testJSON(value) ? JSON.parse(value) : value);
 			});
 		});
 	}
 
+	// get all settings
 	public getAllSettings() {
 		return new Promise((resolve) => {
 			const res = {};
@@ -71,5 +75,11 @@ export class StorageService {
 				}
 			});
 		});
+	}
+
+	// test for json
+	private testJSON(str) {
+		try { JSON.parse(str); } catch (e) { return false; }
+		return true;
 	}
 }

@@ -1,50 +1,188 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
 /* Core CSS required for Ionic components to work properly */
-
 @import "~@ionic/angular/css/core.css";
-/* Basic CSS for apps built with Ionic */
 
+/* Basic CSS for apps built with Ionic */
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
 @import '~@ionic/angular/css/display.css';
-/* Optional CSS utils that can be commented out */
 
+/* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 @import '~ngx-toastr/toastr';
-// Directive styles
-[ripple] {
-    .base {
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        border-radius: inherit;
-        .ink {
-            display: block;
-            position: absolute;
-            border-radius: 100%;
-            transform: scale(0);
-        }
-        &.animate .ink {
-            animation: ripple 0.65s linear;
-        }
+
+// Global Styles
+.swiper-pagination {
+    top: 0px;
+    height: 0;
+}
+
+ion-content,
+ion-toolbar,
+ion-item{
+    --background: none;
+}
+ion-header{
+    height: 56px;
+    ion-title.ios{
+        padding-left: 10px;
+        text-align: left;
     }
-    @keyframes ripple {
-        100% {
-            opacity: 0;
-            transform: scale(2.5);
+    ion-toolbar.ios{
+        --min-height: 56px;
+        ion-title{
+            height: 65px;
         }
     }
 }
+
+ion-alert.wider-btns{
+    button.alert-tappable{
+        height: 80px !important;
+    }
+    .alert-radio-label{
+        white-space: normal !important;
+    }
+}
+
+ion-slides.custom-pagination{
+    .swiper-pagination.swiper-pagination-bullets{
+       top: 45px;
+        position: fixed;
+    }
+}
+
+fa-icon{
+    width: 1em;
+    .svg-inline--fa{
+        width: inherit !important;
+        height: inherit;
+    }
+}
+
+//Ionic Modal config
+.modal-fullscreen {
+    .modal-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// global font styling
+h1, h2, h3, p, span{
+	font-family: 'Roboto';
+}
+
+// Toast messages
+.notify, .toast {
+    min-height: 45px;
+    max-width: 150px;
+    min-width: 100px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 5px;
+    margin-top: 3px;
+    &.toast-success {
+        background-color: var(--btn-green);
+    }
+    &.toast-info {
+        background-color: var(--btn-blue);
+        background-image: none;
+    }
+    &.toast-error {
+        background-color: var(--btn-red);
+    }
+    .toast-title {
+        font-size: 16px;
+        line-height: 15px;
+    }
+    .toast-message {
+        font-size: 14px;
+    }
+}
+#toast-container.toast-top-center {
+    pointer-events: all;
+    .toast-info {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+button:focus{
+    outline: 0px;
+}
+// Add Button
+.add-btn,
+.btn-round{
+	position: relative;
+	float: right;
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	border: none;
+	box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
+	z-index: 100;
+	font-size: 25px;
+    padding: 0;
+    &.fixed-top-right{
+        position: fixed;
+        top: 0;
+        right: 0;
+    }
+    &.right-pad{
+        margin-right: 8px;
+    }
+    &.blue{
+        color: var(--btn-blue);
+    }
+	.line{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 60%;
+		height: 5px;
+		background: var(--gradient);
+		border-radius: 5px;
+		transition: all .3s ease;
+		&.top{
+			transform: translate3d(-50%, -50%,0);
+		}
+		&.bottom{
+			transform: translate3d(-50%, -50%,0) rotate(90deg);
+		}
+	}
+	&:hover .line.top{
+		transform: translate3d(-50%, -50%,0) rotate(90deg);
+	}
+	&:hover .line.bottom{
+		transform: translate3d(-50%, -50%,0) rotate(180deg);
+	}
+}
+
 [resize] {
     .movable {
         width: 100%;
@@ -123,6 +261,15 @@
             transition: all .2s ease;
         }
     }
+    &.selected-for-copy > .movable {
+        .overlay-move{
+            background: rgba(243, 192, 47, 0.2);
+            border: 1px solid #ffbd00;
+        }
+        .rect:before{
+            background-color: #ffbd00;
+        }
+    }
 }
 // pin component
 .pinned{
@@ -138,173 +285,56 @@
         width: 35px;
         left: 0px;
         top: 0px;
+        z-index: 100;
     }
 }
 
-// resize ectension for: selected-for-copy
-.selected-for-copy > .movable {
-    .overlay-move{
-        background: rgba(243, 192, 47, 0.2);
-        border: 1px solid #ffbd00;
+// Directive styles
+// Colorizer
+.dark{
+    &.background.primary{
+        background-color: var(--primary-dark) !important;
     }
-    .rect:before{
-        background-color: #ffbd00;
+    &.background.secondary{
+        background-color: var(--secondary-dark) !important;
     }
-}
-
-.header-ios:after{
-    left: 0;
-    bottom: -3px;
-    background-position: left 0 top -2px;
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    background: rgba(0,0,0,0.1);
-    content: "";
-}
-
-ion-header{
-    height: 56px;
-    ion-title.ios{
-        padding-left: 65px;
-        text-align: left;
+    &.background.secondary-op{
+        background-color: var(--secondary-dark-op) !important;
     }
-    ion-toolbar.ios{
-        height: 100%;
-        ion-title{
-            height: 65px;
+    &.background.text{
+        background-color: var(--text-dark) !important;
+    }
+    &.color.text{
+        color: var(--text-dark) !important;
+        &.active{
+            color: var(--active-dark) !important;
         }
     }
-}
-fa-icon{
-    width: 1em;
-    .svg-inline--fa{
-        width: inherit !important;
-        height: inherit;
+    &.color.des{
+        color: var(--des-dark) !important;
     }
 }
 
-// Global Styles
-.swiper-pagination {
-    top: 0px;
-    height: 0;
-}
-// Toast messages
-.notify, .toast {
-    font-family: "Roboto", sans-serif;
-    min-height: 45px;
-    max-width: 150px;
-    min-width: 100px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 5px;
-    margin-top: 3px;
-    &.toast-success {
-        background-color: var(--btn-green);
+.bright{
+    &.background.primary{
+        background-color: var(--primary-bright) !important;
     }
-    &.toast-info {
-        background-color: var(--btn-blue);
-        background-image: none;
+    &.background.secondary{
+        background-color: var(--secondary-bright) !important;
     }
-    &.toast-error {
-        background-color: var(--btn-red);
+    &.background.secondary-op{
+        background-color: var(--secondary-bright-op) !important;
     }
-    .toast-title {
-        font-weight: 500;
-        font-size: 14px;
+    &.background.text{
+        background-color: var(--text-bright) !important;
     }
-    .toast-message {
-        font-weight: 300;
-        font-size: 12px;
-    }
-}
-#toast-container.toast-top-center {
-    pointer-events: all;
-    .toast-info {
-        position: absolute;
-        top: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-//Ionic Modal config
-.modal-fullscreen {
-    .modal-wrapper {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-}
-
-// alert custom classes
-ion-alert.dark{
-    .alert-head h2,
-    .alert-message{
-        color: var(--dark-p);
-    }
-    hr{
-        background: var(--dark-p);
-    }
-    .alert-wrapper{
-        background: var(--dark-bg);
-    }
-    &.allow-text-select{
-        .des{
-            color: var(--p-small);
+    &.color.text{
+        color: var(--text-bright) !important;
+        &.active{
+            color: var(--active-bright) !important;
         }
     }
-}
-ion-alert.allow-text-select{
-    user-select: text;
-    .des{
-        font-size: 0.8em;
-        display: block;
-        white-space: nowrap;
-        margin-bottom: 5px;
-    }
-}
-ion-alert.wider{
-    --min-width: 300px;
-}
-// alert fix for long text
-.alert-tappable.alert-radio {
-    height: auto;
-    contain: content;
-}
-.alert-radio-label.sc-ion-alert-md,
-.alert-radio-label.sc-ion-alert-ios {
-    white-space: normal;
-}
-
-ng-select{
-    &.break .ng-dropdown-panel .ng-dropdown-panel-items .ng-option{
-        white-space: initial;
-    }
-}
-
-.dark {
-    .ng-select-container, .ng-option {
-        background: var(--dark-bg) !important;
-    }
-    .color-label, 
-    .label, 
-    .ng-value-label, 
-    ion-title,
-    .ng-input > input,
-    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked,
-    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-        --color: var(--dark-p);
-        color: var(--dark-p);
-    }
-    .ng-select-multiple .ng-value-label {
-        background: var(--dark-bg);
-    }
-    .ng-select .ng-select-container, .ng-select-multiple .ng-value-label {
-        border: var(--dark-border-full);
+    &.color.des{
+        color: var(--des-bright) !important;
     }
 }

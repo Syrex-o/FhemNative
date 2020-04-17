@@ -12,6 +12,22 @@
 					"name": "Rand-Radius",
 					"info": "Radius vom Rand der Box"
 				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand der Box oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand der Box oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand der Box unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand der Box unten rechts"
+				},
 				"style_headerColor":{
 					"name": "Kopfzeile Farbe",
 					"info": "Hintergrundfarbe der Kopfzeile"
@@ -27,6 +43,10 @@
 				"bool_data_showShadow":{
 					"name": "Schatten anzeigen",
 					"info": "Schatten anzeigen/nicht anzeigen"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
 				}
 			}
 		},
@@ -74,6 +94,22 @@
 					"name": "Rand-Radius",
 					"info": "Radius vom Rand des Buttons"
 				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand des Buttons oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand des Buttons oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand des Buttons unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand des Buttons unten rechts"
+				},
 				"data_iconSize":{
 					"name": "Icon Größe",
 					"info": "Größe des Icons im Button"
@@ -89,6 +125,10 @@
 				"bool_data_iconOnly":{
 					"name": "Nur Icon anzeigen",
 					"info": "Aktivieren/deaktivieren, dass nur das Icon im Button angezeigt wird"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
 				},
 				"style_iconColorOn":{
 					"name": "Icon Farbe on",
@@ -144,6 +184,22 @@
 					"name": "Rand-Radius",
 					"info": "Radius vom Rand des Buttons"
 				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand des Buttons oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand des Buttons oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand des Buttons unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand des Buttons unten rechts"
+				},
 				"data_iconSize":{
 					"name": "Icon Größe",
 					"info": "Größe des Icons im Button"
@@ -151,6 +207,10 @@
 				"bool_data_iconOnly":{
 					"name": "Nur Icon anzeigen",
 					"info": "Aktivieren/deaktivieren, dass nur das Icon im Button angezeigt wird"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
 				},
 				"arr_icon_icons":{
 					"name": "Icons",
@@ -178,25 +238,17 @@
 					"name": "Log Geräte Name",
 					"info": "Name des Fhem Log-Geräts"
 				},
+				"data_dbDevice":{
+					"name": "Log Gerät und Reading aus DbLog",
+					"info": "Log Gerät und Reading, dass aus dem DbLog selektiert werden soll (Bsp. device:reading)"
+				},
 				"data_logFile":{
 					"name": "Log Dateiname",
 					"info": "Name eines spezifischen Logs (falls benötigt)"
 				},
-				"data_reading":{
-					"name": "Log Reading 1",
-					"info": "Name des Readings im Log-File"
-				},
-				"data_reading2":{
-					"name": "Log Reading 2",
-					"info": "Name des 2. Readings im Log-File (falls benötigt)"
-				},
-				"data_maxY":{
-					"name": "Max Y",
-					"info": "max. Wert für die Y-Achse, um die Achse zu fixieren (Standard: max. Wert der Y-Achsen Daten)"
-				},
-				"data_labelExtension":{
-					"name": "Label-Endung",
-					"info": "Endung der Y-Achsen Werte (Bsp. %)"
+				"arr_data_dbtype":{
+					"name": "FHEM-Modul Typ",
+					"info": "Fhem Modul, dass verwendet werden soll"
 				},
 				"bool_data_getCurrent":{
 					"name": "Aktuelles Log",
@@ -205,25 +257,39 @@
 				"bool_data_zoomBothAxis":{
 					"name": "Zoomen in beide Achsen",
 					"info": "Aktivieren/deaktivieren des zooms in beide Achsen"
-				},
-				"arr_data_chartType":{
-					"name": "Chart Typ 1",
-					"info": "Typ des Charts für Daten des 1. Readings"
-				},
-				"arr_data_chartType2":{
-					"name": "Chart Typ 2",
-					"info": "Typ des Charts für Daten des 2. Readings"
-				},
-				"arr_data_timeFormat":{
-					"name": "Zeitformat",
-					"info": "Zeitformat für die X-Achse"
-				},
-				"arr_data_colorSet":{
-					"name": "Farbschema",
-					"info": "Farbschema des Charts"
 				}
 			},
 			"TRANSLATOR":{
+				"ADD":{
+					"HEADER": "Graph hinzufügen",
+					"INFO": "Neuen Graph erstellen und konfigurieren",
+					"SELECT_CHART": "Chart-Typ selektieren",
+					"SELECT_READING": "Reading aus FHEM selektieren",
+					"SELECT_COLOR": "Farbe für Graph selektieren",
+					"SELECT_AXIS": "Achse für Graph selektieren",
+					"SELECT_LABEL": "Label Anzeigen/nicht anzeigen",
+					"SELECT_LABEL_DES": "Label an Punkten des Graphs anzeigen/ nicht anzeigen",
+					"SELECT_ENDING": "Label-Endung selektieren",
+					"SELECT_AGG": "Aggregierung selektieren"
+				},
+				"AXIS":{
+					"HEADER": "Achsen konfigurieren",
+					"X":{
+						"HEADER": "X-Achse",
+						"TIME_FORMAT": "Zeitformat der X-Achse"
+					},
+					"Y":{
+						"HEADER": "Y-Achsen",
+						"LEFT_MAX": "Linke Achse Max. Y",
+						"LEFT_MIN": "Linke Achse Min. Y",
+						"RIGHT_MAX": "Rechte Achse Max. Y",
+						"RIGHT_MIN": "Rechte Achse Min. Y",
+						"LEFT_EXTENSION": "Linke Achse Label-Endung",
+						"RIGHT_EXTENSION": "Rechte Achse Label-Endung"
+					}
+				},
+				"REMOVE": "Graph löschen",
+				"SELECT_DATA": "Daten selektieren:",
 				"NO_DATA": "Keine Daten gefunden."
 			}
 		},
@@ -267,6 +333,30 @@
 					"name": "Wert 6",
 					"info": "6. Wert für das Multi-Menü (falls benötigt)"
 				},
+				"data_borderRadius":{
+					"name": "Rand-Radius",
+					"info": "Radius vom Rand des Buttons"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand des Buttons oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand des Buttons oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand des Buttons unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand des Buttons unten rechts"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
+				},
 				"arr_data_expandStyle":{
 					"name": "Ausklapp-Richtung",
 					"info": "Richtung in die das Multi-Menü ausklappen soll"
@@ -274,6 +364,22 @@
 				"icon_icon":{
 					"name": "Icon",
 					"info": "Icon für das Multi-Menü"
+				},
+				"style_iconColorOn":{
+					"name": "Icon Farbe on",
+					"info": "Icon Farbe im ON Zustand"
+				},
+				"style_iconColorOff":{
+					"name": "Icon Farbe off",
+					"info": "Icon Farbe im OFF Zustand"
+				},
+				"style_buttonColor":{
+					"name": "Hintergrundfarbe",
+					"info": "Hintergrundfarbe des Buttons"
+				},
+				"style_labelColor":{
+					"name": "Label-Farbe",
+					"info": "Farbe des Labels im Button"
 				}
 			}
 		},
@@ -409,14 +515,6 @@
 					"name": "Set Reading",
 					"info": "Name des set Befehls (falls benötigt)"
 				},
-				"data_sliderReading":{
-					"name": "Slider Reading",
-					"info": "Name des Slider Readings (falls benötigt)"
-				},
-				"data_setSliderReading":{
-					"name": "Set Slider Reading",
-					"info": "Name des set Befehls für das Slider Reading"
-				},
 				"data_popupWidth":{
 					"name": "Popup Breite",
 					"info": "Breite des Colorpicker Popups"
@@ -427,7 +525,23 @@
 				},
 				"data_borderRadius":{
 					"name": "Rand-Radius",
-					"info": "Radius vom Rand der Farbvorschau in %"
+					"info": "Radius vom Rand der Farbvorschau"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand der Farbvorschau oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand der Farbvorschau oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand der Farbvorschau unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand der Farbvorschau unten rechts"
 				},
 				"data_headline":{
 					"name": "Kopfzeile",
@@ -445,13 +559,25 @@
 					"name": "Farb-Output",
 					"info": "Definition des Farb-Outputs"
 				},
-				"bool_data_showSlider":{
-					"name": "Zeige Slider",
-					"info": "Anzeigen/nicht anzeigen des Sliders (Slider Reading wird benötigt)"
+				"arr_data_animationStyle":{
+					"name": "Popup Animation",
+					"info": "Selektion der Popup Animation"
 				},
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
 					"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
+				},
+				"bool_data_customAnimation":{
+					"name": "Eigene Popup Animation",
+					"info": "Aktivieren/deaktivieren der custom Popup Animation"
+				},
+				"bool_data_invertAnimation":{
+					"name": "Popup OFF Animation umkehren",
+					"info": "Aktivieren/deaktivieren der Umkehrung der Popup Animation"
 				}
 			},
 			"TRANSLATOR":{
@@ -530,6 +656,10 @@
 				"style_indicatorBackgroundColor":{
 					"name": "Indikator Hintergrundfarbe",
 					"info": "Hintergrundfarbe des Indikators"
+				},
+				"bool_data_showIndocator":{
+					"name": "Indikator anzeigen/nicht anzeigen",
+					"info": "Indikator für seperates Reading anzeigen/ nicht anzeigen"
 				}
 			}
 		},
@@ -753,6 +883,76 @@
 				"NO_PIN_READING": "Kein Reading für den Pin gefunden."
 			}
 		},
+		"Picker":{
+			"NAME": "Picker",
+			"DES": "Ein Picker, der mit anderen Komponenten gefüllt werden kann.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts (falls benötigt)"
+				},
+				"data_reading":{
+					"name": "Reading Name",
+					"info": "Name des Fhem Readings (falls benötigt)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "Status des Readings im ON Zustand"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "Status des Readings im OFF Zustand"
+				},
+				"data_headline":{
+					"name": "Kopfzeile",
+					"info": "Label der Kopfzeile im Picker"
+				},
+				"data_cancelText":{
+					"name": "Close Text",
+					"info": "Label des close Buttons"
+				},
+				"data_height":{
+					"name": "Picker Höhe",
+					"info": "Höhe des Pickers in %"
+				},
+				"arr_data_animationStyle":{
+					"name": "Picker Animation",
+					"info": "Selektion der Picker Animation"
+				},
+				"bool_data_openOnReading":{
+					"name": "Öffnen bei Reading",
+					"info": "Aktivieren/deaktivieren des automatischen öffnens bei Reading"
+				},
+				"bool_data_customAnimation":{
+					"name": "Eigene Picker Animation",
+					"info": "Aktivieren/deaktivieren der custom Picker Animation"
+				},
+				"icon_iconOn":{
+					"name": "Icon on",
+					"info": "Icon im ON Zustand"
+				},
+				"icon_iconOff":{
+					"name": "Icon off",
+					"info": "Icon im OFF Zustand"
+				},
+				"style_iconColorOn":{
+					"name": "Icon Farbe on",
+					"info": "Icon Farbe im ON Zustand"
+				},
+				"style_iconColorOff":{
+					"name": "Icon Farbe off",
+					"info": "Icon Farbe im OFF Zustand"
+				},
+				"style_backgroundColorOn":{
+					"name": "Hintergrundfarbe on",
+					"info": "Hintergrundfarbe im ON Zustand"
+				},
+				"style_backgroundColorOff":{
+					"name": "Hintergrundfarbe off",
+					"info": "Hintergrundfarbe im OFF Zustand"
+				}
+			}
+		},
 		"Popup":{
 			"NAME": "Popup",
 			"DES": "Ein Popup, dass mit anderen Komponenten gefüllt werden kann.",
@@ -785,9 +985,21 @@
 					"name": "Popup Höhe",
 					"info": "Höhe des Popups in %"
 				},
+				"arr_data_animationStyle":{
+					"name": "Popup Animation",
+					"info": "Selektion der Popup Animation"
+				},
 				"bool_data_openOnReading":{
 					"name": "Öffnen bei Reading",
 					"info": "Aktivieren/deaktivieren des automatischen öffnens bei Reading"
+				},
+				"bool_data_customAnimation":{
+					"name": "Eigene Popup Animation",
+					"info": "Aktivieren/deaktivieren der custom Popup Animation"
+				},
+				"bool_data_invertAnimation":{
+					"name": "Popup OFF Animation umkehren",
+					"info": "Aktivieren/deaktivieren der Umkehrung der Popup Animation"
 				},
 				"icon_iconOn":{
 					"name": "Icon on",
@@ -804,6 +1016,14 @@
 				"style_iconColorOff":{
 					"name": "Icon Farbe off",
 					"info": "Icon Farbe im OFF Zustand"
+				},
+				"style_backgroundColorOn":{
+					"name": "Hintergrundfarbe on",
+					"info": "Hintergrundfarbe im ON Zustand"
+				},
+				"style_backgroundColorOff":{
+					"name": "Hintergrundfarbe off",
+					"info": "Hintergrundfarbe im OFF Zustand"
 				}
 			}
 		},
@@ -843,6 +1063,10 @@
 					"name": "Platzhalter",
 					"info": "Platzhalter, falls kein aktueller Zustand verfügbar ist"
 				}
+			},
+			"TRANSLATOR":{
+				"NO_ITEMS": "Keine Elemente gefunden",
+				"ADD": "Hinzufügen:"
 			}
 		},
 		"Slider":{
@@ -913,13 +1137,13 @@
 					"name": "Zeige Wert im Thumb",
 					"info": "Anzeigen/nicht anzeigen des aktuellen Wertes im Thumb"
 				},
-				"bool_data_showTicks":{
-					"name": "Zeige Ticks",
-					"info": "Anzeigen/nicht anzeigen der Slider Ticks"
-				},
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
 					"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+				},
+				"style_backgroundColor":{
+					"name": "Hintergrundfarbe",
+					"info": "Hintergrundfarbe des Sliders"
 				},
 				"style_thumbColor":{
 					"name": "Thumb-Farbe",
@@ -1181,13 +1405,25 @@
 					"name": "Label",
 					"info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
 				},
+				"data_subLabel":{
+					"name": "Sub Label",
+					"info": "Anzuzeigendes sub label"
+				},
 				"bool_data_showBorder":{
 					"name": "Rand anzeigen",
 					"info": "Anzeigen/nicht anzeigen des Rands"
 				},
+				"bool_data_customLabels":{
+					"name": "Eigene Labels",
+					"info": "Benutzerdefinierte Labels aktivieren/deaktivieren"
+				},
 				"arr_data_buttonStyle":{
 					"name": "Switch Style",
 					"info": "Style des Switch Buttons"
+				},
+				"style_borderColor":{
+					"name": "Randfarbe",
+					"info": "Randfarbe des Switches, zum abgrenzen"
 				},
 				"style_colorOn":{
 					"name": "Hintergrundfarbe on",
@@ -1204,6 +1440,50 @@
 				"style_thumbColorOff":{
 					"name": "Thumb Farbe off",
 					"info": "Hintergrundfarbe des Thumbs im OFF Zustand"
+				}
+			}
+		},
+		"Table":{
+			"NAME": "Table",
+			"DES": "Eine Tabelle, die Geräte Readings aus FHEM anzeigt.",
+			"INPUTS": {
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts"
+				}
+			},
+			"TRANSLATOR":{
+				"CONFIG":{
+					"TABLE":{
+						"TITLE": "Tabelle konfigurieren",
+						"INFO": "Tabellen Kopfzeile konfigurieren"
+					},
+					"READINGS": {
+						"TITLE": "Readings auswählen",
+						"INFO": "Readings des Geräts auswählen, die angezeigt werden sollen"
+					}
+				}
+			}
+		},
+		"Tabs":{
+			"NAME": "Tabs",
+			"DES": "Ein Tabs-Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
+			"INPUTS":{
+				"data_pages": {
+					"name": "Seiten",
+					"info": "Anzahl der Seiten für den Swiper"
+				},
+				"arr_icon_icons":{
+					"name": "Icons",
+					"info": "Eine Liste von Icons (für jeden Tab)"
+				},
+				"arr_style_iconColors":{
+					"name": "Icon-Farben",
+					"info": "Eine Liste von Icon Farben"
+				},
+				"arr_style_backGroundColors":{
+					"name": "Hintergrundfarben",
+					"info": "Eine Liste von Hintergrundfarben (für jeden Tab)"
 				}
 			}
 		},
@@ -1243,6 +1523,10 @@
 					"name": "Label-Endung",
 					"info": "Endung des Werte-Labels (Bsp. %)"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Thermostats"
+				},
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
 					"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
@@ -1250,6 +1534,10 @@
 				"bool_data_enableAnimation":{
 					"name": "Thermostat Animation",
 					"info": "Aktivieren/deaktivieren der Thermostat-Animation"
+				},
+				"style_labelColor":{
+					"name": "Label-Farbe",
+					"info": "Farbe des Labels"
 				},
 				"style_gradientColor1":{
 					"name": "Verlaufsfarbe 1",
@@ -1266,6 +1554,18 @@
 				"style_gradientColor4":{
 					"name": "Verlaufsfarbe 4",
 					"info": "Farbverlaufs-Farbe 4"
+				},
+				"style_backgroundColorOne":{
+					"name": "Hintergrundfarbe",
+					"info": "Hintergrundfarbe des runden Sliders"
+				},
+				"style_tickColor":{
+					"name": "Tick-Farbe",
+					"info": "Tick-Farbe des runden Sliders"
+				},
+				"style_thumbColor":{
+					"name": "Thumb-Farbe",
+					"info": "Hintergrundfarbe des Slider-Thumbs"
 				}
 			}
 		},
@@ -1373,10 +1673,6 @@
 			},
 			"SETTINGS_SAVED_TITLE": "Einstellungen gespeichert:",
 			"SETTINGS_SAVED_INFO": "Einstellungen gespeichert unter: ",
-			"LOG_STARTED_TITLE": "Ein Log-File wird erstellt",
-			"LOG_STARTED_INFO": "Fehler werden gespeichert, bis der Logger deaktiviert wird.",
-			"LOG_ENDED_TITLE": "Log File gespeichert:",
-			"LOG_ENDED_INFO": "Log File gespeichert unter: ",
 			"NO_CHANGELOG_PRESENT": "Kein Changelog verfügbar.",
 			"WEEKDAYS":{
 				"MONDAY": "Montag",
@@ -1390,7 +1686,9 @@
 			},
 			"AS": "als",
 			"AND": "und",
-			"TO": "zu"
+			"TO": "zu",
+			"YES": "Ja",
+			"NO": "Nein"
 		},
 		"SETTINGS":{
 			"TITLE": "Einstellungen",
@@ -1398,8 +1696,7 @@
 				"TITLE": "FHEM Einstellungen",
 				"WEBSOCKET":{
 					"TITLE": "Websocket Einstellungen",
-					"INFO": "Websocket Einstellungen ändern.",
-					"BUTTON": "IP Einstellungen ändern"
+					"INFO": "Websocket Einstellungen ändern."
 				},
 				"EXPORT":{
 					"TITLE": "Einstellungen exportieren",
@@ -1415,10 +1712,9 @@
 				"IMPORT":{
 					"TITLE": "Einstellungen importieren",
 					"INFO": "Import der Raum-, Komponenten- und FHEM Einstellungen.",
-					"BUTTON": "JSON auswählen",
 					"MESSAGES":{
 						"SUCCESS": {
-							"TITLE": "der Import war erfolgreich.",
+							"TITLE": "Der Import war erfolgreich.",
 							"INFO": "FhemNative Einstellungen wurden erfolgreich importiert."
 						},
 						"ERROR":{
@@ -1437,16 +1733,16 @@
 					"INFO": "Automatisch Geräte aus FHEM kreieren und Räumen zuordnen.",
 					"BUTTON": "Geräte generieren"
 				},
-				"LOAD_ALL_DEVICES":{
-					"TITLE": "Alle Fhem Geräte laden",
-					"INFO": "Beim App Start alle Fhem Geräte laden aktivieren/deaktivieren."
+				"ALWAYS_ON":{
+					"TITLE": "Verbindung aktiv halten",
+					"INFO": "Verbindung zu FHEM auch im Hintergrund aktiv halten"
 				},
 				"LOAD_WHICH_DEVICES":{
 					"TITLE": "Geräte laden definieren",
 					"INFO": "Welche Geräte sollen beim App Start geladen werden?",
 					"OPTIONS":{
-						"Component": "1: Geräte die in Komponenten enthalten sind.",
-						"Fhem_Defined": "2: 1. + Geräte die in Fhem hinterlegt sind."
+						"ALL": "Alle FHEM Geräte laden.",
+						"Component": "Geräte die in Komponenten enthalten sind."
 					}
 				},
 				"DYNAMIC_COMPONENT_LOADER":{
@@ -1461,8 +1757,10 @@
 					"INFO": "App Thema ändern.",
 					"OPTIONS":{
 						"DARK": "Dunkel",
-						"BRIGHT": "Hell"
-					}
+						"BRIGHT": "Hell",
+						"CUSTOM": "Custom"
+					},
+					"CHANGE_INFO": "Nach Abschluss muss die App neu geladen werden, um die Farbauswahl zu bestätigen."
 				},
 				"LANGUAGE":{
 					"TITLE": "Sprache",
@@ -1494,7 +1792,11 @@
 				},
 				"LOG":{
 					"TITLE": "Log-File schreiben",
-					"INFO": "Logging aktivieren/deaktivieren."
+					"INFO": "Logging aktivieren/deaktivieren.",
+					"EXPORT":{
+						"TITLE": "Log-File export",
+						"INFO": "Export des Log Files"
+					}
 				}
 			},
 			"COMPONENTS":{
@@ -1569,9 +1871,7 @@
 							"STORAGE": "Native storage",
 							"FILE": "Native device file access",
 							"SOCIALSHARING": "Sharing of device files",
-							"CHOOSER": "Selecting device files",
-							"IMAGEPICKER": "Selecting images from device",
-							"WEBVIEW": "Access to webview functions"
+							"CHOOSER": "Selecting device files"
 						},
 						"EXTERNAL":{
 							"TITLE": "Externe Bibliotheken:",
@@ -1579,7 +1879,7 @@
 							"NGXTOASTER": "Integration von Toast-Nachrichten"
 						},
 						"OTHERS":{
-							"TITLE": "OAndere Quellen:"
+							"TITLE": "Andere Quellen:"
 						}
 					}
 				}
@@ -1599,6 +1899,10 @@
 					"TITLE": "Hilf anderen/Reporte Bugs/Feature Requests",
 					"INFO": "Hilf im Forum aus, reporte deine gefunden Fehler und plaziere Wünsche im FHEM Forum."
 				}
+			},
+			"ADVANCED":{
+				"TITLE": "Erweiterte Einstellungen",
+				"INFO": "Zeige die erweiterten Einstellungen von FhemNative."
 			}
 		},
 		"TASKS":{
@@ -1644,11 +1948,27 @@
 				"INFO": "Else Kondition entfernen"
 			}
 		},
+		"RESET":{
+			"TITLE": "Werkseinstellungen",
+			"REVERT":{
+				"TITLE": "Auf Werkseinstellungen zurücksetzen",
+				"INFO": "Alle Einstellungen von FhemNative auf Werkseinstellungen zurücksetzen.",
+				"BUTTON": "Zurücksetzen",
+				"SURE": "Sind Sie sicher, dass Sie FhemNative auf Werkseinstellungen zurücksetzen wollen?"
+			},
+			"DONE":{
+				"TITLE": "Einstellungen zurückgesetzt",
+				"INFO": "Alle Einstellungen wurden auf Werkseinstellungen zurückgesetzt."
+			}
+		},
 		"CREATE_ROOM":{
 			"TITLE": "Raum erstellen:",
 			"ROOM_NAME": "Raum Name",
 			"ROOM_ICON": "Raum Icon:",
-			"NO_ROOM_NAME": "Bitte gib dem Raum einen Namen,",
+			"NO_ROOM_NAME": {
+				"TITLE": "Kein Raumname",
+				"INFO": "Bitte gib dem Raum einen Namen."
+			},
 			"ROOM_CREATED": "Raum erstellt.",
 			"USE_AS_GROUP":{
 				"TITLE": "Raum als Menü verwenden",
@@ -1681,6 +2001,13 @@
 				"CONFIG_STYLE": "Komponenten Style konfigurieren:",
 				"CONFIG_TEST": "Komponenten Konfiguration testen:",
 				"NO_COMPONENT": "Bitte wähle zuerst eine Komponente."
+			},
+			"CUSTOM_INPUTS":{
+				"INFO": "Die Komponente hat erweiterte Konfigurations-Möglichkeiten.",
+				"DES": "Bitte erstelle die Komponente und bearbeite die erweiterten Einstellungen direkt in der Komponente.",
+				"PICKER": {
+					"HEADER": "Erweiterte Konfiguration:"
+				}
 			}
 		},
 		"EDIT_COMPONENT":{
@@ -1700,6 +2027,8 @@
 				"PASTE": "Einfügen",
 				"DELETE": "Löschen",
 				"DETAILS": "Komponenten Details",
+				"EXPORT": "Exportieren",
+				"IMPORT": "Importieren",
 				"DEF_DETAILS":{
 					"SHORT": {
 						"TITLE": "Kurzdefinition",
@@ -1713,12 +2042,41 @@
 				"SWITCH":{
 					"TITLE": "Komponente wechseln",
 					"INFO": "Zu bearbeitende Komponente schnell wechseln"
+				},
+				"EXPORT_COMPONENT":{
+					"SUCCESS": {
+						"TITLE": "Komponenten exportiert",
+						"INFO": "Komponenten wurden exportiert und hier abgelegt: "
+					},
+					"ERROR": {
+						"TITLE": "Komponenten nicht exportiert",
+						"INFO": "Komponenten konnten nicht exportiert werden. Es ist ein Fehler aufgetreten."
+					}
+				},
+				"IMPORT_COMPONENT":{
+					"SUCCESS": {
+						"TITLE": "Komponenten importiert",
+						"INFO": "Komponenten wurden erfolgreich importiert."
+					},
+					"ERROR": {
+						"TITLE": "Komponenten nicht importiert",
+						"INFO": "Komponenten konnten nicht importiert werden. Es ist ein Fehler aufgetreten."
+					}
 				}
 			}
 		},
 		"FHEM_MENU":{
 			"CONNECTION":{
 				"TITLE": "IP-Einstellungen",
+				"PROFILE":{
+					"HEADER": "FhemNative Profil",
+					"TITLE": "Profil hinzufügen",
+					"INFO": "Verbindungs-Profil hinzufügen",
+					"DELETE":{
+						"TITLE": "Profil löschen",
+						"INFO": "Verbindungs-Profil löschen"
+					}
+				},
 				"IP":{
 					"TITLE": "IP Adresse",
 					"INFO": "IP Adresse des Fhem Servers"
@@ -1752,7 +2110,6 @@
 		"ERRORS":{
 			"CONNECTION":{
 				"NO_CONNECTION": "Keine Verbindung zu Fhem.",
-				"NO_DEVICELIST": "Device Liste nicht geladen.",
 				"CONNECTION_HELPER": "Bitte bearbeite deine IP-Einstellungen."
 			},
 			"NOT_FOUND":{
@@ -1769,12 +2126,6 @@
 			"TIMEOUT": "Verdindungs-Timeout zu Fhem.",
 			"FETCHED_ALL_DEVICES": "Alle Geräte abgeholt.",
 			"DEVICE_UPDATE": "Werte aktuallisiert für: "
-		},
-		"VERSIONS":{
-			"NEW":{
-				"TITLE": "Neue Version verfügbar",
-				"INFO": "Es ist eine neue Version von FhemNative auf GitHub verfügbar. Hier klicken um auf GitHub zu gelangen."
-			}
 		}
 	}
 }

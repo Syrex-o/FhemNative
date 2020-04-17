@@ -1,17 +1,28 @@
 import { Injectable, NgZone } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { SettingsService } from './settings.service';
 import { AlertController } from '@ionic/angular';
 
+// Plugins
+import { ToastrService } from 'ngx-toastr';
+
+// Services
+import { SettingsService } from './settings.service';
 import { TranslateService } from '@ngx-translate/core';
+
+interface NotifyDefaults {
+	tapToDismiss: boolean,
+	timeOut: number,
+	positionClass: string,
+	toastClass: string,
+	easing: string
+}
 
 @Injectable({
 	providedIn: 'root'
 })
 
 export class ToastService {
-
-	private toastSettings = {
+	// default taost settings
+	private toastSettings: NotifyDefaults = {
 		tapToDismiss: true,
 		timeOut: 1500,
 		positionClass: 'toast-bottom-left',
@@ -19,7 +30,8 @@ export class ToastService {
 		easing: 'ease-out'
 	};
 
-	private notifySettings = {
+	// default notofy settings
+	private notifySettings: NotifyDefaults = {
 		tapToDismiss: true,
 		timeOut: 3000,
 		positionClass: 'toast-top-center',
@@ -35,23 +47,21 @@ export class ToastService {
 		private translate: TranslateService) {
 	}
 
-	public addToast(head, message, style) {
+	// add a toast message
+	public addToast(head: string, message: string, style: string) {
 		this.zone.run(() => {
 			const styling = style.toLowerCase();
 			if (this.settings.app.showToastMessages) {
-				this.toast[styling](
-					message,
-					head,
-					this.toastSettings
-				);
+				this.toast[styling](message, head, this.toastSettings);
 			}
 		});
 		if (style === 'error') {
-			throw new Error(head + ': ' + message);
+			console.error(head + ': ' + message);
 		}
 	}
 
-	public addNotify(head, message, handle) {
+	// add a notify message
+	public addNotify(head: string, message: string, handle: boolean) {
 		return new Promise((resolve) => {
 			this.zone.run(() => {
 				const t = this.toast.info(message, head, this.notifySettings);
@@ -67,7 +77,8 @@ export class ToastService {
 		});
 	}
 
-	async showAlert(head, message, buttons) {
+	// add an alert message
+	async showAlert(head: string, message: string, buttons: any) {
 		const opts = {
 			header: head,
 			message,
