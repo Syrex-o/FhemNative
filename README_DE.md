@@ -38,26 +38,33 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 | Komponente          | Kurzbeschreibung                                                  | Docs         | Type |
 |------------------|--------------------------------------------------------|--------------|--|
-| Box     | Eine einfache Box, um Räume besser zu strukturieren.       |   [Docs][1] | Style |
-| Button            | Ein Button um Zwischen 2 Zuständen in FHEM zu schalten oder einen Befehl an FHEM zu senden. |   [Docs][2] | Fhem |
-| Chart     | Ein Chart mit maximal 2 Inputs, um log Files grafisch darzustellen. |   [Docs][3] | Fhem |
-| Circle Menu           | Ein Menü, um mehrere Befehle in einer Komponente zu vereinen. |   [Docs][4]  | Fhem |
-| Circle Slider           | Ein Kreis-SLider mit min. und max. Werten. |   [Docs][5]  | Fhem |
-| Color Picker           | Ein Farbmenü mit Favoritenliste und Helligkeitsslider. |   [Docs][6]  | Fhem |
-| IFrame           | Ein IFrame, um andere Webinhalte zu inkludieren. |   [Docs][7]  | Fhem |
-| Icon  | Ein Icon, um verschiedene Zustände aus FHEM darzustellen. |[Docs][8]  | Style |
-| Image           | Ein Bild von einer Url oder vom eigenen Gerät. |   [Docs][9]  | Style |
-| Kodi Remote           |Work in Progress|   [Docs][10]  | Fhem |
-| Label           |Ein Lable um Text anzuzeigen. |   [Docs][11]  | Style |
-| Line           |Eine Linie, die horizontal oder vertikal gezogen werden kann, um Komponenten voneinander abzutrennen.|   [Docs][12]  | Style |
-| Pinpad           | Ein Pinpad um ein Alarm-System zu steuern.|   [Docs][13]  | Fhem |
-| Popup| Ein Popup, um weitere Komponenten zu verpacken.|[Docs][14]  | Fhem |
-| Select           |Ein Auswahlmenü aus FHEM Werten/eigenen Werten.|   [Docs][15]  | Fhem |
-| Slider           |Ein horizontaler or vertikaler slider.|   [Docs][16]  | Fhem |
-| Sprinkler           |Sprinkler module (description follows in other repo)|   [Docs][17]  | Fhem |
-| Switch           | Ein Switch zum schalten von 2 FHEM Zuständen|   [Docs][18]  | Fhem |
-| Thermostat           |Ein Termostat mit Animationen|   [Docs][19]  | Fhem |
-| Time Picker           |Ein Zeitmenü im Format: 00:00.|   [Docs][20]  | Fhem |
+| Box     | Eine einfache Box, um Räume besser zu strukturieren.       |   [Docs][5] | Style |
+| Button            | Ein Button um Zwischen 2 Zuständen in FHEM zu schalten oder einen Befehl an FHEM zu senden. |   [Docs][10] | Fhem |
+| Button Multistate           | Ein Button um Zwischen mehreren Zuständen in FHEM zu schalten oder verschiedene Befehle an FHEM zu senden. |   [Docs][15] | Fhem |
+| Chart     | Ein Chart mit maximal 2 Inputs, um log Files grafisch darzustellen. |   [Docs][20] | Fhem |
+| Circle Menu           | Ein Menü, um mehrere Befehle in einer Komponente zu vereinen. |   [Docs][25]  | Fhem |
+| Circle Slider           | Ein Kreis-SLider mit min. und max. Werten. |   [Docs][30]  | Fhem |
+| Color Picker           | Ein Farbmenü mit Favoritenliste und Helligkeitsslider. |   [Docs][35]  | Fhem |
+| IFrame           | Ein IFrame, um andere Webinhalte zu inkludieren. |   [Docs][40]  | Fhem |
+| Icon  | Ein Icon, um verschiedene Zustände aus FHEM darzustellen. |[Docs][45]  | Style |
+| Image           | Ein Bild von einer Url oder vom eigenen Gerät. |   [Docs][50]  | Style |
+| Kodi Remote           |Work in Progress|   [Docs][55]  | Fhem |
+| Label           |Ein Lable um Text anzuzeigen. |   [Docs][60]  | Style |
+| Line           |Eine Linie, die horizontal oder vertikal gezogen werden kann, um Komponenten voneinander abzutrennen.|   [Docs][65]  | Style |
+| Media List           |Eine Komponente zum lesen von Medialist aus FHEM|   [Docs][66]  | Style |
+| Picker| Ein Picker, um weitere Komponenten zu verpacken.|[Docs][67]  | Fhem |
+| Pinpad           | Ein Pinpad um ein Alarm-System zu steuern.|   [Docs][70]  | Fhem |
+| Popup| Ein Popup, um weitere Komponenten zu verpacken.|[Docs][75]  | Fhem |
+| Select           |Ein Auswahlmenü aus FHEM Werten/eigenen Werten.|   [Docs][80]  | Fhem |
+| Slider           |Ein horizontaler or vertikaler slider.|   [Docs][85]  | Fhem |
+| Sprinkler           |Sprinkler module (description follows in other repo)|   [Docs][90]  | Fhem |
+| Swiper           | Ein Swiper, der mit Komponenten gefüllt werden kann|   [Docs][91]  | Style |
+| Switch           | Ein Switch zum schalten von 2 FHEM Zuständen|   [Docs][92]  | Fhem |
+| Table           | Eine Tabelle, um Werte aus FHEM anzuzeigen|   [Docs][93]  | Fhem |
+| Table           | Eine Tab-Komponente, die mit Komponenten gefüllt werden kann|   [Docs][93]  | Fhem |
+| Thermostat           |Ein Termostat mit Animationen|   [Docs][94]  | Fhem |
+| Time Picker           |Ein Zeitmenü im Format: 00:00.|   [Docs][95]  | Fhem |
+| Wetter           |Ein Wetter-Chart, dass aus FHEM Modulen gezeichnet wird|   [Docs][95]  | Fhem |
 
 ## Installation
 #### Externe Websocket installation
@@ -80,9 +87,9 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 # Komponenten Details
 
-[1]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#box
+[5]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#box
 ## Box
-<img src="/images/box.jpg" width="300" height="300" />
+<img src="https://drive.google.com/file/d/1VDSQXe8nbIhoYdInSYSUi7FqZVVHoScF/view" width="300" height="300" />
 
 > Eine Box um weitere Komponenten auf der Oberfläche zu Ordnen.
 
