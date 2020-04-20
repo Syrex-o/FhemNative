@@ -271,7 +271,7 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 > Komponente zum einstellen von Tageszeiten im Format: 00:00
 
-[97]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#wetter
+[97]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#Wetter
 ## Wetter
 <img src="https://doc-0o-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/06d8ul7g6vse4kag8s4493qmumig3c12/1587390150000/11249763612494125977/11249763612494125977/1-rrdOyHy_sluvvGQ66rpTvCmoVp08c_C?e=view&authuser=0" width="450" height="240" />
 
