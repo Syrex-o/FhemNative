@@ -1,5 +1,6 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 
 // Components
@@ -569,7 +570,7 @@ export default class SettingsComponent implements OnInit {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [SettingsComponent]
 })
 class SettingsComponentModule {}

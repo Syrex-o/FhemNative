@@ -1,5 +1,6 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { IonicModule } from '@ionic/angular';
@@ -298,7 +299,7 @@ export default class TasksComponent implements OnInit {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [TasksComponent]
 })
 class TasksComponentModule {}
