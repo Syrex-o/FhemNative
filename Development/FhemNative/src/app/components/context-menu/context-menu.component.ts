@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { ComponentsModule } from '../components.module';
@@ -25,7 +26,7 @@ import { PopupPicker } from '../../animations/animations';
   	styleUrls: ['./context-menu.component.scss'],
   	animations: [ PopupPicker ]
 })
-export default class ContextMenuComponent implements OnInit {
+export class ContextMenuComponent implements OnInit {
 	// context-menu ref
 	@ViewChild('CONTEXT_MENU', { static: false, read: ElementRef }) contextMenu: ElementRef;
 	// Inputs of position
@@ -66,12 +67,14 @@ export default class ContextMenuComponent implements OnInit {
 			const container: ClientRect = this.componentLoader.containerStack[0].container.element.nativeElement.parentNode.getBoundingClientRect();
 			let x: number = 0; let y: number = 0;
 			if (this.x + menu.clientWidth >= container.width) {
-				x = -100;
+				const menuOverlap = container.width - (menu.getBoundingClientRect().left + menu.clientWidth + 10);
+				x = menuOverlap;
 			}
 			if (this.y + menu.clientHeight >= container.height) {
-				y = -100;
+				const menuOverlap = container.height - (menu.getBoundingClientRect().top + menu.clientHeight + 10);
+				y = menuOverlap;
 			}
-			menu.style.transform = 'translate3d(' + x + '%,' + y + '%, 0)';
+			menu.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
 			// show menu
 			this.show.contextMenu = true;
 		});
@@ -382,7 +385,7 @@ export default class ContextMenuComponent implements OnInit {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule],
+	imports: [ComponentsModule, TranslateModule],
   	declarations: [ContextMenuComponent]
 })
 class ContextMenuComponentComponentModule {}
