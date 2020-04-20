@@ -183,7 +183,7 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 [66]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#Media-List
 ## Media.List
-<img src="/images/FhemNative_MediaList.png" width="300" height="180" />
+<img src="/images/FhemNative_Medialist.png" width="300" height="180" />
 
 > Darstellung einer MediaList aus FHEM.
 
@@ -249,7 +249,7 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 [93]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#table
 ## Table
-<img src="/images/FhemNative_Switch.png" width="350" height="400" />
+<img src="/images/FhemNative_Table.png" width="350" height="400" />
 
 > Eine Tabelle, um Werte aus FHEM anzeigen zu können
 
