@@ -9,7 +9,7 @@
     "src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.ts",
+    "src/app/**/*.component.ts",
     "src/**/*.d.ts",
   ],
   "exclude": [
