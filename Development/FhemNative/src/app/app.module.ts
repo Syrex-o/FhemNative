@@ -10,14 +10,13 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-// Ionic Plugins
-import { IonicStorageModule } from '@ionic/storage';
-
 // Other Plugins
 import { ToastrModule } from 'ngx-toastr';
 import { HotkeyModule } from 'angular2-hotkeys';
+
 // Components
 import { ComponentsModule } from './components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Services
 import { FhemService } from './services/fhem.service';
@@ -38,12 +37,13 @@ import { NativeFunctionsService } from './services/native-functions.service';
 // Logger
 import { LoggerModule } from './services/logger/logger.module';
 
-// Plugins
+// Ionic Plugins
 import { File } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   	declarations: [AppComponent],
@@ -56,6 +56,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
       	HotkeyModule.forRoot(),
       	AppRoutingModule,
       	ComponentsModule,
+        TranslateModule,
       	// FhemNative Logger
 		LoggerModule
   	],
@@ -75,12 +76,12 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
     	BackButtonService,
     	HotKeyService,
     	TimeService,
-      ElectronService,
-      FileManagerService,
-      NativeFunctionsService,
+    	ElectronService,
+    	FileManagerService,
+    	NativeFunctionsService,
     	// Plugins
     	File,
-      Chooser,
+    	Chooser,
     	Vibration,
     	NativeAudio,
     	SocialSharing
