@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { ComponentsModule } from '../../components.module';
@@ -14,7 +15,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-pinpad.component.html',
   	styleUrls: ['./fhem-pinpad.component.scss']
 })
-export default class FhemPinpadComponent implements OnInit, OnDestroy {
+export class FhemPinpadComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -158,7 +159,7 @@ export default class FhemPinpadComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [FhemPinpadComponent]
 })
 class FhemPinpadComponentModule {}

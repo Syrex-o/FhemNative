@@ -17,7 +17,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-picker.component.html',
   	styleUrls: ['./fhem-picker.component.scss']
 })
-export default class FhemPickerComponent implements OnInit, OnDestroy {
+export class FhemPickerComponent implements OnInit, OnDestroy {
 	// popup container
 	@ViewChild('container', { static: false, read: ViewContainerRef }) container: ViewContainerRef;
 	// edit change

@@ -12,7 +12,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-timepicker.component.html',
   	styleUrls: ['./fhem-timepicker.component.scss']
 })
-export default class FhemTimepickerComponent implements OnInit, OnDestroy {
+export class FhemTimepickerComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -24,6 +24,8 @@ export default class FhemTimepickerComponent implements OnInit, OnDestroy {
     @Input() data_cancelBtn: string;
     @Input() data_label: string;
 
+    @Input() bool_data_showBorder: boolean;
+
     @Input() arr_data_format: string[];
 
     // position information
@@ -33,7 +35,7 @@ export default class FhemTimepickerComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	value: string;
 
 	ngOnInit(){

@@ -1,11 +1,14 @@
 <fhem-component-container 
-	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, forceReload: true}" 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}"
+	[fhemDevice]="fhemDevice" 
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="100"
 	[minimumHeight]="40">
 	<div class="timepicker">
 		<timepicker
 			[actOnCallback]="true"
+			[showBorder]="bool_data_showBorder"
+			[fullHeight]="true"
 			[maxHours]="data_maxHours"
 			[maxMinutes]="data_maxMinutes"
 			[label]="data_label"

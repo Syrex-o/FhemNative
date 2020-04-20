@@ -13,7 +13,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-select.component.html',
   	styleUrls: ['./fhem-select.component.scss']
 })
-export default class FhemSelectComponent implements OnInit, OnDestroy {
+export class FhemSelectComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -34,7 +34,7 @@ export default class FhemSelectComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	// list itmes
 	items: string[] = [];
     alias: string[] = [];

@@ -15,7 +15,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-slider.component.html',
   	styleUrls: ['./fhem-slider.component.scss']
 })
-export default class FhemSliderComponent implements OnInit, OnDestroy {
+export class FhemSliderComponent implements OnInit, OnDestroy {
 	private container: HTMLElement;
 
 	@Input() ID: string;
@@ -59,7 +59,7 @@ export default class FhemSliderComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	private waitForThreshold = 0;
 
 	value: number;

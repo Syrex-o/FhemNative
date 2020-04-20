@@ -1,9 +1,10 @@
 <fhem-component-container 
-	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, forceReload: true}" 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}"
+	[fhemDevice]="fhemDevice"
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="200"
 	[minimumHeight]="200">
-	<div class="circle-slider" #svgRoot>
+	<div class="circle-slider" #svgRoot *ngIf="fhemDevice">
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" [attr.viewBox]="styles.viewBox" preserveAspectRatio="xMinYMin meet">
 			<defs>
 				<filter [attr.id]="'blurFilter' + UID" x="0" y="0" width="100%" height="100%">

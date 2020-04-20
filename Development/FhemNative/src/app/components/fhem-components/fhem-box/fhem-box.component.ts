@@ -11,7 +11,7 @@ import { SettingsService } from '../../../services/settings.service';
 	templateUrl: './fhem-box.component.html',
   	styleUrls: ['./fhem-box.component.scss']
 })
-export default class FhemBoxComponent{
+export class FhemBoxComponent{
 	@Input() ID: string;
 
 	@Input() data_headline: string;

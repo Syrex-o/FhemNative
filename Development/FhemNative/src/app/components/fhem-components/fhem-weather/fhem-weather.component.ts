@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import * as d3 from 'd3';
@@ -20,7 +21,7 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
 	templateUrl: './fhem-weather.component.html',
   	styleUrls: ['../fhem-chart/fhem-chart.component.scss']
 })
-export default class FhemWeatherComponent implements OnInit, OnDestroy {
+export class FhemWeatherComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -54,7 +55,7 @@ export default class FhemWeatherComponent implements OnInit, OnDestroy {
 	@Input() left: number;
 	@Input() zIndex: number;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	// custom input properties
 	private customInputs: any;
 	// data state
@@ -668,7 +669,7 @@ export default class FhemWeatherComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [FhemWeatherComponent]
 })
 class FhemWeatherComponentModule {}

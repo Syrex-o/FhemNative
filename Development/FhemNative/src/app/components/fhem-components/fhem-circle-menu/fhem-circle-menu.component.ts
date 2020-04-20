@@ -12,7 +12,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-circle-menu.component.html',
   	styleUrls: ['./fhem-circle-menu.component.scss']
 })
-export default class FhemCircleMenuComponent implements OnInit, OnDestroy {
+export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -52,7 +52,7 @@ export default class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	// state of fhem device
 	buttonState: boolean = false;
 	// build items based on user input

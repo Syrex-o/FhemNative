@@ -15,7 +15,7 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
 	templateUrl: './fhem-tabs.component.html',
   	styleUrls: ['./fhem-tabs.component.scss']
 })
-export default class FhemTabsComponent implements OnInit, OnDestroy {
+export class FhemTabsComponent implements OnInit, OnDestroy {
 	// containers
 	@ViewChildren('container', { read: ViewContainerRef }) containers: QueryList<ViewContainerRef>;
 	// edit change

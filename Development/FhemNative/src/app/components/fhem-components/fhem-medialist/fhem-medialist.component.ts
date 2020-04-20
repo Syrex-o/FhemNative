@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { IonicModule } from '@ionic/angular';
@@ -15,7 +16,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-medialist.component.html',
   	styleUrls: ['./fhem-medialist.component.scss']
 })
-export default class FhemMedialistComponent implements OnInit, OnDestroy {
+export class FhemMedialistComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -103,7 +104,7 @@ export default class FhemMedialistComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [FhemMedialistComponent]
 })
 class FhemMedialistComponentModule {}

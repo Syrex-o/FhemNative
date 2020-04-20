@@ -1,4 +1,6 @@
 import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { IonicModule } from '@ionic/angular';
 
 // Components
 import { ComponentsModule } from '../../components.module';
@@ -15,7 +17,7 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
 	templateUrl: './fhem-table.component.html',
   	styleUrls: ['./fhem-table.component.scss']
 })
-export default class FhemTableComponent implements OnInit, OnDestroy {
+export class FhemTableComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -124,7 +126,7 @@ export default class FhemTableComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule],
+	imports: [ComponentsModule, TranslateModule, IonicModule],
   	declarations: [FhemTableComponent]
 })
 class FhemTableComponentModule {}

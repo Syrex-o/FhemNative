@@ -12,7 +12,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-switch.component.html',
   	styleUrls: ['./fhem-switch.component.scss']
 })
-export default class FhemSwitchComponent implements OnInit, OnDestroy {
+export class FhemSwitchComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -40,7 +40,7 @@ export default class FhemSwitchComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	// state of fhem device
 	toggleState: boolean;
 

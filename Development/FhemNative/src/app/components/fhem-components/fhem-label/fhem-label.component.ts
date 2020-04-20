@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { ComponentsModule } from '../../components.module';
@@ -11,7 +12,7 @@ import { SettingsService } from '../../../services/settings.service';
 	templateUrl: './fhem-label.component.html',
   	styleUrls: ['./fhem-label.component.scss']
 })
-export default class FhemLabelComponent implements OnInit, OnDestroy {
+export class FhemLabelComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -108,7 +109,7 @@ export default class FhemLabelComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule],
+	imports: [ComponentsModule, TranslateModule],
   	declarations: [FhemLabelComponent]
 })
 class FhemLabelComponentModule {}

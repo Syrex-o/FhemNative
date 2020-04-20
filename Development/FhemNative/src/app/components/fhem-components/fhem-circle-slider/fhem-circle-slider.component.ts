@@ -13,14 +13,12 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-circle-slider.component.html',
   	styleUrls: ['./fhem-circle-slider.component.scss']
 })
-export default class FhemCircleSliderComponent implements OnInit, OnDestroy {
+export class FhemCircleSliderComponent implements OnInit, OnDestroy {
 	// SVG Prop
 	private svgRoot: ElementRef;
-	@ViewChild('svgRoot', {static: false, read: ElementRef}) set content(content: ElementRef) {
-		setTimeout(()=>{
-			this.svgRoot = content;
-			this.invalidate();
-		}, 50);
+	@ViewChild('svgRoot', { static: false, read: ElementRef }) set content(content: ElementRef) {
+		this.svgRoot = content;
+		this.invalidate();
 	}
 
 	@Input() ID: string;
@@ -57,7 +55,7 @@ export default class FhemCircleSliderComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	value: number = 0;
 
 	// threshold
@@ -148,10 +146,12 @@ export default class FhemCircleSliderComponent implements OnInit, OnDestroy {
 	}
 
 	private invalidate(){
-		this.calculateVars();
-		this.invalidateClipPathStr();
-		this.invalidatePinPosition();
-		this.invalidateGradientArcs();
+		setTimeout(()=>{
+			this.calculateVars();
+			this.invalidateClipPathStr();
+			this.invalidatePinPosition();
+			this.invalidateGradientArcs();
+		}, 100);
 	}
 
 	private calculateVars(){

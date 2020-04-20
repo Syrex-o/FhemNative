@@ -12,7 +12,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-button.component.html',
   	styleUrls: ['./fhem-button.component.scss']
 })
-export default class FhemButtonComponent implements OnInit, OnDestroy {
+export class FhemButtonComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;

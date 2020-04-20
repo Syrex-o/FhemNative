@@ -1,5 +1,6 @@
 import { Component, NgModule, Input, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ComponentsModule } from '../../components.module';
 
@@ -13,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 	templateUrl: './fhem-iframe.component.html',
   	styleUrls: ['./fhem-iframe.component.scss']
 })
-export default class FhemIframeComponent implements OnInit, OnDestroy {
+export class FhemIframeComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -28,9 +29,8 @@ export default class FhemIframeComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	public fhemDevice: any;
-
-	public src: SafeResourceUrl;
+	fhemDevice: any;
+	src: SafeResourceUrl;
 
 	ngOnInit(){
 		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
@@ -75,7 +75,7 @@ export default class FhemIframeComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule],
+	imports: [ComponentsModule, TranslateModule],
   	declarations: [FhemIframeComponent]
 })
 class FhemIframeComponentModule {}

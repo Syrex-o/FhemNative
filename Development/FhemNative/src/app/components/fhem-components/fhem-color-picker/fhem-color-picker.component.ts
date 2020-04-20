@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { IonicModule } from '@ionic/angular';
@@ -14,7 +15,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-color-picker.component.html',
   	styleUrls: ['./fhem-color-picker.component.scss']
 })
-export default class FhemColorPickerComponent implements OnInit, OnDestroy {
+export class FhemColorPickerComponent implements OnInit, OnDestroy {
 	private canvas: any;
 	@ViewChild('Container', { static: false, read: ElementRef }) container: ElementRef;
 
@@ -52,7 +53,7 @@ export default class FhemColorPickerComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	private waitForThreshold: number = 0;
 	// popup settings
 	popupState: boolean = false;
@@ -406,7 +407,7 @@ export default class FhemColorPickerComponent implements OnInit, OnDestroy {
 }
 
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [FhemColorPickerComponent]
 })
 class FhemColorPickerComponentModule {}

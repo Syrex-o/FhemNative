@@ -12,7 +12,7 @@ import { TimeService } from '../../../services/time.service';
 	templateUrl: './fhem-clock.component.html',
   	styleUrls: ['./fhem-clock.component.scss']
 })
-export default class FhemClockComponent implements OnInit, OnDestroy {
+export class FhemClockComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 	@Input() arr_data_style: string[];
 	@Input() arr_data_format: string[];

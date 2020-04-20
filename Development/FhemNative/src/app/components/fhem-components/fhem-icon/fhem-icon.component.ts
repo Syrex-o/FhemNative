@@ -10,7 +10,7 @@ import { FhemService } from '../../../services/fhem.service';
 	templateUrl: './fhem-icon.component.html',
   	styleUrls: ['./fhem-icon.component.scss']
 })
-export default class FhemIconComponent implements OnInit, OnDestroy {
+export class FhemIconComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;

@@ -8,7 +8,7 @@ import { ComponentsModule } from '../../components.module';
 	templateUrl: './fhem-line.component.html',
   	styleUrls: ['./fhem-line.component.scss']
 })
-export default class FhemLineComponent {
+export class FhemLineComponent {
 	// Component ID
 	@Input() ID: string;
 

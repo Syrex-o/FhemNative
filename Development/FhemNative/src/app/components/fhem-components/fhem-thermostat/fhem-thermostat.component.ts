@@ -12,7 +12,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-thermostat.component.html',
   	styleUrls: ['./fhem-thermostat.component.scss']
 })
-export default class FhemThermostatComponent implements OnInit, OnDestroy {
+export class FhemThermostatComponent implements OnInit, OnDestroy {
 	private container: HTMLElement;
 
 	// change min width/height based on style
@@ -62,7 +62,7 @@ export default class FhemThermostatComponent implements OnInit, OnDestroy {
 	UID_1 = '_' + Math.random().toString(36).substr(2, 9);
 	UID_2 = '_' + Math.random().toString(36).substr(2, 9);
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	private waitForThreshold = 0;
 
 	value: number;

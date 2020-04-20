@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { IonicModule } from '@ionic/angular';
@@ -20,7 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 	templateUrl: './fhem-sprinkler.component.html',
   	styleUrls: ['./fhem-sprinkler.component.scss']
 })
-export default class FhemSprinklerComponent implements OnInit, OnDestroy {
+export class FhemSprinklerComponent implements OnInit, OnDestroy {
 	// Component ID
 	@Input() ID: string;
 
@@ -666,7 +667,7 @@ export default class FhemSprinklerComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [FhemSprinklerComponent]
 })
 class FhemSprinklerComponentModule {}

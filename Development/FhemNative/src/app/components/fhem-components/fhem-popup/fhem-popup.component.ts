@@ -17,7 +17,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-popup.component.html',
   	styleUrls: ['./fhem-popup.component.scss']
 })
-export default class FhemPopupComponent implements OnInit, OnDestroy {
+export class FhemPopupComponent implements OnInit, OnDestroy {
 	// popup container
 	@ViewChild('container', { static: false, read: ViewContainerRef }) container: ViewContainerRef;
 	// edit change
@@ -54,7 +54,7 @@ export default class FhemPopupComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	// state of fhem device
 	popupState: boolean = false;
 	// popup properties

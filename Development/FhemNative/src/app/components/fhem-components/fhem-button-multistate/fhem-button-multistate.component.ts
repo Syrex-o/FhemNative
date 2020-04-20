@@ -12,7 +12,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-button-multistate.component.html',
   	styleUrls: ['./fhem-button-multistate.component.scss']
 })
-export default class FhemButtonMultistateComponent implements OnInit, OnDestroy {
+export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;

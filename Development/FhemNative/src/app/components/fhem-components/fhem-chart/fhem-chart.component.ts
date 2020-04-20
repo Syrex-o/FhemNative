@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import * as d3 from 'd3';
@@ -19,7 +20,7 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
 	templateUrl: './fhem-chart.component.html',
   	styleUrls: ['./fhem-chart.component.scss']
 })
-export default class FhemChartComponent implements OnInit, OnDestroy {
+export class FhemChartComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -55,7 +56,7 @@ export default class FhemChartComponent implements OnInit, OnDestroy {
 	@Input() left: number;
 	@Input() zIndex: number;
 
-	private fhemDevice: any;
+	fhemDevice: any;
 	// custom input properties
 	private customInputs: any;
 	// data state
@@ -948,7 +949,7 @@ export default class FhemChartComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [FhemChartComponent]
 })
 class FhemButtonComponentModule {}

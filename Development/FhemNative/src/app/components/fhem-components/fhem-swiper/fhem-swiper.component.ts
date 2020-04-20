@@ -16,7 +16,7 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
 	templateUrl: './fhem-swiper.component.html',
   	styleUrls: ['./fhem-swiper.component.scss']
 })
-export default class FhemSwiperComponent implements OnInit, OnDestroy {
+export class FhemSwiperComponent implements OnInit, OnDestroy {
 	// slides container
 	@ViewChild( IonSlides, { static: true } ) slides: IonSlides;
 	@ViewChildren('container', { read: ViewContainerRef }) containers: QueryList<ViewContainerRef>;
