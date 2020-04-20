@@ -27,6 +27,8 @@ export class SelectComponent implements OnInit{
 	@Input() multiple: boolean = false;
 	// allow search
 	@Input() searchable: boolean = true;
+	// allow full height of parent
+	@Input() fullHeight: boolean = false;
 	// allow to add items
 	@Input() addNewItems: boolean = true;
 	// pass selection items
