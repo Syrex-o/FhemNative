@@ -89,49 +89,25 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 [5]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#box
 ## Box
-<img src="https://drive.google.com/uc?export=view&id=1VDSQXe8nbIhoYdInSYSUi7FqZVVHoScF" width="300" height="300" />
+<img src="https://doc-04-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/qeediln1rdbk4159fcatjhn3b6bolmn9/1587388050000/11249763612494125977/11249763612494125977/1VDSQXe8nbIhoYdInSYSUi7FqZVVHoScF?e=view&authuser=0&nonce=s3vm1ua9n0age&user=11249763612494125977&hash=latjbkenkr6jglqsfqiqcuclhkk4hssp" width="400" height="300" />
 
 > Eine Box um weitere Komponenten auf der Oberfläche zu Ordnen.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|headline| Anzeigelabel des Headers der Box| '' | data |
-|borderRadius| Rundung von Ecken der Box | 5 | data |
-|showHeader| Aktivieren/Deaktivieren des Box-Headers | true | data |
-|showShadow| Aktivieren/Deaktivieren des Box-Shattens | true | data |
-|headerColor| Auswahl der Hintergrundfarbe des Headers |![#434E5D](https://placehold.it/15/434E5D/000000?text=+) `#434E5D`| style |
-|backgroundColor| Auswahl der Hintergrundfarbe der Box |![#58677C](https://placehold.it/15/58677C/000000?text=+) `#58677C`| style |
-
-[2]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#button
+[10]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#button
 ## Button
-<img src="/images/button1.jpg" width="200" height="100" />
-<img src="/images/button2.jpg" width="100" height="100" />
+<img src="https://doc-00-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/i4s14a05t87vvfg5pcpncipk618n04rt/1587388125000/11249763612494125977/11249763612494125977/1QEh9eHHEQRin9iFwPn9OrbZx43_X_Okc?e=view&authuser=0" width="300" height="100" />
 
 > Eine Button um zwischen 2 Zuständen in FHEM zu wechseln.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|getOn| ON Wert, der ausgelesen werden soll | on | data |
-|getOff| OFF Wert, der ausgelesen werden soll | off | data |
-|setOn| ON Wert, der gesendet werden soll | on | data |
-|setOff| OFF Wert, der gesendet werden soll | off | data |
-|label| Button Label (siehe Bsp. 1) | '' | data |
-|sendCommand| Einzelner Befehl der beim Klicken an FHEM gesendet werden soll | '' | data |
-|borderRadius| Rundung von Ecken der Box | 5 | data |
-|iconSize| Größe des Icons im Button | 20 | data |
-|iconOnly| Label aktivieren/deaktivieren úm den Button mit dem Icon zu füllen | false | data |
-|iconOn| Anzuzeigendes Icon bei ON State | add-circle | icon |
-|iconOff| Anzuzeigendes Icon bei OFF State | add-circle | icon |
-|IconColorOn| Farbe des Icons bei ON State |![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993`| style |
-|IconColorOff| Farbe des Icons bei OFF State |![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993`| style |
-|buttonColor| Hintergrundfarbe des Buttons |![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993`| style |
-|labelColor| Schriftfarbe des Labels |![#fff](https://placehold.it/15/fff/000000?text=+) `#fff`| style |
+[15]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#button
+## Button Multistate
+<img src="https://doc-00-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/i4s14a05t87vvfg5pcpncipk618n04rt/1587388125000/11249763612494125977/11249763612494125977/1QEh9eHHEQRin9iFwPn9OrbZx43_X_Okc?e=view&authuser=0" width="300" height="100" />
 
-[3]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#chart
+> Eine Button um zwischen mehreren Zuständen in FHEM zu wechseln.
+
+[20]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#chart
 ## Chart
+<img src="https://doc-0c-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/qei39njiavf2g13rc66ko5rd829tnakg/1587388500000/11249763612494125977/11249763612494125977/1kFQYkJusYhwZbbima1tkY1q9nCXC9Rd0?e=view&authuser=0&nonce=p74e5bmf225lk&user=11249763612494125977&hash=1qok8o7s94tbm9if6hk53bg5ig4tkqd6" width="500" height="300" />
 
 > Chart Komponente, um Werte aus einem Log in verschiedenen Formen grafisch darzustellen.
 
@@ -139,332 +115,164 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 > Gauge und LiquidGauge Charts sind einzelne Darstellungen, die keine Achsen zeichnen.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Log Devices | '' | data |
-|logFile| Name eines spezifischen Log-Files des Geräts (falls notwendig) | '' | data |
-|reading| Name des Log Readings | '' | data |
-|reading2| Name des 2. Log Readings (falls benötigt) | '' | data |
-|maxY| maximaler Y-Axen Wert, um die Achse zu fixieren (default: Maximal gelesener Wert bestimmt die Höhe der Y-Achse) | '' | data |
-|labelExtension| Endung des Y-Achsen Werts, der mit angezeigt werden soll (Bsp. %) | '' | data |
-|getCurrent| Aktuelles Log beziehen (Anderenfalls muss ein logFile angegeben werden) | true | data |
-|zoomBothAxis| Zoomen des Charts in beide Achen aktivieren/deaktivieren | false | data |
-|chartType| Art des Charts für den ersten Reading-Wert | bar | select(bar, line, area, gauge, liquidGauge) |
-|chartType2| Art des Charts für den zweiten Reading-Wert | bar | select(bar, line, area) |
-|timeFormat| Zeitformat der X-Achse | %Y-%m-%d |select(%Y-%m-%d, %d-%b-%y, %Y-%m) |
-|colorSet| Farbschema der Charts | 1 | select(1, 2, 3) |
-
-[4]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#circle-menu
+[25]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#circle-menu
 ## Circle-Menu
-<img src="/images/circle-menu1.jpg" width="50" height="150" />
-<img src="/images/circle-menu2.jpg" width="150" height="50" />
-<img src="/images/circle-menu3.jpg" width="120" height="120" />
+<img src="https://doc-0k-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/k02dpbg05mo2cj7gl70fbhehm3co0arf/1587388575000/11249763612494125977/11249763612494125977/1s-GlVER2I24WdXU4PQj5iESyqIBlqGAL?e=view&authuser=0" width="400" height="70" />
+
+<img src="https://doc-10-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/aaoa809b9lr6n5ipfd2hqdbj6fuiohhk/1587388650000/11249763612494125977/11249763612494125977/15CGtQSx-R0qVAvfJYUw7lgSiQFGgbgrD?e=view&authuser=0" width="200" height="200" />
 
 > Ein Multi-Menü, um mehrere Werte Selektieren zu können, die an FHEM gesendet werden sollen (Maximal 6 Werte möglich).
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|value1| 1. Wert des Auswahlmenüs | '' | data |
-|value2| 2. Wert des Auswahlmenüs (optional) | '' | data |
-|value3| 3. Wert des Auswahlmenüs (optional) | '' | data |
-|value4| 4. Wert des Auswahlmenüs (optional) | '' | data |
-|value5| 5. Wert des Auswahlmenüs (optional) | '' | data |
-|value6| 6. Wert des Auswahlmenüs (optional) | '' | data |
-|expandStyle| Die Richtung, in die das Menü ausgeklappt werden soll | top | select(top, left, bottom, right, circle) |
-|icon| Anzuzeigendes Icon des Menüs | add-circle | icon |
-
-[5]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#circle-slider
+[30]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#circle-slider
 ## Circle-Slider
+<img src="https://doc-14-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/r37ahdirnj63d0ehe0bhh4lt1dp38gns/1587388725000/11249763612494125977/11249763612494125977/12eVqenm5cs53_-R1BM7V8D6dujFiQZ_W?e=view&authuser=0" width="200" height="200" />
 
 > Ein Kreisförmiger Slider, um numerische Werte an FHEM zu senden.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|threshold| Event-Reduktion. Senden jedes ...ten Befehls wird nur ausgeführt (in Kombination mit updateOnMove) | 20 | data |
-|textSize| Größe des TextLabels in der Mitte des Sliders | 40 | data |
-|label| Anzeigelabel in der Mitte des Sliders | Name des Fhem Devices | data |
-|labelExtension| Endung des Labels, das mit angezeigt werden soll (Bsp. %) | '' | data |
-|bottomAngle| Winkel der Kreisöffnung an der unteren Seite des Sliders | 90 | data |
-|arcThickness| Breite des Kreisbogens vom Slider | 18 | data |
-|thumbRadius| Radius des Knopfes auf dem Slider | 16 | data |
-|thumbBorder| Breite com Rand des Knopfes auf dem Slider | 3 | data |
-|step| Schritte in denen sich der Thumb auf dem Slider bewegen soll | 0.1 | data |
-|min| Minimal-Wert des Sliders | 0 | data |
-|max| Maximal-Wert des Sliders | 100 | data |
-|updateOnMove| Werte kontinuierlich bei Aktion an FHEM senden/nur am Ende der Aktion senden | false | data |
-|backgroundColor| Hintergrundfarbe des Inneren Kreises |![#272727](https://placehold.it/15/272727/000000?text=+) `#272727`| style |
-|thumbColor| Hintergrundfarbe des Thumbs auf dem Slider |![#fbfbfb](https://placehold.it/15/fbfbfb/000000?text=+) `#fbfbfb`| style |
-|fillColors| Hintergrundfarbe des Kreis Bogens (bei mehrfacher Auswahl wird ein Gradient gezeichnet) |![#2ec6ff](https://placehold.it/15/2ec6ff/000000?text=+) `#2ec6ff`, ![#272727](https://placehold.it/15/272727/000000?text=+) `#272727`| arr style |
-
-[6]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#color-picker
+[35]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#color-picker
 ## Color-Picker
-<img src="/images/color-picker.jpg" width="200" height="400" />
+<img src="https://doc-04-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/mo8qla1vcp9cbt19ble9mmf99dia9cs7/1587388800000/11249763612494125977/11249763612494125977/14MKaNjuajBh3UqTtSqa-09CocXy7idMO?e=view&authuser=0&nonce=70bgv0tjp6dre&user=11249763612494125977&hash=vo8bocb74hrfs7bur3048emmkrclo67f" width="230" height="200" />
 
 > Ein Farbauswahl-Menü, dass sich als Popup öffnet.
 
 > Favorisierte Farben können gespeichert/abgerufen und gesendet werden.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | '' | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|sliderReading| Name des Slider Readings im selben device (falls notwendig) | '' | data |
-|setSliderReading| name des Set Befehls vom sliderReading (falls notwendig) | '' | data |
-|headline| Headline des Popups | Name des Fhem Devices | data |
-|threshold| Event-Reduktion. Senden jedes ...ten Befehls wird nur ausgeführt (in Kombination mit updateOnMove) | 10 | data |
-|showSlider| Slider anzeigen/nicht anzeigen (sliderReading notwendig) | false | data |
-|updateOnMove| Werte kontinuierlich bei Aktion an FHEM senden/nur am Ende der Aktion senden | false | data |
-|colorInput| Definition des Farbwertes der ausgelesen werden soll | hex | select(hex, #hex, rgb) |
-|colorOutput| Definition des Farbwertes der gesendet werden soll | hex | select(hex, #hex, rgb) |
-
-[7]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#iframe
+[40]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#iframe
 ## IFrame
+<img src="https://doc-0o-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/hcqhi43uomf47t392mlk18nrsc1en81h/1587388875000/11249763612494125977/11249763612494125977/11nQMggXIwGmu5eqIZYLUmlTYpIUdr9C3?e=view&authuser=0" width="420" height="200" />
 
 > Darstellung von anderen Webinhalten in der App.
 
 > ! Cors beachten.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll (URL) | state | data |
-|url| Entfernte URL (anderenfalls wird versucht eine URL aus dem reading zu erhalten) | '' | data |
-
-[8]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#icon
+[45]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#icon
 ## Icon
+<img src="https://doc-08-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/1qnckbckpup0rrmbabfl7tp5st7dto6b/1587388875000/11249763612494125977/11249763612494125977/1P5Xxox_LHaJLpMsfO7VCQyqXOZ2c-pXM?e=view&authuser=0" width="200" height="100" />
 
 > Darstellung eines einfachen Icons.
 
 > Darstellung eines Icons in Abhängigkeit von FHEM-Werten.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|getOn| ON Wert, der ausgelesen werden soll | on | data |
-|getOff| OFF Wert, der ausgelesen werden soll | off | data |
-|iconOn| Anzuzeigendes Icon bei ON State | add-circle | icon |
-|iconOff| Anzuzeigendes Icon bei OFF State | add-circle | icon |
-|IconColorOn| Farbe des Icons bei ON State |![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993`| style |
-|IconColorOff| Farbe des Icons bei OFF State |![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993`| style |
-
-[9]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#image
+[50]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#image
 ## Image
+<img src="https://doc-04-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/sqn54v360kee35113f9kk9kjt5eif6i4/1587388950000/11249763612494125977/11249763612494125977/1lCuNZTTT4T0-o1W6dF7J4SbxDCiUW-wV?e=view&authuser=0" width="200" height="100" />
 
 > Darstellung von Bildern.
 
 > Quellen: Reading eines FHEM Geräts / ein Bild auf dem eigenen Gerät / Externe URL.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll (URL) | state | data |
-|url| Entfernte URL (anderenfalls wird versucht eine URL aus dem reading zu erhalten). Sollten beide Werte leer sein, so wird ein Button erzeugt, um Bilder vom eigenen Gerät selektieren zu können. | '' | data |
 
-[10]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#kodi-remote
+[55]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#kodi-remote
 ## Kodi-Remote
 
 > Websocket Verbindung zu einem KODI Gerät.
 
 > !Diabled right now.
 
-[11]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#label
+[60]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#label
 ## Label
+<img src="https://doc-08-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/o53ed6ullabsaj9rshsc4m28vu9kaq99/1587389025000/11249763612494125977/11249763612494125977/1sgREKAbgkUSMDcGkr2ZAcj7zWGI5TBL3?e=view&authuser=0" width="200" height="100" />
 
 > Darstellung eines Labels, um Komponenten beschriften zu können und eine übersichtliche Struktur zu kreieren.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll (falls benötigt) | '' | data |
-|reading| Name des Readings, dass gelesen werden soll  | '' | data |
-|label| Anzeigelabel | '' | data |
-|size| Größe des anzuzeigenden Labels | 16 | data |
-|fontWeight| Gewicht des Labels (css style) | 300 | data |
-|color| Text-Farbe anzuzeigenden Labels | ![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993` | style |
-
-[12]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#line
+[65]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#line
 ## Line
+<img src="https://doc-04-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/sg50e2111eeforqi17bsiie80s13t2nb/1587389025000/11249763612494125977/11249763612494125977/1wgcoVDk0HUoArAJvXAymzXRkLA_d-96H?e=view&authuser=0" width="300" height="150" />
 
 > Darstellung einer Linie, um Komponenten visuell optisch trennen zu können.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|height| Höhe/Breite der Linie, abhängig von der Ausrichtung | 2 | data |
-|orientation| Ausrichtung der Linie | vertical | select(horizontal, vertical) |
-|color| Farbe der Linie | ![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993` | style |
+[66]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#Media-List
+## Media.List
+<img src="https://doc-0k-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/kuj0p5v57d2fli9s9s6d83i0bv28nknp/1587389625000/11249763612494125977/11249763612494125977/1LPcXnEKr3731JkHoADDJgdS70JnJVJA4?e=view&authuser=0&nonce=mupi5bmf7hrdg&user=11249763612494125977&hash=gus6g1f7iuh9dombj8mqh4vb8e1u7es3" width="300" height="180" />
 
-[13]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#pinpad
+> Darstellung einer MediaList aus FHEM.
+
+[67]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#Picker
+## Picker
+<img src="https://doc-0c-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/p0jugo7v55kimdho0rqocrf26a8pcvel/1587389775000/11249763612494125977/11249763612494125977/11dO2P4zhOSnsOQBPlLrg1TXL7Vac8qIL?e=view&authuser=0" width="350" height="300" />
+
+> Ein Picker, der Komponenten enthalten kann.
+
+> Ein Picker kann auf Statusänderungen von FHEM Reagieren und/oder nur als Kontainer fungieren.
+
+[70]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#pinpad
 ## Pinpad
+<img src="https://doc-00-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/39p2bmutag5o9a54mq3rm4ifal7d7bj8/1587389100000/11249763612494125977/11249763612494125977/199v_G19kEcbFcTsACpXLUogqQV2Vc-XF?e=view&authuser=0" width="300" height="450" />
 
 > Darstellung eines Pinpads, um einen Pin von FHEM zu lesen.
 
 > Das Pinpad kann nach korrekter Eingabe einen Befehl ausführen
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|pin| Name des Readings, dass den Pin enthält | pin | data |
-|getOn| ON Wert, der ausgelesen werden soll | on | data |
-|getOff| OFF Wert, der ausgelesen werden soll | off | data |
-|setOn| ON Wert, der gesendet werden soll (Befehl beim Einschalten) | on | data |
-|setOff| OFF Wert, der gesendet werden soll (Befehl beim Ausschalten) | off | data |
-|labelOnText| Alarm Text im ON Status | Alarm ist aktiv | data |
-|labelOffText| Alarm Text im ON Status | Alarm ist inaktiv | data |
-|tries| Anzahl der Fehlversuche die möglich sind, bis das Pinpad die Eingabe verweigert | 5 | data |
-
-[14]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#popup
+[75]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#popup
 ## Popup
-<img src="/images/popup.jpg" width="200" height="400" />
+<img src="https://doc-0c-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/r2db0cllgaal963sjhkki1dfpq19o7d7/1587389175000/11249763612494125977/11249763612494125977/16diKaIXbPgFMdL9LQ8kEfguMgoV03uKy?e=view&authuser=0" width="350" height="400" />
 
 > Ein Popup, dass Komponenten enthalten kann.
 
 > Das Popup kann auf Statusänderungen von FHEM Reagieren und/oder nur als Kontainer fungieren.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|getOn| ON Wert, der ausgelesen werden soll | on | data |
-|getOff| OFF Wert, der ausgelesen werden soll | off | data |
-|headline| Überschrift des Popups, die beim Öffnen angezeigt wird | Popup | data |
-|openOnReading| Öffnen/Schließen des Popups bei Übereinstimmung von ON/OFF Werten | false | data |
-|iconOn| Anzuzeigendes Icon bei ON State | add-circle | icon |
-|iconOff| Anzuzeigendes Icon bei OFF State | add-circle | icon |
-|IconColorOn| Farbe des Icons bei ON State |![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993`| style |
-|IconColorOff| Farbe des Icons bei OFF State |![#86d993](https://placehold.it/15/86d993/000000?text=+) `#86d993`| style |
-
-[15]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#select
+[80]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#select
 ## Select
-<img src="/images/select1.jpg" width="150" height="50" />
-<img src="/images/select2.jpg" width="120" height="120" />
+<img src="https://doc-0o-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/q9ffc9j82u0hocrujq1dril0abdbud7a/1587389175000/11249763612494125977/11249763612494125977/1CrJK4bqometiMF_VC3w1vfUjg2Mza3LJ?e=view&authuser=0" width="270" height="120" />
 
 > Ein Auswahlmenü um Werte aus FHEM als Selektionsmenü darzustellen.
 
 > Eigene Werte sowie Alias-Werte können ebenfalls definiert werden.
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|currentState| Name des Readings, dass den aktuellen Status enthält (falls vorhanden) | '' | data |
-|seperator| Trennzeichen der Liste, die übergeben wird | , | data |
-|items| Manuelle Liste von Werten die angezeigt werden soll | '' | data |
-|alias| Alias Liste von Werten die angezeigt werden soll | '' | data |
-|placeholder| Platzhalter der angezeigt werden soll, falls kein aktueller Wert vorhanden ist | '' | data |
-
-[16]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#slider
+[85]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#slider
 ## Slider
-<img src="/images/slider1.jpg" width="240" height="80" />
-<img src="/images/slider2.jpg" width="80" height="240" />
+<img src="https://doc-00-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/0kghbi2hge8jv3hlp10povr3o0qtjpr5/1587389250000/11249763612494125977/11249763612494125977/1CBap2SC9bMiYKke-PuUWQ2C946iXFQnP?e=view&authuser=0" width="500" height="300" />
 
 > Ein Slider um numerische Werte zu übertragen.
 
 > Der Slider kann ebenfalls verwendet werden um Zeiten einzustellen (minimal und maximal Werte notwendig - Zahlenformat: 00:00)
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|threshold| Event-Reduktion. Senden jedes ...ten Befehls wird nur ausgeführt (in Kombination mit updateOnMove) | 20 | data |
-|labelExtension| Endung des Labels, das mit angezeigt werden soll (Bsp. %) | '' | data |
-|ticks| Anzahl von Ticks am SLider (in Kombination mit showTicks) | 10 | data |
-|min| Minimal-Wert des Sliders (Zeitformat ebenfalls möglich) | 0 | data |
-|max| Maximal-Wert des Sliders (Zeitformat ebenfalls möglich) | 100 | data |
-|sliderHeight| Höhe/Breite des Sliders (je nach Ausrichtung) | 5 | data |
-|thumbWidth| Größe des Thumbs auf dem Slider | 25 | data |
-|steps| Schritte in denen sich der Thumb auf dem Slider bewegen soll | 5 | data |
-|showPin| Einen Pin mit dem aktuellen Wert bei Aktionen anzeigen/nicht anzeigen | true | data |
-|showTicks| Ticks am Slider anzeigen/nicht anzeigen | true | data |
-|updateOnMove| Werte kontinuierlich bei Aktion an FHEM senden/nur am Ende der Aktion senden | false | data |
-|style| Art des Sliders | slider | select(slider, box) |
-|orientation| Ausrichtung der Linie | horizontal | select(horizontal, vertical) |
-|thumbColor| Hintergrundfarbe des Thumbs auf dem Slider |![#ddd](https://placehold.it/15/ddd/000000?text=+) `#ddd`| style |
-|fillColor| Füllfarbe des Sliders |![#14a9d5](https://placehold.it/15/14a9d5/000000?text=+) `#14a9d5` | arr style |
-|tickColor| Farbe der Ticks |![#ddd](https://placehold.it/15/ddd/000000?text=+) `#ddd`| style |
-
-[17]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#sprinkler
+[90]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#sprinkler
 ## Sprinkler
+<img src="https://doc-0c-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/5fvl2ism7le1nfb5qp8o9mks7to376s0/1587389325000/11249763612494125977/11249763612494125977/1wkt1zrQfhHMvl14wd4uzhqIU5qRatgKr?e=view&authuser=0&nonce=l6jotfdfersra&user=11249763612494125977&hash=m61r73ml1s5uq2pp9i0nckma9v9hlnsc" width="300" height="300" />
 
 > Sprinkler Modul zur Steuerung von Bewässerungsanlagen
 
 > Das Modul hat ein extra GitHub Repo: https://github.com/Syrex-o/lib_nrf24, sowie einen eigenen FHEM Eintrag: folgt noch
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Liste der FHEM Geräte, die zum Sprinkler Modul gehören | Sprinkler1, Sprinkler2, Sprinkler3, Sprinkler4, Sprinkler5, Sprinkler6 | data |
-|weather| Name des Wetter Devices, dass die notwendigen Informationen enthält | WetterInfo | data |
-|smartSprinkler| Name des Smart-Sprinkler Devices, dass die notwendigen Informationen enthält | SmartSprinkler | data |
-|settingsStyle| Style der Einstellungen (list sollte nur notwendig sein, falls sich der slider nicht bewegen lässt - alte Geräte) | slider | select(slider, list) |
+[91]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#Swiper
+## Swiper
+<img src="https://doc-04-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/uu86qto37hnc07iuqe0h76v21brfijpo/1587389925000/11249763612494125977/11249763612494125977/1iZJfYkQvs5lCzeEg9Xz_Vf_oyOeINRTH?e=view&authuser=0&nonce=bda4pm31sii5s&user=11249763612494125977&hash=93p1fqp9pmqndafa4ljhh8pqa52h7uh2" width="300" height="200" />
 
-[18]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#switch
+> Ein Swiper, der als Komponenten Container fungiert.
+
+[92]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#switch
 ## Switch
-<img src="/images/switch1.jpg" width="240" height="60" />
-<img src="/images/switch2.jpg" width="240" height="60" />
+<img src="https://doc-0o-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/eo7hrie0fhehqo83406bbbg01mp38ie5/1587389400000/11249763612494125977/11249763612494125977/13V9DkU468i6ws5EFYAEAmgRP0pGQGgi_?e=view&authuser=0" width="250" height="100" />
 
 > Schalten von zwei Zuständen in Form eines Switches
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|getOn| ON Wert, der ausgelesen werden soll | on | data |
-|getOff| OFF Wert, der ausgelesen werden soll | off | data |
-|setOn| ON Wert, der gesendet werden soll | on | data |
-|setOff| OFF Wert, der gesendet werden soll | off | data |
-|label| Anzeigelabel des Switches | Fhem Device Name | data |
-|showBorder| Abtrennungslinie anzeigen/nicht anzeigen | true | data |
-|buttonStyle| Style des Switches in 2 verschiedenen Variationen (siehe Bsp.) | toggle | select(toggle, toggle-outline) |
-|colorOn| Hintergrundfarbe des Switches im ON State |![#2994b3](https://placehold.it/15/2994b3/000000?text=+) `#2994b3`| style |
-|colorOff| Hintergrundfarbe des Switches im OFF State |![#a2a4ab](https://placehold.it/15/a2a4ab/000000?text=+) `#a2a4ab`| style |
-|thumbColorOn| Hintergrundfarbe des Thumbs im ON State |![#14a9d5](https://placehold.it/15/14a9d5/000000?text=+) `#14a9d5`| style |
-|thumbColorOff| Hintergrundfarbe des Thumbs im OFF State |![#fff](https://placehold.it/15/fff/000000?text=+) `#fff`| style |
+[93]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#table
+## Table
+<img src="https://doc-0s-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/h1qe7jvrgbvsi4qpg45r0r4d5grc1uja/1587390000000/11249763612494125977/11249763612494125977/1nt4L74SIAiAfHRMxG8CrzECqa6nVu4k5?e=view&authuser=0" width="350" height="400" />
 
-[19]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#thermostat
+> Eine Tabelle, um Werte aus FHEM anzeigen zu können
+
+[94]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#tabs
+## Tabs
+<img src="https://doc-0s-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/iho8ssuurcc554nv84tedt5t9afbd22r/1587390000000/11249763612494125977/11249763612494125977/1sitQKtEuB8GHnSWFJWlDnTTp9SCB5P0v?e=view&authuser=0" width="350" height="300" />
+
+> Eine Tab Komponente, die als Komponenten Kontainer fungiert
+
+[95]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#thermostat
 ## Thermostat
-<img src="/images/thermostat.jpg" width="100" height="200" />
+<img src="https://doc-00-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/h3d9uo44p7jjt22i04c2e354delh8opu/1587389400000/11249763612494125977/11249763612494125977/1JAoOz2EVkxlwkl9v5gmzeyTtq7saJUtt?e=view&authuser=0" width="270" height="200" />
 
 > Darstellung eines Thermostats mit Animationen
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|min| Minimal-Wert des Thermostats | 0 | data |
-|max| Maximal-Wert des Thermostats | 100 | data |
-|threshold| Event-Reduktion. Senden jedes ...ten Befehls wird nur ausgeführt (in Kombination mit updateOnMove) | 10 | data |
-|updateOnMove| Werte kontinuierlich bei Aktion an FHEM senden/nur am Ende der Aktion senden | false | data |
-|gradientColor1| Farbe des 1. Teilstücks vom Gradient |![#FF0909](https://placehold.it/15/FF0909/000000?text=+) `#FF0909`| style |
-|gradientColor2| Farbe des 2. Teilstücks vom Gradient |![#F3481A](https://placehold.it/15/F3481A/000000?text=+) `#F3481A`| style |
-|gradientColor3| Farbe des 3. Teilstücks vom Gradient |![#FABA2C](https://placehold.it/15/FABA2C/000000?text=+) `#FABA2C`| style |
-|gradientColor4| Farbe des 4. Teilstücks vom Gradient |![#00BCF2](https://placehold.it/15/00BCF2/000000?text=+) `#00BCF2`| style |
-
-[20]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#time-picker
+[96]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#time-picker
 ## Time-Picker
+<img src="https://doc-0c-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/vfihq8r3ar9psella4a9j9suk7lob2r3/1587389475000/11249763612494125977/11249763612494125977/1iFfAmkmnvjnpkx5rEZ4PJk3aOKS3WJbA?e=view&authuser=0" width="250" height="200" />
 
 > Komponente zum einstellen von Tageszeiten im Format: 00:00
 
-| Einstellung          | Beschreibung                                                  | Default-Wert         | Type |
-|------------------|--------------------------------------------------------|--------------|--|
-|device| Name des FHEM Geräts, dass gestuert werden soll | '' | data |
-|reading| Name des Readings, dass gelesen werden soll | state | data |
-|setReading| Name des set Befehls, der ausgelöst werden soll (falls notwendig) | '' | data |
-|label| Anzeigelabel des Timepickers | Fhem Device Name | data |
-|confirmBtn| Bestätigungs-Taste des Timepickers | Bestätigen | data |
-|cancelmBtn| Cancel-Taste des Timepickers | Abbrechen | data |
-|maxHours| Maximalwert der Stunden Anzeige | 24 | data |
-|maxMinutes| Maximalwert der Minuten Anzeige | 60 | data |
-|showBorder| Abtrennungslinie anzeigen/nicht anzeigen | true | data |
-|format| Anzeige-Format des Timepickers (bei HH u. mm werden nur die jeweiligen Werte an FHEM übergeben) | HH:mmm | select(HH:mmm HH, mm) |
+[97]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#wetter
+## Wetter
+<img src="https://doc-0o-bo-docs.googleusercontent.com/docs/securesc/nm8arq9si0s87jo2mb0jj1ika0dsfims/06d8ul7g6vse4kag8s4493qmumig3c12/1587390150000/11249763612494125977/11249763612494125977/1-rrdOyHy_sluvvGQ66rpTvCmoVp08c_C?e=view&authuser=0" width="450" height="240" />
+
+> Eine Wetter Komponente, die Wetterdaten aus FHEM Modulen grafisch darstellt
