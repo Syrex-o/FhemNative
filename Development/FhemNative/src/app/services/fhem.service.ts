@@ -41,22 +41,23 @@ export class FhemService {
 	// Fhem device list
 	public devices: Array<FhemDevice> = [];
 	// list of devices to listen for changes
-	private listenDevices: Array<ListenDevice> = [];
-	// combining changes to reduce messages
-    private toasterDevices: string[] = [];
+	public listenDevices: Array<ListenDevice> = [];
 
 	// connection 
 	private socket: any;
 	// current connection profile
-	private currentProfile: number = 0;
+	// initial -1 to add
+	private currentProfile: number = -1;
 
 	// connection tries
 	private tries: number = 0;
+	private reTries: number = 0;
 	private maxTries: number = 10;
+	private maxRetires: number = 3;
 
 	// no Reconnect
 	public noReconnect: boolean = false;
-	private timeout: any;
+	private connectionInProgress: boolean = false;
 
 	constructor(
 		private logger: LoggerService,
@@ -82,19 +83,20 @@ export class FhemService {
 			});
 			// inform abaout device update
 			let timerRuns = false;
-			if (!this.toasterDevices.includes(device.device)) {
-				this.toasterDevices.push(device.device);
+			let toasterDevices: string[] = [];
+			if (!toasterDevices.includes(device.device)) {
+				toasterDevices.push(device.device);
 				if (!timerRuns) {
 	      			timerRuns = true;
 	      			setTimeout(() => {
-	      				if (this.toasterDevices.length > 0) {
+	      				if (toasterDevices.length > 0) {
 	      					this.toast.addToast(
 	      						this.translate.instant('GENERAL.FHEM.TITLE'),
-	      						this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + this.toasterDevices.join(', '),
+	      						this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + toasterDevices.join(', '),
 	      						'info'
 	      					);
 	      				}
-	      				this.toasterDevices = [];
+	      				toasterDevices = [];
 	      				timerRuns = false;
 	      			}, 300);
 	      		}
@@ -113,93 +115,116 @@ export class FhemService {
 		return this.settings.connectionProfiles[this.currentProfile].type.toLowerCase();
 	}
 
-	// connect to fhem server
-	public connectFhem(reconnect?: boolean) {
-		return new Promise((resolve, reject) => {
-			if(!reconnect){
-				this.currentProfile = 0;
+	public connectFhem(){
+		this.devices = [];
+		if(!this.noReconnect && !this.connected && !this.connectionInProgress){
+			this.connectionInProgress = true;
+			// check profile
+			if(this.settings.connectionProfiles[this.currentProfile + 1]){
+				this.currentProfile++;
 			}else{
-				if(this.settings.connectionProfiles[this.currentProfile + 1]){
-					this.currentProfile++;
-				}else{
-					this.currentProfile = 0;
-				}
+				this.currentProfile = 0;
 			}
-
+			// build connection
 			this.logger.info('Start connecting to Fhem');
+			this.tries ++;
+			this.logger.info('Connection try: ' + this.tries);
 			this.logger.info('Try connecting with profile:  ' + this.currentProfile);
-			// build the connection
-			this.buildRelevantConnection().then((e)=>{
-				// load initial devices
-				this.listDevices(this.getRelevantDevices());
-				resolve(e);
-			}).catch((e)=>{
-				reject(e);
-			});
-		});
-	}
+			// clearing device lists
+			this.devices = [];
+			let url;
+			// get the desired url for fhem connection
+			const type = this.connectionType();
+			
+			if(type.match(/websocket|fhemweb/)){
+				url = (this.settings.connectionProfiles[this.currentProfile].WSS ? 'wss://' : 'ws://') + 
+				(this.settings.connectionProfiles[this.currentProfile].basicAuth ? this.settings.connectionProfiles[this.currentProfile].USER + ':' + this.settings.connectionProfiles[this.currentProfile].PASSW + '@' : '' ) + 
+				this.settings.connectionProfiles[this.currentProfile].IP + ':' + this.settings.connectionProfiles[this.currentProfile].PORT;
 
-	// establish a connection, based on the connection type
-	private buildRelevantConnection(){
-		return new Promise((resolve, reject) => {
-			if (!this.connected) {
-				let url;
-				// get the desired url for fhem connection
-				const type = this.connectionType();
-				if(type.match(/websocket|fhemweb/)){
-					url = (this.settings.connectionProfiles[this.currentProfile].WSS ? 'wss://' : 'ws://') + 
-					(this.settings.connectionProfiles[this.currentProfile].basicAuth ? this.settings.connectionProfiles[this.currentProfile].USER + ':' + this.settings.connectionProfiles[this.currentProfile].PASSW + '@' : '' ) + 
-					this.settings.connectionProfiles[this.currentProfile].IP + ':' + this.settings.connectionProfiles[this.currentProfile].PORT;
-
-					this.socket = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url + '?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now())
-				}
-				if(type === 'mqtt'){
-
-				}
-				// clearing device lists
-				this.devices = [];
-				this.listenDevices = [];
-				if (type.match(/websocket|fhemweb/)) {
-					// websocket connection
-					this.socket.onopen = (e)=>{
-						this.connectionOpenHandler(e);
-						resolve(e);
-					}
-					this.socket.onclose = (e) => {
-						this.connectionCloseHandler(e);
-
-					}
-					this.socket.onerror = (e) => {
-						this.connectionErrorHandler(e);
-						reject(e);
-					}
-				}
-				this.timeoutHandler();
+				this.socket = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url + '?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now())
 			}
-		});
-	}
 
-	// timeout for profiles handler
-	private timeoutHandler(){
-		if(this.timeout) clearTimeout(this.timeout);
-
-		this.timeout = setTimeout(()=>{
-			if(!this.connected && !this.noReconnect){
-				// profile failed
-				this.logger.error('Connection timeout to Fhem with profile: ' + this.currentProfile);
-				this.toast.addToast(this.translate.instant('GENERAL.FHEM.TITLE'), this.translate.instant('GENERAL.FHEM.TIMEOUT'), 'error');
-
-				if(this.tries <= this.maxTries){
-					this.reconnect();
+			if (type.match(/websocket|fhemweb/)) {
+				// timeout
+				const timeout = setTimeout(()=>{
+					if(!this.connected){
+						// profile timeout
+						this.logger.info('Connection timeout for profile: ' + this.currentProfile);
+						this.toast.addToast(
+							this.translate.instant('GENERAL.FHEM.TITLE'), 
+							'Profile: ' + this.currentProfile + ' ' + this.translate.instant('GENERAL.FHEM.TIMEOUT'), 
+							'error'
+						);
+						this.socket.close();
+					}
+				}, 1000);
+				// open
+				this.socket.onopen = (e)=>{
+					this.connectionInProgress = false;
+					this.tries = 0;
+					this.reTries = 0;
+					this.connectionOpenHandler();
+					// check open listen devices
+					if(this.listenDevices.length > 0){
+						this.listenDevices.forEach((listenDevice: ListenDevice)=>{
+							this.getDevice(listenDevice.id, listenDevice.device, false, true).then((device)=>{
+								this.deviceUpdateSub.next(device);
+							});
+						});
+					}
+				}
+				// close
+				this.socket.onclose = (e) => {
+					clearTimeout(timeout);
+					this.connectedSub.next(false);
+					setTimeout(()=>{
+						if(this.tries <= this.maxTries){
+							this.connectionInProgress = false;
+							this.connectFhem();
+						}else{
+							this.reTries ++;
+							if(this.reTries <= this.maxRetires){
+								this.toast.addToast(
+									this.translate.instant('GENERAL.FHEM.TITLE'), 
+									'Maximum tries reached. Try to reconnect in 5 seconds',
+									'error'
+								);
+								setTimeout(()=>{
+									this.tries = 0;
+									this.connectionInProgress = false;
+									this.connectFhem();
+								}, 5000);
+							}else{
+								// max retries reached, give up...
+								this.toast.addToast(
+									this.translate.instant('GENERAL.FHEM.TITLE'),
+									'Maximum retries reached. Giving up...',
+									'error'
+								);
+								this.noReconnect = true;
+							}
+						}
+					}, 500);
+				}
+				// error
+				this.socket.onerror = (e) => {
+					this.logger.error('An Error occured during the connection process');
 				}
 			}
-		}, 1500);
+		}
+		if(this.noReconnect){
+			this.connectionInProgress = false;
+			this.tries = 0;
+			this.reTries = 0;
+		}
 	}
 
 	// handle connection open
-	private connectionOpenHandler(e){
+	private connectionOpenHandler(){
 		this.logger.info('Connected to Fhem');
 		this.connectedSub.next(true);
+		// get relevant devices
+		this.listDevices(this.getRelevantDevices());
 
 		this.websocketEvents();
 		this.toast.addToast(
@@ -209,57 +234,17 @@ export class FhemService {
 		);
 	}
 
-	// handle connection open
-	private connectionCloseHandler(e){
-		this.logger.info('Disconnected from Fhem');
-		this.connectedSub.next(false);
-		// clear listen devices
-		this.listenDevices = [];
-		// reconnect to fhem
-		this.reconnect();
-		this.toast.addToast(
-			this.translate.instant('GENERAL.FHEM.TITLE'),
-			this.translate.instant('GENERAL.FHEM.DISCONNECT'),
-			'error'
-		);
-	}
-
-	// handle connection errors
-	private connectionErrorHandler(e){
-		this.logger.error('An Error occured during the connection process');
-		this.connectedSub.next(false);
-		// clear listen devices
-		this.listenDevices = [];
-		// reconnect to fhem
-		this.reconnect();
-		this.toast.addToast(
-			this.translate.instant('GENERAL.FHEM.TITLE'),
-			this.translate.instant('GENERAL.FHEM.ERROR'),
-			'error'
-		);
-	}
-
-	// reconnect handler
-	private reconnect(){
-		this.logger.info('Try reconnecting to Fhem');
-		if (!this.noReconnect) {
-			this.tries ++;
-    		if(this.tries <= this.maxTries){
-    			const timeout = setTimeout(() => {
-					this.connectFhem(true);
-				}, 500);
-			}else{
-				this.noReconnect = true;
-				this.tries = 0;
-			}
-		}
-		this.connectedSub.next(false);
-	}
-
 	// disconnect
 	public disconnect() {
     	if(this.connected){
     		this.socket.close();
+    		this.devices = [];
+    		this.listenDevices = [];
+    		this.toast.addToast(
+				this.translate.instant('GENERAL.FHEM.TITLE'),
+				this.translate.instant('GENERAL.FHEM.DISCONNECT'),
+				'error'
+			);
     	}
     }
 
@@ -484,9 +469,14 @@ export class FhemService {
 			const type = this.connectionType();
 			// handle subscriptions
 			let subscribeHandler = ()=>{
+				let newListendevice: boolean = false;
 				if(!this.listenDevices.find(x => x.id === id)){
+					newListendevice = true;
 					this.listenDevices.push({id: id, device: deviceName, handler: callback});
-					if(type === 'websocket'){
+				}
+				if(type === 'websocket'){
+					// allow new dirty sub for reconnect, to keep device list
+					if(newListendevice || dirty){
 						this.sendCommand({command: 'subscribe',arg: device.id,type: '.*',name,changed: ''});
 					}
 				}
