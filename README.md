@@ -20,8 +20,6 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 * Alle erstellten Räume inklusive ihrer Komponenten können exportier/importiert werden
 * Es kann zwischen mehreren Möglichkeiten gewählt werden, um sich mit FHEM zu verbinden
 
-<img src="/images/room_menu.jpg" width="300" height="580" />    <img src="/images/settings.jpg" width="300" height="580" />
-
 [100]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#Komponenten
 ## Komponenten
 
@@ -117,9 +115,9 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 [25]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#circle-menu
 ## Circle-Menu
-<img src="/images/FhemNative_CircleMenu1.png" width="400" height="70" />
+<img src="/images/FhemNative_CircleMenu_1.png" width="400" height="70" />
 
-<img src="/images/FhemNative_CircleMenu2.png" width="200" height="200" />
+<img src="/images/FhemNative_CircleMenu_2.png" width="200" height="200" />
 
 > Ein Multi-Menü, um mehrere Werte Selektieren zu können, die an FHEM gesendet werden sollen (Maximal 6 Werte möglich).
 
