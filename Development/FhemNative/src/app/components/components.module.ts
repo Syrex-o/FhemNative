@@ -85,7 +85,6 @@ export function createTranslateLoader(http: HttpClient) {
 		TimepickerComponent,
 		IconComponent,
 		DirectivesModule,
-		TranslateModule,
 		DragDropModule,
 		MatRippleModule,
 		FontAwesomeModule,
