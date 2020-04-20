@@ -3,6 +3,12 @@
 		position: relative;
 		width: 100%;
 		min-height: 45px;
+		&.full-height{
+			height: 100%;
+		}
+		&.border{
+			border-bottom: 1px solid #565656;
+		}
 		button{
 			background: transparent;
 			position: absolute;
