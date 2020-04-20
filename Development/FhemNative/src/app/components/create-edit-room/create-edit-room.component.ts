@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { ComponentsModule } from '../components.module';
@@ -18,7 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 	templateUrl: './create-edit-room.component.html',
   	styleUrls: ['./create-edit-room.component.scss']
 })
-export default class CreateEditRoomComponent implements OnInit {
+export class CreateEditRoomComponent implements OnInit {
 	// type (create/edit)
 	@Input() type: string;
 	@Input() ID: any;
@@ -162,7 +163,7 @@ export default class CreateEditRoomComponent implements OnInit {
 		private componentLoader: ComponentLoaderService){}
 }
 @NgModule({
-	imports: [ComponentsModule],
+	imports: [ComponentsModule, TranslateModule],
   	declarations: [CreateEditRoomComponent]
 })
 class CreateEditRoomComponentModule {}

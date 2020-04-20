@@ -1,4 +1,5 @@
 import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -19,7 +20,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 	templateUrl: './create-edit-component.component.html',
   	styleUrls: ['./create-edit-component.component.scss']
 })
-export default class CreateEditComponentComponent implements OnInit, OnDestroy {
+export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	// get slides
 	private slides: IonSlides;
   	@ViewChild('Slides', {static: false}) set content(content: IonSlides) {this.slides = content;}
@@ -311,7 +312,7 @@ export default class CreateEditComponentComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [ComponentsModule, IonicModule],
+	imports: [ComponentsModule, IonicModule, TranslateModule],
   	declarations: [CreateEditComponentComponent]
 })
 class CreateEditComponentComponentModule {}
