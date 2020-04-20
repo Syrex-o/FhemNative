@@ -66,6 +66,7 @@ export class RoomComponent implements OnDestroy {
 	  	});
 	  	// App pause/resume
 	  	this.onPauseSubscription = this.platform.pause.subscribe(() => {
+	  		// check for always on
 	  		if(!this.settings.app.keepConnected){
 	  			this.fhem.noReconnect = true;
 	  			this.fhem.disconnect();
