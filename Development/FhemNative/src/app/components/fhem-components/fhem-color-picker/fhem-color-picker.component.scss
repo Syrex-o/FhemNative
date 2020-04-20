@@ -2,6 +2,8 @@
 	.color-picker{
 		width: inherit;
 		height: inherit;
+		cursor: pointer;
+		pointer-events: all;
 	}
 	.content{
 		position: relative;

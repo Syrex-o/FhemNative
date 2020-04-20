@@ -2,6 +2,7 @@
 	.sprinkler{
 		width: inherit;
 		height: inherit;
+		pointer-events: all;
 		.sprinkler-page-container{
 			position: absolute;
 			top: 0;

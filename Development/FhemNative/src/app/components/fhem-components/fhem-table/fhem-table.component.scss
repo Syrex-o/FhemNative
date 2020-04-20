@@ -3,6 +3,7 @@
 		width: inherit;
 		height: inherit;
 		overflow: auto;
+		pointer-events: all;
 		table{
 			width: 100%;
   			table-layout: fixed;
@@ -13,6 +14,8 @@
   			}
 		}
 		.btn-round{
+			cursor: pointer;
+			pointer-events: all;
 			position: absolute;
 		    top: 0;
 		    right: 0;

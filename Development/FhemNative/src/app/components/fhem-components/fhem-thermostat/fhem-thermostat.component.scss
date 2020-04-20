@@ -11,6 +11,7 @@
 			}
 			.dragger{
 				cursor: pointer;
+				pointer-events: all;
 				ellipse,
 				path{
 					fill: #ddd;
@@ -50,6 +51,7 @@
 				font-variant-numeric: tabular-nums;
 			}
 			.control{
+				pointer-events: all;
 				transform-origin: 50% 50%;
 				.track {
 				  	fill: none;

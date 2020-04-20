@@ -4,6 +4,8 @@
 		height: inherit;
 		box-shadow: 0 2px 8px 0 rgba(0,0,0,.05), 0 4px 8px 0 rgba(0,0,0,.05), 0 1px 2px 0 rgba(0,0,0,.05);
 		transition: all .2s ease;
+		pointer-events: all;
+		cursor: pointer;
 		icon{
 			position: absolute;
 			top: 50%;

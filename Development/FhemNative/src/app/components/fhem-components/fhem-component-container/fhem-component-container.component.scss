@@ -1,6 +1,7 @@
 :host{
 	.fhem-component-container{
 		position: absolute;
+		pointer-events: none;
 		.unavailable{
 			position: absolute;
 			width: 100%;
@@ -10,6 +11,7 @@
 			border: 1px solid var(--dark-border);
 			border-radius: 5px;
 			overflow-y: auto;
+			pointer-events: all;
 		}
 		.error{
 			margin: 8px;

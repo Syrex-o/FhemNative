@@ -12,6 +12,8 @@
 		    top: 0;
 		    right: 0;
 		    z-index: 101;
+		    cursor: pointer;
+		    pointer-events: all;
 		}
 		.content{
 			position: relative;
@@ -19,6 +21,7 @@
 			width: 100%;
 			overflow-y: auto;
 			overflow-x: hidden;
+			pointer-events: all;
 			.container{
 				width: inherit;
 				height: inherit;

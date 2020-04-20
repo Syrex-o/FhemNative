@@ -5,6 +5,7 @@
 		.slider-container{
 			position: absolute;
 			border-radius: 5px;
+			pointer-events: all;
 			&.vertical{
 				height: 100%;
 				top: 0;

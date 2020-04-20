@@ -2,11 +2,14 @@
 	.chart{
 		width: inherit;
 		height: inherit;
+		pointer-events: all;
 		.btn-round{
 			position: absolute;
 		    top: 0;
 		    right: 0;
 		    z-index: 101;
+		    cursor: pointer;
+    		pointer-events: all;
 		}
 	}
 	// picker config
