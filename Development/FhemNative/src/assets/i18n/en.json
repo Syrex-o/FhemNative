@@ -380,6 +380,10 @@
 				"style_labelColor":{
 					"name": "Label color",
 					"info": "Color of the labels in the button"
+				},
+				"style_activeColor":{
+					"name": "Active color",
+					"info": "Color of the active item"
 				}
 			}
 		},

@@ -380,6 +380,10 @@
 				"style_labelColor":{
 					"name": "Label-Farbe",
 					"info": "Farbe des Labels im Button"
+				},
+				"style_activeColor":{
+					"name": "Aktiv-Farbe",
+					"info": "Farbe des Items, dass gerdae aktiv ist"
 				}
 			}
 		},
