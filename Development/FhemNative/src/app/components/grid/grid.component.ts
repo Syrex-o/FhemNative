@@ -1,4 +1,4 @@
-import { Component, NgModule, ViewChild, ElementRef, OnInit, OnDestroy, HostListener, Input } from '@angular/core';
+import { Component, NgModule, ViewChild, ElementRef, OnInit, OnDestroy, Input } from '@angular/core';
 
 // Components
 import { ComponentsModule } from '../components.module';
@@ -16,7 +16,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
   	templateUrl: './grid.component.html',
   	styleUrls: ['./grid.component.scss']
 })
-export default class GridComponent implements OnInit, OnDestroy {
+export class GridComponent implements OnInit, OnDestroy {
 	// input of the container, where grid is created
 	@Input() container: any;
 
@@ -26,9 +26,6 @@ export default class GridComponent implements OnInit, OnDestroy {
   	// Grid Height
   	gridHeight = 0;
 
-	// shift press
-	private shiftPress: boolean = false;
-
   	constructor(
 		private settings: SettingsService,
 		private structure: StructureService,
@@ -36,23 +33,6 @@ export default class GridComponent implements OnInit, OnDestroy {
 		private selectComponent: SelectComponentService,
 		private hotKey: HotKeyService,
 		private undoManager: UndoRedoService) {
-	}
-
-	@HostListener('touchstart', ['$event'])
-	@HostListener('mousedown', ['$event'])
-	onMouseDown(e) {
-		if(this.shiftPress){
-			this.componentLoader.createSingleComponent('SelectRectangleComponent', this.componentLoader.containerStack[0].container, {
-				x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
-				y: e.pageY || (e.touches ? e.touches[0].clientY : 0),
-				container: this.container
-			});
-		}
-	}
-
-	// remove selection rect
-	private removeSelectRect(){
-		this.componentLoader.removeDynamicComponent('SelectRectangleComponent');
 	}
 
 	ngOnInit() {
@@ -65,15 +45,6 @@ export default class GridComponent implements OnInit, OnDestroy {
 		this.selectComponent.addHandle('ALL_GRID', 'resize', (dimensions)=>{
 			this.buildGrid();
 		});
-
-		// build shift shortcut
-		this.hotKey.add('GRIDdown' , 'shift', (ID: string)=>{
-			this.shiftPress = true;
-		}, 'keydown');
-		this.hotKey.add('GRIDup', 'shift', (ID: string)=>{
-			this.shiftPress = false;
-			this.removeSelectRect();
-		}, 'keyup');
 
 		// create shortcuts
 		// select all
@@ -163,17 +134,12 @@ export default class GridComponent implements OnInit, OnDestroy {
 		this.selectComponent.removeHandle('ALL_GRID', 'move');
 		this.selectComponent.removeHandle('ALL_GRID', 'resize');
 		// remove hotkeys
-		this.hotKey.remove('GRIDdown');
-		this.hotKey.remove('GRIDup');
 		this.hotKey.remove('GRID_CONTROL_A');
 		this.hotKey.remove('GRID_CONTROL_C');
 		this.hotKey.remove('GRID_CONTROL_V');
 		this.hotKey.remove('GRID_CONTROL_D');
 		this.hotKey.remove('GRID_CONTROL_Z');
 		this.hotKey.remove('GRID_CONTROL_Y');
-
-		// remove rect
-		this.removeSelectRect();
 	}
 }
 
