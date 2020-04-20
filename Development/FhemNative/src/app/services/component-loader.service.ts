@@ -1,4 +1,4 @@
-import { Injectable, Injector, ComponentFactoryResolver } from '@angular/core';
+import { Injectable, Compiler, Injector, ComponentFactoryResolver, NgModuleFactory, Type } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // Services
@@ -34,9 +34,6 @@ interface ContainerSub {
 @Injectable({providedIn: 'root'})
 
 export class ComponentLoaderService {
-	// list of already loaded components
-	private loadedComponents: LoadedComponents[] = [];
-
 	// list of standard Components
 	private standardComponents: DynamicComponent[] = [
 		{name: 'ContextMenuComponent', path: 'context-menu/context-menu'},
@@ -122,16 +119,21 @@ export class ComponentLoaderService {
 	public loadDynamicComponent(path: string, fhemComponent: boolean){
 		return new Promise((resolve)=>{
 			const prefix = fhemComponent ? 'components/fhem-components/' : 'components/';
+			import(`../${ prefix + path}.component`).then((componentData: any)=>{
+				const comp: string = Object.keys(componentData)[0];
+				const ComponentType: Type<any> = componentData[comp];
+				resolve(ComponentType);
+			})
 
-			const loaded: LoadedComponents = this.loadedComponents.find(x=> x.path === path);
-			if(loaded){
-				resolve(loaded.type);
-			}else{
-				import(`../${ prefix + path}.component`).then(esModule => esModule.default).then((ComponentType:any) => {
-					this.loadedComponents.push({path: path, type: ComponentType});
-					resolve(ComponentType);
-				})
-			}
+			// const loaded: LoadedComponents = this.loadedComponents.find(x=> x.path === path);
+			// if(loaded){
+			// 	resolve(loaded.type);
+			// }else{
+			// 	import(`../${ prefix + path}.component`).then(esModule => esModule.default).then((ComponentType:any) => {
+			// 		this.loadedComponents.push({path: path, type: ComponentType});
+			// 		resolve(ComponentType);
+			// 	})
+			// }
 		});
 	}
 
@@ -354,19 +356,12 @@ export class ComponentLoaderService {
 				const componentFactory = this.resolver.resolveComponentFactory(ComponentType);
 				// add component to view
 				const componentRef: any = container.createComponent(componentFactory);
+				// change detection
+				componentRef.changeDetectorRef.markForCheck();
+				// resolve the component
 				resolve(componentRef);
 			});
 		});
-	}
-
-	// rerender fhem component
-	public rerenderFhemComponent(ID: string){
-		const component = this.containerComponents.find(x => x.ID === ID);
-		if(component){
-			this.removeDynamicComponent(ID);
-			const _component = this.structure.getComponent(ID);
-			this.loadRoomComponents([_component], component.container, false);
-		}
 	}
 
 	// create a standard helper component
