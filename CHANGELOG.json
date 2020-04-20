@@ -321,17 +321,35 @@
     	},
     	{
       		"VERSION": "2.5.0",
-      		"DATE": "19.02.2020",
+      		"DATE": "20.04.2020",
       		"CHANGES":[
       			{"TYPE": "NEW", "CHANGE": "Full App rewrite"},
       			{"TYPE": "NEW", "CHANGE": "Update to Angular 9"},
       			{"TYPE": "NEW", "CHANGE": "Update to Ionic 5"},
       			{"TYPE": "NEW", "CHANGE": "Alignment to Android Color Sheme"},
+      			{"TYPE": "NEW", "CHANGE": "Custom Color Sheme"},
       			{"TYPE": "NEW", "CHANGE": "Redesign of Popup component"},
       			{"TYPE": "NEW", "CHANGE": "Popup animations"},
       			{"TYPE": "NEW", "CHANGE": "Task change recognition"},
       			{"TYPE": "NEW", "CHANGE": "Task fhem device handler"},
-      			{"TYPE": "NEW", "CHANGE": "Update components are now able to reload, to ensure they are fresh after connection loss"},
+      			{"TYPE": "NEW", "CHANGE": "New Picker component"},
+      			{"TYPE": "NEW", "CHANGE": "New Tabs component"},
+      			{"TYPE": "NEW", "CHANGE": "New Table component"},
+      			{"TYPE": "NEW", "CHANGE": "New custom inputs for chart/table/weather"},
+      			{"TYPE": "NEW", "CHANGE": "Component export/import"},
+      			{"TYPE": "NEW", "CHANGE": "Advanced settings"},
+      			{"TYPE": "NEW", "CHANGE": "Component dependOn parameters"},
+      			{"TYPE": "NEW", "CHANGE": "Grid auto resize"},
+      			{"TYPE": "NEW", "CHANGE": "New hotkey logic to prevent default"},
+      			{"TYPE": "NEW", "CHANGE": "New back button handler"},
+      			{"TYPE": "NEW", "CHANGE": "Factory reset"},
+      			{"TYPE": "NEW", "CHANGE": "Component getDevice from fhem optimization"},
+      			{"TYPE": "NEW", "CHANGE": "New Slider selectable"},
+      			{"TYPE": "NEW", "CHANGE": "New Thermostat selectable"},
+      			{"TYPE": "FIX", "CHANGE": "Fhem connection handler"},
+      			{"TYPE": "FIX", "CHANGE": "All components"},
+      			{"TYPE": "FIX", "CHANGE": "Task handling"},
+      			{"TYPE": "DEL", "CHANGE": "Select Rectangle"}
       		]
     	}
 	]
