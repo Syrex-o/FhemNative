@@ -1,4 +1,5 @@
 import { Directive, ElementRef, HostListener, Input, Output, EventEmitter, OnDestroy, OnChanges, SimpleChanges, } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 import { SelectComponentService } from '../services/select-component.service';
 import { ComponentLoaderService } from '../services/component-loader.service';
@@ -35,7 +36,8 @@ export class ClickerDirective implements OnChanges {
 		private selectComponent: SelectComponentService,
 		private componentLoader: ComponentLoaderService,
 		private hotKey: HotKeyService,
-		private ref: ElementRef){
+		private ref: ElementRef,
+		private platform: Platform){
 
 	}
 
@@ -128,7 +130,8 @@ export class ClickerDirective implements OnChanges {
 				// double click
 				this.doubleClickTimeout = setTimeout(() => {
 					// workaround for grid clicker
-					if (this.clicker >= (e.target.className.match(/grid/) ? 3 : 2) ) {
+					let counter = this.platform.is('mobile') ? 3 : 2;
+					if (this.clicker >= counter ) {
 						if (this.source === 'component') {
 							this.createContextMenu(e);
 						}else{
