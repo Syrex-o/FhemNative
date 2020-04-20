@@ -89,7 +89,7 @@ FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des 
 
 [5]: https://github.com/Syrex-o/FHEMNative/blob/master/README.md#box
 ## Box
-<img src="https://drive.google.com/file/d/1VDSQXe8nbIhoYdInSYSUi7FqZVVHoScF/FhemNative_box.png" width="300" height="300" />
+<img src="https://drive.google.com/file/d/1VDSQXe8nbIhoYdInSYSUi7FqZVVHoScF/view" width="300" height="300" />
 
 > Eine Box um weitere Komponenten auf der Oberfläche zu Ordnen.
 
