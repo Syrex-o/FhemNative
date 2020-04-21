@@ -24,7 +24,7 @@ import { TranslateService } from '@ngx-translate/core';
   	styleUrls: ['./tasks.component.scss']
 })
 
-export default class TasksComponent implements OnInit {
+export class TasksComponent implements OnInit {
 	// Back button handle ID
 	private handleID: string = '_' + Math.random().toString(36).substr(2, 9);
 

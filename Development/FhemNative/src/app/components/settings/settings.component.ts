@@ -32,7 +32,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
   	styleUrls: ['./settings.component.scss']
 })
 
-export default class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit {
 	// Back button handle ID
 	private handleID: string = '_' + Math.random().toString(36).substr(2, 9);
 
@@ -220,6 +220,7 @@ export default class SettingsComponent implements OnInit {
 
 	// show changelog
 	toggleChangelog(){
+		this.settings.modes.showLoader = true;
 		this.menus.changeLog = !this.menus.changeLog;
 		const baseUrl = 'https://raw.githubusercontent.com/Syrex-o/FhemNative/master/CHANGELOG.json';
 		this.http.get(baseUrl).subscribe((res: any) => {
@@ -233,6 +234,9 @@ export default class SettingsComponent implements OnInit {
 			} else {
 				this.toast.addNotify('Changelog', this.translate.instant('GENERAL.DICTIONARY.NO_CHANGELOG_PRESENT'), false);
 			}
+			this.settings.modes.showLoader = false;
+		}, (error)=>{
+			this.settings.modes.showLoader = false;
 		});
 	}
 
@@ -257,14 +261,17 @@ export default class SettingsComponent implements OnInit {
 
 	// generate rooms
 	generateRooms(){
+		this.settings.modes.showLoader = true;
 		let gotReply: boolean = false;
 		const sub = this.fhem.deviceListSub.subscribe(next=>{
+			this.settings.modes.showLoader = false;
 			gotReply = true;
 			sub.unsubscribe();
 
 			const generatedRooms = this.addRooms(
 				this.fhem.devices.filter((x)=>{ return Object.getOwnPropertyNames(x.attributes).find((y)=>{ return y === 'room'}) })
 			);
+
 			if(generatedRooms.length > 0){
 				// save the generated rooms
 				this.structure.saveRooms().then(() => {
@@ -288,6 +295,7 @@ export default class SettingsComponent implements OnInit {
 		});
 		setTimeout(()=>{
 			if(!gotReply){
+				this.settings.modes.showLoader = false;
 				sub.unsubscribe();
 				this.toast.showAlert(
 					this.translate.instant('GENERAL.DICTIONARY.NO_ROOMS_ADDED_TITLE'),
@@ -301,10 +309,12 @@ export default class SettingsComponent implements OnInit {
 
 	// generate devices
 	generateDevices(){
+		this.settings.modes.showLoader = true;
 		// list of generated devices
 		let generatedDevices = [];
 		let gotReply: boolean = false;
 		const sub = this.fhem.deviceListSub.subscribe(next=>{
+			this.settings.modes.showLoader = false;
 			gotReply = true;
 			sub.unsubscribe();
 			// generate the rooms
@@ -395,6 +405,7 @@ export default class SettingsComponent implements OnInit {
 		});
 		setTimeout(()=>{
 			if(!gotReply){
+				this.settings.modes.showLoader = false;
 				sub.unsubscribe();
 				this.toast.showAlert(
 					this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_TITLE'),
@@ -447,20 +458,43 @@ export default class SettingsComponent implements OnInit {
 			}
 		};
 
+		// room name tester
+		let roomTest = (roomName: string)=>{
+			if(!roomName.match(/Unsorted|hidden/) && !settingsRooms.includes(roomName) && !generatedRooms.includes(roomName)){
+				return roomName;
+			}
+		}
+
 		devices.forEach((device)=>{
 			const roomAttr = device.attributes.room;
 			// test for psudo rooms
 			if(roomAttr.indexOf('->') > -1){
-				const pseudoRooms = roomAttr.split('->');
-				// only get first structure
-				if(pseudoRooms.length >= 2){
+				let leftOverRooms = [];
+
+				const psudoRoomCombination = roomAttr.match(/\w+->\w+/g);
+				if(psudoRoomCombination){
+					const pseudoRooms = psudoRoomCombination[0].split('->');
 					const mainRoom = pseudoRooms[0];
 					const subRoom = pseudoRooms[1];
+
+					// get the rooms, that are left
+					leftOverRooms = roomAttr.split(',')
+					leftOverRooms.splice(leftOverRooms.indexOf(psudoRoomCombination[0]), 1);
+					
 					// test if mainRoom exists
-					if(!mainRoom.match(/Unsorted|hidden/) && !settingsRooms.includes(mainRoom) && !generatedRooms.includes(mainRoom)){
+					if(roomTest(mainRoom)){
 						roomAdder(mainRoom, false);
 					}
+					// add sub room
 					roomAdder(subRoom, this.structure.rooms.find(x=> x.name === mainRoom).ID);
+				}
+				// add the left over rooms
+				if(leftOverRooms.length > 0){
+					leftOverRooms.forEach((room: string)=>{
+						if(roomTest(room)){
+							roomAdder(room, false);
+						}
+					});
 				}
 			}else{
 				const rooms = roomAttr.split(',');
