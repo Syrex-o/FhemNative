@@ -106,7 +106,9 @@ export class SettingsService {
 		// indicates who initiated editing
 		roomEditFrom: null,
 		// events
-		fhemMenuMode: ''
+		fhemMenuMode: '',
+		// loader
+		showLoader: false
 	};
 	// subscriber for modes
 	public modeSub = new Subject<any>();

@@ -69,6 +69,8 @@
     </ion-split-pane>
     <!-- Fhem Menu -->
     <fhem-menu [mode]="settings.modes.fhemMenuMode"></fhem-menu>
+    <!-- Loader -->
+    <loader *ngIf="settings.modes.showLoader"></loader>
 </ion-app>
 
 <ng-template #ROOM let-name let-ID="ID" let-icon="icon" let-asGroup="asGroup">
