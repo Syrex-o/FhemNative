@@ -321,7 +321,7 @@
     	},
     	{
       		"VERSION": "2.5.0",
-      		"DATE": "20.04.2020",
+      		"DATE": "21.04.2020",
       		"CHANGES":[
       			{"TYPE": "NEW", "CHANGE": "Full App rewrite"},
       			{"TYPE": "NEW", "CHANGE": "Update to Angular 9"},
@@ -346,9 +346,12 @@
       			{"TYPE": "NEW", "CHANGE": "Component getDevice from fhem optimization"},
       			{"TYPE": "NEW", "CHANGE": "New Slider selectable"},
       			{"TYPE": "NEW", "CHANGE": "New Thermostat selectable"},
+      			{"TYPE": "NEW", "CHANGE": "Circle Slider Animation"},
+      			{"TYPE": "NEW", "CHANGE": "Implemented Loader component to visualize waiting"},
       			{"TYPE": "FIX", "CHANGE": "Fhem connection handler"},
       			{"TYPE": "FIX", "CHANGE": "All components"},
       			{"TYPE": "FIX", "CHANGE": "Task handling"},
+      			{"TYPE": "FIX", "CHANGE": "Chart/Weather label outside of view"},
       			{"TYPE": "DEL", "CHANGE": "Select Rectangle"}
       		]
     	}
