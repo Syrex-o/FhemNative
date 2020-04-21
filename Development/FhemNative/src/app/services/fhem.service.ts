@@ -477,7 +477,12 @@ export class FhemService {
 				if(type === 'websocket'){
 					// allow new dirty sub for reconnect, to keep device list
 					if(newListendevice || dirty){
-						this.sendCommand({command: 'subscribe',arg: device.id,type: '.*',name,changed: ''});
+						this.sendCommand({
+							command: 'subscribe', arg: device.id, 
+							type: '.*', 
+							name: deviceName, 
+							changed: '.*'
+						});
 					}
 				}
 			}
