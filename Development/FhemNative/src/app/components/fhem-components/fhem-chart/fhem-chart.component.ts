@@ -612,7 +612,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
   			.attr("class","label")
   			.attr("fill", (this.settings.app.theme === 'dark') ? '#fff' : '#000')
   			.attr('x', d => this.x(d.date) - this.xBand.bandwidth() / 2 )
-  			.attr('y',  d => (axis === 'left' ? this.leftY(d.value) : this.rightY(d.value)) - this.dim.padding.top / 2)
+  			.attr('y',  d => (axis === 'left' ? this.leftY(d.value) : this.rightY(d.value)) + this.dim.padding.top / 2)
   			.text(d=> Math.round(d.value) + this.arr_data_labelExtensions[index]);   
   	}
 
