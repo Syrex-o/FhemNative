@@ -4,7 +4,7 @@
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="200"
 	[minimumHeight]="200">
-	<div class="circle-slider" #svgRoot *ngIf="fhemDevice">
+	<div class="circle-slider">
 		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" [attr.viewBox]="styles.viewBox" preserveAspectRatio="xMinYMin meet">
 			<defs>
 				<filter [attr.id]="'blurFilter' + UID" x="0" y="0" width="100%" height="100%">

@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, NgModule, AfterViewInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 // Components
 import { ComponentsModule } from '../../components.module';
@@ -13,13 +13,9 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 	templateUrl: './fhem-circle-slider.component.html',
   	styleUrls: ['./fhem-circle-slider.component.scss']
 })
-export class FhemCircleSliderComponent implements OnInit, OnDestroy {
+export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 	// SVG Prop
-	private svgRoot: ElementRef;
-	@ViewChild('svgRoot', { static: false, read: ElementRef }) set content(content: ElementRef) {
-		this.svgRoot = content;
-		this.invalidate();
-	}
+	private svgRoot: HTMLElement;
 
 	@Input() ID: string;
 
@@ -113,29 +109,37 @@ export class FhemCircleSliderComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	ngOnInit(){
+	ngAfterViewInit(){
 		// init slider values
-		this.bottomAngleRad = Math.PI * parseInt(this.data_bottomAngle) / 180;
-		this.data_thumbBorder = parseFloat(this.data_thumbBorder);
-		this.data_arcThickness = parseFloat(this.data_arcThickness);
+		setTimeout(()=>{
+			this.value = parseInt(this.data_min);
+			this.bottomAngleRad = Math.PI * parseInt(this.data_bottomAngle) / 180;
+			this.data_thumbBorder = parseFloat(this.data_thumbBorder);
+			this.data_arcThickness = parseFloat(this.data_arcThickness);
+		});
 		// get fhem device
 		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
 			this.fhemDevice = device;
 			// update
 			if(device){
 				const updateValue = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
+				const oldValue = this.value;
 				if (updateValue !== this.value) {
 					this.value = updateValue;
-					this.invalidate();
+					this.animateMove(oldValue);
 				}
 			}
 		}).then((device)=>{
+			this.svgRoot = this.ref.nativeElement.querySelector('.fhem-component-container');
+			setTimeout(()=>{
+				this.invalidate();
+			});
 			this.fhemDevice = device;
 			if(device){
 				// init values
 				this.data_label = (this.data_label === '') ? this.fhemDevice.device : this.data_label;
 				this.value = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
-				this.invalidatePinPosition();
+				this.animateMove(parseInt(this.data_min));
 			}
 		});
 		// init resize handle
@@ -151,12 +155,12 @@ export class FhemCircleSliderComponent implements OnInit, OnDestroy {
 			this.invalidateClipPathStr();
 			this.invalidatePinPosition();
 			this.invalidateGradientArcs();
-		}, 100);
+		});
 	}
 
 	private calculateVars(){
 		const halfAngle = this.bottomAngleRad / 2;
-		const svgBoundingRect = this.svgRoot.nativeElement.getBoundingClientRect();
+		const svgBoundingRect = this.svgRoot.getBoundingClientRect();
 		
 		let w = svgBoundingRect.width;
 		let h = svgBoundingRect.height;
@@ -262,19 +266,19 @@ export class FhemCircleSliderComponent implements OnInit, OnDestroy {
 		this.styles.clipPathStr = path;
 	}
 
-	private invalidatePinPosition(){
+	private invalidatePinPosition(customNumber?: number){
 		const radiusOffset = this.thickness / 2;
 		const curveRadius = this.radius - radiusOffset;
-		const actualAngle = (2 * Math.PI - this.bottomAngleRad) * this.getValuePercentage() + this.bottomAngleRad / 2;
+		const actualAngle = (2 * Math.PI - this.bottomAngleRad) * this.getValuePercentage(customNumber) + this.bottomAngleRad / 2;
 		this.styles.thumbPosition = {
 			x: curveRadius * (1 - Math.sin(actualAngle)) + radiusOffset,
 			y: curveRadius * (1 + Math.cos(actualAngle)) + radiusOffset,
 		};
-		this.invalidateNonSelectedArc();
+		this.invalidateNonSelectedArc(customNumber);
 	}
 
-	private invalidateNonSelectedArc(){
-		const angle = this.bottomAngleRad / 2 + (1 - this.getValuePercentage()) * (2 * Math.PI - this.bottomAngleRad);
+	private invalidateNonSelectedArc(customNumber?: number){
+		const angle = this.bottomAngleRad / 2 + (1 - this.getValuePercentage(customNumber)) * (2 * Math.PI - this.bottomAngleRad);
 		this.styles.nonSelectedArc = {
 			color: this.style_backgroundColor,
 			d: `M ${this.radius},${this.radius}
@@ -338,7 +342,7 @@ export class FhemCircleSliderComponent implements OnInit, OnDestroy {
 	}
 
 	private recalculateValue(e) {
-		const rect = this.svgRoot.nativeElement.getBoundingClientRect();
+		const rect = this.svgRoot.getBoundingClientRect();
 		const center = {
 			x: rect.left + this.VIEW_BOX_SIZE * this.scaleFactor / 2,
 			y: rect.top + (this.translateYValue + this.radius) * this.scaleFactor,
@@ -372,8 +376,31 @@ export class FhemCircleSliderComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	private getValuePercentage(){
-		return (this.value - parseInt(this.data_min)) / (parseInt(this.data_max) - parseInt(this.data_min));
+	private animateMove(from: number){
+		let to, pos = 0;
+		let id;
+
+		let frame = ()=>{
+			const count = (pos > to) ? - parseFloat(this.data_step) : parseFloat(this.data_step);
+			
+			id = setInterval(()=>{
+				if (pos === to) {
+					clearInterval(id);
+				}else{
+					pos = pos + count;
+					this.invalidatePinPosition(pos);
+					this.value = pos;
+				}
+			}, 5);
+		}
+		to = this.value;
+		pos = from;
+		frame();
+	}
+
+	private getValuePercentage(customNumber?: number){
+		const val = customNumber || this.value;
+		return (val - parseInt(this.data_min)) / (parseInt(this.data_max) - parseInt(this.data_min));
 	}
 
 	private toValueNumber(factor) {
@@ -396,6 +423,7 @@ export class FhemCircleSliderComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private fhem: FhemService,
+		private ref: ElementRef,
 		private selectComponent: SelectComponentService,
 		private native: NativeFunctionsService){
 
