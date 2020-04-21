@@ -40,7 +40,10 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 	fhemDevice: any;
 	label: string;
 
+
 	ngOnInit(){
+		// assign label before response
+		this.label = this.data_label;
 		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
 			this.getState(device);
 		}).then(device=>{
