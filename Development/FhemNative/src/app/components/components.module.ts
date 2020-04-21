@@ -28,6 +28,7 @@ import { SelectComponent } from './select/select.component';
 import { FhemMenuComponent } from './fhem-menu/fhem-menu.component';
 import { TimepickerComponent } from './timepicker/timepicker.component';
 import { IconComponent } from './icon/icon.component';
+import { LoaderComponent } from './loader/loader.component';
 
 // Services
 import { ComponentLoaderService } from '../services/component-loader.service';
@@ -69,7 +70,8 @@ export function createTranslateLoader(http: HttpClient) {
 		SwitchComponent,
 		SelectComponent,
 		TimepickerComponent,
-		IconComponent
+		IconComponent,
+		LoaderComponent
 	],
 	providers:[
 		ComponentLoaderService,
@@ -84,6 +86,7 @@ export function createTranslateLoader(http: HttpClient) {
 		FhemMenuComponent,
 		TimepickerComponent,
 		IconComponent,
+		LoaderComponent,
 		DirectivesModule,
 		DragDropModule,
 		MatRippleModule,
