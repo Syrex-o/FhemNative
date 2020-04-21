@@ -43,7 +43,9 @@ export class ComponentLoaderService {
 		{name: 'SelectRectangleComponent', path: 'select-rectangle/select-rectangle'},
 		// Pages
 		{name: 'SettingsComponent', path: 'settings/settings'},
-		{name: 'TasksComponent', path: 'tasks/tasks'}
+		{name: 'TasksComponent', path: 'tasks/tasks'},
+		// Loader
+		{name: 'LoaderComponent', path: 'loader/loader'},
 	];
 
 	// list of dynammic fhem Components
@@ -123,17 +125,7 @@ export class ComponentLoaderService {
 				const comp: string = Object.keys(componentData)[0];
 				const ComponentType: Type<any> = componentData[comp];
 				resolve(ComponentType);
-			})
-
-			// const loaded: LoadedComponents = this.loadedComponents.find(x=> x.path === path);
-			// if(loaded){
-			// 	resolve(loaded.type);
-			// }else{
-			// 	import(`../${ prefix + path}.component`).then(esModule => esModule.default).then((ComponentType:any) => {
-			// 		this.loadedComponents.push({path: path, type: ComponentType});
-			// 		resolve(ComponentType);
-			// 	})
-			// }
+			});
 		});
 	}
 
