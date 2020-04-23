@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 // Components
@@ -17,7 +17,8 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
 	selector: 'create-edit-room',
 	templateUrl: './create-edit-room.component.html',
-  	styleUrls: ['./create-edit-room.component.scss']
+  	styleUrls: ['./create-edit-room.component.scss'],
+  	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateEditRoomComponent implements OnInit {
 	// type (create/edit)

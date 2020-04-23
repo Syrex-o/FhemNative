@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
+import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ElementRef, ViewContainerRef, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
@@ -18,7 +18,8 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 @Component({
 	selector: 'create-edit-component',
 	templateUrl: './create-edit-component.component.html',
-  	styleUrls: ['./create-edit-component.component.scss']
+  	styleUrls: ['./create-edit-component.component.scss'],
+  	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	// get slides
@@ -86,9 +87,18 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 				if(dependencyObject){
 					// determine array values position 0, if array
 					const compare = Array.isArray(dependencyObject.value) ? dependencyObject.value[0] : dependencyObject.value;
-					if(this.component.dependencies[attr].value !== compare){
-						shouldHide = true;
-						break;
+					// determine if dependency value is array
+					const value = this.component.dependencies[attr].value;
+					if(Array.isArray(value)){
+						if(!value.includes(compare)){
+							shouldHide = true;
+							break;
+						}
+					}else{
+						if(value !== compare){
+							shouldHide = true;
+							break;
+						}
 					}
 				}
 			}
