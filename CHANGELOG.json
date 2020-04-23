@@ -354,6 +354,28 @@
       			{"TYPE": "FIX", "CHANGE": "Chart/Weather label outside of view"},
       			{"TYPE": "DEL", "CHANGE": "Select Rectangle"}
       		]
-    	}
+    	},
+    	{
+      		"VERSION": "2.5.1",
+      		"DATE": "23.04.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Thermostat update animation"},
+      			{"TYPE": "NEW", "CHANGE": "Slider update animation"},
+      			{"TYPE": "NEW", "CHANGE": "Two new switch styles"},
+      			{"TYPE": "NEW", "CHANGE": "New responsive resize handler"},
+      			{"TYPE": "NEW", "CHANGE": "Alternative dark style"},
+      			{"TYPE": "NEW", "CHANGE": "New component style for most components (neumorph)"},
+      			{"TYPE": "NEW", "CHANGE": "New Thermostat style"},
+      			{"TYPE": "NEW", "CHANGE": "FhemNative PWA possibility --> see forum"},
+      			{"TYPE": "NEW", "CHANGE": "FhemNative asset image compression, to reduce size"},
+      			{"TYPE": "NEW", "CHANGE": "dependOn can handle multiple dependency values"},
+      			{"TYPE": "NEW", "CHANGE": "ChangeDetection OnPush test for: (create/edit component, create/edit room, fhem-menu, settings, tasks)"},
+      			{"TYPE": "FIX", "CHANGE": "Circle slider decimal endless animation"},
+      			{"TYPE": "FIX", "CHANGE": "Slider Time handling on init"},
+      			{"TYPE": "FIX", "CHANGE": "Chart round elem for round chartTypes"},
+      			{"TYPE": "FIX", "CHANGE": "Switch UX Adaption"},
+      			{"TYPE": "FIX", "CHANGE": "Menu Buttons click on component edit"}
+      		]
+      	}
 	]
 }
