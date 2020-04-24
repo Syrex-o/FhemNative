@@ -10,7 +10,7 @@ export class LoggerService implements ErrorHandler {
 	constructor(private injector: Injector) { }
 
 	log(type: string, message: any) {
-		const m = new Date + ' ' + type + ': ' + message;
+		const m = new Date().toISOString() + ' ' + type + ': ' + message;
 		const settings = this.injector.get(SettingsService).app;
 		const log = this.injector.get(SettingsService).log;
 		if (settings.enableLog) {
