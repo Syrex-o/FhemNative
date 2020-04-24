@@ -157,7 +157,7 @@ export class FhemService {
 						);
 						this.socket.close();
 					}
-				}, 1000);
+				}, 1500);
 				// open
 				this.socket.onopen = (e)=>{
 					this.connectionInProgress = false;
@@ -240,6 +240,7 @@ export class FhemService {
     		this.socket.close();
     		this.devices = [];
     		this.listenDevices = [];
+    		this.currentProfile = -1;
     		this.toast.addToast(
 				this.translate.instant('GENERAL.FHEM.TITLE'),
 				this.translate.instant('GENERAL.FHEM.DISCONNECT'),
