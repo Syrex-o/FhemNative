@@ -80,7 +80,7 @@ export class ClickerDirective implements OnChanges {
 	// right click event
   	@HostListener('contextmenu', ['$event, $event.target'])
   	contextClick(e, target: HTMLElement) {
-  		if(this.editingEnabled && target.className.match(/grid|overlay-move/)){
+  		if(this.editingEnabled && Object.prototype.toString.call(target.className) !== '[object SVGAnimatedString]' && target.className.match(/grid|overlay-move/)){
   			if(this.source === 'component'){
   				this.createContextMenu(e);
   			}else{
@@ -96,7 +96,7 @@ export class ClickerDirective implements OnChanges {
 	onMouseDown(e, target) {
 		// detect context click
 		if( !('which' in e && e.which === 3) && !('button' in e && e.button === 2) ){
-			if(this.editingEnabled && target.className.match(/grid|overlay-move/)){
+			if(this.editingEnabled && Object.prototype.toString.call(target.className) !== '[object SVGAnimatedString]' && target.className.match(/grid|overlay-move/)){
 				if(this.strgPress){
 					// select the component
 					if(this.selectComponent.evalCopySelector(this.ref.nativeElement.id)){
@@ -130,7 +130,7 @@ export class ClickerDirective implements OnChanges {
 				// double click
 				this.doubleClickTimeout = setTimeout(() => {
 					// workaround for grid clicker
-					let counter = this.platform.is('mobile') ? 3 : 2;
+					const counter = target.className.match(/grid/) ? 3 : 2;
 					if (this.clicker >= counter ) {
 						if (this.source === 'component') {
 							this.createContextMenu(e);
