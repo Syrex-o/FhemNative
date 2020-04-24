@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
@@ -29,7 +29,8 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 @Component({
 	selector: 'settings',
 	templateUrl: './settings.component.html',
-  	styleUrls: ['./settings.component.scss']
+  	styleUrls: ['./settings.component.scss'],
+  	changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class SettingsComponent implements OnInit {

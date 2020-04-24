@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 // Services
 import { SettingsService } from '../../services/settings.service';
@@ -8,7 +8,8 @@ import { FhemService } from '../../services/fhem.service';
 @Component({
 	selector: 'fhem-menu',
 	templateUrl: './fhem-menu.component.html',
-  	styleUrls: ['./fhem-menu.component.scss']
+  	styleUrls: ['./fhem-menu.component.scss'],
+  	changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class FhemMenuComponent implements OnChanges {
