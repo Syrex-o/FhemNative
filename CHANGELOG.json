@@ -357,7 +357,7 @@
     	},
     	{
       		"VERSION": "2.5.1",
-      		"DATE": "23.04.2020",
+      		"DATE": "24.04.2020",
       		"CHANGES":[
       			{"TYPE": "NEW", "CHANGE": "Thermostat update animation"},
       			{"TYPE": "NEW", "CHANGE": "Slider update animation"},
