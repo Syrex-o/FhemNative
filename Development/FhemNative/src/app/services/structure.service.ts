@@ -271,7 +271,7 @@ export class StructureService {
 	private searchForComp(arr: Array<any>, ID: string){
 		for(let item of arr){
 			// item found in top structure
-			if(item.ID !== undefined && item.ID.toString() === ID.toString()){
+			if(item.ID !== undefined && ID !== undefined && item.ID.toString() === ID.toString()){
 				// return just item --> no parent available
 				return item;
 			}else{
