@@ -7,7 +7,7 @@
 	<div class="slider">
 		<!-- Basic slider -->
 		<ng-container *ngIf="arr_data_style[0] === 'slider' || arr_data_style[0] === 'NM-slider'">
-			<div class="slider-container drag-item slider-one NM {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]"
+			<div class="slider-container drag-item slider-one {{arr_data_style[0]}} {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]"
 				[ngStyle]="{
 					'background': style_backgroundColor,
 					'height': arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%',

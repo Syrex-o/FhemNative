@@ -162,7 +162,7 @@
 			}
 		}
 		// neumorph
-		.NM,
+		.NM-slider,
 		.NM-IN-box,
 		.NM-OUT-box,
 		.NM-IN-ios-slider,
@@ -199,7 +199,7 @@
 			}
 		}
 		// slider one style
-		.NM{
+		.NM-slider{
 			&.dark{
 				&.slider-container{
 					background: var(--primary-dark) !important;
