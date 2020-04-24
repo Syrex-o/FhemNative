@@ -66,6 +66,12 @@ export class ResizeDirective implements OnChanges, OnInit {
 		this.resizeElemFromWindow();
 	}
 
+	// resize handler
+	@HostListener('window:resize')
+	onDeviceRotation(){
+		this.resizeElemFromWindow();
+	}
+
 	ngOnChanges(changes: SimpleChanges) {
 		if(this.editingEnabled){
 			this.buildResizeRect();
@@ -80,12 +86,6 @@ export class ResizeDirective implements OnChanges, OnInit {
 			this.removeRect();
 			this.renderer.removeClass(this.hostEl, 'pinned');
 		}
-	}
-
-	// resize event
-	@HostListener('window:resize')
-	onWindowResize(){
-		this.resizeElemFromWindow();
 	}
 
 	// mouse/touch movement
@@ -184,7 +184,6 @@ export class ResizeDirective implements OnChanges, OnInit {
 
 		  			// filter attributes for not null
 		  			attributes = Object.entries(attributes).reduce((a,[k,v]) => (v === null ? a : {...a, [k]:v}), {});
-		  			console.log(attributes);
 
 		  			for(const [key, value] of Object.entries(attributes)){
 		  				this.hostEl.style[key] = value;
@@ -222,48 +221,43 @@ export class ResizeDirective implements OnChanges, OnInit {
 
 				// find components with different create scaler
 				if (window.innerWidth !== scaler.width || window.innerHeight !== scaler.height) {
-					// const w = parseInt(position.width);
-					// const h = parseInt(position.height);
-					// const t = parseInt(position.height);
-					// const l = parseInt(position.height);
+					const w: number = parseInt(position.width);
+					const h: number = parseInt(position.height);
+					const t: number = parseInt(position.top);
+					const l: number = parseInt(position.left);
 
-					// const distanceRight = scaler.width - l - w;
-					// const distanceLeft = l;
+					const scaleW: number = w / scaler.width;
+					const scaleL: number = l / scaler.width;
 
-					// const maxWidth = (window.innerWidth - distanceLeft - distanceRight);
-					// const maxHeight = window.innerHeight;
+					// new width
+					let newWidth: number = Math.round(this.roundToGrid( window.innerWidth * scaleW ));
+					newWidth = newWidth >= this.minimumWidth ? newWidth : this.minimumWidth;
+					if(newWidth !== w){
+						newComponentPosition.width = newWidth + 'px';
+					}
 
+					// new height
+					const scaleHeightFactor: number = newWidth / w;
+					let newHeight: number = Math.round(this.roundToGrid( h * scaleHeightFactor ));
+					newHeight = newHeight >= this.minimumHeight ? newHeight : this.minimumHeight;
+					if(newHeight !== h){
+						newComponentPosition.height = newHeight + 'px';
+					}
+					// new top
+					let newTop: number = Math.round(this.roundToGrid( t * scaleHeightFactor ));
+					newTop = newTop >= 0 ? newTop : 0;
+					if(newTop !== t){
+						newComponentPosition.top = newTop + 'px';
+					}
+					// new left
+					let newLeft: number = Math.round(this.roundToGrid( window.innerWidth * scaleL ));
+					newLeft = newLeft <= 0 ? 0 : newLeft;
+					if(newLeft !== l){
+						newComponentPosition.left = newLeft + 'px';
+					}
 
-					// let scale = Math.min(maxWidth / w, maxHeight / h);
-					// // round to 2 digits
-					// // scale = Math.round((scale + Number.EPSILON) * 100) / 100;
-
-					// // // new width
-					// let newWidth: number = Math.round(this.roundToGrid(w * scale));
-					// newWidth = newWidth >= this.minimumWidth ? newWidth : this.minimumWidth;
-					// if(newWidth !== w){
-					// 	newComponentPosition.width = newWidth + 'px';
-					// }
-					// // new height
-					// let newHeight: number = Math.round(this.roundToGrid(h * scale));
-					// newWidth = newWidth >= this.minimumHeight ? newHeight : this.minimumHeight;
-					// if(newHeight !== h){
-					// 	newComponentPosition.height = newHeight + 'px';
-					// }
-					// // new top
-					// let newTop: number = Math.round(this.roundToGrid( * scale));
-					// newWidth = newWidth >= this.minimumHeight ? newHeight : this.minimumHeight;
-					// if(newHeight !== h){
-					// 	newComponentPosition.height = newHeight + 'px';
-					// }
-
-					// // find components otside of the view after alignment
-					// if(parseInt(position.left) + newWidth > window.innerWidth){
-					// 	let newLeft = window.innerWidth - newWidth;
-					// 	newComponentPosition.left = (newLeft >= 0 ? newLeft : 0) + 'px';
-					// }
 					// // transform component
-					// transformer(component, newComponentPosition);
+					transformer(component, newComponentPosition);
 				}
 			}
 		}
@@ -299,7 +293,7 @@ export class ResizeDirective implements OnChanges, OnInit {
 
 	// selection list looper
 	private loopItems(list: Array<any>, callback?: any){
-		list.forEach((item, i)=>{
+		list.forEach((item, i: number)=>{
 			callback(item, i);
 		});
 	}
