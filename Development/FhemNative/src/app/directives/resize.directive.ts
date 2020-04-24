@@ -94,7 +94,7 @@ export class ResizeDirective implements OnChanges, OnInit {
 	onTouchstart(event, target) {
 		if(this.editingEnabled){
 			// block scroll only for movements of components
-			if(target && target.className && target.className.match(/(rect|overlay-move)/)){
+			if(target && target.className && Object.prototype.toString.call(target.className) !== '[object SVGAnimatedString]' && target.className.match(/(rect|overlay-move)/)){
 				window.ontouchmove = event.preventDefault();
 			}
 			// one start 
@@ -158,10 +158,13 @@ export class ResizeDirective implements OnChanges, OnInit {
 					this.getItemPos();
 				}
 				this.startMove = false;
-				if (target.className === 'overlay-move') {
-					this.moveComponents(e);
-				}else{
-					this.resizeComponents(e, target);
+				// no svg select
+				if(Object.prototype.toString.call(target.className) !== '[object SVGAnimatedString]'){
+					if (target.className === 'overlay-move') {
+						this.moveComponents(e);
+					}else{
+						this.resizeComponents(e, target);
+					}
 				}
 			}
 
