@@ -9,6 +9,7 @@ import { TaskService } from '../../services/task.service';
 import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
 import { ComponentLoaderService } from '../../services/component-loader.service';
+import { SelectComponentService } from '../../services/select-component.service';
 
 @Component({
   	selector: 'room',
@@ -31,6 +32,7 @@ export class RoomComponent implements OnDestroy {
 		public settings: SettingsService,
 		public structure: StructureService,
 		private componentLoader: ComponentLoaderService,
+		private selectComponent: SelectComponentService,
 		private route: ActivatedRoute,
 		private platform: Platform,
 		private task: TaskService,
@@ -91,6 +93,9 @@ export class RoomComponent implements OnDestroy {
 	}
 
 	private initRoom(params?: any){
+		// reset selector list
+		this.selectComponent.selectorList = [];
+		// check for params
 		if(params){
 			// filling current room in structure
 			this.structure.getCurrentRoom(params.ID);
