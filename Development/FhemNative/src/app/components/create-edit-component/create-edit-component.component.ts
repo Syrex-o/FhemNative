@@ -300,12 +300,19 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 			// find new colors
 			this.settings.findNewColors([this.component.attributes.attr_style, this.component.attributes.attr_arr_style]);
 			// remove settings component
-			this.componentLoader.removeDynamicComponent('CreateEditComponent');
+			this.removeMenu();
 			// add to change stack
 			this.undoManager.addChange();
 			// reset values
 			this.resetValues();
 		}
+	}
+
+	// remove component
+	removeMenu(){
+		setTimeout(()=>{
+			this.componentLoader.removeDynamicComponent('CreateEditComponent');
+		}, 300);
 	}
 
 	// reset values
