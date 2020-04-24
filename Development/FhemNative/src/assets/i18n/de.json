@@ -28,6 +28,10 @@
 					"name": "Rand-Radius unten rechts",
 					"info": "Radius vom Rand der Box unten rechts"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style der Box"
+				},
 				"style_headerColor":{
 					"name": "Kopfzeile Farbe",
 					"info": "Hintergrundfarbe der Kopfzeile"
@@ -113,6 +117,10 @@
 				"data_iconSize":{
 					"name": "Icon Größe",
 					"info": "Größe des Icons im Button"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Buttons"
 				},
 				"icon_iconOn":{
 					"name": "Icon on",
@@ -204,6 +212,10 @@
 					"name": "Icon Größe",
 					"info": "Größe des Icons im Button"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Buttons"
+				},
 				"bool_data_iconOnly":{
 					"name": "Nur Icon anzeigen",
 					"info": "Aktivieren/deaktivieren, dass nur das Icon im Button angezeigt wird"
@@ -249,6 +261,10 @@
 				"arr_data_dbtype":{
 					"name": "FHEM-Modul Typ",
 					"info": "Fhem Modul, dass verwendet werden soll"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Charts"
 				},
 				"bool_data_getCurrent":{
 					"name": "Aktuelles Log",
@@ -360,6 +376,10 @@
 				"arr_data_expandStyle":{
 					"name": "Ausklapp-Richtung",
 					"info": "Richtung in die das Multi-Menü ausklappen soll"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Buttons"
 				},
 				"icon_icon":{
 					"name": "Icon",
@@ -566,6 +586,10 @@
 				"arr_data_animationStyle":{
 					"name": "Popup Animation",
 					"info": "Selektion der Popup Animation"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style der Colorpickers"
 				},
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
@@ -795,6 +819,10 @@
 					"name": "Kurve",
 					"info": "Prozentangabe der Biegung"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style der Linie"
+				},
 				"style_color":{
 					"name": "Farbe",
 					"info": "Farbe der Linie"
@@ -881,6 +909,10 @@
 				"data_tries":{
 					"name": "Versuche",
 					"info": "Verfügbare Versuche, bevor das Pinpad blockiert wird"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Pinpads"
 				}
 			},
 			"TRANSLATOR":{
@@ -922,6 +954,10 @@
 				"arr_data_animationStyle":{
 					"name": "Picker Animation",
 					"info": "Selektion der Picker Animation"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Pickers"
 				},
 				"bool_data_openOnReading":{
 					"name": "Öffnen bei Reading",
@@ -992,6 +1028,10 @@
 				"arr_data_animationStyle":{
 					"name": "Popup Animation",
 					"info": "Selektion der Popup Animation"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Popups"
 				},
 				"bool_data_openOnReading":{
 					"name": "Öffnen bei Reading",
@@ -1363,6 +1403,10 @@
 					"name": "Orientierung",
 					"info": "Ausrichtung des Swipers"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Swipers"
+				},
 				"style_headerColor":{
 					"name": "Kopfzeile Farbe",
 					"info": "Hintergrundfarbe der Kopfzeile"
@@ -1475,7 +1519,11 @@
 			"INPUTS":{
 				"data_pages": {
 					"name": "Seiten",
-					"info": "Anzahl der Seiten für den Swiper"
+					"info": "Anzahl der Tabs"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style der Tabs"
 				},
 				"arr_icon_icons":{
 					"name": "Icons",
@@ -1631,6 +1679,10 @@
 					"name": "Fhem Modul",
 					"info": "Name des Fhem Wetter Moduls"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Charts"
+				},
 				"bool_data_showCurrentDayDetails":{
 					"name": "Tageswerte anzeigen",
 					"info": "Anzeigen/nicht anzeigen der Tageswerte"
@@ -1761,6 +1813,7 @@
 					"INFO": "App Thema ändern.",
 					"OPTIONS":{
 						"DARK": "Dunkel",
+						"DARK_ALTERNATIVE": "Dunkel Alternative",
 						"BRIGHT": "Hell",
 						"CUSTOM": "Custom"
 					},

@@ -28,6 +28,10 @@
 					"name": "Border radius bottom right",
 					"info": "Border radius of the box bottom right"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the box"
+				},
 				"style_headerColor":{
 					"name": "Header color",
 					"info": "Header background color"
@@ -113,6 +117,10 @@
 				"data_iconSize":{
 					"name": "Icon size",
 					"info": "Size of the icon in the button"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the button"
 				},
 				"icon_iconOn":{
 					"name": "Icon on",
@@ -204,6 +212,10 @@
 					"name": "Icon size",
 					"info": "Size of the icon in the button"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the button"
+				},
 				"bool_data_iconOnly":{
 					"name": "Show icon only",
 					"info": "Enable/disable to display icon only"
@@ -249,6 +261,10 @@
 				"arr_data_dbtype":{
 					"name": "FHEM-module type",
 					"info": "Fhem module, that should be used"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the chart"
 				},
 				"bool_data_getCurrent":{
 					"name": "Get current log",
@@ -360,6 +376,10 @@
 				"arr_data_expandStyle":{
 					"name": "Expand style",
 					"info": "Direction where the menu should unfold"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the button"
 				},
 				"icon_icon":{
 					"name": "Icon",
@@ -574,6 +594,10 @@
 				"arr_data_animationStyle":{
 					"name": "Popup animation",
 					"info": "Selection of the popup animation"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the color picker"
 				},
 				"bool_data_showSlider":{
 					"name": "Show slider",
@@ -807,6 +831,10 @@
 					"name": "Curve",
 					"info": "Percentage of the Curve"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the line"
+				},
 				"style_color":{
 					"name": "Color",
 					"info": "Color of the line"
@@ -893,6 +921,10 @@
 				"data_tries":{
 					"name": "Tries",
 					"info": "Available pin tries, before the pinpad gets locked"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the pinpad"
 				}
 			},
 			"TRANSLATOR":{
@@ -934,6 +966,10 @@
 				"arr_data_animationStyle":{
 					"name": "Picker animation",
 					"info": "Selection of the picker animation"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the picker"
 				},
 				"bool_data_openOnReading":{
 					"name": "Open on reading",
@@ -1000,6 +1036,10 @@
 				"arr_data_animationStyle":{
 					"name": "Popup animation",
 					"info": "Selection of the popup animation"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the popup"
 				},
 				"bool_data_openOnReading":{
 					"name": "Open on reading",
@@ -1371,6 +1411,10 @@
 					"name": "Orientation",
 					"info": "Orientation of the swiper"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the swiper"
+				},
 				"style_headerColor":{
 					"name": "Header color",
 					"info": "Header background color"
@@ -1484,6 +1528,10 @@
 				"data_pages": {
 					"name": "Pages",
 					"info": "Amount of pages of the tabs component"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the tabs"
 				},
 				"arr_icon_icons":{
 					"name": "Icons",
@@ -1635,6 +1683,10 @@
 					"name": "Fhem module",
 					"info": "Name of the fhem weather module"
 				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the chart"
+				},
 				"bool_data_showCurrentDayDetails":{
 					"name": "Show day values",
 					"info": "Show/hide day values"
@@ -1765,6 +1817,7 @@
 					"INFO": "Change App theme.",
 					"OPTIONS":{
 						"DARK": "Dark",
+						"DARK_ALTERNATIVE": "Dark alternative",
 						"BRIGHT": "Bright",
 						"CUSTOM": "Custom"
 					},
