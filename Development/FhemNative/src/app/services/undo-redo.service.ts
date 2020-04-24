@@ -62,13 +62,6 @@ export class UndoRedoService {
 		this.selectComponent.selectorList = [];
 	}
 
-	// rebuild grid on undo/redo
-	private rebuildGrid(container){
-		this.componentLoader.createSingleComponent('GridComponent', container, {
-			container: container
-		});
-	}
-
 	// Mark a change to the structure
 	public addChange(){
 		// evaluate the stack
