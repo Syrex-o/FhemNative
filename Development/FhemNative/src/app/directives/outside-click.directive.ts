@@ -1,17 +1,29 @@
-import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, HostListener, Output, EventEmitter, NgZone, OnInit, OnDestroy } from '@angular/core';
 
 
 @Directive({ selector: '[outside-click]' })
-export class OutsideClickDirective {
+export class OutsideClickDirective implements OnInit, OnDestroy {
 	@Output() onOutsideClick = new EventEmitter();
 
-	@HostListener('document:mousedown', ['$event.target'])
-	@HostListener('document:touchstart', ['$event.target']) 
-	onClick(target) {
-    	if (!this.ref.nativeElement.contains(target)) {
-      		this.onOutsideClick.emit(target);
-    	}
-  	}
+	constructor(private ref: ElementRef, private zone: NgZone){}
 
-  	constructor(private ref: ElementRef){}
+ 	ngOnInit(){
+ 		this.zone.runOutsideAngular(()=>{
+ 			document.addEventListener('mousedown', this.listener);
+ 			document.addEventListener('touchstart', this.listener);
+ 		});
+ 	}
+
+ 	private listener = (e)=>{
+ 		if(!this.ref.nativeElement.contains(e.target)){
+	 		this.onOutsideClick.emit(e.target);
+	 	}
+ 	}
+
+ 	ngOnDestroy(){
+ 		this.zone.runOutsideAngular(()=>{
+ 			document.removeEventListener('mousedown', this.listener);
+ 			document.removeEventListener('touchstart', this.listener);
+ 		});
+ 	}
 }
