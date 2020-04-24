@@ -79,6 +79,7 @@
 					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
 					[(ngModel)]="settings.app.theme" (ionChange)="changeAppSetting('theme', $event.detail.value)">
 					<ion-select-option value="dark">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.DARK' | translate }}</ion-select-option>
+					<ion-select-option value="dark-alternative">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.DARK_ALTERNATIVE' | translate }}</ion-select-option>
 					<ion-select-option value="bright">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.BRIGHT' | translate }}</ion-select-option>
 					<ion-select-option value="custom">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.CUSTOM' | translate }}</ion-select-option>
 				</ion-select>
