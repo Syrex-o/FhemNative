@@ -315,6 +315,30 @@ button:focus{
     }
 }
 
+.dark-alternative{
+    &.background.primary{
+        background-color: var(--primary-dark-alternative) !important;
+    }
+    &.background.secondary{
+        background-color: var(--secondary-dark-alternative) !important;
+    }
+    &.background.secondary-op{
+        background-color: var(--secondary-dark-op-alternative) !important;
+    }
+    &.background.text{
+        background-color: var(--text-dark-alternative) !important;
+    }
+    &.color.text{
+        color: var(--text-dark-alternative) !important;
+        &.active{
+            color: var(--active-dark-alternative) !important;
+        }
+    }
+    &.color.des{
+        color: var(--des-dark-alternative) !important;
+    }
+}
+
 .bright{
     &.background.primary{
         background-color: var(--primary-bright) !important;

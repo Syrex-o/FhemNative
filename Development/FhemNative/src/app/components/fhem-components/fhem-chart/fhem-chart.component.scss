@@ -11,6 +11,47 @@
 		    cursor: pointer;
     		pointer-events: all;
 		}
+		&.round{
+			border-radius: 50%;
+		}
+		// neumorph
+		&.NM-OUT,
+		&.NM-IN{
+			&.dark{
+				background: var(--primary-dark) !important;
+				border: var(--neumorph-border-dark);
+			}
+			&.dark-alternative{
+				background: var(--primary-dark-alternative) !important;
+				border: var(--neumorph-border-dark-alternative);
+			}
+			&.bright{
+				background: var(--primary-bright) !important;
+				border: var(--neumorph-border-bright);
+			}
+		}
+		&.NM-IN{
+			&.dark{
+				box-shadow: var(--neumorph-in-dark) !important;
+			}
+			&.dark-alternative{
+				box-shadow: var(--neumorph-in-dark-alternative) !important;
+			}
+			&.bright{
+				box-shadow: var(--neumorph-in-bright) !important;
+			}
+		}
+		&.NM-OUT{
+			&.dark{
+				box-shadow: var(--neumorph-out-dark) !important;
+			}
+			&.dark-alternative{
+				box-shadow: var(--neumorph-out-dark-alternative) !important;
+			}
+			&.bright{
+				box-shadow: var(--neumorph-out-bright) !important;
+			}
+		}
 	}
 	// picker config
 	.body{

@@ -130,17 +130,17 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 				}
 			}
 		}).then((device)=>{
+			this.fhemDevice = device;
 			this.svgRoot = this.ref.nativeElement.querySelector('.fhem-component-container');
 			setTimeout(()=>{
 				this.invalidate();
-			});
-			this.fhemDevice = device;
-			if(device){
-				// init values
-				this.data_label = (this.data_label === '') ? this.fhemDevice.device : this.data_label;
-				this.value = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
-				this.animateMove(parseInt(this.data_min));
-			}
+				if(device){
+					// init values
+					this.data_label = (this.data_label === '') ? this.fhemDevice.device : this.data_label;
+					this.value = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
+					this.animateMove(parseInt(this.data_min));
+				}
+			}, 100);
 		});
 		// init resize handle
 		// assign while resize handle
@@ -321,11 +321,11 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 	private calculateGradientConePaths(angleStep){
 		const radius = this.radius;
 
-		function calcX(angle) {
+		function calcX(angle): number {
 			return radius * (1 - 2 * Math.sin(angle));
 		}
 
-		function calcY(angle) {
+		function calcY(angle): number {
 			return radius * (1 + 2 * Math.cos(angle));
 		}
 
@@ -379,12 +379,15 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 	private animateMove(from: number){
 		let to, pos = 0;
 		let id;
+		const orginalValue = this.value;
 
 		let frame = ()=>{
-			const count = (pos > to) ? - parseFloat(this.data_step) : parseFloat(this.data_step);
+			let count = (pos > to) ? - 1 : 1;
 			
 			id = setInterval(()=>{
-				if (pos === to) {
+				if ( Math.round(pos) === Math.round(to)  ) {
+					this.invalidatePinPosition();
+					this.value = orginalValue;
 					clearInterval(id);
 				}else{
 					pos = pos + count;

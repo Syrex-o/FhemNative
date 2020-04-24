@@ -26,6 +26,7 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 
 	@Input() data_device: string;
 	@Input() arr_data_fhemModule: string[];
+	@Input() arr_data_style: string[];
 
 	@Input() bool_data_showCurrentDayDetails: boolean;
 	@Input() bool_data_showDayBorder: boolean;
@@ -645,7 +646,8 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 				{variable: 'arr_data_fhemModule', default: 'Proplanta'},
 				{variable: 'bool_data_showCurrentDayDetails', default: false},
 				{variable: 'bool_data_showDayBorder', default: false},
-				{variable: 'style_dayBorderColor', default: '#272727'}
+				{variable: 'style_dayBorderColor', default: '#272727'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN,NM-OUT'}
 			],
 			customInputs:{
 				data_leftMaxY: '',

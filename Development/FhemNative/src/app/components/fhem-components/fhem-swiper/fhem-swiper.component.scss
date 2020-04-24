@@ -27,5 +27,55 @@
 				height: inherit;
 			}
 		}
+		// neumorph
+		&.NM-IN-standard,
+		&.NM-OUT-standard{
+			&.dark{
+				border: var(--neumorph-border-dark) !important;
+				ion-slides{
+					background: var(--primary-dark) !important;
+				}
+			}
+			&.dark-alternative{
+				border: var(--neumorph-border-dark-alternative) !important;
+				ion-slides{
+					background: var(--primary-dark-alternative) !important;
+				}
+			}
+			&.bright{
+				border: var(--neumorph-border-bright) !important;
+				ion-slides{
+					background: var(--primary-bright) !important;
+				}
+			}
+		}
+		&.NM-IN-standard{
+			&.dark{
+				.content{
+					box-shadow: var(--neumorph-in-dark) !important;
+				}
+			}
+			&.dark-alternative{
+				.content{
+					box-shadow: var(--neumorph-in-dark-alternative) !important;
+				}
+			}
+			&.bright{
+				.content{
+					box-shadow: var(--neumorph-in-bright) !important;
+				}
+			}
+		}
+		&.NM-OUT-standard{
+			&.dark{
+				box-shadow: var(--neumorph-out-dark) !important;
+			}
+			&.dark-alternative{
+				box-shadow: var(--neumorph-out-dark-alternative) !important;
+			}
+			&.bright{
+				box-shadow: var(--neumorph-out-bright) !important;
+			}
+		}
 	}
 }

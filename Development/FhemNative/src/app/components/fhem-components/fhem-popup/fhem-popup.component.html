@@ -5,7 +5,8 @@
 	[minimumWidth]="30"
 	[minimumHeight]="30">
 	<button 
-		class="popup btn-round outer" 
+		class="popup btn-round outer {{settings.app.theme}}"
+		[ngClass]="arr_data_style[0]"
 		matRipple [matRippleColor]="'#d4d4d480'"
 		[style.background]="popupState ? style_backgroundColorOn : style_backgroundColorOff"
 		(click)="togglePopup()">

@@ -3,6 +3,9 @@ import { Component, Input, NgModule } from '@angular/core';
 // Components
 import { ComponentsModule } from '../../components.module';
 
+// Services
+import { SettingsService } from '../../../services/settings.service';
+
 @Component({
 	selector: 'fhem-line',
 	templateUrl: './fhem-line.component.html',
@@ -16,6 +19,7 @@ export class FhemLineComponent {
 	@Input() data_height: string;
 	@Input() data_rotation: string;
 	@Input() data_curve_percentage: string;
+	@Input() arr_data_style: string[];
 
 	// Styling
 	@Input() style_color: string;
@@ -27,6 +31,8 @@ export class FhemLineComponent {
 	@Input() left: string;
 	@Input() zIndex: string;
 
+	constructor(public settings: SettingsService){}
+
 	static getSettings() {
 		return {
 			name: 'Line',
@@ -36,8 +42,12 @@ export class FhemLineComponent {
 				{variable: 'data_height', default: '2'},
 				{variable: 'data_rotation', default: '0'},
 				{variable: 'data_curve_percentage', default: '0'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'},
 				{variable: 'style_color', default: '#86d993'}
 			],
+			dependencies:{
+				style_color: { dependOn: 'arr_data_style', value: 'standard' },
+			},
 			dimensions: {minX: 30, minY: 30}
 		};
 	}

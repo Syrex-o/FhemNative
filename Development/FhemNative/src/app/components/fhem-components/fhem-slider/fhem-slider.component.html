@@ -6,8 +6,8 @@
 	[minimumHeight]="arr_data_orientation[0] === 'horizontal' ? 30 : 200">
 	<div class="slider">
 		<!-- Basic slider -->
-		<ng-container *ngIf="arr_data_style[0] === 'slider'">
-			<div class="slider-container drag-item slider-one" [ngClass]="arr_data_orientation[0]"
+		<ng-container *ngIf="arr_data_style[0] === 'slider' || arr_data_style[0] === 'NM-slider'">
+			<div class="slider-container drag-item slider-one NM {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]"
 				[ngStyle]="{
 					'background': style_backgroundColor,
 					'height': arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : '100%',
@@ -17,8 +17,8 @@
 			</div>
 		</ng-container>
 		<!-- Slider Box -->
-		<ng-container *ngIf="arr_data_style[0] === 'box'">
-			<div class="slider-container box" [ngClass]="arr_data_orientation[0]" [style.background]="style_backgroundColor">
+		<ng-container *ngIf="arr_data_style[0] === 'box' || arr_data_style[0] === 'NM-IN-box' || arr_data_style[0] === 'NM-OUT-box'">
+			<div class="slider-container box {{arr_data_style[0]}} {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]" [style.background]="style_backgroundColor">
 				<button [ngStyle]="styles.baseBtnReduceStyle" matRipple [matRippleColor]="'#d4d4d480'" class="slider-box-btn left" (click)="setStep('reduce')">
 					<ion-icon [style.color]="style_iconColor" name="remove"></ion-icon>
 				</button>
@@ -35,15 +35,15 @@
 			</div>
 		</ng-container>
 		<!-- IOS Slider -->
-		<ng-container *ngIf="arr_data_style[0] === 'ios-slider'">
-			<div class="slider-container ios drag-item" [ngClass]="arr_data_orientation[0]" [style.background]="style_backgroundColor">
+		<ng-container *ngIf="arr_data_style[0] === 'ios-slider' || arr_data_style[0] === 'NM-IN-ios-slider' || arr_data_style[0] === 'NM-OUT-ios-slider'">
+			<div class="slider-container ios drag-item {{arr_data_style[0]}} {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]" [style.background]="style_backgroundColor">
 				<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider-three', thumb: false, pin: false}"></ng-container>
 				<icon [icon]="icon_sliderIcon" [style.color]="style_iconColor" [ngStyle]="styles.baseIconStyle"></icon>
 			</div>
 		</ng-container>
 		<!-- Tick Slider -->
-		<ng-container *ngIf="arr_data_style[0] === 'tick-slider'">
-			<div class="slider-container tick-slider slider-four" [ngClass]="arr_data_orientation[0]">
+		<ng-container *ngIf="arr_data_style[0] === 'tick-slider' || arr_data_style[0] === 'NM-tick-slider'">
+			<div class="slider-container tick-slider slider-four NM-tick-slider {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]">
 				<div class="tick-slider-slide-container drag-item slider-four"
 					[ngStyle]="{
 						'background': style_backgroundColor,

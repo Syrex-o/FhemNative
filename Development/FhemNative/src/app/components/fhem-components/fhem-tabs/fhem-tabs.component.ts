@@ -23,6 +23,7 @@ export class FhemTabsComponent implements OnInit, OnDestroy {
 
 	@Input() ID: string;
 	@Input() data_pages: string;
+	@Input() arr_data_style: string[];
 
 	// Styling
 	@Input() arr_style_iconColors: string|string[];
@@ -180,9 +181,13 @@ export class FhemTabsComponent implements OnInit, OnDestroy {
 			inputs: [
 				{variable: 'data_pages', default: '3'},
 				{variable: 'arr_icon_icons', default: 'add-circle,add-circle,add-circle'},
+				{variable: 'arr_data_style', default: 'standard,NM-standard'},
 				{variable: 'arr_style_backGroundColors', default: '#58677C,#58677C,#58677C'},
 				{variable: 'arr_style_iconColors', default: '#2ec6ff,#2ec6ff,#2ec6ff'}
 			],
+			dependencies: {
+				arr_style_backGroundColors: { dependOn: 'arr_data_style', value: 'standard' }
+			},
 			dimensions: {minX: 100, minY: 100}
 		};
 	}

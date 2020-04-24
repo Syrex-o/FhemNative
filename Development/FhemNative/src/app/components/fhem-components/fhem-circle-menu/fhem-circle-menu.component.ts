@@ -5,6 +5,7 @@ import { ComponentsModule } from '../../components.module';
 
 // Services
 import { FhemService } from '../../../services/fhem.service';
+import { SettingsService } from '../../../services/settings.service';
 import { NativeFunctionsService } from '../../../services/native-functions.service';
 
 @Component({
@@ -27,7 +28,9 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 
 	@Input() bool_data_customBorder: boolean;
 
+	@Input() arr_data_style: string[];
 	@Input() arr_data_expandStyle: string|string[];
+
 
 	@Input() data_value1: string;
 	@Input() data_value2: string;
@@ -125,7 +128,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 		this.fhem.removeDevice(this.ID);
 	}
 
-	constructor(private fhem: FhemService, private native: NativeFunctionsService){}
+	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService){}
 
 	static getSettings() {
 		return {
@@ -148,6 +151,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 				{variable: 'data_borderRadiusBottomRight', default: '5'},
 				{variable: 'bool_data_customBorder', default: false},
 				{variable: 'arr_data_expandStyle', default: 'top,left,bottom,right,circle'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'},
 				{variable: 'icon_icon', default: 'add-circle'},
 				{variable: 'style_iconColorOn', default: '#86d993'},
 				{variable: 'style_iconColorOff', default: '#86d993'},
@@ -160,7 +164,10 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
-				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true }
+				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+				// neumorph dependencies
+				style_buttonColor: { dependOn: 'arr_data_style', value: 'standard' },
+				style_activeColor: { dependOn: 'arr_data_style', value: 'standard' }
 			},
 			dimensions: {minX: 30, minY: 30}
 		};

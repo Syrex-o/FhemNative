@@ -5,6 +5,7 @@ import { ComponentsModule } from '../../components.module';
 
 // services
 import { FhemService } from '../../../services/fhem.service';
+import { SettingsService } from '../../../services/settings.service';
 import { NativeFunctionsService } from '../../../services/native-functions.service';
 
 @Component({
@@ -66,7 +67,6 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 	private waitForThreshold = 0;
 
 	value: number;
-	private blockUpdate: boolean = false;
 
 	styles: any = {
 		// percentage movement
@@ -74,15 +74,17 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 		// rotation in deg
 		rotation: 0,
 		// multiply factor for movement
-		factor: 100
+		factor: 100,
+		// rotation substraction
+		rotationSub: 0,
+		// heater ticks
+		heaterTicks: []
 	}
 
 	@HostListener('mousedown', ['$event', '$event.target'])
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
 		if( (target.className.baseVal && target.className.baseVal.match(/drag-item/)) || (!target.className.baseVal && target.className.match(/drag-item/)) ){
-			// block slider update while movement
-			this.blockUpdate = true;
 			// get the item container
 			this.container = this.ref.nativeElement.querySelector('.thermostat');
 			let bounding: ClientRect = this.container.getBoundingClientRect();
@@ -94,6 +96,9 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 			}
 			if(this.arr_data_style[0] === 'circular'){
 				bounding = this.container.querySelector('.control').getBoundingClientRect();
+			}
+			if(this.arr_data_style[0] === 'heater'){
+				bounding = this.container.querySelector('.rotator-container').getBoundingClientRect();
 			}
 
 			const whileMove = (e) => {
@@ -121,7 +126,6 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 	   			}
 	   			// reset values
 	   			this.waitForThreshold = 0;
-	   			this.blockUpdate = false;
 	   		}
 
 			window.addEventListener('mousemove', whileMove);
@@ -136,28 +140,20 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 		this.initThermostatValues();
 		// get fhem device
 		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
-			this.getState(device, false);
+			this.getState(device);
 		}).then(device=>{
-			this.getState(device, true);
+			this.getState(device);
 		});
 	}
 
-	private getState(device, init: boolean){
+	private getState(device){
 		this.fhemDevice = device;
 		if(device && this.fhemDevice.readings[this.data_reading]){
-			const oldValue = this.value || 0;
-			this.value = this.fhemDevice.readings[this.data_reading].Value;
-			if(!this.blockUpdate){
-				if(init){
-					this.animateMove(oldValue);
-				}else{
-					if(this.arr_data_style[0] === 'thermostat'){
-						this.updateLinearValues();
-					}
-					if(this.arr_data_style[0] === 'circular'){
-						this.updateRadialValues(this.value, true);
-					}
-				}
+			const oldValue = this.value || parseInt(this.data_min);
+			const updateValue = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
+			if (updateValue !== this.value) {
+				this.value = updateValue;
+				this.animateMove(oldValue);
 			}
 		}
 	}
@@ -168,6 +164,14 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 			this.styles.factor = 83;
 		}else{
 			this.minimumWidth = this.minimumHeight = 200;
+		}
+		if(this.arr_data_style[0] === 'circular'){
+			this.styles.rotationSub = 90;
+		}
+		// heater attr
+		if(this.arr_data_style[0] === 'heater'){
+			this.styles.heaterTicks = Array(24).fill(24).map((x,i)=>i);
+			this.styles.rotationSub = -10;
 		}
 	}
 
@@ -191,12 +195,11 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 		};
 
 		const actualAngle =  Math.atan2(mouse.x - center.x, mouse.y - center.y );
-		// const deg = (actualAngle * (180 / Math.PI) * -1 ) - 90;
-		const deg = ((180 + actualAngle * 180 / Math.PI) * -1) + 90;
+		const deg = ((180 + actualAngle * 180 / Math.PI) * -1) + this.styles.rotationSub;
 
 		this.styles.rotation = deg;
 
-		const pFull = ((360 + (deg - 90)) % 360) / 360;
+		const pFull = ((360 + (deg - this.styles.rotationSub)) % 360) / 360;
 
 		this.onMoveUpdate(this.toValueNumber(pFull));
 	}
@@ -242,7 +245,7 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 
 			frame('move');
 		}
-		if(this.arr_data_style[0] === 'circular'){
+		if(this.arr_data_style[0] === 'circular' || this.arr_data_style[0] === 'heater'){
 			to = Math.round(this.updateRadialValues(this.value, false));
 			pos = Math.round(this.updateRadialValues(from, false));
 			
@@ -256,9 +259,9 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 	}
 
 	private updateRadialValues(val: number, set: boolean){
-		const deg = (360 * this.getValuePercentage(val)) + 90;
+		const deg = (360 * this.getValuePercentage(val)) + this.styles.rotationSub;
 
-		if(this.arr_data_style[0] === 'circular'){
+		if(this.arr_data_style[0] === 'circular' || this.arr_data_style[0] === 'heater'){
 			if(set){
 				this.styles.rotation = deg;
 			}else{
@@ -295,6 +298,7 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private fhem: FhemService,
+		public settings: SettingsService,
 		private ref: ElementRef,
 		private native: NativeFunctionsService) {
 	}
@@ -312,7 +316,7 @@ export class FhemThermostatComponent implements OnInit, OnDestroy {
 				{variable: 'data_steps', default: '1'},
 				{variable: 'data_threshold', default: '10'},
 				{variable: 'data_labelExtension', default: '\xB0C'},
-				{variable: 'arr_data_style', default: 'thermostat,circular'},
+				{variable: 'arr_data_style', default: 'thermostat,circular,heater'},
 				{variable: 'bool_data_updateOnMove', default: false},
 				{variable: 'bool_data_enableAnimation', default: true},
 				// all styles

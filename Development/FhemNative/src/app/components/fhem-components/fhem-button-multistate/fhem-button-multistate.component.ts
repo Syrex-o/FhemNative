@@ -5,12 +5,13 @@ import { ComponentsModule } from '../../components.module';
 
 // Services
 import { FhemService } from '../../../services/fhem.service';
+import { SettingsService } from '../../../services/settings.service';
 import { NativeFunctionsService } from '../../../services/native-functions.service';
 
 @Component({
 	selector: 'fhem-button-multistate',
 	templateUrl: './fhem-button-multistate.component.html',
-  	styleUrls: ['./fhem-button-multistate.component.scss']
+  	styleUrls: ['../fhem-button/fhem-button.component.scss']
 })
 export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
@@ -27,6 +28,7 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 	@Input() data_borderRadiusBottomLeft: string;
 	@Input() data_borderRadiusBottomRight: string;
 	@Input() data_iconSize: string;
+	@Input() arr_data_style: string[];
 
 	@Input() bool_data_iconOnly: boolean;
 	@Input() bool_data_customBorder: boolean;
@@ -44,8 +46,6 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 	@Input() zIndex: string;
 
 	fhemDevice: any;
-
-	constructor(private fhem: FhemService, private native: NativeFunctionsService){}
 
 	ngOnInit(){
 		if(this.data_device){
@@ -106,6 +106,8 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 		this.fhem.removeDevice(this.ID);
 	}
 
+	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService){}
+
 	static getSettings() {
 		return {
 			name: 'Button Multistate',
@@ -128,7 +130,8 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 				{variable: 'arr_icon_icons', default: 'add-circle,close-circle'},
 				{variable: 'arr_style_labelColors', default: '#fff,#ddd'},
 				{variable: 'arr_style_buttonColors', default: '#86d993,#272727'},
-				{variable: 'arr_style_iconColors', default: '#2ec6ff,#272727'}
+				{variable: 'arr_style_iconColors', default: '#2ec6ff,#272727'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'}
 			],
 			dependencies: {
 				data_iconSize: { dependOn: 'bool_data_iconOnly', value: false },
@@ -136,7 +139,9 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
-				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true }
+				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+				// neumorph dependencies
+				arr_style_buttonColors: { dependOn: 'arr_data_style', value: 'standard' }
 			},
 			dimensions: {minX: 30, minY: 30}
 		};

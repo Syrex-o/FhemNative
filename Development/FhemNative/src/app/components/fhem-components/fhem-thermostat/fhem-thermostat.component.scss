@@ -62,6 +62,162 @@
 				}
 			}
 		}
+		.thermostat-three{
+			width: 100%;
+			height: 100%;
+			z-index: 2;
+			user-select: none;
+			.tick-container{
+				width: inherit;
+				height: inherit;
+				span{
+					position: absolute;
+					width: 100%;
+					height: 3px;
+					transform-origin: center;
+					top: 50%;
+					left: 50%;
+				}
+			}
+			.circle-overlay{
+				position: absolute;
+				width: 90%;
+				height: 90%;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 50%;
+				.circle-inner{
+					position: absolute;
+					width: 95%;
+					height: 95%;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					border-radius: 50%;
+					.rotator-container{
+						position: absolute;
+						width: 80%;
+						height: 80%;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						border-radius: 50%;
+						.rotator{
+							position: absolute;
+							width: 100%;
+							height: 100%;
+							will-change: transform;
+							.knob{
+								position: absolute;
+								top: 5px;
+								left: 50%;
+								width: 30px;
+								height: 30px;
+								transform: translateX(-50%);
+								border-radius: 50%;
+								cursor: pointer;
+								pointer-events: all;
+								will-change: transform;
+							}
+						}
+						.value-container{
+							position: absolute;
+							width: 45%;
+							height: 45%;
+							top: 50%;
+							left: 50%;
+							transform: translate(-50%, -50%);
+							border-radius: 50%;
+							p{
+								position: absolute;
+								top: 50%;
+								left: 50%;
+								transform: translate(-50%, -50%);
+								font-size: 16px;
+								font-weight: 600;
+							}
+						}
+					}
+				}
+			}
+			// neumorph
+			&.dark{
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					border: var(--neumorph-border-dark);
+				}
+				span,
+				.circle-overlay,
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					background: var(--primary-dark);
+				}
+				span,
+				.circle-inner,
+				.knob,
+				.value-container{
+					box-shadow: var(--neumorph-in-dark);
+				}
+				.rotator-container{
+					box-shadow: var(--neumorph-small-out-dark);
+				}
+			}
+			&.dark-alternative{
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					border: var(--neumorph-border-dark-alternative);
+				}
+				span,
+				.circle-overlay,
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					background: var(--primary-dark-alternative);
+				}
+				span,
+				.circle-inner,
+				.knob,
+				.value-container{
+					box-shadow: var(--neumorph-in-dark-alternative);
+				}
+				.rotator-container{
+					box-shadow: var(--neumorph-small-out-dark-alternative);
+				}
+			}
+			&.bright{
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					border: var(--neumorph-border-bright);
+				}
+				span,
+				.circle-overlay,
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					background: var(--primary-bright);
+				}
+				span,
+				.circle-inner,
+				.knob,
+				.value-container{
+					box-shadow: var(--neumorph-in-bright);
+				}
+				.rotator-container{
+					box-shadow: var(--neumorph-small-out-bright);
+				}
+			}
+		}
 	}
 
 	// animations

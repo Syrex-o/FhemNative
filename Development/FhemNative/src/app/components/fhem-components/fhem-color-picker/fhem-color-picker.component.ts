@@ -46,6 +46,8 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 
 	@Input() arr_data_animationStyle: string|string[];
 
+	@Input() arr_data_style: string[];
+
 	// position information
 	@Input() width: string;
 	@Input() height: string;
@@ -382,6 +384,7 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 				{variable: 'data_borderRadiusBottomRight', default: '5'},
 				{variable: 'data_headline', default: ''},
 				{variable: 'data_threshold', default: '10'},
+				{variable: 'arr_data_style', default: 'standard,NM'},
 				{variable: 'arr_data_animationStyle', default: 'scale,from-top,from-bottom,from-left,from-right,jump-in,flip-in-x,flip-in-y,scale-x,scale-y'},
 				{variable: 'arr_data_colorInput', default: 'hex,#hex,rgb'},
 				{variable: 'arr_data_colorOutput', default: 'hex,#hex,rgb'},

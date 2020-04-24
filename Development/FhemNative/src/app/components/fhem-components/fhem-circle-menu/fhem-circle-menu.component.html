@@ -5,11 +5,12 @@
 	[minimumWidth]="30"
 	[minimumHeight]="30"
 	outside-click (onOutsideClick)="closeMenu()">
-	<div class="circle-menu">
+	<div class="circle-menu {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
 		<button 
 			matRipple [matRippleColor]="'#d4d4d480'"
 			(click)="toggleMenu()"
 			class="button"
+			[class.active]="buttonState"
 			[ngStyle]="{
 				'background-color': style_buttonColor,
 				'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
@@ -28,6 +29,7 @@
 				class="circle-menu-item"
 				matRipple [matRippleColor]="'#d4d4d480'"
 				(click)="select(i)"
+				[class.active]="item === currentValue"
 				[ngStyle]="{
 					'background-color': item === currentValue ? style_activeColor : style_buttonColor,
 					'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,

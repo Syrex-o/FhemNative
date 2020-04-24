@@ -4,7 +4,7 @@
 	[minimumWidth]="100"
 	[minimumHeight]="100"
 	outside-click (onOutsideClick)="outsideClick($event)">
-	<div class="tabs">
+	<div class="tabs {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
 		<button 
 			colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
 			matRipple [matRippleColor]="'#d4d4d480'" class="btn-round inner blue" 

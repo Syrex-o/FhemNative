@@ -92,7 +92,7 @@ export class FhemSwitchComponent implements OnInit, OnDestroy {
 				{variable: 'data_subLabel', default: ''},
 				{variable: 'bool_data_showBorder', default: true},
 				{variable: 'bool_data_customLabels', default: false},
-				{variable: 'arr_data_buttonStyle', default: 'toggle,toggle-outline'},
+				{variable: 'arr_data_buttonStyle', default: 'toggle,toggle-outline,gooey-inline,gooey-outline,NM-IN-toggle,NM-OUT-toggle,NM-IN-toggle-outline,NM-OUT-toggle-outline,NM-IN-gooey-outline,NM-OUT-gooey-outline'},
 				{variable: 'style_borderColor', default: '#565656'},
 				{variable: 'style_colorOn', default: '#2994b3'},
 				{variable: 'style_colorOff', default: '#a2a4ab'},
@@ -102,7 +102,16 @@ export class FhemSwitchComponent implements OnInit, OnDestroy {
 			dependencies: {
 				style_borderColor: { dependOn: 'bool_data_showBorder', value: true },
 				data_label: { dependOn: 'bool_data_customLabels', value: true },
-				data_subLabel: { dependOn: 'bool_data_customLabels', value: true }
+				data_subLabel: { dependOn: 'bool_data_customLabels', value: true },
+				// neumorph dependencies
+				style_colorOn: { dependOn: 'arr_data_buttonStyle', value: [
+					'toggle', 'toggle-outline', 'gooey-inline', 'gooey-outline',
+					'NM-OUT-toggle', 'NM-OUT-toggle-outline', 'NM-OUT-gooey-outline'
+				] },
+				style_colorOff: { dependOn: 'arr_data_buttonStyle', value: [
+					'toggle', 'toggle-outline', 'gooey-inline', 'gooey-outline',
+					'NM-OUT-toggle', 'NM-OUT-toggle-outline', 'NM-OUT-gooey-outline'
+				] },
 			},
 			dimensions: {minX: 100, minY: 45}
 		}

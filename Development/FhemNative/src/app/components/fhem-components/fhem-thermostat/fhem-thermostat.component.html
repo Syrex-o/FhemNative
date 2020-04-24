@@ -72,5 +72,27 @@
       			</g>
 			</svg>
 		</ng-container>
+		<!-- circular -->
+		<ng-container *ngIf="arr_data_style[0] === 'heater'">
+			<div class="thermostat-three" [ngClass]="settings.app.theme">
+				<div class="tick-container">
+					<span *ngFor="let tick of styles.heaterTicks" [ngStyle]="{
+						'transform': 'translate(-50%, -50%) rotate('+ tick * (360 / 24) +'deg)'
+					}"></span>
+				</div>
+				<div class="circle-overlay">
+					<div class="circle-inner">
+						<div class="rotator-container">
+							<div class="rotator" [style.transform]="'rotate('+ styles.rotation +'deg)'">
+								<div class="knob drag-item" [style.transform]="'rotate('+ (styles.rotation * -1) +'deg)'"></div>
+							</div>
+							<div class="value-container">
+								<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{value + data_labelExtension}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ng-container>
 	</div>
 </fhem-component-container>

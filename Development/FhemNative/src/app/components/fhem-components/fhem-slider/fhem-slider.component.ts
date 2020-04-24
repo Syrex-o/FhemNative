@@ -63,7 +63,6 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	private waitForThreshold = 0;
 
 	value: number;
-	private blockSliderUpdate: boolean = false;
 	
 	styles: any = {
 		baseSliderStyle: {},
@@ -87,8 +86,6 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	@HostListener('touchstart', ['$event', '$event.target'])
 	onTouchstart(event, target) {
 		if (!target.className.baseVal && target.className.baseVal !== '' && target.className.match(/drag-item/)) {
-			// block slider update while movement
-			this.blockSliderUpdate = true;
 			// show pin
 			if (this.bool_data_showPin) this.styles.showPin = true;
 			// get the item container
@@ -125,7 +122,6 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	   			// reset values
 	   			this.waitForThreshold = 0;
 	   			this.styles.showPin = false;
-	   			this.blockSliderUpdate = false;
 	   		}
 
 			window.addEventListener('mousemove', whileMove);
@@ -143,22 +139,19 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
 			this.getState(device, false);
 		}).then(device=>{
-			this.getState(device, true);
 			this.initSliderValues();
+			this.getState(device, true);
 		});
 	}
 	
 	private getState(device, init: boolean){
 		this.fhemDevice = device;
 		if(device && this.fhemDevice.readings[this.data_reading]){
-			const oldValue = this.value || 0;
-			this.value = this.checkForTime(this.fhemDevice.readings[this.data_reading].Value, init);
-			if(!this.blockSliderUpdate){
-				if(init){
-					this.animateMove(oldValue);
-				}else{
-					this.updateSliderValues();
-				}
+			const oldValue = this.checkForTime(this.value || this.data_min, init);
+			const updateValue = this.checkForTime(this.fhemDevice.readings[this.data_reading].Value, false);
+			if (updateValue !== this.value) {
+				this.value = updateValue;
+				this.animateMove(oldValue);
 			}
 		}
 	}
@@ -374,7 +367,7 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 				{variable: 'data_labelExtension', default: ''},
 				{variable: 'data_min', default: '0'},
 				{variable: 'data_max', default: '100'},
-				{variable: 'arr_data_style', default: 'slider,box,ios-slider,tick-slider'},
+				{variable: 'arr_data_style', default: 'slider,box,ios-slider,tick-slider,NM-slider,NM-IN-box,NM-OUT-box,NM-IN-ios-slider,NM-OUT-ios-slider,NM-tick-slider'},
 				{variable: 'arr_data_orientation', default: 'horizontal,vertical'},
 				{variable: 'data_sliderHeight', default: '5'},
 				{variable: 'data_thumbWidth', default: '25'},
@@ -394,10 +387,10 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 				{variable: 'icon_sliderIcon', default: 'lightbulb'}
 			],
 			dependencies:{
-				data_ticks: { dependOn: 'arr_data_style', value: 'tick-slider' },
-				style_tickColor: { dependOn: 'arr_data_style', value: 'tick-slider' },
+				data_ticks: { dependOn: 'arr_data_style', value: ['tick-slider','NM-tick-slider'] },
+				style_tickColor: { dependOn: 'arr_data_style', value: ['tick-slider','NM-tick-slider'] },
 				data_threshold: { dependOn: 'bool_data_updateOnMove', value: true },
-				icon_sliderIcon: { dependOn: 'arr_data_style', value: 'ios-slider' },
+				icon_sliderIcon: { dependOn: 'arr_data_style', value: ['ios-slider', 'NM-IN-ios-slider', 'NM-OUT-ios-slider'] },
 				style_thumbValueColor: { dependOn: 'bool_data_showValueInThumb', value: true }
 			},
 			dimensions: {minX: 200, minY: 30}

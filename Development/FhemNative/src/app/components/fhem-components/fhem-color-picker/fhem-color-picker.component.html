@@ -5,7 +5,8 @@
 	[minimumWidth]="30"
 	[minimumHeight]="30">
 	<button 
-		class="color-picker btn-round" 
+		class="color-picker btn-round {{settings.app.theme}}"
+		[ngClass]="arr_data_style[0]" 
 		matRipple [matRippleColor]="'#d4d4d480'"
 		(click)="togglePopup()"
 		[ngStyle]="{
@@ -28,7 +29,7 @@
 	<div header>
 		<h1 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ (data_headline !== '' ? data_headline : data_device) }}</h1>
 	</div>
-	<div body class="content">
+	<div body class="content {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
 		<div class="favs">
 			<button 
 				colorizer [theme]="settings.app.theme" [style]="['background', 'secondary']"

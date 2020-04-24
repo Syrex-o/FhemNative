@@ -26,7 +26,8 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	@Input() data_device: string;
 	@Input() data_dbDevice: string;
 	@Input() data_logFile: string;
-	@Input() arr_data_dbtype: string|string[];
+	@Input() arr_data_dbtype: string[];
+	@Input() arr_data_style: string[];
 
 	@Input() bool_data_getCurrent: boolean;
 	@Input() bool_data_zoomBothAxis: boolean;
@@ -921,7 +922,8 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 				{variable: 'data_logFile', default: ''},
 				{variable: 'arr_data_dbtype', default: 'FileLog,DbLog'},
 				{variable: 'bool_data_getCurrent', default: true},
-				{variable: 'bool_data_zoomBothAxis', default: false}
+				{variable: 'bool_data_zoomBothAxis', default: false},
+				{variable: 'arr_data_style', default: 'standard,NM-IN,NM-OUT'}
 			],
 			customInputs:{
 				data_leftMaxY: '',

@@ -82,5 +82,25 @@
 				}
 			}
 		}
+		// neumorph
+		&.NM-standard{
+			.tab-content-container{
+				box-shadow: none;
+			}
+			&.dark{
+				li,
+				.tab-content{
+					background: var(--primary-dark) !important;
+					border: var(--neumorph-border-dark);
+				}
+				li{
+					box-shadow: var(--neumorph-out-dark) !important;
+				}
+				li.active,
+				.tab-content{
+					box-shadow: var(--neumorph-in-dark) !important;
+				}
+			}
+		}
 	}
 }

@@ -4,7 +4,7 @@
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="150"
 	[minimumHeight]="80">
-	<div class="chart weather">
+	<div class="chart weather {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
 		<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" *ngIf="noData" class="no-data">
 			{{ 'COMPONENTS.Chart.TRANSLATOR.NO_DATA' | translate }}
 			{{ 'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate }}

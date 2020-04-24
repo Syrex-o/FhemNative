@@ -4,7 +4,10 @@
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="200"
 	[minimumHeight]="200">
-	<div class="chart">
+	<div 
+		class="chart {{settings.app.theme}}" 
+		[ngClass]="arr_data_style[0]"
+		[class.round]="arr_data_chartTypes[0] === 'gauge' || arr_data_chartTypes[0] === 'liquidGauge'">
 		<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" *ngIf="noData" class="no-data">
 			{{ 'COMPONENTS.Chart.TRANSLATOR.NO_DATA' | translate }}
 			{{ 'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate }}

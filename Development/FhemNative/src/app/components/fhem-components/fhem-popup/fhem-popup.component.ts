@@ -37,6 +37,7 @@ export class FhemPopupComponent implements OnInit, OnDestroy {
 	@Input() bool_data_invertAnimation: boolean;
 
 	@Input() arr_data_animationStyle: string|string[];
+	@Input() arr_data_style: string[];
 
 	// Icons
 	@Input() icon_iconOn: string;
@@ -61,15 +62,6 @@ export class FhemPopupComponent implements OnInit, OnDestroy {
 	allowBackdrop: boolean = true;
 	allowCloseButton: boolean = true;
 	showEditButton: boolean = false;
-
-	constructor(
-		private fhem: FhemService,
-		public settings: SettingsService,
-		private structure: StructureService,
-		private componentLoader: ComponentLoaderService,
-		private native: NativeFunctionsService){
-	}
-
 
 	ngOnInit(){
 		if(this.data_device){
@@ -166,6 +158,14 @@ export class FhemPopupComponent implements OnInit, OnDestroy {
 		this.popupClosed();
 	}
 
+	constructor(
+		private fhem: FhemService,
+		public settings: SettingsService,
+		private structure: StructureService,
+		private componentLoader: ComponentLoaderService,
+		private native: NativeFunctionsService){
+	}
+
 	static getSettings() {
 		return {
 			name: 'Popup',
@@ -183,6 +183,7 @@ export class FhemPopupComponent implements OnInit, OnDestroy {
 				{variable: 'bool_data_customAnimation', default: false},
 				{variable: 'bool_data_invertAnimation', default: false},
 				{variable: 'arr_data_animationStyle', default: 'scale,from-top,from-bottom,from-left,from-right,jump-in,flip-in-x,flip-in-y,scale-x,scale-y'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'},
 				{variable: 'icon_iconOn', default: 'add-circle'},
 				{variable: 'icon_iconOff', default: 'add-circle'},
 				{variable: 'style_iconColorOn', default: '#86d993'},
@@ -192,7 +193,10 @@ export class FhemPopupComponent implements OnInit, OnDestroy {
 			],
 			dependencies: {
 				bool_data_invertAnimation: { dependOn: 'bool_data_customAnimation', value: true },
-				arr_data_animationStyle: { dependOn: 'bool_data_customAnimation', value: true }
+				arr_data_animationStyle: { dependOn: 'bool_data_customAnimation', value: true },
+				// neumorph dependencies
+				style_backgroundColorOn: { dependOn: 'arr_data_style', value: 'standard' },
+				style_backgroundColorOff: { dependOn: 'arr_data_style', value: 'standard' }
 			},
 			dimensions: {minX: 40, minY: 40}
 		};

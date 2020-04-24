@@ -5,6 +5,7 @@ import { ComponentsModule } from '../../components.module';
 
 // Services
 import { FhemService } from '../../../services/fhem.service';
+import { SettingsService } from '../../../services/settings.service';
 import { NativeFunctionsService } from '../../../services/native-functions.service';
 
 @Component({
@@ -30,6 +31,7 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 	@Input() data_borderRadiusBottomLeft: string;
 	@Input() data_borderRadiusBottomRight: string;
 	@Input() data_iconSize: string;
+	@Input() arr_data_style: string[];
 
 	// Icon
 	@Input() icon_iconOn: string;
@@ -55,8 +57,6 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 	// state of fhem device
 	buttonState: boolean;
 
-	constructor(private fhem: FhemService, private native: NativeFunctionsService){}
-
 	ngOnInit() {
 		if(this.data_device){
 			this.fhem.getDevice(this.ID, this.data_device, (device)=>{
@@ -78,11 +78,13 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 
 	sendCmd(){
 		if (this.data_sendCommand === '') {
-			const command = this.fhem.deviceReadingActive(this.fhemDevice, this.data_reading, this.data_getOn) ? this.data_setOff : this.data_setOn;
-			if (this.data_setReading !== '') {
-					this.fhem.setAttr(this.fhemDevice.device, this.data_setReading, command);
-			} else {
-				this.fhem.set(this.fhemDevice.device, command);
+			if(this.fhemDevice){
+				const command = this.fhem.deviceReadingActive(this.fhemDevice, this.data_reading, this.data_getOn) ? this.data_setOff : this.data_setOn;
+				if (this.data_setReading !== '') {
+						this.fhem.setAttr(this.fhemDevice.device, this.data_setReading, command);
+				} else {
+					this.fhem.set(this.fhemDevice.device, command);
+				}
 			}
 		}else{
 			this.fhem.sendCommand({command: this.data_sendCommand});
@@ -93,6 +95,8 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 	ngOnDestroy(){
 		this.fhem.removeDevice(this.ID);
 	}
+	
+	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService){}
 
 	static getSettings() {
 		return {
@@ -121,7 +125,8 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 				{variable: 'style_iconColorOn', default: '#86d993'},
 				{variable: 'style_iconColorOff', default: '#86d993'},
 				{variable: 'style_buttonColor', default: '#86d993'},
-				{variable: 'style_labelColor', default: '#fff'}
+				{variable: 'style_labelColor', default: '#fff'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'}
 			],
 			dependencies: {
 				data_iconSize: { dependOn: 'bool_data_iconOnly', value: false },
@@ -129,7 +134,9 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
-				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true }
+				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+				// neumorph dependencies
+				style_buttonColor: { dependOn: 'arr_data_style', value: 'standard' }
 			},
 			dimensions: {minX: 30, minY: 30}
 		};

@@ -7,9 +7,10 @@
 	<button 
 		matRipple [matRippleColor]="'#d4d4d480'"
 		(click)="sendCmd()"
-		class="button"
+		class="button {{settings.app.theme}}"
+		[ngClass]="arr_data_style[0]"
 		[ngStyle]="{
-			'background-color': style_buttonColor,
+			'background': style_buttonColor,
 			'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
 			'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
 			'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,

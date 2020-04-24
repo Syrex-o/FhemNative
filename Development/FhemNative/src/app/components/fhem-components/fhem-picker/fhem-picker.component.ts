@@ -35,7 +35,8 @@ export class FhemPickerComponent implements OnInit, OnDestroy {
 	@Input() bool_data_openOnReading: boolean;
 	@Input() bool_data_customAnimation: boolean;
 
-	@Input() arr_data_animationStyle: string|string[];
+	@Input() arr_data_animationStyle: string[];
+	@Input() arr_data_style: string[];
 
 	// Icons
 	@Input() icon_iconOn: string;
@@ -180,6 +181,7 @@ export class FhemPickerComponent implements OnInit, OnDestroy {
 				{variable: 'bool_data_openOnReading', default: false},
 				{variable: 'bool_data_customAnimation', default: false},
 				{variable: 'arr_data_animationStyle', default: 'from-bottom,from-top'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'},
 				{variable: 'icon_iconOn', default: 'add-circle'},
 				{variable: 'icon_iconOff', default: 'add-circle'},
 				{variable: 'style_iconColorOn', default: '#86d993'},
@@ -188,7 +190,10 @@ export class FhemPickerComponent implements OnInit, OnDestroy {
 				{variable: 'style_backgroundColorOff', default: '#303030'}
 			],
 			dependencies: {
-				arr_data_animationStyle: { dependOn: 'bool_data_customAnimation', value: true }
+				arr_data_animationStyle: { dependOn: 'bool_data_customAnimation', value: true },
+				// neumorph dependencies
+				style_backgroundColorOn: { dependOn: 'arr_data_style', value: 'standard' },
+				style_backgroundColorOff: { dependOn: 'arr_data_style', value: 'standard' }
 			},
 			dimensions: {minX: 40, minY: 40}
 		};

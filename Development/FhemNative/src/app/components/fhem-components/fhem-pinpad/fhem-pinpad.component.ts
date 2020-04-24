@@ -29,6 +29,7 @@ export class FhemPinpadComponent implements OnInit, OnDestroy {
 	@Input() data_labelOffText: string;
 	@Input() data_tries: string;
 	@Input() data_pin: string;
+	@Input() arr_data_style: string[];
 
 	// position information
 	@Input() width: string;
@@ -152,7 +153,8 @@ export class FhemPinpadComponent implements OnInit, OnDestroy {
 				{variable: 'data_setOff', default: 'off'},
 				{variable: 'data_labelOnText', default: 'Alarm ist aktiv'},
 				{variable: 'data_labelOffText', default: 'Alarm ist inaktiv'},
-				{variable: 'data_tries', default: '5'}
+				{variable: 'data_tries', default: '5'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'}
 			],
 			dimensions: {minX: 200, minY: 270}
 		};

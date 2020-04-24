@@ -30,6 +30,7 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 	@Input() bool_data_showBorder: boolean;
 	@Input() bool_data_showPager: boolean;
 	@Input() arr_data_orientation: string|string[];
+	@Input() arr_data_style: string[];
 
 	// Styling
 	@Input() style_headerColor: string;
@@ -198,9 +199,15 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 				{variable: 'bool_data_showBorder', default: true},
 				{variable: 'bool_data_showPager', default: true},
 				{variable: 'arr_data_orientation', default: 'horizontal,vertical'},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'},
 				{variable: 'style_headerColor', default: '#434E5D'},
 				{variable: 'style_backgroundColor', default: '#58677C'}
 			],
+			dependencies: {
+				bool_data_showBorder: { dependOn: 'arr_data_style', value: 'standard' },
+				style_headerColor: { dependOn: 'arr_data_style', value: 'standard' },
+				style_backgroundColor: { dependOn: 'arr_data_style', value: 'standard' }
+			},
 			dimensions: {minX: 60, minY: 60}
 		};
 	}

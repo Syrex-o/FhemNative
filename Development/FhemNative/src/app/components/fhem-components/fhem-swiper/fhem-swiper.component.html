@@ -4,7 +4,10 @@
 	[minimumWidth]="60"
 	[minimumHeight]="60"
 	outside-click (onOutsideClick)="outsideClick($event)">
-	<div class="swiper" [ngStyle]="{
+	<div 
+		class="swiper {{settings.app.theme}}"
+		[ngClass]="arr_data_style[0]"
+		[ngStyle]="{
 			'border': bool_data_showBorder ? '1px solid #ddd' : '0px',
 			'border-bottom-left-radius.px': data_borderRadius,
 			'border-bottom-right-radius.px': data_borderRadius,

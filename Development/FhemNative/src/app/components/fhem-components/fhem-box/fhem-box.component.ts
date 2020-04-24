@@ -20,6 +20,7 @@ export class FhemBoxComponent{
 	@Input() data_borderRadiusTopRight: string;
 	@Input() data_borderRadiusBottomLeft: string;
 	@Input() data_borderRadiusBottomRight: string;
+	@Input() arr_data_style: string[];
 
 
 	@Input() bool_data_showShadow: boolean;
@@ -55,14 +56,20 @@ export class FhemBoxComponent{
 				{variable: 'style_backgroundColor', default: '#58677C'},
 				{variable: 'bool_data_showHeader', default: true},
 				{variable: 'bool_data_showShadow', default: true},
-				{variable: 'bool_data_customBorder', default: false}
+				{variable: 'bool_data_customBorder', default: false},
+				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'}
+
 			],
 			dependencies: {
 				data_borderRadius: { dependOn: 'bool_data_customBorder', value: false },
 				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
-				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true }
+				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+				// neumorph dependencies
+				bool_data_showShadow: { dependOn: 'arr_data_style', value: 'standard' },
+				style_headerColor: { dependOn: 'arr_data_style', value: 'standard' },
+				style_backgroundColor: { dependOn: 'arr_data_style', value: 'standard' }
 			},
 			dimensions: {minX: 60, minY: 60}
 		};
