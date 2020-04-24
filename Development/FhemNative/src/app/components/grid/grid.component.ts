@@ -1,4 +1,4 @@
-import { Component, NgModule, ViewChild, ElementRef, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, NgModule, ViewChild, ElementRef, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core';
 
 // Components
 import { ComponentsModule } from '../components.module';
@@ -14,7 +14,8 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 @Component({
   	selector: 'grid',
   	templateUrl: './grid.component.html',
-  	styleUrls: ['./grid.component.scss']
+  	styleUrls: ['./grid.component.scss'],
+  	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridComponent implements OnInit, OnDestroy {
 	// input of the container, where grid is created

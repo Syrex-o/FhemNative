@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, OnInit, ChangeDetectionStrategy, NgZone } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 // Services
@@ -12,7 +12,8 @@ import { Unfold } from '../../animations/animations';
 	templateUrl: './select.component.html',
   	styleUrls: ['./select.component.scss'],
   	animations: [ Unfold ],
-  	providers: [{provide: NG_VALUE_ACCESSOR, useExisting: SelectComponent, multi: true}]
+  	providers: [{provide: NG_VALUE_ACCESSOR, useExisting: SelectComponent, multi: true}],
+  	changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class SelectComponent implements OnInit{
@@ -61,7 +62,7 @@ export class SelectComponent implements OnInit{
 		this.updateChanges();
 	}
 
-	constructor(public settings: SettingsService){}
+	constructor(public settings: SettingsService, private zone: NgZone){}
 
 	ngOnInit(){
 		// copy list to prevent changes in array structure
@@ -79,18 +80,24 @@ export class SelectComponent implements OnInit{
 
 	// open/close selection menu
 	toggleSelectionMenu(preventClose?:boolean){
-		if(preventClose){
-			if(!this.opened){
+		this.zone.runOutsideAngular(()=>{
+			if(preventClose){
+				if(!this.opened){
+					this.opened = !this.opened;
+				}
+			}else{
 				this.opened = !this.opened;
 			}
-		}else{
-			this.opened = !this.opened;
-		}
-		if(this.opened){
-			this.onOpen.emit();
-		}else{
-			this.onClose.emit();
-		}
+			if(this.opened){
+				this.onOpen.emit();
+			}else{
+				this.onClose.emit();
+			}
+		});
+	}
+
+	closeMenu(){
+		this.opened = false;
 	}
 
 	// add value from user input

@@ -1,6 +1,6 @@
 <div 
 	colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
-	outside-click (onOutsideClick)="opened ? toggleSelectionMenu() : null"
+	outside-click (onOutsideClick)="closeMenu()"
 	class="select-container" [class.open]="opened" [class.full-height]="fullHeight">
 	<div class="select-value-container">
 		<div class="selection-container">
