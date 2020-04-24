@@ -369,12 +369,14 @@
       			{"TYPE": "NEW", "CHANGE": "FhemNative PWA possibility --> see forum"},
       			{"TYPE": "NEW", "CHANGE": "FhemNative asset image compression, to reduce size"},
       			{"TYPE": "NEW", "CHANGE": "dependOn can handle multiple dependency values"},
-      			{"TYPE": "NEW", "CHANGE": "ChangeDetection OnPush test for: (create/edit component, create/edit room, fhem-menu, settings, tasks)"},
+      			{"TYPE": "NEW", "CHANGE": "ChangeDetection change for: (create/edit component, create/edit room, fhem-menu, grid, settings, tasks, select)"},
       			{"TYPE": "FIX", "CHANGE": "Circle slider decimal endless animation"},
       			{"TYPE": "FIX", "CHANGE": "Slider Time handling on init"},
       			{"TYPE": "FIX", "CHANGE": "Chart round elem for round chartTypes"},
       			{"TYPE": "FIX", "CHANGE": "Switch UX Adaption"},
-      			{"TYPE": "FIX", "CHANGE": "Menu Buttons click on component edit"}
+      			{"TYPE": "FIX", "CHANGE": "Menu Buttons click on component edit"},
+      			{"TYPE": "FIX", "CHANGE": "remove component creation Menu after close --> previously was still in view"},
+      			{"TYPE": "FIX", "CHANGE": "Copy component from room to room while editing --> no moving"}
       		]
       	}
 	]
