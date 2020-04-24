@@ -51,7 +51,7 @@ export class ColorizerDirective implements OnChanges {
 
 	// Apply classes for ref elem
 	private classHandler(currentTheme: string, elem){
-		['bright', 'dark', 'custom'].forEach((c: string, i: number)=>{
+		['bright', 'dark', 'dark-alternative', 'custom'].forEach((c: string, i: number)=>{
 			this.renderer.removeClass(elem, c);
 			[currentTheme, this.style[0], this.style[1]].forEach((style: string)=>{
 				this.renderer.addClass(elem, style);
