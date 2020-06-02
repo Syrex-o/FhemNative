@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, OnInit, ChangeDetectionStrategy, NgZone } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 // Services
@@ -62,7 +62,7 @@ export class SelectComponent implements OnInit{
 		this.updateChanges();
 	}
 
-	constructor(public settings: SettingsService, private zone: NgZone){}
+	constructor(public settings: SettingsService){}
 
 	ngOnInit(){
 		// copy list to prevent changes in array structure
@@ -80,20 +80,18 @@ export class SelectComponent implements OnInit{
 
 	// open/close selection menu
 	toggleSelectionMenu(preventClose?:boolean){
-		this.zone.runOutsideAngular(()=>{
-			if(preventClose){
-				if(!this.opened){
-					this.opened = !this.opened;
-				}
-			}else{
+		if(preventClose){
+			if(!this.opened){
 				this.opened = !this.opened;
 			}
-			if(this.opened){
-				this.onOpen.emit();
-			}else{
-				this.onClose.emit();
-			}
-		});
+		}else{
+			this.opened = !this.opened;
+		}
+		if(this.opened){
+			this.onOpen.emit();
+		}else{
+			this.onClose.emit();
+		}
 	}
 
 	closeMenu(){

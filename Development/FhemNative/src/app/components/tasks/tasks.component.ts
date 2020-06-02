@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -21,8 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
 	selector: 'tasks',
 	templateUrl: './tasks.component.html',
-  	styleUrls: ['./tasks.component.scss'],
-  	changeDetection: ChangeDetectionStrategy.OnPush
+  	styleUrls: ['./tasks.component.scss']
 })
 
 export class TasksComponent implements OnInit {

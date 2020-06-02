@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, NgModule, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
@@ -64,7 +64,8 @@ export class SettingsComponent implements OnInit {
 		private task: TaskService,
 		private http: HttpClient,
 		private platform: Platform,
-		private socialSharing: SocialSharing){
+		private socialSharing: SocialSharing,
+		private cdr: ChangeDetectorRef){
 	}
 
 	ngOnInit(){
@@ -229,15 +230,15 @@ export class SettingsComponent implements OnInit {
 				this.changelog = res;
 				// displaying last version first
 				const relChangelog = this.changelog.VERSIONS.findIndex(v=> v.VERSION === this.version.appVersion);
-
 				this.changelog.selectedVersion = relChangelog > -1 ? relChangelog : this.changelog.VERSIONS.length - 1;
-
 			} else {
 				this.toast.addNotify('Changelog', this.translate.instant('GENERAL.DICTIONARY.NO_CHANGELOG_PRESENT'), false);
 			}
 			this.settings.modes.showLoader = false;
+			this.cdr.detectChanges();
 		}, (error)=>{
 			this.settings.modes.showLoader = false;
+			this.cdr.detectChanges();
 		});
 	}
 
