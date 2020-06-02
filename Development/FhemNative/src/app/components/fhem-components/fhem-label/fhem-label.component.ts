@@ -23,7 +23,9 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 	@Input() data_min: string;
 	@Input() data_max: string;
 	@Input() data_fontWeight: string;
+
 	@Input() arr_data_textAlign: string[];
+	@Input() arr_data_textStyle: string[];
 
 	// Styling
 	@Input() style_color: string;
@@ -53,7 +55,7 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 
 	private getState(device){
 		this.fhemDevice = device;
-		if(device && this.fhemDevice.readings[this.data_reading]){
+		if(device && this.data_reading in this.fhemDevice.readings){
 			this.label = this.fhemDevice.readings[this.data_reading].Value;
 		}else{
 			this.label = this.data_label;
@@ -103,6 +105,7 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 				{variable: 'data_max', default: ''},
 				{variable: 'data_fontWeight', default: '300'},
 				{variable: 'arr_data_textAlign', default: 'left,center,right'},
+				{variable: 'arr_data_textStyle', default: 'normal,italic'},
 				{variable: 'style_color', default: '#86d993'},
 				{variable: 'style_minColor', default: '#02adea'},
 				{variable: 'style_maxColor', default: '#fb0a2a'}

@@ -7,7 +7,7 @@
 	<div class="label">
 		<p 
 			colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-			class="error" *ngIf="!label || label === ''">
+			class="error" *ngIf="label === undefined || label === null || label === ''">
 			{{'COMPONENTS.Label.TRANSLATOR.NO_LABEL' | translate}}
 			{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
 		</p>
@@ -16,7 +16,9 @@
 			class="label-item"
 			[ngStyle]="{
 				'font-size.px': data_size, 
-				'font-weight': data_fontWeight, 
+				'line-height.px': data_size,
+				'font-weight': data_fontWeight,
+				'font-style': arr_data_textStyle[0],
 				'color': fhemDevice ? getValueColor() : style_color,
 				'text-align': arr_data_textAlign[0]
 			}">
