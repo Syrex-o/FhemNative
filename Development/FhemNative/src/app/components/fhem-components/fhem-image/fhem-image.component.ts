@@ -19,7 +19,11 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 	@Input() data_reading: string;
 	@Input() data_url: string;
 	@Input() data_updateInterval: string;
+
+	@Input() arr_data_defaultImage: string[];
+
 	@Input() bool_data_cache: boolean;
+	@Input() bool_data_defaultImage: boolean;
 
 	// position information
 	@Input() width: string;
@@ -39,6 +43,8 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 		}).then(device=>{
 			this.getState(device);
 		});
+		// get initial image
+		this.updateImageData('');
 	}
 
 	private getState(device){
@@ -63,12 +69,15 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 					console.log(this.src);
 				}, parseInt(this.data_updateInterval) * 1000);
 			}
+		}else{
+			if(this.bool_data_defaultImage){
+				this.src = 'assets/img/' + this.arr_data_defaultImage[0];
+			}
 		}
 	}
 
 	ngOnDestroy(){
 		this.fhem.removeDevice(this.ID);
-
 		if(this.interval){
 			clearInterval(this.interval);
 		}
@@ -87,10 +96,13 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 				{variable: 'data_reading', default: 'state'},
 				{variable: 'data_url', default: ''},
 				{variable: 'data_updateInterval', default: '10'},
-				{variable: 'bool_data_cache', default: true}
+				{variable: 'arr_data_defaultImage', default: 'default-music.png,default-image.png'},
+				{variable: 'bool_data_cache', default: true},
+				{variable: 'bool_data_defaultImage', default: false}
 			],
 			dependencies:{
-				data_updateInterval: {dependOn: 'bool_data_cache', value: false}
+				data_updateInterval: {dependOn: 'bool_data_cache', value: false},
+				arr_data_defaultImage: {dependOn: 'bool_data_defaultImage', value: true}
 			},
 			dimensions: {minX: 40, minY: 40}
 		};
