@@ -13,7 +13,7 @@
 		</span>
 		<icon 
 			[icon]="iconState ? icon_iconOn : icon_iconOff"
-			[style.color]="iconState ? style_iconColorOn : style_iconColorOff">
+			[style.color]="fhemDevice ? getValueColor() : ( iconState ? style_iconColorOn : style_iconColorOff )">
 		</icon>
 	</div>
 </fhem-component-container>
