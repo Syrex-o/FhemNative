@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ElementRef, ViewContainerRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
@@ -18,8 +18,7 @@ import { UndoRedoService } from '../../services/undo-redo.service';
 @Component({
 	selector: 'create-edit-component',
 	templateUrl: './create-edit-component.component.html',
-  	styleUrls: ['./create-edit-component.component.scss'],
-  	changeDetection: ChangeDetectionStrategy.OnPush
+  	styleUrls: ['./create-edit-component.component.scss']
 })
 export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	// get slides
