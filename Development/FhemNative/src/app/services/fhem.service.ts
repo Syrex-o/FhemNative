@@ -9,6 +9,8 @@ import { ToastService } from './toast.service';
 
 // Translator
 import { TranslateService } from '@ngx-translate/core';
+// Mqtt
+import * as mqtt from 'mqtt';
 
 interface FhemDevice {
 	id: number,
@@ -217,6 +219,26 @@ export class FhemService {
 			this.tries = 0;
 			this.reTries = 0;
 		}
+
+		// mqtt test
+		// var client = mqtt.connect('mqtt://192.168.178.59:9001')
+		// client.on('connect', ()=>{
+		// 	client.subscribe('#', (m)=>{
+		// 		console.log(m)
+		// 	});
+
+		// 	// send request
+		// 	client.publish('/Home/Switches/Tester', 'value')
+
+		// 	client.on('message', (topic, message)=>{
+		// 		console.log(topic);
+		// 		console.log(message.toString())
+		// 	});
+		// });
+
+		// client.on('disconnect', (err)=>{
+		// 	console.log(err);
+		// });
 	}
 
 	// handle connection open
