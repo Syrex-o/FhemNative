@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ViewContainerRef, ViewChildren, QueryList, HostListener } from '@angular/core';
+import { Component, Input, NgModule, OnInit, OnDestroy, ViewChild, ViewContainerRef, ViewChildren, QueryList, HostListener, ElementRef } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -27,14 +27,24 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 	@Input() data_headline: string;
 	@Input() data_pages: string;
 	@Input() data_borderRadius: string;
-	@Input() bool_data_showBorder: boolean;
-	@Input() bool_data_showPager: boolean;
+
+	@Input() data_customHeaders: string;
+
 	@Input() arr_data_orientation: string|string[];
 	@Input() arr_data_style: string[];
+
+	@Input() bool_data_showBorder: boolean;
+	@Input() bool_data_showPager: boolean;
+	@Input() bool_data_customHeaders: boolean;
 
 	// Styling
 	@Input() style_headerColor: string;
 	@Input() style_backgroundColor: string;
+	@Input() style_pagerOffColor: string;
+	@Input() style_pagerOnColor: string;
+
+	@Input() arr_style_customHeaderBackgrounds: string[];
+	@Input() arr_style_customHeaderColors: string[];
 
 	// position information
 	@Input() width: number;
@@ -48,6 +58,8 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 	// current swiper container
 	private currentContainer: any;
 	showEditButton: boolean = false;
+
+	customHeaders: string[];
 
 	// only enable swiping if content is selected
 	@HostListener('document:touchstart', ['$event.target'])
@@ -63,6 +75,10 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(){
+		// custom headers
+		if(this.bool_data_customHeaders){
+			this.customHeaders = this.data_customHeaders.split(',');
+		}
 		// get swiper pages
 		// formatting pages integer to array
 		this.pages = [];
@@ -81,6 +97,13 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 					this.componentLoader.loadRoomComponents(swiperComponents, container, false);
 				}
 			});
+			if(this.bool_data_showPager){
+				// swiper style
+				setTimeout(()=>{
+					// attatch
+					this.dynamicSwiperStyle();
+				}, 200);
+			}
 		});
 
 		// button enablement
@@ -124,6 +147,15 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 		});
 		// assign edit properties
 		this.settings.modeSub.next({roomEditFrom: this.ID});
+	}
+
+	dynamicSwiperStyle(){
+		if(this.bool_data_showPager){
+			this.ref.nativeElement.querySelectorAll('.swiper-pagination-bullet').forEach((elem)=>{
+				elem.style.background = this.style_pagerOffColor;
+			});	
+			this.ref.nativeElement.querySelector('.swiper-pagination-bullet-active').style.background = this.style_pagerOnColor;
+		}
 	}
 
 	private endSwiperEdit(){
@@ -182,6 +214,7 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 	}
 
 	constructor(
+		private ref: ElementRef,
 		public settings: SettingsService,
 		private structure: StructureService,
 		private componentLoader: ComponentLoaderService){
@@ -196,17 +229,29 @@ export class FhemSwiperComponent implements OnInit, OnDestroy {
 				{variable: 'data_headline', default: ''},
 				{variable: 'data_pages', default: '3'},
 				{variable: 'data_borderRadius', default: '5'},
+				{variable: 'data_customHeaders', default: ''},
 				{variable: 'bool_data_showBorder', default: true},
 				{variable: 'bool_data_showPager', default: true},
+				{variable: 'bool_data_customHeaders', default: false},
 				{variable: 'arr_data_orientation', default: 'horizontal,vertical'},
 				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'},
 				{variable: 'style_headerColor', default: '#434E5D'},
-				{variable: 'style_backgroundColor', default: '#58677C'}
+				{variable: 'style_backgroundColor', default: '#58677C'},
+				{variable: 'style_pagerOffColor', default: '#cccccc'},
+				{variable: 'style_pagerOnColor', default: '#3880ff'},
+				{variable: 'arr_style_customHeaderBackgrounds', default: '#58677C,#58677C,#58677C'},
+				{variable: 'arr_style_customHeaderColors', default: '#434E5D,#434E5D,#434E5D'}
 			],
 			dependencies: {
 				bool_data_showBorder: { dependOn: 'arr_data_style', value: 'standard' },
 				style_headerColor: { dependOn: 'arr_data_style', value: 'standard' },
-				style_backgroundColor: { dependOn: 'arr_data_style', value: 'standard' }
+				style_backgroundColor: { dependOn: 'arr_data_style', value: 'standard' },
+				style_pagerOffColor: { dependOn: 'bool_data_showPager', value: true },
+				style_pagerOnColor: { dependOn: 'bool_data_showPager', value: true },
+				// custom headers
+				data_customHeaders: { dependOn: 'bool_data_customHeaders', value: true },
+				arr_style_customHeaderBackgrounds: { dependOn: 'bool_data_customHeaders', value: true },
+				arr_style_customHeaderColors: { dependOn: 'bool_data_customHeaders', value: true }
 			},
 			dimensions: {minX: 60, minY: 60}
 		};

@@ -29,9 +29,18 @@
 			#slides
 			[pager]="bool_data_showPager"
 			(ionSlideDidChange)="changeSliderContainer()"
+			(ionSlideWillChange)="dynamicSwiperStyle()"
 			[ngStyle]="{'background-color': style_backgroundColor, 'height': (data_headline && data_headline !== '') ? 'calc(100% - 35px)' : '100%'}">
-			<ion-slide *ngFor="let page of pages">
-				<div class="content" [attr.id]="'container@' + page + '_swiper_@' + ID">
+			<ion-slide *ngFor="let page of pages; let i = index">
+				<div 
+					class="custom-header" *ngIf="bool_data_customHeaders" [class.lower-text]="bool_data_showPager"
+					[style.background]="( arr_style_customHeaderBackgrounds[i] ? arr_style_customHeaderBackgrounds[i] : arr_style_customHeaderBackgrounds[0] )">
+					<p [ngStyle]="{
+						'color': (arr_style_customHeaderColors[i] ? arr_style_customHeaderColors[i] : arr_style_customHeaderColors[0])
+						}">{{ (customHeaders[i] ? customHeaders[i] : customHeaders[0]) }}
+					</p>
+				</div>
+				<div class="content" [attr.id]="'container@' + page + '_swiper_@' + ID" [class.custom-header-enabled]="bool_data_customHeaders" [class.show-pager-enabled]="bool_data_showPager">
 					<ng-container class="container" #container></ng-container>
 				</div>
 			</ion-slide>
