@@ -1,249 +1,247 @@
-:host{
-	ion-menu{
-		&.bigSettings .settings{
-			height: 138px;
-		}
-		.list{
-			overflow: auto;
-			height: calc(100% - 69px);
-		}
-		&.bigSettings .list{
-			height: calc(100% - 138px);
-		}
-		button{
-			background: none;
-			font-size: 16px;
-			&.btn-round{
-				top: 5px;
-			}
-			&.round{
-				border-radius: 50%;
-				line-height: 50px;
-				width: 35px;
-				height: 35px;
-				padding: 0;
-			}
-			ion-icon{
-				margin: 0;
-			}
-		}
-		.box{
-			padding: 10px 10px;
-			border-bottom: solid 1px #ccc;
-			display: block;
-			align-items: center;
-			justify-content: space-between;
-			box-sizing: border-box;
-			font-size: 14px;
-			&.disabled{
-				pointer-events: none;
-			}
-			.list .submenu{
-				max-height: 0;
-		  		overflow: hidden;
-		  		border-bottom: none;
-		  		padding: 0px 10px;
-		  		transition: all .2s ease;
-			}
-			.list .submenu ion-item{
-		    	--padding-end: 0px;
-		    	--inner-padding-end: 0px;
-		    }
-		    .show-submenu ~ .list .submenu{
-				max-height: 60px;
-				padding: 5px 10px;
-			}
-		}
-		.cdk-drag-preview {
-			box-sizing: border-box;
-			border-radius: 4px;
-			box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
-		}
-		.list.cdk-drop-list-dragging .box:not(.cdk-drag-placeholder) {
-			transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-		}
-		.cdk-drag-animating {
-			transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-		}
-		.custom-placeholder {
-			border: dotted 1px #999;
-			min-height: 60px;
-			transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-		}
-		ion-item{
-			width: 100%;
-			--padding-start: 8px;
-			padding-right: 0px;
-			--box-shadow: 0px;
-			--inner-border-width: 0px;
-			ion-label{
-				line-height: 30px;
-				margin-left: 8px;
-			}
-			button{
-				background: none;
-				font-size: 16px;
-				&.button{
-					width: 100%;
-					height: 100%;
-					display: inline-flex;
-					padding-left: 0;
-					line-height: 24px;
-					&.resize{
-						ion-label{
-							text-align: left;
-							width: calc(100% - 115px);
-							white-space: nowrap;
-							overflow: hidden;
-							text-overflow: ellipsis;
-						}
-					}
-				}
-				// edit/delete 
-				&.change-btn{
-					position: absolute;
-					width: 30px;
-					height: 30px;
-					margin: 0;
-					padding: 0;
-					border-radius: 50%;
-					box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
-					&.first{
-						right: 37px;
-					}
-					&.last{
-						right: 2px;
-					}
-					&.sub{
-						box-shadow: none;
-						ion-icon{
-							width: 100%;
-							height: 100%;
-						}
-						right: 5px;
-						&.move{
-							right: 72px;
-						}
-					}
-					ion-icon{
-						font-size: 20px;
-						&.pen{
-							color: var(--btn-blue);
-						}
-						&.trash{
-							color: var(--btn-red);
-						}
-					}
-				}
-			}
-		}
-	}
-  	ion-icon{
-  		font-size: 25px;
-  		margin-right: 8px;
-  	}
-  	.settings{
-  		position: absolute;
-  		width: 100%;
-  		height: 69px;
-  		bottom: 0;
-  		box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
-  		.box{
-  			padding: 10px 10px;
-			border-bottom: solid 1px #ccc;
-			display: block;
-			align-items: center;
-			justify-content: space-between;
-			box-sizing: border-box;
-			font-size: 14px;
-			ion-item{
-				width: 100%;
-				--padding-start: 8px;
-				padding-right: 0px;
-				--box-shadow: 0px;
-				--inner-border-width: 0px;
-				ion-label{
-					line-height: 30px;
-					margin-left: 8px;
-				}
-				button{
-					background: none;
-					font-size: 16px;
-					&.button{
-						width: 100%;
-						height: 100%;
-						display: inline-flex;
-						padding-left: 0;
-						line-height: 24px;
-					}
-				}
-			}
-			&:last-child{
-				border-bottom: none;
-			}
-  		}
-  	}
+:host {
+    ion-menu {
+        &.bigSettings .settings {
+            height: 138px;
+        }
+        .list {
+            overflow: auto;
+            height: calc(100% - 69px);
+        }
+        &.bigSettings .list {
+            height: calc(100% - 138px);
+        }
+        button {
+            background: none;
+            font-size: 16px;
+            &.btn-round {
+                top: 5px;
+            }
+            &.round {
+                border-radius: 50%;
+                line-height: 50px;
+                width: 35px;
+                height: 35px;
+                padding: 0;
+            }
+            ion-icon {
+                margin: 0;
+            }
+        }
+        .box {
+            padding: 10px 10px;
+            border-bottom: solid 1px #ccc;
+            display: block;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            font-size: 14px;
+            &.disabled {
+                pointer-events: none;
+            }
+            .list .submenu {
+                max-height: 0;
+                overflow: hidden;
+                border-bottom: none;
+                padding: 0px 10px;
+                transition: all .2s ease;
+            }
+            .list .submenu ion-item {
+                --padding-end: 0px;
+                --inner-padding-end: 0px;
+            }
+            .show-submenu~.list .submenu {
+                max-height: 60px;
+                padding: 5px 10px;
+            }
+        }
+        .cdk-drag-preview {
+            box-sizing: border-box;
+            border-radius: 4px;
+            box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+        .list.cdk-drop-list-dragging .box:not(.cdk-drag-placeholder) {
+            transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+        }
+        .cdk-drag-animating {
+            transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+        }
+        .custom-placeholder {
+            border: dotted 1px #999;
+            min-height: 60px;
+            transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+        }
+        ion-item {
+            width: 100%;
+            --padding-start: 8px;
+            padding-right: 0px;
+            --box-shadow: 0px;
+            --inner-border-width: 0px;
+            ion-label {
+                line-height: 30px;
+                margin-left: 8px;
+            }
+            button {
+                background: none;
+                font-size: 16px;
+                &.button {
+                    width: 100%;
+                    height: 100%;
+                    display: inline-flex;
+                    padding-left: 0;
+                    line-height: 24px;
+                    &.resize {
+                        ion-label {
+                            text-align: left;
+                            width: calc(100% - 115px);
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    }
+                } // edit/delete 
+                &.change-btn {
+                    position: absolute;
+                    width: 30px;
+                    height: 30px;
+                    margin: 0;
+                    padding: 0;
+                    border-radius: 50%;
+                    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+                    &.first {
+                        right: 37px;
+                    }
+                    &.last {
+                        right: 2px;
+                    }
+                    &.sub {
+                        box-shadow: none;
+                        ion-icon {
+                            width: 100%;
+                            height: 100%;
+                        }
+                        right: 5px;
+                        &.move {
+                            right: 72px;
+                        }
+                    }
+                    ion-icon {
+                        font-size: 20px;
+                        &.pen {
+                            color: var(--btn-blue);
+                        }
+                        &.trash {
+                            color: var(--btn-red);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ion-icon {
+        font-size: 25px;
+        margin-right: 8px;
+    }
+    .settings {
+        position: absolute;
+        width: 100%;
+        height: 69px;
+        bottom: 0;
+        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
+        .box {
+            padding: 10px 10px;
+            border-bottom: solid 1px #ccc;
+            display: block;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            font-size: 14px;
+            ion-item {
+                width: 100%;
+                --padding-start: 8px;
+                padding-right: 0px;
+                --box-shadow: 0px;
+                --inner-border-width: 0px;
+                ion-label {
+                    line-height: 30px;
+                    margin-left: 8px;
+                }
+                button {
+                    background: none;
+                    font-size: 16px;
+                    &.button {
+                        width: 100%;
+                        height: 100%;
+                        display: inline-flex;
+                        padding-left: 0;
+                        line-height: 24px;
+                    }
+                }
+            }
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
 }
 // Preview while drag style
-.cdk-drag-preview{
-	ion-icon.less-margin{
-  		font-size: 25px;
-  		margin-right: 8px;
-  	}
-	button{
-		background: none;
-		font-size: 16px;
-		&.button{
-			width: 100%;
-			height: 100%;
-			display: inline-flex;
-			padding-left: 0;
-			line-height: 24px;
-			&.resize{
-				ion-label{
-					text-align: left;
-					width: calc(100% - 115px);
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-				}
-			}
-		}
-		// edit/delete 
-				&.change-btn{
-					position: absolute;
-					width: 30px;
-					height: 30px;
-					margin: 0px !important;
-					padding: 0;
-					border-radius: 50%;
-					box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
-					&.first{
-						right: 37px;
-					}
-					&.last{
-						right: 2px;
-					}
-					&.sub{
-						box-shadow: none;
-						ion-icon{
-							width: 100%;
-							height: 100%;
-						}
-						right: 5px;
-						&.move{
-							right: 72px;
-						}
-					}
-					ion-icon{
-						font-size: 20px;
-						&.pen{
-							color: var(--btn-blue);
-						}
-						&.trash{
-							color: var(--btn-red);
-						}
-					}
-				}
-	}
+.cdk-drag-preview {
+    ion-icon.less-margin {
+        font-size: 25px;
+        margin-right: 8px;
+    }
+    button {
+        background: none;
+        font-size: 16px;
+        &.button {
+            width: 100%;
+            height: 100%;
+            display: inline-flex;
+            padding-left: 0;
+            line-height: 24px;
+            &.resize {
+                ion-label {
+                    text-align: left;
+                    width: calc(100% - 115px);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        } // edit/delete 
+        &.change-btn {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            margin: 0px !important;
+            padding: 0;
+            border-radius: 50%;
+            box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+            &.first {
+                right: 37px;
+            }
+            &.last {
+                right: 2px;
+            }
+            &.sub {
+                box-shadow: none;
+                ion-icon {
+                    width: 100%;
+                    height: 100%;
+                }
+                right: 5px;
+                &.move {
+                    right: 72px;
+                }
+            }
+            ion-icon {
+                font-size: 20px;
+                &.pen {
+                    color: var(--btn-blue);
+                }
+                &.trash {
+                    color: var(--btn-red);
+                }
+            }
+        }
+    }
 }
