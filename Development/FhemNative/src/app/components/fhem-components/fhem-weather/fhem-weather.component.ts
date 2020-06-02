@@ -2,6 +2,9 @@ import { Component, Input, NgModule, OnInit, OnDestroy, ElementRef } from '@angu
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
+// Drag and Drop
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import * as d3 from 'd3';
 
 // Components
@@ -22,6 +25,7 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
   	styleUrls: ['../fhem-chart/fhem-chart.component.scss']
 })
 export class FhemWeatherComponent implements OnInit, OnDestroy {
+
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -45,7 +49,7 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 	@Input() arr_data_readings: string[] = [];
 	@Input() arr_data_chartTypes: string[] = [];
 	@Input() arr_data_forAxis: string[] = [];
-	@Input() arr_data_colors: string[] = [];
+	@Input() arr_data_colors: any = [];
 	@Input() arr_data_displayLabels: boolean[] = [];
 	@Input() arr_data_labelExtensions: string[] = [];
 
@@ -131,7 +135,13 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 	// load the additional component information
 	private loadCustomInputs(){
 		// load the additional information
-		this.componentLoader.assignCustomInputData(this.ID, 'Weather').then((customInputs)=>{
+		this.componentLoader.assignCustomInputData(this.ID, 'Weather').then((customInputs: any)=>{
+			// assign colors as array
+			customInputs.arr_data_colors.forEach((color, index: number)=>{
+				if(typeof color === 'string'){
+					customInputs.arr_data_colors[index] = color.split(',');
+				}
+			});
 			this.customInputs = customInputs;
 			// check if there is relevant information already defined
 			if(this.arr_data_readings.length > 0){
@@ -223,7 +233,7 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 		this.arr_data_chartTypes.push(this.chartTypes[0]);
 		this.arr_data_forAxis.push('left');
 		this.arr_data_readings.push(this.readings[0]);
-		this.arr_data_colors.push('#14a9d5');
+		this.arr_data_colors.push(['#14a9d5']);
 		this.arr_data_displayLabels.push(true);
 		this.arr_data_labelExtensions.push(this.labelEndings[0]);
 	}
@@ -256,6 +266,36 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 			// reload attributes
 			this.loadCustomInputs();
 		}
+	}
+
+	// drag start
+	onDragStart(){
+		// remove unfold items
+		this.arr_data_chartTypes.forEach((item: string, index: number)=>{
+			const elem: HTMLElement = this.ref.nativeElement.querySelector('#config-data-' + index);
+			elem.classList.remove('unfold');
+		});
+	}
+
+	// reorder graphs
+	reorderGraphs(event: CdkDragDrop<string[]>){
+		if(event.previousIndex !== event.currentIndex){
+			// move items
+			moveItemInArray(this.arr_data_chartTypes, event.previousIndex, event.currentIndex);
+			moveItemInArray(this.arr_data_forAxis, event.previousIndex, event.currentIndex);
+			moveItemInArray(this.arr_data_readings, event.previousIndex, event.currentIndex);
+			moveItemInArray(this.arr_data_colors, event.previousIndex, event.currentIndex);
+			moveItemInArray(this.arr_data_displayLabels, event.previousIndex, event.currentIndex);
+			moveItemInArray(this.arr_data_labelExtensions, event.previousIndex, event.currentIndex);
+			// reload attributes
+			this.loadCustomInputs();
+		}
+	}
+
+	// unfold/fold
+	unfoldItem(index: number){
+		const elem: HTMLElement = this.ref.nativeElement.querySelector('#config-data-' + index);
+		elem.classList.toggle('unfold');
 	}
 
 	// CHARTS PART
@@ -513,8 +553,8 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 	private getSize(el) {
     	const elem = this.ref.nativeElement.querySelector(el);
     	return {
-    	  	width: (this.width) ? parseInt(this.width) : elem.clientWidth,
-    	  	height: (this.height) ? parseInt(this.height) : elem.clientHeight
+    	  	width: elem.clientWidth > 0 ? elem.clientWidth : parseInt(this.width),
+    	  	height: elem.clientHeight > 0 ? elem.clientHeight : parseInt(this.height)
     	};
   	}
 
@@ -544,19 +584,52 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
   			.text(d=> Math.round(d.value) + this.arr_data_labelExtensions[index]);   
   	}
 
+  	// color getter
+  	private getColor(index: number){
+  		let colors: string|string[] = this.arr_data_colors[index];
+  		let res;
+  		if(Array.isArray(colors)){
+  			// UID for svg gradient
+  			const UID: string = '_' + Math.random().toString(36).substr(2, 9);
+
+  			let gradient = this.svg.select('defs')
+				.append('svg:linearGradient')
+				.attr("id", UID)
+				.attr("x1", "0%")
+				.attr("y1", "0%")
+				.attr("x2", "0%")
+				.attr("y2", "100%")
+				.attr("spreadMethod", "pad");
+
+			const p = 100 / colors.length;
+
+			colors.forEach((color: string, index: number)=>{
+				const offset: string = (index === colors.length -1) ? '100%' : (index * p) + '%';
+				gradient.append("svg:stop")
+					.attr("offset", offset)
+					.attr("stop-color", color)
+					.attr("stop-opacity", 1);
+			});
+			res = 'url(#'+UID+')';
+  		}else{
+  			res = colors;
+  		}
+  		return res;
+  	}
+
   	// create bar chart
   	private createBARchart(index: number) {
   		const axis = this.arr_data_forAxis[index];
   		const totalBarcharts = this.arr_data_chartTypes.filter(x=> x=== 'bar').length;
+  		const color = this.getColor(index);
   		
   		this.svg.select('.chart').selectAll('.g')
   			.data(this.data[index]).enter()
   			.append('rect')
   			.attr('class', 'bar')
   			.style('opacity', totalBarcharts > 1 ? 0.7 : 1.0)
-  			.style('fill', this.arr_data_colors[index])
+  			.style('fill', color)
   			.attr('x', d => this.x(d.date) - this.xBand.bandwidth() * 0.9 / 2 )
-  			// .attr('width', (this.dim.content.width / this.data[index].length) )
   			.attr('width', this.xBand.bandwidth() * 0.9 )
   				// animate
   				.attr('y',  d => this.dim.content.height)
@@ -570,6 +643,7 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
   	// line chart
   	private createLINEchart(index: number) {
   		const axis = this.arr_data_forAxis[index];
+  		const color = this.getColor(index);
 
   		const line = d3.line()
   			.x((d:any) => this.x(d.date))
@@ -586,7 +660,7 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
   			.datum(this.data[index])
       		.attr('class', 'line')
       		.attr('fill', 'none')
-      		.attr('stroke', this.arr_data_colors[index])
+      		.attr('stroke', color)
       		.attr('stroke-linejoin', 'round')
       		.attr('stroke-linecap', 'round')
       		.attr('stroke-width', 1.5)
@@ -598,14 +672,15 @@ export class FhemWeatherComponent implements OnInit, OnDestroy {
 
   	private createAREAchart(index: number) {
   		const axis = this.arr_data_forAxis[index];
+  		const color = this.getColor(index);
 
   		this.svg.select('.chart')
   			.append('path')
   			.datum(this.data[index])
   			.attr('class', 'area')
-			.attr('fill', this.arr_data_colors[index])
+			.attr('fill', color)
 			.attr('fill-opacity', '0.7')
-			.attr('stroke', this.arr_data_colors[index])
+			.attr('stroke', color)
 			.attr('stroke-width', 1.5)
 				.attr('d', d3.area()
 					.x((d:any) => this.x(d.date))

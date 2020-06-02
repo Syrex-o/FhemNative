@@ -35,13 +35,21 @@
 				<!-- Graph config -->
 				<div class="page" *ngIf="readings">
 					<h2 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'COMPONENTS.Chart.TRANSLATOR.SELECT_DATA' | translate}}</h2>
-					<div class="config-container">
-						<div class="config-data" *ngFor="let chartType of arr_data_chartTypes; let i = index">
+					<div class="config-container" cdkDropList (cdkDropListDropped)="reorderGraphs($event)">
+						<div id="config-data-{{i}}" class="config-data unfold" cdkDrag (cdkDragStarted)="onDragStart()" *ngFor="let chartType of arr_data_chartTypes; let i = index">
+							<!-- Fold/Unfold -->
+							<div class="select-container fixed-height" cdkDragHandle matRipple [matRippleColor]="'#d4d4d480'" (click)="unfoldItem(i)">
+								<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ (i + 1) + ': ' + arr_data_readings[i] }}</p>
+								<button class="btn">
+									<ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" name="triangle"></ion-icon>
+								</button>
+							</div>
 							<!-- select reading -->
 							<div class="select-container">
 								<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'COMPONENTS.Chart.TRANSLATOR.ADD.SELECT_READING' | translate}}</p>
 								<selector class="select"
 									[items]="readings"
+									[addNewItems]="false"
 									[(ngModel)]="arr_data_readings[i]">
 								</selector>
 							</div>
@@ -51,6 +59,7 @@
 								<!-- Assign chart types based on combination levels -->
 								<selector class="select"
 									[items]="chartTypes"
+									[searchable]="false"
 									[(ngModel)]="arr_data_chartTypes[i]">
 								</selector>
 							</div>
@@ -59,6 +68,7 @@
 								<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'COMPONENTS.Chart.TRANSLATOR.ADD.SELECT_AXIS' | translate}}</p>
 								<selector
 									class="select"
+									[searchable]="false"
 									[items]="['left', 'right']"
 									[(ngModel)]="arr_data_forAxis[i]">
 								</selector>
@@ -89,6 +99,7 @@
 								<selector
 									class="select"
 									[items]="settings.componentColors"
+									[multiple]="true"
 									[(ngModel)]="arr_data_colors[i]">
 									<ng-template let-item="item" let-index="index">
 										<span class="color" [style.background]="item"></span>
@@ -125,7 +136,7 @@
 					<h2 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'COMPONENTS.Chart.TRANSLATOR.AXIS.HEADER' | translate}}</h2>
 					<div class="config-container no-border">
 						<!-- Y Axis -->
-						<div class="config-data">
+						<div class="config-data unfold">
 							<h2 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'COMPONENTS.Chart.TRANSLATOR.AXIS.Y.HEADER' | translate}}</h2>
 							<!-- Y Left Min -->
 							<div class="select-container inp">
