@@ -2,8 +2,8 @@
 	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}" 
 	[fhemDevice]="fhemDevice"
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
-	[minimumWidth]="arr_data_orientation[0] === 'horizontal' ? 200 : 30"
-	[minimumHeight]="arr_data_orientation[0] === 'horizontal' ? 30 : 200">
+	[minimumWidth]="minX"
+	[minimumHeight]="minY">
 	<div class="slider">
 		<!-- Basic slider -->
 		<ng-container *ngIf="arr_data_style[0] === 'slider' || arr_data_style[0] === 'NM-slider'">
@@ -43,7 +43,7 @@
 		</ng-container>
 		<!-- Tick Slider -->
 		<ng-container *ngIf="arr_data_style[0] === 'tick-slider' || arr_data_style[0] === 'NM-tick-slider'">
-			<div class="slider-container tick-slider slider-four NM-tick-slider {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]">
+			<div class="slider-container tick-slider slider-four {{arr_data_style[0]}} {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]">
 				<div class="tick-slider-slide-container drag-item slider-four"
 					[ngStyle]="{
 						'background': style_backgroundColor,
@@ -81,6 +81,35 @@
 						}">
 					</span>
 				</div>
+			</div>
+		</ng-container>
+		<!-- Tick slider inline -->
+		<ng-container *ngIf="arr_data_style[0] === 'tick-slider-inline'">
+			<div class="slider-container tick-slider-inline slider-five {{arr_data_style[0]}} {{settings.app.theme}}" [ngClass]="arr_data_orientation[0]">
+				<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider-five', thumb: true, pin: true}"></ng-container>
+				<div class="tick-container drag-item">
+					<span class="tick" *ngFor="let tick of data_ticks; let i = index"
+						[ngStyle]="{
+							'left': arr_data_orientation[0] === 'horizontal' ?
+								( styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'initial',
+							'right': arr_data_orientation[0] === 'horizontal' ?
+								( !styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'0px',
+							'bottom': arr_data_orientation[0] === 'vertical' ?
+								( styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'0px',
+							'top': arr_data_orientation[0] === 'vertical' ?
+								( !styles.minMax ? 'initial' : ((100 / (data_ticks.length - 1)) * tick) + '%' ) :
+								'0px',
+							'background': styles.move >= ((100 / (data_ticks.length - 1)) * tick) ? style_tickColor : style_backgroundColor,
+							'height': arr_data_orientation[0] === 'horizontal' ? ((i % 3 != 0) ? '100%' : '80%' ) : '2px',
+							'width': arr_data_orientation[0] === 'vertical' ? ((i % 3 != 0) ? '100%' : '80%' ) : '2px',
+							'transform': (i % 3 === 0) ? ( arr_data_orientation[0] === 'vertical' ? 'translateX(-10%)' : 'translateY(10%)') : 'translate(0,0)'
+						}">
+					</span>
+				</div>
+
 			</div>
 		</ng-container>
 	</div>

@@ -59,6 +59,10 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
+	// minimal width/height properties based on different styles
+	minX: number = 200;
+	minY: number = 30;
+
 	fhemDevice: any;
 	private waitForThreshold = 0;
 
@@ -204,6 +208,23 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 
 				// icon style
 				this.styles.baseIconStyle = {top: '8px'};
+			}
+		}
+		// set width/height
+		if(this.arr_data_orientation[0] === 'horizontal'){
+			this.minX = 200;
+			this.minY = 30;
+			// different styles
+			if(this.arr_data_style[0].match(/(tick-slider-inline)/g)){
+				this.minY = 15;
+			}
+		}
+		if(this.arr_data_orientation[0] === 'vertical'){
+			this.minX = 30;
+			this.minY = 200;
+			// different styles
+			if(this.arr_data_style[0].match(/(tick-slider-inline)/g)){
+				this.minX = 15;
 			}
 		}
 	}
@@ -367,7 +388,7 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 				{variable: 'data_labelExtension', default: ''},
 				{variable: 'data_min', default: '0'},
 				{variable: 'data_max', default: '100'},
-				{variable: 'arr_data_style', default: 'slider,box,ios-slider,tick-slider,NM-slider,NM-IN-box,NM-OUT-box,NM-IN-ios-slider,NM-OUT-ios-slider,NM-tick-slider'},
+				{variable: 'arr_data_style', default: 'slider,box,ios-slider,tick-slider,tick-slider-inline,NM-slider,NM-IN-box,NM-OUT-box,NM-IN-ios-slider,NM-OUT-ios-slider,NM-tick-slider'},
 				{variable: 'arr_data_orientation', default: 'horizontal,vertical'},
 				{variable: 'data_sliderHeight', default: '5'},
 				{variable: 'data_thumbWidth', default: '25'},
@@ -387,10 +408,11 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 				{variable: 'icon_sliderIcon', default: 'lightbulb'}
 			],
 			dependencies:{
-				data_ticks: { dependOn: 'arr_data_style', value: ['tick-slider','NM-tick-slider'] },
-				style_tickColor: { dependOn: 'arr_data_style', value: ['tick-slider','NM-tick-slider'] },
+				data_ticks: { dependOn: 'arr_data_style', value: ['tick-slider', 'tick-slider-inline', 'NM-tick-slider'] },
+				style_tickColor: { dependOn: 'arr_data_style', value: ['tick-slider', 'tick-slider-inline', 'NM-tick-slider'] },
 				data_threshold: { dependOn: 'bool_data_updateOnMove', value: true },
 				icon_sliderIcon: { dependOn: 'arr_data_style', value: ['ios-slider', 'NM-IN-ios-slider', 'NM-OUT-ios-slider'] },
+				style_iconColor: { dependOn: 'arr_data_style', value: ['ios-slider', 'NM-IN-ios-slider', 'NM-OUT-ios-slider'] },
 				style_thumbValueColor: { dependOn: 'bool_data_showValueInThumb', value: true }
 			},
 			dimensions: {minX: 200, minY: 30}
