@@ -34,6 +34,10 @@
 		{
 			"from": "src/assets/sounds/",
 			"to": "assets/sounds"
+		},
+		{
+			"from": "src/assets/img/",
+			"to": "assets/img"
 		}
 	],
 	"win": {
