@@ -378,6 +378,33 @@
       			{"TYPE": "FIX", "CHANGE": "remove component creation Menu after close --> previously was still in view"},
       			{"TYPE": "FIX", "CHANGE": "Copy component from room to room while editing --> no moving"}
       		]
+      	},
+      	{
+      		"VERSION": "2.5.2",
+      		"DATE": "02.06.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "New Slider style (tick-slider-inline)"},
+      			{"TYPE": "NEW", "CHANGE": "Chart/Weather can handle multiple colors"},
+      			{"TYPE": "NEW", "CHANGE": "Chart/Weather readings can be reordered"},
+      			{"TYPE": "NEW", "CHANGE": "Label Font Style (B/I)"},
+      			{"TYPE": "NEW", "CHANGE": "Swiper pager colors"},
+      			{"TYPE": "NEW", "CHANGE": "Icon min max colors"},
+      			{"TYPE": "NEW", "CHANGE": "default images in image component"},
+      			{"TYPE": "NEW", "CHANGE": "custom headers in swiper"},
+      			{"TYPE": "FIX", "CHANGE": "Changelog display change detection"},
+      			{"TYPE": "FIX", "CHANGE": "Label Fix 0 Reading"},
+      			{"TYPE": "FIX", "CHANGE": "Slider horizontal value center in thumb"},
+      			{"TYPE": "FIX", "CHANGE": "Label Fix 0 Reading"},
+      			{"TYPE": "FIX", "CHANGE": "Popup in Swiper position"},
+      			{"TYPE": "FIX", "CHANGE": "Color Picker canvas position in Swiper"},
+      			{"TYPE": "FIX", "CHANGE": "Slider thumb value position in Swiper"},
+      			{"TYPE": "FIX", "CHANGE": "Slider thumb value center position"},
+      			{"TYPE": "FIX", "CHANGE": "Select creation size adjustment, to fit container"},
+      			{"TYPE": "FIX", "CHANGE": "label line spacing"},
+      			{"TYPE": "FIX", "CHANGE": "change detection bug in create/edit component"},
+      			{"TYPE": "FIX", "CHANGE": "outside click directive"},
+      			{"TYPE": "DEL", "CHANGE": "Removed ChangeDetection OnPush from tasks"}
+      		]
       	}
 	]
 }

@@ -661,6 +661,14 @@
 					"name": "Get off",
 					"info": "Status des Readings im OFF Zustand"
 				},
+				"data_min":{
+					"name": "Min Wert",
+					"info": "Minimal Wert (falls benötigt für Min Farbe)"
+				},
+				"data_max":{
+					"name": "Max Wert",
+					"info": "Maximal Wert (falls benötigt für Max Farbe)"
+				},
 				"icon_iconOn":{
 					"name": "Icon on",
 					"info": "Icon im ON Zustand"
@@ -688,6 +696,14 @@
 				"bool_data_showIndocator":{
 					"name": "Indikator anzeigen/nicht anzeigen",
 					"info": "Indikator für seperates Reading anzeigen/ nicht anzeigen"
+				},
+				"style_minColor":{
+					"name": "Min Farbe",
+					"info": "Farbe für < Min Wert"
+				},
+				"style_maxColor":{
+					"name": "Max Farbe",
+					"info": "Farbe für > Max Wert"
 				}
 			}
 		},
@@ -711,9 +727,17 @@
 					"name": "Updateinterval",
 					"info": "Bild Updateinterval (in Kombination mit keinem Cache)"
 				},
+				"arr_data_defaultImage":{
+					"name": "Standard Bild",
+					"info": "Standard Bild, wenn kein Bild oder URL vorliegt"
+				},
 				"bool_data_cache":{
 					"name": "Cache",
 					"info": "Aktivieren/deaktivieren des cachen von Bildern"
+				},
+				"bool_data_defaultImage":{
+					"name": "Standard Bild verwenden",
+					"info": "Standard Bild verwenden aktivieren/deaktivieren"
 				}
 			},
 			"TRANSLATOR":{
@@ -781,6 +805,10 @@
 				"arr_data_textAlign":{
 					"name": "Text-Ausrichtung",
 					"info": "Ausrichtung des Label-Text"
+				},
+				"arr_data_textStyle":{
+					"name": "Text-Style",
+					"info": "Text-Style des Labels"
 				},
 				"style_color":{
 					"name": "Farbe",
@@ -1391,6 +1419,10 @@
 					"name": "Rand-Radius",
 					"info": "Radius vom Rand des Swipers"
 				},
+				"data_customHeaders":{
+					"name": "Custom Kopfzeilen Labels",
+					"info": "Komma-separierte Liste der custom Kopfzeilen Labels"
+				},
 				"bool_data_showBorder":{
 					"name": "Rand anzeigen",
 					"info": "Anzeigen/nicht anzeigen des Rands"
@@ -1398,6 +1430,10 @@
 				"bool_data_showPager":{
 					"name": "Seiten-Indikator",
 					"info": "Anzeigen/nicht anzeigen des Seiten-Indikators"
+				},
+				"bool_data_customHeaders":{
+					"name": "Custom Kopfzeilen",
+					"info": "Custom Kopfzeilen aktivieren/deaktivieren"
 				},
 				"arr_data_orientation":{
 					"name": "Orientierung",
@@ -1414,6 +1450,22 @@
 				"style_backgroundColor":{
 					"name": "Hintergrundfarbe",
 					"info": "Hintergrundfarbe der Swiper-Seiten"
+				},
+				"style_pagerOffColor":{
+					"name": "Seiten-Indikator Off-Farbe",
+					"info": "Off-Farbe des Seiten-Indikators"
+				},
+				"style_pagerOnColor":{
+					"name": "Seiten-Indikator On-Farbe",
+					"info": "On-Farbe des Seiten-Indikators"
+				},
+				"arr_style_customHeaderBackgrounds":{
+					"name": "Custom Kopfzeilen Hintergründe",
+					"info": "Hintergrundfarben der custom Kopfzeilen"
+				},
+				"arr_style_customHeaderColors":{
+					"name": "Custom Kopfzeilen Farben",
+					"info": "Farben der custom Kopfzeilen"
 				}
 			}
 		},

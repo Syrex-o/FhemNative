@@ -673,6 +673,14 @@
 					"name": "Get off",
 					"info": "State of the reading in OFF state"
 				},
+				"data_min":{
+					"name": "Min value",
+					"info": "Minimal value (if needed for min color)"
+				},
+				"data_max":{
+					"name": "Max value",
+					"info": "Maximal value (if needed for max color)"
+				},
 				"icon_iconOn":{
 					"name": "Icon on",
 					"info": "Desired Icon for ON state"
@@ -700,6 +708,14 @@
 				"bool_data_showIndocator":{
 					"name": "Show/hide indicator",
 					"info": "Show/hide indicator for seperate reading"
+				},
+				"style_minColor":{
+					"name": "Min color",
+					"info": "color for < min value"
+				},
+				"style_maxColor":{
+					"name": "Max color",
+					"info": "Color for > max value"
 				}
 			}
 		},
@@ -723,9 +739,17 @@
 					"name": "Update interval",
 					"info": "Image update interval in seconds (in combination with no cache)"
 				},
+				"arr_data_defaultImage":{
+					"name": "Defauult image",
+					"info": "Default image that should be used, if no URL is present"
+				},
 				"bool_data_cache":{
 					"name": "Cache",
 					"info": "Enable/Disable to cache images"
+				},
+				"bool_data_defaultImage":{
+					"name": "Use default image",
+					"info": "Enabe/disable to use default image"
 				}
 			},
 			"TRANSLATOR":{
@@ -793,6 +817,10 @@
 				"arr_data_textAlign":{
 					"name": "Text align",
 					"info": "Alignment of the label text"
+				},
+				"arr_data_textStyle":{
+					"name": "Text-Style",
+					"info": "Text-Style of the label"
 				},
 				"style_color":{
 					"name": "Color",
@@ -1399,6 +1427,10 @@
 					"name": "Border radius",
 					"info": "Border Radius of the Swiper"
 				},
+				"data_customHeaders":{
+					"name": "Custom header labels",
+					"info": "Comma seperated list of custom header labels"
+				},
 				"bool_data_showBorder":{
 					"name": "Show border",
 					"info": "Show/hide swiper border"
@@ -1406,6 +1438,10 @@
 				"bool_data_showPager":{
 					"name": "Show pager",
 					"info": "Show/hide swiper page indicator"
+				},
+				"bool_data_customHeaders":{
+					"name": "Custom headers",
+					"info": "Activate/deactivate custom headers"
 				},
 				"arr_data_orientation":{
 					"name": "Orientation",
@@ -1422,6 +1458,22 @@
 				"style_backgroundColor":{
 					"name": "Background color",
 					"info": "Content background color"
+				},
+				"style_pagerOffColor":{
+					"name": "Pager Off color",
+					"info": "Off color of the pager"
+				},
+				"style_pagerOnColor":{
+					"name": "Pager On color",
+					"info": "On color of the pager"
+				},
+				"arr_style_customHeaderBackgrounds":{
+					"name": "Custom header backgrounds",
+					"info": "Background colors of the custom headers"
+				},
+				"arr_style_customHeaderColors":{
+					"name": "Custom header colors",
+					"info": "Colors of the custom headers"
 				}
 			}
 		},

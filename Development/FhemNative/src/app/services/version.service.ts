@@ -16,7 +16,7 @@ export class VersionService {
 	// github repo
 	private repo: string = 'https://api.github.com/repos/Syrex-o/FhemNative/';
 	// current App Version
-	public appVersion: string = '2.5.1';
+	public appVersion: string = '2.5.2';
 
 	constructor(
 		private http: HttpClient,
@@ -35,10 +35,10 @@ export class VersionService {
 		const checkRepo = this.http.get(this.repo + 'releases').subscribe((releases:any)=>{
 			checkRepo.unsubscribe();
 			if(releases){
-				const lastVersion = parseInt(releases[releases.length -1].tag_name.match(/\d+/g).join(''));
+				const lastVersion = parseInt(releases[0].tag_name.match(/\d+/g).join(''));
 				const currentVersion = parseInt(this.appVersion.match(/\d+/g).join(''));
 				if(lastVersion > currentVersion){
-					const assets: Array<any> = releases[releases.length -1].assets;
+					const assets: Array<any> = releases[0].assets;
 					let relevant: {os: string, obj: any};
 					console.log(assets);
 					// check operating systems
