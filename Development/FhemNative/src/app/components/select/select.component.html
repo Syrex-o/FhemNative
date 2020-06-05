@@ -1,7 +1,17 @@
 <div 
 	colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
 	outside-click (onOutsideClick)="closeMenu()"
-	class="select-container" [class.open]="opened" [class.full-height]="fullHeight">
+	class="select-container" 
+	[class.open]="opened" 
+	[class.full-height]="fullHeight"
+	[class.single-selection]="singleSelection"
+	[ngStyle]="{
+		'border-top-left-radius.px': borderRadius.top_left,
+		'border-top-right-radius.px': borderRadius.top_right,
+		'border-bottom-left-radius.px': borderRadius.bottom_left,
+		'border-bottom-right-radius.px': borderRadius.bottom_right,
+		'border': '1px solid ' + borderColor
+	}">
 	<div class="select-value-container">
 		<div class="selection-container">
 			<div *ngIf="selected.length === 0 && placeholder" colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="placeholder shorten">{{placeholder}}</div>
@@ -28,9 +38,19 @@
 			<ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="select-arrow" name="triangle"></ion-icon>
 		</div>
 	</div>
-	<div @Unfold class="select-item-container" *ngIf="opened" colorizer [theme]="settings.app.theme" [style]="['background', 'primary']">
+	<div @Unfold 
+		class="select-item-container" 
+		*ngIf="opened" colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
+		[ngStyle]="{
+			'border': '1px solid ' + borderColor
+		}">
 		<ng-container *ngFor="let item of _items; let i = index;">
-			<div class="item" matRipple [matRippleColor]="'#d4d4d480'" colorizer [theme]="settings.app.theme" [style]="['color', 'text']" (click)="selectItem(item, i)">
+			<div class="item" matRipple [matRippleColor]="'#d4d4d480'" 
+				colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
+				[ngStyle]="{
+					'border-bottom': '1px solid ' + borderColor
+				}"
+				(click)="selectItem(item, i)">
 				<ng-template *ngIf="templateRef" [ngTemplateOutlet]="templateRef" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
 				<ng-template *ngIf="!templateRef" [ngTemplateOutlet]="DEFAULT_ITEM" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
 			</div>

@@ -10,7 +10,13 @@
 			[fullHeight]="true"
 			[items]="alias.length > 0 ? alias : items"
 			[searchable]="false"
+			[singleSelection]="true"
 			[(ngModel)]="selected"
+			[borderRadius]="bool_data_customBorder ? 
+				{top_left: data_borderRadiusTopLeft, top_right: data_borderRadiusTopRight, bottom_left: data_borderRadiusBottomLeft, bottom_right: data_borderRadiusBottomRight} : 
+				{top_left: data_borderRadius, top_right: data_borderRadius, bottom_left: data_borderRadius, bottom_right: data_borderRadius}
+			"
+			[borderColor]="style_borderColor"
 			(onValueChange)="changeSelection($event)">
 		</selector>
 	</div>

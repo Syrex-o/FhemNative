@@ -24,8 +24,17 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 	@Input() data_seperator: string;
 	@Input() data_items: string;
     @Input() data_alias: string;
-
     @Input() data_placehoder: string;
+
+    @Input() data_borderRadius: string;
+	@Input() data_borderRadiusTopLeft: string;
+	@Input() data_borderRadiusTopRight: string;
+	@Input() data_borderRadiusBottomLeft: string;
+	@Input() data_borderRadiusBottomRight: string;
+
+	@Input() bool_data_customBorder: boolean;
+
+	@Input() style_borderColor: string;
 
 	// position information
 	@Input() width: string;
@@ -125,8 +134,22 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 				{variable: 'data_seperator', default: ','},
 				{variable: 'data_items', default: ''},
 				{variable: 'data_alias', default: ''},
-				{variable: 'data_placehoder', default: ''}
+				{variable: 'data_placehoder', default: ''},
+				{variable: 'data_borderRadius', default: '5'},
+				{variable: 'data_borderRadiusTopLeft', default: '5'},
+				{variable: 'data_borderRadiusTopRight', default: '5'},
+				{variable: 'data_borderRadiusBottomLeft', default: '5'},
+				{variable: 'data_borderRadiusBottomRight', default: '5'},
+				{variable: 'bool_data_customBorder', default: false},
+				{variable: 'style_borderColor', default: '#565656'}
 			],
+			dependencies: {
+				data_borderRadius: { dependOn: 'bool_data_customBorder', value: false },
+				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
+				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
+				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
+				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true }
+			},
 			dimensions: {minX: 80, minY: 30}
 		};
 	}

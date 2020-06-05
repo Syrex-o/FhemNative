@@ -32,6 +32,13 @@ export class SelectComponent implements OnInit{
 	@Input() fullHeight: boolean = false;
 	// allow to add items
 	@Input() addNewItems: boolean = true;
+	// allow single selection to remove item frame
+	@Input() singleSelection: boolean = false;
+	// custom border radius input
+	@Input() borderRadius: { [key: string]: number } = {top_left: 5, top_right: 5, bottom_left: 5, bottom_right: 5};
+	// custom border color
+	@Input() borderColor: string = '#565656';
+
 	// pass selection items
 	@Input() items:Array<any>;
 
