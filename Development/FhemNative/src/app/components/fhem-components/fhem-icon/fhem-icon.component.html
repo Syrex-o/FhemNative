@@ -4,7 +4,9 @@
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="30"
 	[minimumHeight]="30">
-	<div class="icon" [class.show-indicator]="bool_data_showIndocator && fhemDevice && fhemDevice.readings[data_indicatorReading]">
+	<div class="icon" 
+		[class.show-indicator]="bool_data_showIndocator && fhemDevice && fhemDevice.readings[data_indicatorReading]"
+		[ngClass]="arr_data_indicatorPosition[0]">
 		<span 
 			class="indicator" 
 			*ngIf="bool_data_showIndocator && fhemDevice && fhemDevice.readings[data_indicatorReading]"

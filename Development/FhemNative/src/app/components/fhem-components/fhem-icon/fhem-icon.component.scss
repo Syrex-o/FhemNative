@@ -6,13 +6,13 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
+			left: 0;
+			top: 0;
 		}
 		&.show-indicator{
 			icon{
 				width: 90%;
 				height: 90%;
-				left: 0;
-				bottom: 0;
 			}
 			.indicator{
 				position: absolute;
@@ -20,9 +20,48 @@
 				text-align: center;
 				line-height: 20px;
 	    		padding: 8px;
-	    		right: 0;
-	    		top: 0;
 	    		font-size: 15px;
+			}
+			// indicator position
+			&.top-right{
+				icon{
+					left: 0;
+					bottom: 0;
+				}
+				.indicator{
+		    		right: 0;
+		    		top: 0;
+				}
+			}
+			&.top-left{
+				icon{
+					right: 0;
+					bottom: 0;
+				}
+				.indicator{
+		    		left: 0;
+		    		top: 0;
+				}
+			}
+			&.bottom-left{
+				icon{
+					right: 0;
+					top: 0;
+				}
+				.indicator{
+		    		left: 0;
+		    		bottom: 0;
+				}
+			}
+			&.bottom-right{
+				icon{
+					left: 0;
+					top: 0;
+				}
+				.indicator{
+		    		right: 0;
+		    		bottom: 0;
+				}
 			}
 		}
 	}

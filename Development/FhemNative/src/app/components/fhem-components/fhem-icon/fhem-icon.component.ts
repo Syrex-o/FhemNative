@@ -22,6 +22,8 @@ export class FhemIconComponent implements OnInit, OnDestroy {
 	@Input() data_min: string;
 	@Input() data_max: string;
 
+	@Input() arr_data_indicatorPosition: string[];
+
 	@Input() bool_data_showIndocator: boolean;
 
 	// Icon
@@ -102,6 +104,7 @@ export class FhemIconComponent implements OnInit, OnDestroy {
 				{variable: 'data_getOff', default: 'off'},
 				{variable: 'data_min', default: ''},
 				{variable: 'data_max', default: ''},
+				{variable: 'arr_data_indicatorPosition', default: 'top-right,top-left,bottom-right,bottom-left'},
 				{variable: 'bool_data_showIndocator', default: false},
 				{variable: 'icon_iconOn', default: 'add-circle'},
 				{variable: 'icon_iconOff', default: 'add-circle'},
@@ -114,7 +117,8 @@ export class FhemIconComponent implements OnInit, OnDestroy {
 			],
 			dependencies: {
 				data_indicatorReading: { dependOn: 'bool_data_showIndocator', value: true },
-				style_indicatorColor: { dependOn: 'bool_data_showIndocator', value: true }
+				style_indicatorColor: { dependOn: 'bool_data_showIndocator', value: true },
+				arr_data_indicatorPosition: { dependOn: 'bool_data_showIndocator', value: true }
 			},
 			dimensions: {minX: 30, minY: 30}
 		};
