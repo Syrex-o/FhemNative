@@ -58,7 +58,8 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 	}
 
 	private updateImageData(src: string){
-		if(src !== ''){
+		// (-) for none readings (list could be extended)
+		if(src !== '' && src !== '-'){
 			// build interval
 			if(!this.bool_data_cache){
 				if(this.interval){
