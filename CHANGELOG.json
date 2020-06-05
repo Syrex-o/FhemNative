@@ -405,6 +405,20 @@
       			{"TYPE": "FIX", "CHANGE": "outside click directive"},
       			{"TYPE": "DEL", "CHANGE": "Removed ChangeDetection OnPush from tasks"}
       		]
+      	},
+      	{
+      		"VERSION": "2.5.3",
+      		"DATE": "05.06.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Select Styles (custom borders/border colors)"},
+      			{"TYPE": "NEW", "CHANGE": "More icons"},
+      			{"TYPE": "NEW", "CHANGE": "Icon indicator custom position"},
+      			{"TYPE": "NEW", "CHANGE": "Get commands via single connection (closed after time or feedback)"},
+      			{"TYPE": "FIX", "CHANGE": "Select position of unfold list"},
+      			{"TYPE": "FIX", "CHANGE": "Iframe in swiper position"},
+      			{"TYPE": "FIX", "CHANGE": "Icon in swiper position"},
+      			{"TYPE": "FIX", "CHANGE": "Chart Time selection unfold overlap"}
+      		]
       	}
 	]
 }
