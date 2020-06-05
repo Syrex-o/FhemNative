@@ -94,6 +94,9 @@
                         &.unfold {
                             height: auto;
                             overflow: auto;
+                            &.enable-overflow{
+                                overflow: unset;
+                            }
                             .btn ion-icon{
                             	transform: rotate(0);
                             }
