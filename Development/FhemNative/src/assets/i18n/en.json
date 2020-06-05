@@ -681,6 +681,10 @@
 					"name": "Max value",
 					"info": "Maximal value (if needed for max color)"
 				},
+				"arr_data_indicatorPosition":{
+					"name": "Indicator position",
+					"info": "Position of the indicator"
+				},
 				"icon_iconOn":{
 					"name": "Icon on",
 					"info": "Desired Icon for ON state"
@@ -1142,7 +1146,36 @@
 				"data_placehoder":{
 					"name": "Placeholder",
 					"info": "Placeholder. if no current value is available"
+				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border radius of the select-box"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the select-box top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the select-box top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the select-box bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the select-box bottom right"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
+				},
+				"style_borderColor":{
+					"name": "Border color",
+					"info": "Border color of the select-box"
 				}
+
 			},
 			"TRANSLATOR":{
 				"NO_ITEMS": "No items found",

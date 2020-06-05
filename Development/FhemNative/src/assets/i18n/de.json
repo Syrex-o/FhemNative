@@ -669,6 +669,10 @@
 					"name": "Max Wert",
 					"info": "Maximal Wert (falls benötigt für Max Farbe)"
 				},
+				"arr_data_indicatorPosition":{
+					"name": "Indikator Position",
+					"info": "Position des Indicators"
+				},
 				"icon_iconOn":{
 					"name": "Icon on",
 					"info": "Icon im ON Zustand"
@@ -1134,7 +1138,36 @@
 				"data_placehoder":{
 					"name": "Platzhalter",
 					"info": "Platzhalter, falls kein aktueller Zustand verfügbar ist"
+				},
+				"data_borderRadius":{
+					"name": "Rand-Radius",
+					"info": "Radius vom Rand der Select-Box"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand der Select-Box oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand der Select-Box oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand der Select-Box unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand der Select-Box unten rechts"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
+				},
+				"style_borderColor":{
+					"name": "Randfarbe",
+					"info": "Randfarbe der Select-Box"
 				}
+
 			},
 			"TRANSLATOR":{
 				"NO_ITEMS": "Keine Elemente gefunden",
