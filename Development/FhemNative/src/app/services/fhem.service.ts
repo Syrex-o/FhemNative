@@ -89,19 +89,19 @@ export class FhemService {
 			if (!toasterDevices.includes(device.device)) {
 				toasterDevices.push(device.device);
 				if (!timerRuns) {
-	      			timerRuns = true;
-	      			setTimeout(() => {
-	      				if (toasterDevices.length > 0) {
-	      					this.toast.addToast(
-	      						this.translate.instant('GENERAL.FHEM.TITLE'),
-	      						this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + toasterDevices.join(', '),
-	      						'info'
-	      					);
-	      				}
-	      				toasterDevices = [];
-	      				timerRuns = false;
-	      			}, 300);
-	      		}
+					timerRuns = true;
+					setTimeout(() => {
+						if (toasterDevices.length > 0) {
+							this.toast.addToast(
+								this.translate.instant('GENERAL.FHEM.TITLE'),
+								this.translate.instant('GENERAL.FHEM.DEVICE_UPDATE') + toasterDevices.join(', '),
+								'info'
+							);
+						}
+						toasterDevices = [];
+						timerRuns = false;
+					}, 300);
+				}
 			}
 		});
 	}
@@ -115,6 +115,21 @@ export class FhemService {
 	// get the connection type
 	private connectionType(){
 		return this.settings.connectionProfiles[this.currentProfile].type.toLowerCase();
+	}
+
+	// get url for connection
+	private getConnectionURL(){
+		let url;
+		// get the desired url for fhem connection
+		const type = this.connectionType();
+		// different websocket types
+		if(type.match(/websocket|fhemweb/)){
+			url = (this.settings.connectionProfiles[this.currentProfile].WSS ? 'wss://' : 'ws://') + 
+				(this.settings.connectionProfiles[this.currentProfile].basicAuth ? this.settings.connectionProfiles[this.currentProfile].USER + ':' + this.settings.connectionProfiles[this.currentProfile].PASSW + '@' : '' ) + 
+				this.settings.connectionProfiles[this.currentProfile].IP + ':' + this.settings.connectionProfiles[this.currentProfile].PORT;
+
+			return ( type === 'websocket' ? url : url + '?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now() )	
+		}
 	}
 
 	public connectFhem(){
@@ -134,19 +149,14 @@ export class FhemService {
 			this.logger.info('Try connecting with profile:  ' + this.currentProfile);
 			// clearing device lists
 			this.devices = [];
-			let url;
+			// get url
+			const url = this.getConnectionURL();
 			// get the desired url for fhem connection
 			const type = this.connectionType();
 			
 			if(type.match(/websocket|fhemweb/)){
-				url = (this.settings.connectionProfiles[this.currentProfile].WSS ? 'wss://' : 'ws://') + 
-				(this.settings.connectionProfiles[this.currentProfile].basicAuth ? this.settings.connectionProfiles[this.currentProfile].USER + ':' + this.settings.connectionProfiles[this.currentProfile].PASSW + '@' : '' ) + 
-				this.settings.connectionProfiles[this.currentProfile].IP + ':' + this.settings.connectionProfiles[this.currentProfile].PORT;
+				this.socket = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url);
 
-				this.socket = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url + '?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now())
-			}
-
-			if (type.match(/websocket|fhemweb/)) {
 				// timeout
 				const timeout = setTimeout(()=>{
 					if(!this.connected){
@@ -258,43 +268,43 @@ export class FhemService {
 
 	// disconnect
 	public disconnect() {
-    	if(this.connected){
-    		this.socket.close();
-    		this.devices = [];
-    		this.listenDevices = [];
-    		this.currentProfile = -1;
-    		this.toast.addToast(
+		if(this.connected){
+			this.socket.close();
+			this.devices = [];
+			this.listenDevices = [];
+			this.currentProfile = -1;
+			this.toast.addToast(
 				this.translate.instant('GENERAL.FHEM.TITLE'),
 				this.translate.instant('GENERAL.FHEM.DISCONNECT'),
 				'error'
 			);
-    	}
-    }
+		}
+	}
 
 	// get the list of relevant devices
 	private getRelevantDevices(){
 		let list: string[] = [];
 
-    	if(this.settings.app.fhemDeviceLoader === 'Component'){
-    		// loop rooms for components
-	    	this.structure.getAllComponents().forEach((item)=>{
-	    		// check for devices in components
-	    		if(item.component && item.component.attributes.attr_data && item.component.attributes.attr_data.find(x=> x.attr === 'data_device')){
-	    			// device is present in component
-	    			const devices: string[] = this.seperateDevices(item.component.attributes.attr_data.find(x=> x.attr === 'data_device').value);
-	    			devices.forEach((device: string)=>{
-	    				// check if device is already in list
-	    				if(!list.includes(device)){
-	    					list.push(device);
-	    				}
-	    			});
-	    		}
-	    	});
-	    	return list.length > 0 ? '('+list.join('|')+')' : '';
-    	}else{
-    		// all devices should be loaded
-    		return '.*';
-    	}
+		if(this.settings.app.fhemDeviceLoader === 'Component'){
+			// loop rooms for components
+			this.structure.getAllComponents().forEach((item)=>{
+				// check for devices in components
+				if(item.component && item.component.attributes.attr_data && item.component.attributes.attr_data.find(x=> x.attr === 'data_device')){
+					// device is present in component
+					const devices: string[] = this.seperateDevices(item.component.attributes.attr_data.find(x=> x.attr === 'data_device').value);
+					devices.forEach((device: string)=>{
+						// check if device is already in list
+						if(!list.includes(device)){
+							list.push(device);
+						}
+					});
+				}
+			});
+			return list.length > 0 ? '('+list.join('|')+')' : '';
+		}else{
+			// all devices should be loaded
+			return '.*';
+		}
 	}
 
 	// websocket event handler
@@ -302,62 +312,40 @@ export class FhemService {
 	private websocketEvents(){
 		const type: string = this.connectionType();
 		// list of catched devices
-    	let listDevices: Array<FhemDevice> = [];
-    	const message = this.socket.onmessage = (e)=>{
-    		// initial message
-	    	let msg = e.data;
-	    	// handle external websocket
-	    	if (type === 'websocket') {
-	    		msg = JSON.parse(msg);
-	    		if (msg.type === 'listentry') {
-	    			if(msg.payload.attributes){
+		let listDevices: Array<FhemDevice> = [];
+		const message = this.socket.onmessage = (e)=>{
+			// initial message
+			let msg = e.data;
+			// handle external websocket
+			if (type === 'websocket') {
+				msg = JSON.parse(msg);
+				if (msg.type === 'listentry') {
+					if(msg.payload.attributes){
 						listDevices.push(this.deviceTransformer(msg.payload, false));
 						if(msg.payload.num === listDevices.length){
 							this.deviceListSub.next(listDevices);
 							listDevices = [];
 						}
-	    			}
-	    		}
-	    		if (msg.type === 'event') {
-	    			// device update
-	    			if(this.listenDevices.find(x=> x.device === msg.payload.name)){
-	    				// device is in listen list
-	    				this.updateListenDevice(msg.payload.name, msg.payload.changed);
-	    			}
-	    		}
-	    		if (msg.type === 'getreply') {
-	    			// get command answer
-	    			if(this.listenDevices.find(x=> x.device === msg.payload.device)){
-	    				// format the reply, for easy use
-	    				const device = msg.payload.device;
-	    				// check if value received
-	    				if(msg.payload.value){
-	    					const splitText = msg.payload.value.split(/\r\n|\r|\n/).length;
-		    				let value = [];
-		    				for (let i = 0; i < splitText; i++) {
-		    					const line = msg.payload.value.split(/\r\n|\r|\n/)[i];
-	  							if (line !== '') {
-	  								value.push(line);
-	  							}
-	  						}
-	  						this.deviceGetSub.next({
-	  							device: device,
-	  							value: value
-	  						});
-	    				}
-	    			}
-	    		}
-	    	}
-	    	// handle fhemweb
-	    	if (type === 'fhemweb') {
-	    		let lines: string[] = msg.split(/\n/).filter(s => s !== '' && s !== '[""]');
-	    		if (lines.length > 0) {
-	    			// evaluation for: get all devices
-	      			if (lines.length === 1) {
-	      				msg = JSON.parse(msg);
+					}
+				}
+				if (msg.type === 'event') {
+					// device update
+					if(this.listenDevices.find(x=> x.device === msg.payload.name)){
+						// device is in listen list
+						this.updateListenDevice(msg.payload.name, msg.payload.changed);
+					}
+				}
+			}
+			// handle fhemweb
+			if (type === 'fhemweb') {
+				let lines: string[] = msg.split(/\n/).filter(s => s !== '' && s !== '[""]');
+				if (lines.length > 0) {
+					// evaluation for: get all devices
+					if (lines.length === 1) {
+						msg = JSON.parse(msg);
 
-		    			if (this.IsJsonString(msg)) {
-		    				// normal reply
+						if (this.IsJsonString(msg)) {
+							// normal reply
 							msg = JSON.parse(msg);
 							// keep track of new devices
 							listDevices = [];
@@ -365,40 +353,25 @@ export class FhemService {
 								listDevices.push(this.deviceTransformer(result, true));
 							});
 							this.deviceListSub.next(listDevices);
-		    			}else{
-		    				// get reply
-		    				const device = msg[0].split(/\r\n|\r|\n/)[0];
-		    				const splitText = msg[0].split(/\r\n|\r|\n/).length;
-	    					let value = [];
-	    					for (let i = 0; i < splitText; i++) {
-		    					const line = msg[0].split(/\r\n|\r|\n/)[i];
-	  							if (line !== '') {
-	  								value.push(line);
-	  							}
-	  						}
-	  						this.deviceGetSub.next({
-	  							device: device,
-	  							value: value
-	  						});
-		    			}
-	      			}else{
-	      				// evaluation of changes
-	      				// device got an update
-	      				const device = JSON.parse(lines[0])[0];
-	      				const change = {};
-	      				if(this.listenDevices.find(x=> x.device === device)){
-	      					// listen to device
-	      					for (let i = 1; i < lines.length; i += 2) {
-	      						const prop = JSON.parse(lines[i])[0].match(/([^-]+(?=))$/)[0];
-	      						const value = JSON.parse(lines[i])[1];
-	      						change[prop] = value;
-	      					}
-	      					this.updateListenDevice(device, change);
-	      				}
-	      			}
-	    		}
-	    	}
-    	}
+						}
+					}else{
+						// evaluation of changes
+						// device got an update
+						const device = JSON.parse(lines[0])[0];
+						const change = {};
+						if(this.listenDevices.find(x=> x.device === device)){
+							// listen to device
+							for (let i = 1; i < lines.length; i += 2) {
+								const prop = JSON.parse(lines[i])[0].match(/([^-]+(?=))$/)[0];
+								const value = JSON.parse(lines[i])[1];
+								change[prop] = value;
+							}
+							this.updateListenDevice(device, change);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	// device transformer
@@ -441,10 +414,10 @@ export class FhemService {
 						this.devices[index].readings.state.Time = new Date;
 					}
 					if (change[key] !== undefined) {
-      					const val = change[key];
-      					this.devices[index].readings[key].Value = val;
-      					this.devices[index].readings[key].Time = new Date;
-      				}
+						const val = change[key];
+						this.devices[index].readings[key].Value = val;
+						this.devices[index].readings[key].Time = new Date;
+					}
 				}
 			}
 			this.deviceUpdateSub.next(this.devices[index]);
@@ -565,6 +538,115 @@ export class FhemService {
 		});
 	}
 
+	// get command
+	public get(device: string, property: any){
+		return new Promise((resolve)=>{
+			if(!this.connected){
+				let gotReply: boolean = false;
+				// wait for connection
+				const sub = this.connectedSub.subscribe((state: boolean)=>{
+					gotReply = true;
+					if(state){
+						sub.unsubscribe();
+						this.sendSingleGetRequest(device, property).then(result=> resolve(result));
+					}else{
+						if(this.noReconnect){
+							sub.unsubscribe();
+							resolve(null);
+						}
+					}
+				});
+				setTimeout(()=>{
+					if(!gotReply){
+						sub.unsubscribe();
+						resolve(null);
+					}
+				}, 5000);
+			}else{
+				this.sendSingleGetRequest(device, property).then(result=> resolve(result));
+			}
+		});
+	}
+
+	// build single connection for 
+	public sendSingleGetRequest(device: string, property: any){
+		return new Promise((resolve)=>{
+			// get url
+			const url: string = this.getConnectionURL();
+			// get the desired url for fhem connection
+			const type: string = this.connectionType();
+			// connected
+			let getReceived: boolean = false;
+			if(type.match(/websocket|fhemweb/)){
+				const partialConnection = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url);
+				// timeout
+				const timeout = setTimeout(()=>{
+					if(!getReceived){
+						partialConnection.close();
+						resolve(null);
+					}
+				}, 1500);
+
+				// connected
+				partialConnection.onopen = (e)=>{
+					// partial connection established
+					// listen for message
+					const message = partialConnection.onmessage = (e)=>{
+						let msg = e.data;
+						// handle external websocket
+						if (type === 'websocket') {
+							msg = JSON.parse(msg);
+
+							if(msg.payload.value){
+								getReceived = true;
+
+								const splitText = msg.payload.value.split(/\r\n|\r|\n/).length;
+								let value = [];
+								for (let i = 0; i < splitText; i++) {
+									const line = msg.payload.value.split(/\r\n|\r|\n/)[i];
+									if (line !== '') {
+										value.push(line);
+									}
+								}
+								partialConnection.close();
+								resolve(value);
+							}else{
+								resolve(null);
+							}
+						}else{
+							// fhemweb
+							let lines: string[] = msg.split(/\n/).filter(s => s !== '' && s !== '[""]');
+							if (lines.length === 1) {
+								msg = JSON.parse(msg);
+
+								getReceived = true;
+								const splitText = msg[0].split(/\r\n|\r|\n/).length;
+								let value = [];
+								for (let i = 0; i < splitText; i++) {
+									const line = msg[0].split(/\r\n|\r|\n/)[i];
+									if (line !== '') {
+										value.push(line);
+									}
+								}
+								partialConnection.close();
+								resolve(value);
+							}
+						}
+					}
+					// send request
+					if (type === 'websocket') {
+						partialConnection.send(JSON.stringify({
+							type: 'command',
+							payload: {command: 'get', device, property}
+						}));
+			    	}else{
+			    		partialConnection.send('get ' + device + ' ' + property);
+			    	}
+				}
+			}
+		});
+	}
+
 	// remove device and stop listen, if no other listener for same device is present
 	public removeDevice(id: string){
 		const index = this.listenDevices.findIndex(x=> x.id === id);
@@ -577,126 +659,127 @@ export class FhemService {
 	public deviceReadingFinder(deviceName: string, reading: string|null){
 		const device = this.devices.find(x => x.device === deviceName);
 		return (
-    		// check for device
-    		device ? (
-    			// check if reading is used
-    			!reading && reading !== '' ? true : (
-    				// reading is used and has to be checked
-    				device.readings[reading] ? true : false
-    			)
-    		) : false
-    	);
+			// check for device
+			device ? (
+				// check if reading is used
+				!reading && reading !== '' ? true : (
+					// reading is used and has to be checked
+					device.readings[reading] ? true : false
+				)
+			) : false
+		);
 	}
 
 	// send commands
 	public sendCommand(cmd) {
-    	const type = this.connectionType();
-    	if (type === 'websocket') {
-    		this.socket.send(JSON.stringify({
-	            type: 'command',
-	            payload: cmd
-	        }));
-    	}
-    	if (type === 'fhemweb') {
-    		this.socket.send(cmd.command);
-    	}
-    }
+		const type = this.connectionType();
+		if (type === 'websocket') {
+			this.socket.send(JSON.stringify({
+				type: 'command',
+				payload: cmd
+			}));
+		}
+		if (type === 'fhemweb') {
+			this.socket.send(cmd.command);
+		}
+	}
 
-    // set
-    public set(device, value) {
-        this.sendCommand({
-            command: 'set ' + device + ' ' + value
-        });
-    }
+	// set
+	public set(device, value) {
+		this.sendCommand({
+			command: 'set ' + device + ' ' + value
+		});
+	}
 
-    // get
-    public get(device, property) {
-    	return new Promise((resolve)=>{
-    		let gotReply: boolean = false;
-    		// subscribe to get listener
-    		const sub = this.deviceGetSub.subscribe((data)=>{
-    			gotReply = true;
-    			sub.unsubscribe();
-    			// check if the reply is for the correct device
-    			if(data.device === device){
-    				resolve(data.value);
-    			}
-    		});
-    		// check for reply
-    		setTimeout(()=>{
-				if(!gotReply){
-					sub.unsubscribe();
-					// no reply --> no device found
-					resolve(null);
-				}
-			}, 1000);
-    		// send get request
-    		const type = this.connectionType();
-	    	if (type === 'websocket') {
-	    		this.sendCommand({
-		            command: 'get',
-		            device,
-		            property
-		        });
-	    	}
-	    	if (type === 'fhemweb') {
-	    		this.sendCommand({
-	    			command: 'get ' + device + ' ' + property
-	    		});
-	    	}
-    	});
-    }
-    // set reading
-    public setReading(device, reading, value) {
-        this.sendCommand({
-            command: 'setReading ' + device + ' ' + reading + ' ' + value
-        });
-    }
-    // set attr
-    public setAttr(device, prop, value) {
-        this.sendCommand({
-            command: 'set ' + device + ' ' + prop + ' ' + value
-        });
-    }
+	// get
+   //  public get(device, property) {
+   //  	return new Promise((resolve)=>{
+   //  		let gotReply: boolean = false;
+   //  		// subscribe to get listener
+   //  		const sub = this.deviceGetSub.subscribe((data)=>{
+   //  			gotReply = true;
+   //  			sub.unsubscribe();
+   //  			// check if the reply is for the correct device
+   //  			if(data.device === device){
+   //  				resolve(data.value);
+   //  			}
+   //  		});
+   //  		// check for reply
+   //  		setTimeout(()=>{
+			// 	if(!gotReply){
+			// 		sub.unsubscribe();
+			// 		// no reply --> no device found
+			// 		resolve(null);
+			// 	}
+			// }, 1000);
+   //  		// send get request
+   //  		const type = this.connectionType();
+	  //   	if (type === 'websocket') {
+	  //   		this.sendCommand({
+		 //            command: 'get',
+		 //            device,
+		 //            property
+		 //        });
+	  //   	}
+	  //   	if (type === 'fhemweb') {
+	  //   		this.sendCommand({
+	  //   			command: 'get ' + device + ' ' + property
+	  //   		});
+	  //   	}
+   //  	});
+   //  }
+
+	// set reading
+	public setReading(device, reading, value) {
+		this.sendCommand({
+			command: 'setReading ' + device + ' ' + reading + ' ' + value
+		});
+	}
+	// set attr
+	public setAttr(device, prop, value) {
+		this.sendCommand({
+			command: 'set ' + device + ' ' + prop + ' ' + value
+		});
+	}
 
 
 	// send list command to fhem for relevant connection type
 	public listDevices(value: string){
 		const type = this.connectionType();
 		if (type === 'websocket') {
-    		this.socket.send(JSON.stringify(
-	    		{type: 'command', payload: {command: 'list', arg: value}}
-	    	));
-    	}
-    	if (type === 'fhemweb') {
-	    	this.socket.send('jsonlist2 '+ value);
-	    }
+			this.socket.send(JSON.stringify(
+				{type: 'command', payload: {command: 'list', arg: value}}
+			));
+		}
+		if (type === 'fhemweb') {
+			this.socket.send('jsonlist2 '+ value);
+		}
 	}
 
 	// test for json
-    public IsJsonString(str) {
-    	try {
-	        JSON.parse(str);
-	    } catch (e) {
-	        return false;
-	    }
-	    return true;
-    }
+	public IsJsonString(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
 
-    // test for state values, true or false decisions
-    public deviceReadingActive(device, reading, compareTo){
-    	if(device && device.readings[reading]){
-    		const value = device.readings[reading].Value.toString().toLowerCase();
-    		compareTo = compareTo.toString().toLowerCase();
-    		if(value === compareTo){
-    			return true;
-    		}
-    	}
-    	return false;
-    }
+	// test for state values, true or false decisions
+	public deviceReadingActive(device, reading, compareTo){
+		if(device && device.readings[reading]){
+			const value = device.readings[reading].Value.toString().toLowerCase();
+			compareTo = compareTo.toString().toLowerCase();
+			if(value === compareTo){
+				return true;
+			}
+		}
+		return false;
+	}
 
-    // websocket reply transformer
-    public objResolver(obj, level) {
+	// websocket reply transformer
+	public objResolver(obj, level) {
 		const keys = Object.keys(obj);
 		const result = {};
 		for (let i = 0; i < keys.length; i++) {
