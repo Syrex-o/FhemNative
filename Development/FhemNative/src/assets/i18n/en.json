@@ -612,7 +612,7 @@
 					"info": "Custom border radius for each corner"
 				},
 				"bool_data_customAnimation":{
-					"name": "Custom popup Aaimation",
+					"name": "Custom popup animation",
 					"info": "Enable/disable custom popup animation"
 				},
 				"bool_data_invertAnimation":{
