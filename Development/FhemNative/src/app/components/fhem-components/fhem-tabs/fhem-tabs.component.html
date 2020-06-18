@@ -4,7 +4,15 @@
 	[minimumWidth]="100"
 	[minimumHeight]="100"
 	outside-click (onOutsideClick)="outsideClick($event)">
-	<div class="tabs {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
+	<div 
+		class="tabs {{settings.app.theme}} {{arr_data_tabPosition[0]}}" 
+		[ngClass]="arr_data_style[0]"
+		[ngStyle]="{
+			'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
+			'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
+			'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,
+			'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius
+		}">
 		<button 
 			colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"
 			matRipple [matRippleColor]="'#d4d4d480'" class="btn-round inner blue" 
@@ -12,14 +20,16 @@
 			<ion-icon name="create"></ion-icon>
 		</button>
 		<ul class="tab-header">
-			<li *ngFor="let page of pages; first as isFirst; last as isLast"
+			<li *ngFor="let page of pages"
 				matRipple [matRippleColor]="'#d4d4d480'"
 				(click)="switchTab(page)"
-				[class.first]="isFirst"
-				[class.last]="isLast"
 				[class.active]="page === activePage"
 				[ngStyle]="{'background-color': page === activePage ? (arr_style_backGroundColors[page] || arr_style_backGroundColors[0]) : 'transparent'}">
-				<icon [icon]="arr_icon_icons[page] || arr_icon_icons[0]" [style.color]="arr_style_iconColors[page] || arr_style_iconColors[0]"></icon>
+				<icon 
+					[icon]="arr_icon_icons[page] || arr_icon_icons[0]" 
+					[style.color]="
+						bool_data_customIconColors && page === activePage && arr_style_iconOnColors[page] ? arr_style_iconOnColors[page] : (arr_style_iconColors[page] || arr_style_iconColors[0])
+					"></icon>
 			</li>
 		</ul>
 		<div class="tab-content-container">

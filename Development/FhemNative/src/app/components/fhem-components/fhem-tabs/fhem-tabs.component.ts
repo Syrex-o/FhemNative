@@ -23,14 +23,24 @@ export class FhemTabsComponent implements OnInit, OnDestroy {
 
 	@Input() ID: string;
 	@Input() data_pages: string;
+	@Input() data_borderRadius: string;
+	@Input() data_borderRadiusTopLeft: string;
+	@Input() data_borderRadiusTopRight: string;
+	@Input() data_borderRadiusBottomLeft: string;
+	@Input() data_borderRadiusBottomRight: string;
 	@Input() arr_data_style: string[];
+	@Input() arr_data_tabPosition: string[];
 
 	// Styling
 	@Input() arr_style_iconColors: string|string[];
+	@Input() arr_style_iconOnColors: string|string[];
 	@Input() arr_style_backGroundColors: string|string[];
 
 	// Icons
 	@Input() arr_icon_icons: string|string[];
+
+	@Input() bool_data_customBorder: boolean;
+	@Input() bool_data_customIconColors: boolean;
 
 
 	// position information
@@ -180,13 +190,29 @@ export class FhemTabsComponent implements OnInit, OnDestroy {
 			container: 'multi',
 			inputs: [
 				{variable: 'data_pages', default: '3'},
+				{variable: 'data_borderRadius', default: '5'},
+				{variable: 'data_borderRadiusTopLeft', default: '5'},
+				{variable: 'data_borderRadiusTopRight', default: '5'},
+				{variable: 'data_borderRadiusBottomLeft', default: '5'},
+				{variable: 'data_borderRadiusBottomRight', default: '5'},
 				{variable: 'arr_icon_icons', default: 'add-circle,add-circle,add-circle'},
 				{variable: 'arr_data_style', default: 'standard,NM-standard'},
+				{variable: 'arr_data_tabPosition', default: 'top,right,bottom,left'},
 				{variable: 'arr_style_backGroundColors', default: '#58677C,#58677C,#58677C'},
-				{variable: 'arr_style_iconColors', default: '#2ec6ff,#2ec6ff,#2ec6ff'}
+				{variable: 'arr_style_iconColors', default: '#2ec6ff,#2ec6ff,#2ec6ff'},
+				{variable: 'arr_style_iconOnColors', default: '#2ec6ff,#2ec6ff,#2ec6ff'},
+				{variable: 'bool_data_customBorder', default: false},
+				{variable: 'bool_data_customIconColors', default: false},
 			],
 			dependencies: {
-				arr_style_backGroundColors: { dependOn: 'arr_data_style', value: 'standard' }
+				data_borderRadius: { dependOn: 'bool_data_customBorder', value: false },
+				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
+				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
+				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
+				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+
+				arr_style_backGroundColors: { dependOn: 'arr_data_style', value: 'standard' },
+				arr_style_iconOnColors: { dependOn: 'bool_data_customIconColors', value: true }
 			},
 			dimensions: {minX: 100, minY: 100}
 		};

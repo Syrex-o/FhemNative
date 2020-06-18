@@ -2,9 +2,11 @@
 	.tabs{
 		width: inherit;
 		height: inherit;
+		position: relative;
+		overflow: hidden;
 		.btn-round{
 			position: absolute;
-		    bottom: 0;
+		    top: 0;
 		    right: 0;
 		    z-index: 101;
 		    cursor: pointer;
@@ -34,12 +36,6 @@
 			    &.active{
 		    		box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.3);
 		    	}
-		    	&.first{
-		    		border-top-left-radius: 5px;
-		    	}
-		    	&.last{
-		    		border-top-right-radius: 5px;
-		    	}
 			    icon{
 			    	position: absolute;
 				    left: 50%;
@@ -55,9 +51,8 @@
 			top: 35px;
 			left: 0;
 			box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.3);
-			border-bottom-left-radius: 5px;
-			border-bottom-right-radius: 5px;
 			overflow: hidden;
+			pointer-events: all;
 			.tab-content{
 				position: absolute;
 				height: 100%;
@@ -100,6 +95,51 @@
 				.tab-content{
 					box-shadow: var(--neumorph-in-dark) !important;
 				}
+			}
+		}
+		// custom tabs position
+		&.right{
+			.tab-header{
+				right: 0;
+				height: 100%;
+				width: 35px;
+				z-index: 1;
+				li{
+					display: table-row;
+				}
+			}
+			.tab-content-container{
+				width: calc(100% - 35px);
+				height: 100%;
+				top: 0;
+			}
+		}
+		&.bottom{
+			.tab-header{
+				top: auto;
+				bottom: 0;
+				z-index: 1;
+			}
+			.tab-content-container{
+				bottom: 35px;
+				top: auto;
+			}
+		}
+		&.left{
+			.tab-header{
+				left: 0;
+				height: 100%;
+				width: 35px;
+				z-index: 1;
+				li{
+					display: table-row;
+				}
+			}
+			.tab-content-container{
+				width: calc(100% - 35px);
+				height: 100%;
+				top: 0;
+				left: 35px;
 			}
 		}
 	}
