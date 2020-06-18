@@ -3,7 +3,7 @@
 
 FhemNative ist eine open-source App für Smartphones und Tablets um FHEM (Hausautomations-Server) zu steuern ohne eigene Programmierung.
 
-FehmNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des [Ionic Framework](https://ionicframework.com/).
+FhemNative basiert auf [Angular](https://angular.io/) Komponenten innerhalb des [Ionic Framework](https://ionicframework.com/).
 
 > [Englisches README](https://github.com/Syrex-o/FHEMNative/blob/master/README.md)
 
