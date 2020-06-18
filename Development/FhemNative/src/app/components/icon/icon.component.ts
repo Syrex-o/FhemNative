@@ -30,6 +30,6 @@ export class IconComponent implements OnChanges{
 	}
 
 	private iconFinder(name: string){
-		this._icon = this.settings.icons.find((x=> x.icon === name)) || 'home';
+		this._icon = this.settings.icons.find((x=> x.icon === name)) || {icon: 'home', type: 'ion'};
 	}
 }
