@@ -173,14 +173,15 @@ export class StructureService {
 	// includes {component: comp, room: roomName}
 	// custom obj can be passed --> get components from a previous state
 	public getAllComponents(){
-		let components: Array<{ component: any, room: string }> = [];
+		let components: Array<{ component: any, room: string, roomID: string }> = [];
 		// looper for nested components
-		let looper = (arr: Array<any>, roomName: string)=>{
+		let looper = (arr: Array<any>, roomName: string, roomID: any)=>{
 			for(let item of arr){
 				if(item.ID){
 					components.push({
 						component: item,
-						room: roomName
+						room: roomName,
+						roomID: roomID
 					});
 				}
 				// look for nested components
@@ -188,19 +189,19 @@ export class StructureService {
 					// search in component containers
 					if(item.attributes.components[0] && item.attributes.components[0].components){
 						for(let subItem of item.attributes.components){
-							looper(subItem.components, roomName);
+							looper(subItem.components, roomName, roomID);
 						}
 					}else{
 						if(item.attributes.components){
 							// search in single container component
-							looper(item.attributes.components, roomName);
+							looper(item.attributes.components, roomName, roomID);
 						}
 					}
 				}
 			}
 		}
 		for(let item of this.rooms){
-			looper(item.components, item.name);
+			looper(item.components, item.name, item.UID);
 		}
 		return components;
 	}
