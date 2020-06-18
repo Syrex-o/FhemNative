@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 // Services
 import { LoggerService } from './logger/logger.service';
 import { StructureService } from './structure.service';
+import { VariableService } from './variable.service';
 
 interface DynamicComponent {
 	name: string,
@@ -44,6 +45,7 @@ export class ComponentLoaderService {
 		// Pages
 		{name: 'SettingsComponent', path: 'settings/settings'},
 		{name: 'TasksComponent', path: 'tasks/tasks'},
+		{name: 'VariablesComponent', path: 'variables/variables'},
 		// Loader
 		{name: 'LoaderComponent', path: 'loader/loader'},
 	];
@@ -58,8 +60,10 @@ export class ComponentLoaderService {
 		{name: 'Circle Slider', path: 'fhem-circle-slider/fhem-circle-slider'},
 		{name: 'Clock', path: 'fhem-clock/fhem-clock'},
 		{name: 'Color Picker', path: 'fhem-color-picker/fhem-color-picker'},
+		{name: 'Html', path: 'fhem-html/fhem-html'},
 		{name: 'Icon', path: 'fhem-icon/fhem-icon'},
 		{name: 'IFrame', path: 'fhem-iframe/fhem-iframe'},
+		{name: 'Input', path: 'fhem-input/fhem-input'},
 		{name: 'Image', path: 'fhem-image/fhem-image'},
 		{name: 'Label', path: 'fhem-label/fhem-label'},
 		{name: 'Line', path: 'fhem-line/fhem-line'},
@@ -80,7 +84,7 @@ export class ComponentLoaderService {
 	];
 
 	// list of components that were added to the view
-	public containerComponents: Array<any>;
+	public containerComponents: Array<any> = [];
 
 	// the current container
 	// container to place components
@@ -94,8 +98,9 @@ export class ComponentLoaderService {
 		private logger: LoggerService,
 		private injector: Injector,
 		private resolver: ComponentFactoryResolver,
-		private structure: StructureService){
-
+		private structure: StructureService,
+		private variable: VariableService){
+		// container subscriptions
 		this.currentContainerSub.subscribe((next: ContainerSub)=>{
 			// check for initial --> must be room
 			if(next.action === 'initial'){
@@ -111,6 +116,57 @@ export class ComponentLoaderService {
 				if(index > -1){
 					this.containerStack.splice(index, 1);
 					this.currentContainer = this.containerStack[this.containerStack.length -1].container;
+				}
+			}
+		});
+
+		// variable updates
+		this.variable.variableUpdate.subscribe((variable)=>{
+			if(this.containerComponents.length > 0){
+				// get current room components
+				const allComponents = this.structure.getAllComponents();
+				let filteredComponents = allComponents.filter(x=> x.roomID === this.structure.currentRoom.UID).map(x=> x.component);
+				if(filteredComponents.length > 0){
+					// make copy
+					filteredComponents = JSON.parse(JSON.stringify(filteredComponents));
+					// list of components to reload
+					let reloadComponents = this.getModifiedComponents(filteredComponents).filter(x=> x.modified);
+					if(reloadComponents.length > 0){
+						// reload the modified components (respect their container)
+						reloadComponents.forEach((modComponent)=>{
+							if(modComponent.modified){
+								const componentInContainer = this.containerComponents.find(x=> x.ID === modComponent.component.ID);
+								if(componentInContainer){
+									// remove and reload (from current container information)
+									this.removeDynamicComponent(modComponent.component.ID);
+									this.loadRoomComponents([modComponent.component], componentInContainer.container, false);
+								}
+							}
+						});
+					}
+					// search for variables
+					// filteredComponents.forEach((component)=>{
+					// 	// keep track of modified
+					// 	let modified = false;
+					// 	// loop attributes
+					// 	for (const key of Object.keys(component.attributes)) {
+					// 		component.attributes[key].forEach((attribute)=>{
+					// 			// skip special snytax for fixed variable values (Exp. data_fixed_var_...)
+					// 			// loop all variables, to ensure that not modified values are also included in changed component
+					// 			let foundVar = this.variable.variables.find(x=> attribute.attr.indexOf('fixed_var') === -1 && attribute.value === x.defSyntax);
+					// 			if(foundVar && foundVar.modValue !== undefined){
+					// 				// modify component
+					// 				attribute.value = foundVar.modValue;
+					// 				modified = true;
+					// 			}
+					// 		});
+					// 	}
+					// 	// add modified components for reload only
+					// 	if(modified){
+					// 		reloadComponents.push(component);
+					// 	}
+					// });
+					// reload the modified components (respect their container)
 				}
 			}
 		});
@@ -286,55 +342,174 @@ export class ComponentLoaderService {
 		return data;
 	}
 
+	// check if variables are loaded
+	private variablesLoaded(){
+		return new Promise((resolve)=>{
+			if(this.variable.variablesLoaded){
+				resolve();
+			}else{
+				let gotReply: boolean = false;
+				const sub = this.variable.variablesLoadedSub.subscribe(state=>{
+					if(state){
+						gotReply = true;
+						sub.unsubscribe();
+						resolve();
+					}
+				});
+				setTimeout(()=>{
+					if(!gotReply){
+						sub.unsubscribe();
+						resolve();
+					}
+				}, 1000);
+			}
+		});
+	}
+
+	// get modified list of components to load
+	private getModifiedComponents(components: Array<any>){
+		// list of components with modified mark
+		let modifiedComponents: Array<{component: any, modified: boolean}> = [];
+
+		if(this.variable.variables.length > 0){
+			// create copy to prevent change saving
+			components = JSON.parse(JSON.stringify(components));
+			components.forEach((component)=>{
+				let modified: boolean = false;
+				// loop attributes
+				for (const key of Object.keys(component.attributes)) {
+					component.attributes[key].forEach((attribute)=>{
+						// skip special snytax for fixed variable values (Exp. data_fixed_var_...)
+						// check if attribute is avaible for component containers
+						let foundVar = this.variable.variables.find(x=> attribute.attr && attribute.attr.indexOf('fixed_var') === -1 && attribute.value === x.defSyntax);
+						if(foundVar && foundVar.modValue !== undefined){
+							// modify component
+							attribute.value = foundVar.modValue;
+							modified = true;
+						}
+					});
+				}
+				modifiedComponents.push({
+					component: component,
+					modified: modified
+				});
+			});
+		}else{
+			components.forEach((component)=>{
+				modifiedComponents.push({
+					component: component,
+					modified: false
+				});
+			});
+		}
+		return modifiedComponents
+	}
+
 	// load relevant components for the room/container component
+	// clearAll: container cleared
+	// clearPartially: just container (not storage)
 	public loadRoomComponents(components: Array<any>, container: any, clearAll: boolean, clearPartially?: boolean){
 		return new Promise((resolve)=>{
-			// only clear container if needed
-			if (clearAll) {
-				container.clear();
-				if(!clearPartially){
-					this.containerComponents = [];
+			this.variablesLoaded().then(()=>{
+				// only clear container if needed
+				if (clearAll) {
+					container.clear();
+					if(!clearPartially){
+						this.containerComponents = [];
+					}
 				}
-			}
-			components.forEach((comp, i)=>{
-				// get a formatted component with new and already saved values
-				this.getFormattedComponent(comp.ID, comp).then((component: any)=>{
-					// remove the component, to ensure it is only created once
-					this.removeDynamicComponent(comp.ID);
-					// add the component to view
-					this.addFhemComponent(component.name, container).then((ref:any)=>{
-						// load component info
-						for (const [key, value] of Object.entries(component.attributes)) {
-							if(component.attributes[key]){
-								component.attributes[key].forEach((el)=>{
-									ref.instance[el.attr] = el.value;
-								});
+				// get modified list
+				const modifiedComponents = this.getModifiedComponents(components).map(x=> x.component);
+				// create components one by one, search for variable instances
+				modifiedComponents.forEach((comp, i)=>{
+					// get a formatted component with new and already saved values
+					this.getFormattedComponent(comp.ID, comp).then((component: any)=>{
+						// remove the component, to ensure it is only created once
+						this.removeDynamicComponent(comp.ID);
+						// add the component to view
+						this.addFhemComponent(component.name, container).then((ref:any)=>{
+							// load component info
+							for (const [key, value] of Object.entries(component.attributes)) {
+								if(component.attributes[key]){
+									component.attributes[key].forEach((el)=>{
+										ref.instance[el.attr] = el.value;
+									});
+								}
 							}
-						}
-						// assign other values
-						ref.instance.ID = component.ID;
-						// positioning
-						const width: number = parseInt(component.position.width || component.dimensions.minX);
-						const height: number = parseInt(component.position.height || component.dimensions.minY);
-						const top: number = parseInt(component.position.top || 0);
-						const left: number = parseInt(component.position.left || 0);
-						// assign
-						ref.instance.width = width + 'px';
-						ref.instance.height = height + 'px';
-						ref.instance.top = top + 'px';
-						ref.instance.left = left + 'px';
-						ref.instance.zIndex = component.position.zIndex;
-						// push comp to containerComponents
-						this.containerComponents.push({ID: component.ID, REF: ref, container: container});
-						// logging
-						this.logger.info('Component: ' + component.name + ' ID: ' + component.ID + ' added');
-						// check for length
-						if(components.length -1 === i){
-							resolve();
-						}
+							// assign other values
+							ref.instance.ID = component.ID;
+							// positioning
+							const width: number = parseInt(component.position.width || component.dimensions.minX);
+							const height: number = parseInt(component.position.height || component.dimensions.minY);
+							const top: number = parseInt(component.position.top || 0);
+							const left: number = parseInt(component.position.left || 0);
+							// assign
+							ref.instance.width = width + 'px';
+							ref.instance.height = height + 'px';
+							ref.instance.top = top + 'px';
+							ref.instance.left = left + 'px';
+							ref.instance.zIndex = component.position.zIndex;
+							// push comp to containerComponents
+							this.containerComponents.push({ID: component.ID, REF: ref, container: container});
+							// logging
+							this.logger.info('Component: ' + component.name + ' ID: ' + component.ID + ' added');
+							// check for length
+							if(components.length -1 === i){
+								resolve();
+							}
+						});
 					});
 				});
 			});
+
+			// OLD Loader (Backup)
+
+			// only clear container if needed
+			// if (clearAll) {
+			// 	container.clear();
+			// 	if(!clearPartially){
+			// 		this.containerComponents = [];
+			// 	}
+			// }
+			// components.forEach((comp, i)=>{
+			// 	// get a formatted component with new and already saved values
+			// 	this.getFormattedComponent(comp.ID, comp).then((component: any)=>{
+			// 		// remove the component, to ensure it is only created once
+			// 		this.removeDynamicComponent(comp.ID);
+			// 		// add the component to view
+			// 		this.addFhemComponent(component.name, container).then((ref:any)=>{
+			// 			// load component info
+			// 			for (const [key, value] of Object.entries(component.attributes)) {
+			// 				if(component.attributes[key]){
+			// 					component.attributes[key].forEach((el)=>{
+			// 						ref.instance[el.attr] = el.value;
+			// 					});
+			// 				}
+			// 			}
+			// 			// assign other values
+			// 			ref.instance.ID = component.ID;
+			// 			// positioning
+			// 			const width: number = parseInt(component.position.width || component.dimensions.minX);
+			// 			const height: number = parseInt(component.position.height || component.dimensions.minY);
+			// 			const top: number = parseInt(component.position.top || 0);
+			// 			const left: number = parseInt(component.position.left || 0);
+			// 			// assign
+			// 			ref.instance.width = width + 'px';
+			// 			ref.instance.height = height + 'px';
+			// 			ref.instance.top = top + 'px';
+			// 			ref.instance.left = left + 'px';
+			// 			ref.instance.zIndex = component.position.zIndex;
+			// 			// push comp to containerComponents
+			// 			this.containerComponents.push({ID: component.ID, REF: ref, container: container});
+			// 			// logging
+			// 			this.logger.info('Component: ' + component.name + ' ID: ' + component.ID + ' added');
+			// 			// check for length
+			// 			if(components.length -1 === i){
+			// 				resolve();
+			// 			}
+			// 		});
+			// 	});
+			// });
 		});
 	}
 
