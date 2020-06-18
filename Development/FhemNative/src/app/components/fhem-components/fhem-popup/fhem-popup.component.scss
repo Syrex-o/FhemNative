@@ -19,7 +19,8 @@
 	    left: 50%;
 	    transform: translate(-50%, -50%);
 	    &.inner{
-	    	right: 80px;
+	    	right: 25px;
+	    	left: auto;
 	    }
 	    // neumorph
 	    &.NM-IN-standard,
