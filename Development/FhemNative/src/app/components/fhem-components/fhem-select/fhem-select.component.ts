@@ -2,10 +2,12 @@ import { Component, Input, NgModule, OnInit, OnDestroy} from '@angular/core';
 
 // Components
 import { ComponentsModule } from '../../components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Services
 import { FhemService } from '../../../services/fhem.service';
 import { SettingsService } from '../../../services/settings.service';
+import { VariableService } from '../../../services/variable.service';
 import { NativeFunctionsService } from '../../../services/native-functions.service';
 
 @Component({
@@ -32,7 +34,11 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 	@Input() data_borderRadiusBottomLeft: string;
 	@Input() data_borderRadiusBottomRight: string;
 
+	// variable setter
+	@Input() data_fixed_var_variable: string;
+
 	@Input() bool_data_customBorder: boolean;
+	@Input() bool_data_useForVariables: boolean;
 
 	@Input() style_borderColor: string;
 
@@ -51,14 +57,24 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
     selected: string;
 
 	ngOnInit(){
-		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
-			this.getState(device);
-		}).then(device=>{
-			this.getState(device);
-			if(device){
-				this.initValues();
+		// get fhem values if needed
+		if(!this.bool_data_useForVariables){
+			this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+				this.getState(device);
+			}).then(device=>{
+				this.getState(device);
+				if(device){
+					this.initValues();
+				}
+			});
+		}else{
+			// get static variables
+			this.initValues();
+			let foundVariable = this.variable.variables.find(x=> x.defSyntax === this.data_fixed_var_variable);
+			if(foundVariable && foundVariable.modValue && foundVariable.attributes.type === 'static'){
+				this.selected = foundVariable.modValue;
 			}
-		});
+		}
 	}
 
 	private initValues(){
@@ -99,7 +115,13 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 			index = this.items.indexOf(item);
 		}
 		if(index > -1 && this.items[index]){
-			this.sendValue(this.items[index]);
+			// fhem command
+			if(!this.bool_data_useForVariables){
+				this.sendValue(this.items[index]);
+			}else{
+				// variable modification
+				this.variable.updateStaticVariable(this.data_fixed_var_variable, item);
+			}
 		}
 	}
 
@@ -119,7 +141,8 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 	constructor(
 		private fhem: FhemService,
 		private native: NativeFunctionsService,
-		public settings: SettingsService) {
+		public settings: SettingsService,
+		private variable: VariableService) {
 	}
 
 	static getSettings() {
@@ -127,6 +150,7 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 			name: 'Select',
 			type: 'fhem',
 			inputs: [
+				{variable: 'data_fixed_var_variable', default: ''},
 				{variable: 'data_device', default: ''},
 				{variable: 'data_reading', default: 'state'},
 				{variable: 'data_setReading', default: ''},
@@ -141,6 +165,7 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 				{variable: 'data_borderRadiusBottomLeft', default: '5'},
 				{variable: 'data_borderRadiusBottomRight', default: '5'},
 				{variable: 'bool_data_customBorder', default: false},
+				{variable: 'bool_data_useForVariables', default: false},
 				{variable: 'style_borderColor', default: '#565656'}
 			],
 			dependencies: {
@@ -148,14 +173,20 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
-				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true }
+				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+				// variable 
+				data_device: { dependOn: 'bool_data_useForVariables', value: false },
+				data_reading: { dependOn: 'bool_data_useForVariables', value: false },
+				data_setReading: { dependOn: 'bool_data_useForVariables', value: false },
+				// variable setter (will not be overwritten)
+				data_fixed_var_variable: { dependOn: 'bool_data_useForVariables', value: true }
 			},
 			dimensions: {minX: 80, minY: 30}
 		};
 	}
 }
 @NgModule({
-	imports: [ComponentsModule],
+	imports: [ComponentsModule, TranslateModule],
   	declarations: [FhemSelectComponent]
 })
 class FhemSelectComponentModule {}

@@ -4,4 +4,15 @@
 		height: inherit;
 		pointer-events: all;
 	}
+	.no-variable{
+		position: absolute;
+		width: inherit;
+		height: inherit;
+		overflow-y: auto;
+		pointer-events: all;
+		user-select: none;
+		border: 1px solid #ddd;
+		padding: 8px;
+		margin: 0px;
+	}
 }
