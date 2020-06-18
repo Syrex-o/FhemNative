@@ -1,0 +1,50 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: null, reading: null, connected: true}"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="100"
+	[minimumHeight]="35">
+	<div class="input" [class.reduce-size]="bool_data_showFavorites" [ngStyle]="{
+			'background': style_backgroundColor,
+			'border': '1px solid ' + style_borderColor,
+			'box-shadow': bool_data_showShadow ? '0px 15px 25px 0 rgba(0, 0, 0, 0.3)' : '0px'
+		}">
+		<div class="input-container">
+			<input 
+				type="text"
+				[(ngModel)]="command" 
+				placeholder="{{command}}"
+				[ngStyle]="{
+				'color': style_textColor
+			}">
+		</div>
+		<button class="btn-favs" *ngIf="bool_data_showFavorites" [style.background]="style_buttonColor" (click)="showCommandFavs()">
+			<ion-icon name="star" [style.color]="style_iconColor"></ion-icon>
+		</button>
+		<button class="btn-send" [style.background]="style_buttonColor" (click)="sendCmd()">
+			<icon [icon]="icon_sendIcon" [style.color]="style_iconColor" [class.animate]="animateSend"></icon>
+		</button>
+	</div>
+</fhem-component-container>
+
+<picker
+	[(ngModel)]="showFavs"
+	[height]="60"
+	[showConfirmBtn]="false">
+	<div body class="fav-content">
+		<p 
+			*ngIf="!commandFavs || commandFavs.length === 0" class="no-favs" 
+			colorizer [theme]="settings.app.theme" [style]="['color', 'text']">
+			{{ 'COMPONENTS.Input.TRANSLATOR.NO_FAVOURITES' | translate }}
+		</p>
+		<ng-container *ngIf="commandFavs && commandFavs.length > 0">
+			<div class="list-item" *ngFor="let command of commandFavs; let i = index">
+				<button class="list-btn first" matRipple [matRippleColor]="'#d4d4d480'" (click)="setFavCommand(command)">
+					<span colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="command-label">{{command}}</span>
+				</button>
+				<button class="list-btn second" matRipple [matRippleColor]="'#d4d4d480'" (click)="removeFavCommand(i)">
+					<ion-icon name="trash"></ion-icon>
+				</button>
+			</div>
+		</ng-container>
+	</div>
+</picker>
