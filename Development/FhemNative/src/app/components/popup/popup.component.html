@@ -1,4 +1,4 @@
-<div @PopupPicker class="popup-container" *ngIf="showPopup">
+<div @PopupPicker (@PopupPicker.done)="animationEnd($event)" class="popup-container" *ngIf="showPopup">
 	<div colorizer [theme]="settings.app.theme" [style]="['background', 'secondary-op']" class="popup-backdrop" (click)="closePopup(backdropDismiss)"></div>
 	<div 
 		colorizer [theme]="settings.app.theme" [style]="['background', 'primary']"

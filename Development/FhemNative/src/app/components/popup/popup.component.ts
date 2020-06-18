@@ -43,6 +43,7 @@ export class PopupComponent implements OnChanges {
 	// Events
 	@Output() onOpen: EventEmitter<any>  = new EventEmitter();
     @Output() onClose: EventEmitter<any>  = new EventEmitter();
+    @Output() onAnimationEnd: EventEmitter<boolean> = new EventEmitter();
 
 	// Value handler
 	showPopup: boolean = false;
@@ -96,6 +97,11 @@ export class PopupComponent implements OnChanges {
   			this.onClose.emit();
   			this.backBtn.removeHandle(this.handleID);
   		}
+  	}
+
+  	// popup animation state
+  	animationEnd(event){
+  		this.onAnimationEnd.emit(this.showPopup);
   	}
 
   	constructor(
