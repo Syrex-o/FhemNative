@@ -1,0 +1,10 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, connected: true, offline: true}"
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="30"
+	[minimumHeight]="30">
+	<div class="html-container">
+		<p *ngIf="!html_text" colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="no-content">{{'COMPONENTS.Html.TRANSLATOR.NO_LABEL' | translate}}</p>
+	</div>
+</fhem-component-container>
