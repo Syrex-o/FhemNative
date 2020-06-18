@@ -1,16 +1,11 @@
-{	
-	// Viewport Sizes
-	// SMARTPHONES
-	// Nexus
+{
 	"Nexus 6P": {"width": 412, "height": 732},
 	"Nexus 5X": {"width": 412, "height": 732},
-	// Google
 	"Google Pixel 3 XL": {"width": 412, "height": 847},
 	"Google Pixel 3": {"width": 412, "height": 824},
 	"Google Pixel 2 XL": {"width": 412, "height": 732},
 	"Google Pixel XL": {"width": 412, "height": 732},
 	"Google Pixel": {"width": 412, "height": 732},
-	// Samsung
 	"Samsung Galaxy Note 9": {"width": 360, "height": 740},
 	"Samsung Galaxy Note 8": {"width": 360, "height": 740},
 	"Samsung Galaxy Note 5": {"width": 360, "height": 740},
@@ -32,35 +27,26 @@
 	"Samsung Galaxy S3": {"width": 360, "height": 640},
 	"Samsung Galaxy S2": {"width": 320, "height": 533},
 	"Samsung Galaxy S6 Edge": {"width": 360, "height": 640},
-	// LG
 	"LG G5": {"width": 480, "height": 853},
-	// One Plus
 	"One Plus 3": {"width": 480, "height": 853},
-	// TABLETS
-	// Nexus
 	"Nexus 9": {"width": 1024, "height": 768},
 	"Nexus 7 (2013)": {"width": 960, "height": 600},
-	// Google
 	"Chromebook Pixel": {"width": 1280, "height": 850},
-	// Samsung
 	"Samsung Galaxy Tab 10": {"width": 1280, "height": 800},
 	"Samsung Galaxy Tab 2 7.0": {"width": 1024, "height": 600},
 	"Samsung Galaxy Tab 3": {"width": 1280, "height": 800},
 	"Samsung Galaxy Tab 2": {"width": 1280, "height": 800},
 	"Samsung Galaxy Tab (8.9)": {"width": 1280, "height": 800},
 	"Samsung Galaxy Tab (7)": {"width": 1024, "height": 600},
-	// Acer
 	"Acer Iconia Tab A100": {"width": 1024, "height": 800},
 	"Acer Iconia Tab A101": {"width": 1024, "height": 600},
 	"Acer Iconia Tab A1810": {"width": 1024, "height": 768},
 	"Acer Iconia Tab A200": {"width": 1280, "height": 800},
 	"Acer Iconia Tab A500": {"width": 1280, "height": 648},
 	"Acer Iconia Tab A501": {"width": 1280, "height": 800},
-	// Amazon
 	"Amazon Kindle Fire HD 8.9": {"width": 1280, "height": 800},
 	"Amazon Kindle Fire HD 7": {"width": 800, "height": 480},
 	"Amazon Kindle Fire": {"width": 1024, "height": 600},
-	// Asus
 	"ASUS Fonepad": {"width": 962, "height": 601},
 	"ASUS MeMo Pad FHD10 10.1": {"width": 1280, "height": 800},
 	"ASUS MeMo Pad ME172V": {"width": 1024, "height": 600},
@@ -68,7 +54,6 @@
 	"ASUS Transformer Pad TF300T": {"width": 1280, "height": 800},
 	"ASUS Transformer Pad TF300T": {"width": 1280, "height": 800},
 	"ASUS Transformer TF101": {"width": 1280, "height": 800},
-	// Microsoft
 	"Microsoft Surface Pro 3": {"width": 1440, "height": 1024},
 	"Microsoft Surface Pro 2": {"width": 1280, "height": 720},
 	"Microsoft Surface Pro": {"width": 1280, "height": 720},
