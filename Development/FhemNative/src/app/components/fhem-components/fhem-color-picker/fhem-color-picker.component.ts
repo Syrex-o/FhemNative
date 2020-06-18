@@ -149,8 +149,8 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 			this.dimension = Math.min( container.clientWidth, container.clientHeight ) - 20;
 
 			// draw canvas content
-			this.canvas.width = this.dimension - 100;
-			this.canvas.height = this.dimension - 100;
+			this.canvas.width = this.dimension - 80;
+			this.canvas.height = this.dimension - 80;
 
 			const x = this.canvas.width / 2;
   			const y = this.canvas.height / 2;
