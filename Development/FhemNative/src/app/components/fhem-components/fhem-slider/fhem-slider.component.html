@@ -142,7 +142,7 @@
 			*ngIf="bool_data_showValueInThumb" class="thumb-value"
 			[ngStyle]="{
 				'color': style_thumbValueColor,
-				'line-height': (arr_data_orientation[0] === 'horizontal' ? data_thumbHeight : data_thumbWidth) + 'px'
+				'line-height': (arr_data_orientation[0] === 'horizontal' ? data_thumbHeight : data_thumbHeight) + 'px'
 			}">{{displayAs(value) + data_labelExtension}}
 		</span>
 		<ng-container *ngIf="pin">
