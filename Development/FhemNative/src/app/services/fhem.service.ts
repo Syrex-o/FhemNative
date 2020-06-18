@@ -9,8 +9,6 @@ import { ToastService } from './toast.service';
 
 // Translator
 import { TranslateService } from '@ngx-translate/core';
-// Mqtt
-import * as mqtt from 'mqtt';
 
 interface FhemDevice {
 	id: number,
@@ -74,6 +72,8 @@ export class FhemService {
 			this.connected = next;
 		});
 		// device update subscription
+		let timerRuns = false;
+		let toasterDevices: string[] = [];
 		this.deviceUpdateSub.subscribe((device: FhemDevice)=>{
 			// inform logger
 			this.logger.info('Value update received for: ' + device.device);
@@ -84,8 +84,6 @@ export class FhemService {
 				}
 			});
 			// inform abaout device update
-			let timerRuns = false;
-			let toasterDevices: string[] = [];
 			if (!toasterDevices.includes(device.device)) {
 				toasterDevices.push(device.device);
 				if (!timerRuns) {
@@ -109,7 +107,7 @@ export class FhemService {
 	// seperate component devices into array
 	// needs string of data_device
 	public seperateDevices(device){
-		return device.replace(/\s/g, '').split(',');
+		return device.toString().replace(/\s/g, '').split(',');
 	}
 
 	// get the connection type
@@ -229,26 +227,6 @@ export class FhemService {
 			this.tries = 0;
 			this.reTries = 0;
 		}
-
-		// mqtt test
-		// var client = mqtt.connect('mqtt://192.168.178.59:9001')
-		// client.on('connect', ()=>{
-		// 	client.subscribe('#', (m)=>{
-		// 		console.log(m)
-		// 	});
-
-		// 	// send request
-		// 	client.publish('/Home/Switches/Tester', 'value')
-
-		// 	client.on('message', (topic, message)=>{
-		// 		console.log(topic);
-		// 		console.log(message.toString())
-		// 	});
-		// });
-
-		// client.on('disconnect', (err)=>{
-		// 	console.log(err);
-		// });
 	}
 
 	// handle connection open
@@ -474,7 +452,8 @@ export class FhemService {
 					// allow new dirty sub for reconnect, to keep device list
 					if(newListendevice || dirty){
 						this.sendCommand({
-							command: 'subscribe', arg: device.id, 
+							command: 'subscribe', 
+							arg: device.id, 
 							type: '.*', 
 							name: deviceName, 
 							changed: '.*'
@@ -493,7 +472,6 @@ export class FhemService {
 				if(deviceName && !this.askForDevices.includes(deviceName)){
 					this.askForDevices.push(deviceName);
 				}
-
 				// list device handler
 				// determine if device was found
 				let gotReply: boolean = false;
