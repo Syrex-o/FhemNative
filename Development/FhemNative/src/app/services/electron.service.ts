@@ -30,6 +30,10 @@ export class ElectronService {
         return this.electron ? this.electron.remote : null;
     }
 
+    public get ipcRenderer(): Electron.IpcRenderer {
+        return this.electron ? this.electron.ipcRenderer : null;
+    }
+
     public get clipboard(): Electron.Clipboard {
         return this.electron ? this.electron.clipboard : null;
     }

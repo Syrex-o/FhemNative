@@ -1,8 +1,8 @@
  <div class="settings-container">
- 	 <ion-header colorizer [theme]="settings.app.theme" [style]="['background', 'primary']">
+	 <ion-header colorizer [theme]="settings.app.theme" [style]="['background', 'primary']">
 		<ion-toolbar>
 			<button class="back-btn" (click)="closeSettings()" matRipple [matRippleColor]="'#d4d4d480'">
-			    <ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" name="arrow-back-outline"></ion-icon>
+				<ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" name="arrow-back-outline"></ion-icon>
 			</button>
 			<ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" icon="cog" class="cog"></ion-icon>
 			<ion-title colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-title>
@@ -391,7 +391,7 @@
 				<ion-select 
 					colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
 					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-		            [(ngModel)]="changelog.selectedVersion">
+					[(ngModel)]="changelog.selectedVersion">
 					<ion-select-option 
 						*ngFor="let item of changelog.VERSIONS; let i = index;" 
 						[value]="i"
@@ -538,6 +538,16 @@
 		<!-- App settings -->
 		<div class="settings-block">
 			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="block-label">{{ 'GENERAL.SETTINGS.APP.TITLE' | translate }}</p>
+			<!-- FhemNative variables -->
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.enableVariables"
+					[label]="'GENERAL.SETTINGS.FHEM.VARIABLES.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.FHEM.VARIABLES.INFO' | translate"
+					(onToggle)="changeAppSetting('enableVariables', $event)">
+				</switch>
+			</div>
 			<!-- Grid Enablement -->
 			<div class="category switch-category">
 				<switch
@@ -571,6 +581,60 @@
 					[subTitle]="'GENERAL.SETTINGS.COMPONENTS.RESPONSIVE_RESIZE.INFO' | translate"
 					(onToggle)="changeAppSetting('responsiveResize', $event)">
 				</switch>
+			</div>
+		</div>
+		<div class="settings-block" *ngIf="onDesktop">
+			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="block-label">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.TITLE' | translate }}</p>
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.customWindowScale.enable"
+					[label]="'GENERAL.SETTINGS.ADVANCED.WINDOW.ENABLE.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.ADVANCED.WINDOW.ENABLE.INFO' | translate"
+					(onToggle)="changeAppSettingJSON('customWindowScale', 'enable', $event)">
+				</switch>
+			</div>
+			<!-- Manual selection -->
+			<div class="category btn-category" *ngIf="devices.length > 0 && !settings.app.customWindowScale.custom">
+				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.SELECT_DEVICE.TITLE' | translate }}</p>
+				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.SELECT_DEVICE.INFO' | translate }}</p>
+				<selector
+					class="select"
+					[items]="devices"
+					[addNewItems]="false"
+					bindName="device"
+					bindValue="device"
+					[(ngModel)]="settings.app.customWindowScale.deviceSelection"
+					(onValueChange)="changeCustomDeviceSize($event)">
+					<ng-template let-item="item" let-index="index">
+						<span class="device-name">{{item.device}}</span>
+						<span class="device-dimensions">{{item.dimensions.width}} x {{item.dimensions.height}}</span>
+					</ng-template>
+				</selector>
+			</div>
+			<!-- Custom window size -->
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.customWindowScale.custom"
+					[label]="'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.INFO' | translate"
+					(onToggle)="changeAppSettingJSON('customWindowScale', 'custom', $event)">
+				</switch>
+			</div>
+			<div class="category btn-full-category" *ngIf="settings.app.customWindowScale.custom">
+				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.SUB_INFO' | translate }}</p>
+				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.WIDTH' | translate }}</p>
+				<div class="input">
+					<input type="number" [(ngModel)]="settings.app.customWindowScale.dimensions.width" placeholder="settings.app.customWindowScale.dimensions.width">
+					<span class="bar"></span>
+				</div>
+				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.HEIGHT' | translate }}</p>
+				<div class="input">
+					<input type="number" [(ngModel)]="settings.app.customWindowScale.dimensions.height" placeholder="settings.app.customWindowScale.dimensions.height">
+					<span class="bar"></span>
+				</div>
+				<button (click)="changeCustomDeviceSizeFromInput()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.BUTTON' | translate }}</button>
 			</div>
 		</div>
 		<!-- Reset all settings -->

@@ -45,6 +45,11 @@ export class SettingsComponent implements OnInit {
 		advanced: false
 	};
 
+	// is desktop
+	onDesktop: boolean;
+	// device sizes for rescale
+	devices: Array<{device: string, dimensions: {width: number, height: number}}> = []; 
+
 	// changelog data
 	changelog: any;
 
@@ -69,9 +74,12 @@ export class SettingsComponent implements OnInit {
 	}
 
 	ngOnInit(){
+		// assign back button
 		this.backBtn.handle(this.handleID, ()=>{
 			this.closeSettings();
 		});
+		// check platform
+		this.onDesktop = this.platform.is('electron');
 	}
 
 	// edit websocket settings
@@ -185,6 +193,15 @@ export class SettingsComponent implements OnInit {
 	// custom theme edit
 	changeMenuMode(mode: string){
 		this.menus[mode] = !this.menus[mode]; 
+		// load devices to settings
+		if(mode === 'advanced' && this.menus[mode]){
+			this.http.get('https://raw.githubusercontent.com/Syrex-o/FhemNative/master/DEVICE_SIZE_LIST.json').subscribe((res:any)=>{
+				if(res && res.DEVICES){
+					this.devices = res.DEVICES;
+					this.cdr.detectChanges();
+				}
+			});
+		}
 	}
 
 	// change color in custom theme
@@ -193,6 +210,43 @@ export class SettingsComponent implements OnInit {
 			name: 'customTheme',
 			change: JSON.stringify(this.settings.app.customTheme)
 		});
+	}
+
+	// change window size
+	changeCustomDeviceSize(selectedDevice: string){
+		let found = this.devices.find(x=> x.device === selectedDevice);
+		if(found){
+			this.settings.app.customWindowScale.deviceSelection = selectedDevice;
+			this.settings.app.customWindowScale.dimensions = found.dimensions;
+			this.settings.scaleWindow();
+			// save settings
+			this.storage.changeSetting({
+				name: 'customWindowScale',
+				change: JSON.stringify(this.settings.app.customWindowScale)
+			});
+		}
+	}
+
+	// full custom device size
+	changeCustomDeviceSizeFromInput(){
+		let dim = this.settings.app.customWindowScale.dimensions;
+		if(dim.width > 0 && dim.height > 0){
+			this.settings.app.customWindowScale.deviceSelection = '';
+			this.settings.app.customWindowScale.dimensions = dim;
+			this.settings.scaleWindow();
+			// save settings
+			this.storage.changeSetting({
+				name: 'customWindowScale',
+				change: JSON.stringify(this.settings.app.customWindowScale)
+			});
+		}else{
+			// error
+			this.toast.showAlert(
+				this.translate.instant('GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.ERROR.TITLE'),
+				this.translate.instant('GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.ERROR.INFO'),
+				false
+			);
+		}
 	}
 
 	// change app setting

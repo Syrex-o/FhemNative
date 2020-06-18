@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
 // Services
 import { StorageService } from './storage.service';
+import { ElectronService } from './electron.service';
 import { TranslateService } from '@ngx-translate/core';
 
 // Font Awesome Icons
@@ -15,7 +17,7 @@ import {
 	faTemperatureLow, faTemperatureHigh, faWindowRestore, faClipboardCheck, faClipboard, 
 	faClipboardList, faPaste, faObjectGroup, faObjectUngroup, faFileExport, faFileImport,
 	faDog, faPaw, faBone, faPlug, faSolarPanel, faLeaf, faSeedling, faWater, faFaucet, faSwimmingPool, faShower,
-	faTint
+	faTint, faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 
 // Interfaces
@@ -37,7 +39,7 @@ export class SettingsService {
 	public connectionProfiles: Array<any> = [];
 
 	// Available Icons for FhemNative
-	public icons:Array<any> = [
+	public icons:Array<{type: string, icon: string}> = [
 		// Ionic Icons
 		{type: 'ion', icon: 'home'},{type: 'ion', icon: 'alarm'},{type: 'ion', icon: 'basket'},{type: 'ion', icon: 'battery-charging'},
 		{type: 'ion', icon: 'battery-dead'},{type: 'ion', icon: 'battery-full'},{type: 'ion', icon: 'bed'},{type: 'ion', icon: 'beer'},
@@ -55,7 +57,7 @@ export class SettingsService {
 		{type: 'ion', icon: 'checkmark-circle'},{type: 'ion', icon: 'close-circle'}, {type: 'ion', icon: 'walk'}, {type: 'ion', icon: 'play'}, {type: 'ion', icon: 'pause'},
 		{type: 'ion', icon: 'square'}, {type: 'ion', icon: 'play-forward'}, {type: 'ion', icon: 'play-skip-forward'}, {type: 'ion', icon: 'play-back'}, {type: 'ion', icon: 'play-skip-back'},
 		{type: 'ion', icon: 'shuffle'}, {type: 'ion', icon: 'repeat'}, {type: 'ion', icon: 'volume-high'}, {type: 'ion', icon: 'volume-low'}, {type: 'ion', icon: 'volume-medium'}, 
-		{type: 'ion', icon: 'volume-mute'}, {type: 'ion', icon: 'volume-off'}, 
+		{type: 'ion', icon: 'volume-mute'}, {type: 'ion', icon: 'volume-off'},
 		// Font Awesome
 		{type: 'fas', icon: 'ellipsis-h'}, {type: 'fas', icon: 'angle-double-up'},
 		{type: 'fas', icon: 'angle-double-down'}, {type: 'fas', icon: 'angle-double-left'},
@@ -70,7 +72,7 @@ export class SettingsService {
 		{type: 'fas', icon: 'clipboard-check'}, {type: 'fas', icon: 'clipboard-list'},
 		{type: 'fas', icon: 'paste'}, {type: 'fas', icon: 'object-group'},
 		{type: 'fas', icon: 'object-ungroup'}, {type: 'fas', icon: 'file-export'},
-		{type: 'fas', icon: 'file-import'}, {type: 'fas', icon: 'dog'},
+		{type: 'fas', icon: 'file-import'}, {type: 'fas', icon: 'paper-plane'}, {type: 'fas', icon: 'dog'},
 		{type: 'fas', icon: 'paw'}, {type: 'fas', icon: 'bone'},
 		{type: 'fas', icon: 'plug'}, {type: 'fas', icon: 'solar-panel'},
 		{type: 'fas', icon: 'leaf'}, {type: 'fas', icon: 'seedling'}, 
@@ -80,7 +82,7 @@ export class SettingsService {
 	];
 
 	// Available component colors for FhemNative
-	public componentColors: Array<any> = [
+	public componentColors: string[] = [
 		'#fbfbfb', '#86d993', '#fb0a2a', '#02adea',
 		'#00405d', '#ffcc33', '#ff6138', '#ff0000',
 		'#fcd20b', '#e47911', '#a4c639', '#7fbb00',
@@ -118,6 +120,8 @@ export class SettingsService {
 		{name: 'theme', default: 'dark', toStorage: true},
 		// Custom color theming colors
 		{name: 'customTheme', default: JSON.stringify({primary: '#18252B', secondary: '#0A0F12', text: '#fff', des: '#d4d4d4'}), toStorage: true},
+		// custom window size
+		{name: 'customWindowScale', default: JSON.stringify({enable: false, deviceSelection: '', custom: false, dimensions: {width: 0, height: 0}}), toStorage: true},
 		// allow toast messages
 		{name: 'showToastMessages', default: true, toStorage: true},
 		// responsive resizing to size components
@@ -132,6 +136,8 @@ export class SettingsService {
 		{name: 'showTasks', default: false, toStorage: true},
 		// keep fhem connection alive
 		{name: 'keepConnected', default: false, toStorage: true},
+		// FhemNative variables
+		{name: 'enableVariables', default: false, toStorage: true},
 		// logging
 		{name: 'enableLog', default: false, toStorage: true},
 		// grid to move components
@@ -152,6 +158,8 @@ export class SettingsService {
 
 	constructor(
 		private storage: StorageService,
+		private electron: ElectronService,
+		private platform: Platform,
 		private translate: TranslateService,
 		private library: FaIconLibrary){
 		// listen to mode changes
@@ -165,7 +173,7 @@ export class SettingsService {
 			faEllipsisH, faAngleDoubleDown, faAngleDoubleUp, faAngleDoubleLeft, faAngleDoubleRight, faBath, faBus, faCalendar, faCalendarAlt, faCalendarCheck,
 			faDoorOpen, faDoorClosed, faFan, faLightbulb, faThermometerEmpty, faThermometerHalf, faThermometerFull, faTemperatureLow, faTemperatureHigh, faWindowRestore,
 			faClipboardCheck, faClipboard, faClipboardList, faPaste, faObjectGroup, faObjectUngroup, faFileExport, faFileImport, faDog, faPaw, faBone, faPlug, faSolarPanel,
-			faLeaf, faSeedling, faWater, faFaucet, faSwimmingPool, faShower, faTint
+			faLeaf, faSeedling, faWater, faFaucet, faSwimmingPool, faShower, faTint, faPaperPlane
 		);
 	}
 
@@ -220,12 +228,28 @@ export class SettingsService {
 					}
 					//
 					if(index === this.appDefaults.length -1){
-						// IP
 						resolve();
 					}
 				});
 			});
 		});
+	}
+
+	// scale electron window
+	public scaleWindow(){
+		// only scale electorn windows
+		if(this.platform.is('electron') && !this.platform.is('mobile')){
+			let ipc = this.electron.ipcRenderer;
+			let dim = this.app.customWindowScale.dimensions;
+			if(ipc && dim.width > 0 && dim.height > 0){
+				// prevent scaling in this stage
+				const prev = this.app.responsiveResize;
+				this.app.responsiveResize = false;
+				// custom dimensions
+				ipc.send('resize-window', dim);
+				this.app.responsiveResize = prev;
+			}
+		}
 	}
 
 	// find new colors
