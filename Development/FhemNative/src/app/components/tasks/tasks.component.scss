@@ -1,313 +1,313 @@
 :host {
-    .settings-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        ion-header {
-            ion-icon {
-                font-size: 25px;
-                position: absolute;
-                top: 50%;
-            }
-            .back-btn {
-                width: 50px;
-                height: 56px;
-                left: 25%;
-                background-color: transparent;
-                padding: 0;
-                position: absolute;
-                left: 0;
-                top: 0;
-                ion-icon {
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                }
-            }
-            .flash {
-                left: 45px;
-                transform: translateY(-50%);
-            }
-        }
-        ion-title {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 65px;
-        }
-    }
-    .content {
-        input {
-            font-size: 18px;
-            padding: 10px 10px 10px 5px;
-            display: block;
-            width: 100%;
-            border: none;
-            background: transparent;
-            border-bottom: 1px solid #757575;
-            color: #757575;
-            &:focus {
-                outline: none;
-            }
-        }
-        .bar {
-            position: relative;
-            display: block;
-            width: 100%;
-            &:before, &:after {
-                content: '';
-                height: 2px;
-                width: 0;
-                bottom: 1px;
-                position: absolute;
-                background: var(--btn-blue);
-                transition: 0.2s ease all;
-            }
-            &:before {
-                left: 50%;
-            }
-            &:after {
-                right: 50%;
-            }
-        }
-        input:focus~.bar:before, input:focus~.bar:after {
-            width: 50%;
-        }
-        position: relative;
-        height: calc(100% - 56px);
-        width: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 8px;
-        user-select: none;
-        &.full-height {
-            height: 100%;
-        }
-        .settings-block {
-            position: relative;
-            width: 100%;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #565656;
-            &.no-border {
-                border-bottom: 0px;
-            }
-        }
-        .select-box {
-            width: 100%;
-            position: relative;
-            border-bottom: 2px solid #757575;
-        }
-        .category {
-            position: relative;
-            width: 100%;
-            padding-left: 8px;
-            padding-right: 8px;
-            margin-bottom: 10px;
-            .label {
-                margin-bottom: 5px;
-                margin-top: 5px;
-                font-weight: 500;
-            }
-            .des {
-                margin-top: -2px;
-                margin-bottom: 5px;
-                font-size: 13px;
-            }
-            button.add-btn {
-                top: 0;
-                position: absolute;
-                right: 8px;
-            }
-            &.btn-full-category {
-                button {
-                    width: 100%;
-                    height: 40px;
-                    text-transform: uppercase;
-                    color: #fff;
-                    font-size: 1.1em;
-                    margin-bottom: 10px;
-                    &.no-margin{
-                        margin-bottom: 0px;
-                    }
-                    &.save {
-                        background: var(--btn-green);
-                    }
-                    &.cancel {
-                        background: var(--btn-red);
-                    }
-                }
-            }
-            &.multi-btn {
-                p {
-                    width: calc(100% - 150px);
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-                .button-container {
-                    width: 150px;
-                    height: 100%;
-                    position: absolute;
-                    right: 8px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    button {
-                        margin-left: 5px;
-                        &.trash {
-                            ion-icon {
-                                color: var(--btn-red);
-                            }
-                        }
-                        &.edit {
-                            ion-icon {
-                                color: var(--btn-blue);
-                            }
-                        }
-                    }
-                }
-            }
-        } // Tasks blocks
-        .task-config-container {
-            width: 100%;
-            height: calc(100% - 100px);
-            overflow: auto;
-            .code-block {
-                position: relative;
-                min-height: 100px;
-                border-radius: 10px;
-                padding: 5px;
-                margin: 10px;
-                border: 2px dotted #ddd;
-                &.IF{
-                    z-index: 2;
-                }
-                &.ELSE{
-                    z-index: 1;
-                }
-                .block-container {
-                    width: 100%;
-                    height: 100%;
-                    left: 0;
-                    top: 0;
-                    border-radius: inherit;
-                    .block-definition {
-                        width: 100%;
-                        height: 45px;
-                        border-bottom: 3px solid #757575;
-                        position: relative;
-                        z-index: 3;
-                        .block-condition {
-                            width: 50px;
-                            margin: 0;
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 10px;
-                        }
-                        .select {
-                            width: 200px;
-                            position: absolute;
-                            right: 0;
-                            top: 0;
-                        }
-                    }
-                }
-            } 
-            // Task Inputs
-            .block-inputs,
-            .block-operators,
-            .block-outputs {
-                position: relative;
-                border-bottom: 0.5px solid #757575;
-                &.no-border{
-                    border-bottom: none;
-                }
-                .input-text {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    height: 100%;
-                    width: 50px;
-                    border-right: 0.5px solid #757575;
-                    overflow: hidden;
-                    p {
-                        margin: 0;
-                        writing-mode: vertical-rl;
-                        position: absolute;
-                        height: 100%;
-                        left: 50%;
-                        transform: translateX(-50%) rotate(180deg);
-                        text-align: center;
-                    }
-                }
-                .input-param {
-                    width: calc(100% - 80px);
-                    left: 80px;
-                    position: relative;
-                    height: 50px;
-                    margin-top: 5px;
-                    margin-bottom: 5px;
-                    .input-key {
-                        position: absolute;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        width: calc(50% - 20px);
-                        left: 10px;
-                    }
-                    .input-container{
-                        position: absolute;
-                        width: 50%;
-                        right: 0;
-                        top: 50%;
-                        transform: translateY(-50%);
-                    }
-                }
-                .output-container{
-                    position: relative;
-                    width: calc(100% - 50px);
-                    left: 50px;
-                    &.border{
-                        border-bottom: 0.5px solid #757575;
-                    }
-                    .input-param {
-                        width: calc(100% - 30px);
-                        left: 30px;
-                    }
-                    .remove-output{
-                        position: absolute;
-                        left: 0;
-                        background: transparent;
-                        width: 30px;
-                        height: 100%;
-                        padding: 0;
-                        font-size: 25px;
-                        ion-icon.trash {
-                            color: var(--btn-red);
-                        }
-                    }
-                }
-            }
-            .block-operators,
-            .block-outputs{
-                min-height: 60px;
-            }
-            .block-operators{
-                z-index: 2;
-            }
-            .block-outputs{
-                z-index: 1;
-            }
-            .add-output-container{
-                margin-top: 10px;
-                .add-btn{
-                    z-index: 0;
-                    ion-icon.trash {
-                        color: var(--btn-red);
-                    }
-                }
-            }
-        }
-    }
+	.settings-container {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+		ion-header {
+			ion-icon {
+				font-size: 25px;
+				position: absolute;
+				top: 50%;
+			}
+			.back-btn {
+				width: 50px;
+				height: 56px;
+				left: 25%;
+				background-color: transparent;
+				padding: 0;
+				position: absolute;
+				left: 0;
+				top: 0;
+				ion-icon {
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
+			}
+			.flash {
+				left: 45px;
+				transform: translateY(-50%);
+			}
+		}
+		ion-title {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 65px;
+		}
+	}
+	.content {
+		input {
+			font-size: 18px;
+			padding: 10px 10px 10px 5px;
+			display: block;
+			width: 100%;
+			border: none;
+			background: transparent;
+			border-bottom: 1px solid #757575;
+			color: #757575;
+			&:focus {
+				outline: none;
+			}
+		}
+		.bar {
+			position: relative;
+			display: block;
+			width: 100%;
+			&:before, &:after {
+				content: '';
+				height: 2px;
+				width: 0;
+				bottom: 1px;
+				position: absolute;
+				background: var(--btn-blue);
+				transition: 0.2s ease all;
+			}
+			&:before {
+				left: 50%;
+			}
+			&:after {
+				right: 50%;
+			}
+		}
+		input:focus~.bar:before, input:focus~.bar:after {
+			width: 50%;
+		}
+		position: relative;
+		height: calc(100% - 56px);
+		width: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding: 8px;
+		user-select: none;
+		&.full-height {
+			height: 100%;
+		}
+		.settings-block {
+			position: relative;
+			width: 100%;
+			margin-bottom: 10px;
+			border-bottom: 1px solid #565656;
+			&.no-border {
+				border-bottom: 0px;
+			}
+		}
+		.select-box {
+			width: 100%;
+			position: relative;
+			border-bottom: 2px solid #757575;
+		}
+		.category {
+			position: relative;
+			width: 100%;
+			padding-left: 8px;
+			padding-right: 8px;
+			margin-bottom: 10px;
+			.label {
+				margin-bottom: 5px;
+				margin-top: 5px;
+				font-weight: 500;
+			}
+			.des {
+				margin-top: -2px;
+				margin-bottom: 5px;
+				font-size: 13px;
+			}
+			button.add-btn {
+				top: 0;
+				position: absolute;
+				right: 8px;
+			}
+			&.btn-full-category {
+				button {
+					width: 100%;
+					height: 40px;
+					text-transform: uppercase;
+					color: #fff;
+					font-size: 1.1em;
+					margin-bottom: 10px;
+					&.no-margin{
+						margin-bottom: 0px;
+					}
+					&.save {
+						background: var(--btn-green);
+					}
+					&.cancel {
+						background: var(--btn-red);
+					}
+				}
+			}
+			&.multi-btn {
+				p {
+					width: calc(100% - 150px);
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+				.button-container {
+					width: 150px;
+					height: 100%;
+					position: absolute;
+					right: 8px;
+					top: 50%;
+					transform: translateY(-50%);
+					button {
+						margin-left: 5px;
+						&.trash {
+							ion-icon {
+								color: var(--btn-red);
+							}
+						}
+						&.edit {
+							ion-icon {
+								color: var(--btn-blue);
+							}
+						}
+					}
+				}
+			}
+		} // Tasks blocks
+		.task-config-container {
+			width: 100%;
+			height: calc(100% - 100px);
+			overflow: auto;
+			.code-block {
+				position: relative;
+				min-height: 100px;
+				border-radius: 10px;
+				padding: 5px;
+				margin: 10px;
+				border: 2px dotted #ddd;
+				&.IF{
+					z-index: 2;
+				}
+				&.ELSE{
+					z-index: 1;
+				}
+				.block-container {
+					width: 100%;
+					height: 100%;
+					left: 0;
+					top: 0;
+					border-radius: inherit;
+					.block-definition {
+						width: 100%;
+						height: 45px;
+						border-bottom: 3px solid #757575;
+						position: relative;
+						z-index: 3;
+						.block-condition {
+							width: 50px;
+							margin: 0;
+							position: absolute;
+							top: 50%;
+							transform: translateY(-50%);
+							left: 10px;
+						}
+						.select {
+							width: 200px;
+							position: absolute;
+							right: 0;
+							top: 0;
+						}
+					}
+				}
+			} 
+			// Task Inputs
+			.block-inputs,
+			.block-operators,
+			.block-outputs {
+				position: relative;
+				border-bottom: 0.5px solid #757575;
+				&.no-border{
+					border-bottom: none;
+				}
+				.input-text {
+					position: absolute;
+					left: 0;
+					top: 0;
+					height: 100%;
+					width: 50px;
+					border-right: 0.5px solid #757575;
+					overflow: hidden;
+					p {
+						margin: 0;
+						writing-mode: vertical-rl;
+						position: absolute;
+						height: 100%;
+						left: 50%;
+						transform: translateX(-50%) rotate(180deg);
+						text-align: center;
+					}
+				}
+				.input-param {
+					width: calc(100% - 80px);
+					left: 80px;
+					position: relative;
+					height: 50px;
+					margin-top: 5px;
+					margin-bottom: 5px;
+					.input-key {
+						position: absolute;
+						top: 50%;
+						transform: translateY(-50%);
+						width: calc(50% - 20px);
+						left: 10px;
+					}
+					.input-container{
+						position: absolute;
+						width: 50%;
+						right: 0;
+						top: 50%;
+						transform: translateY(-50%);
+					}
+				}
+				.output-container{
+					position: relative;
+					width: calc(100% - 50px);
+					left: 50px;
+					&.border{
+						border-bottom: 0.5px solid #757575;
+					}
+					.input-param {
+						width: calc(100% - 30px);
+						left: 30px;
+					}
+					.remove-output{
+						position: absolute;
+						left: 0;
+						background: transparent;
+						width: 30px;
+						height: 100%;
+						padding: 0;
+						font-size: 25px;
+						ion-icon.trash {
+							color: var(--btn-red);
+						}
+					}
+				}
+			}
+			.block-operators,
+			.block-outputs{
+				min-height: 60px;
+			}
+			.block-operators{
+				z-index: 2;
+			}
+			.block-outputs{
+				z-index: 1;
+			}
+			.add-output-container{
+				margin-top: 10px;
+				.add-btn{
+					z-index: 0;
+					ion-icon.trash {
+						color: var(--btn-red);
+					}
+				}
+			}
+		}
+	}
 }
