@@ -1,7 +1,7 @@
 {
   "name": "FhemNative",
   "productName": "FhemNative",
-  "version": "2.5.3",
+  "version": "2.6.0",
   "author": "Syrex-o",
   "homepage": "./",
   "main": "electron.js",
@@ -78,7 +78,6 @@
     "core-js": "^2.5.4",
     "d3": "^5.15.0",
     "es6-promise-plugin": "^4.2.2",
-    "mqtt": "^4.1.0",
     "ngx-toastr": "^12.0.0",
     "process": "^0.11.10",
     "rxjs": "~6.5.1",
@@ -86,7 +85,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.3",
+    "@angular-devkit/build-angular": "^0.901.9",
     "@angular/cli": "^9.1.0",
     "@angular/compiler": "~9.1.0",
     "@angular/compiler-cli": "~9.1.0",

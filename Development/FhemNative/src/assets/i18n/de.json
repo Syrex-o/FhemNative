@@ -612,6 +612,27 @@
 				"NO_FAVOURITES": "Keine Farb-Favoriten gefunden."
 			}
 		},
+		"Html":{
+			"NAME": "Html (Beta)",
+			"DES": "Ein Komponente, die HTML Texte darstellen kann.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts (falls benötigt)"
+				},
+				"data_reading":{
+					"name": "Reading Name",
+					"info": "Name des Fhem Readings (falls benötigt)"
+				},
+				"data_rawHtml":{
+					"name": "Raw HTML",
+					"info": "HTML Texte direkt definieren"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_LABEL": "Kein HTML text gefunden. Bitte bearbeite deine Einstellungen."
+			}
+		},
 		"IFrame":{
 			"NAME": "I Frame",
 			"DES": "Ein Rahmen, um andere Webinhalte anzeigen zu können.",
@@ -635,6 +656,55 @@
 			},
 			"TRANSLATOR":{
 				"NO_URL": "Keine URL gefunden."
+			}
+		},
+		"Input":{
+			"NAME": "Input",
+			"DES": "Ein Input Feld, dass Werte an Fhem senden kann.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts (falls benötigt)"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name des set Befehls (falls benötigt)"
+				},
+				"bool_data_showShadow":{
+					"name": "Schatten anzeigen",
+					"info": "Schatten anzeigen/nicht anzeigen"
+				},
+				"bool_data_showFavorites":{
+					"name": "Letzte Befehle anzeigen",
+					"info": "Letzte gesendete Befehle anzeigen/nicht anzeigen und speichern"
+				},
+				"icon_sendIcon":{
+					"name": "Senden Icon",
+					"info": "Icon für den Senden Button"
+				},
+				"style_backgroundColor":{
+					"name": "Hintergrundfarbe",
+					"info": "Hintergrundfarbe des Input-Felds"
+				},
+				"style_textColor":{
+					"name": "Text Farbe",
+					"info": "Textfarbe des Input-Felds"
+				},
+				"style_iconColor":{
+					"name": "Icon Farbe",
+					"info": "Icon Farbe der Buttons"
+				},
+				"style_borderColor":{
+					"name": "Randfarbe",
+					"info": "Randfarbe des Inputs"
+				},
+				"style_buttonColor":{
+					"name": "Button Hintergrundfarbe",
+					"info": "Hintergrundfarbe der Buttons"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_FAVOURITES": "Keine Kommando-Favoriten gefunden."
 			}
 		},
 		"Icon":{
@@ -1107,6 +1177,10 @@
 			"NAME": "Select",
 			"DES": "Ein Selektionsmenü, dass FHEM oder manuelle Listen dargestellen kann.",
 			"INPUTS":{
+				"data_fixed_var_variable":{
+					"name": "Variablen Name",
+					"info": "Name der Variable, die geändert werden soll"
+				},
 				"data_device": {
 					"name": "Device Name",
 					"info": "Name des Fhem Geräts"
@@ -1163,6 +1237,10 @@
 					"name": "Eigener Rand-Radius",
 					"info": "Eigenen Rand-Radius für jede Ecke definieren"
 				},
+				"bool_data_useForVariables":{
+					"name": "Variablen nutzen",
+					"info": "Variablen anstatt von Fhem Werten ändern"
+				},
 				"style_borderColor":{
 					"name": "Randfarbe",
 					"info": "Randfarbe der Select-Box"
@@ -1171,7 +1249,8 @@
 			},
 			"TRANSLATOR":{
 				"NO_ITEMS": "Keine Elemente gefunden",
-				"ADD": "Hinzufügen:"
+				"ADD": "Hinzufügen:",
+				"NO_VARIABLE": "Es wurde keine Variable gefunden oder die ausgewählte Variable ist nicht statisch. Bitte ändere die Komponenten Einstellungen."
 			}
 		},
 		"Slider":{
@@ -1606,9 +1685,41 @@
 					"name": "Seiten",
 					"info": "Anzahl der Tabs"
 				},
+				"data_borderRadius":{
+					"name": "Rand-Radius",
+					"info": "Radius vom Rand der Tabs"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand der Tabs oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand der Tabs oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand der Tabs unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand der Tabs unten rechts"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
+				},
+				"bool_data_customIconColors":{
+					"name": "Eigene Icon ON farbe",
+					"info": "Eigenen Farbe der Icons im AN Zustand"
+				},
 				"arr_data_style":{
 					"name": "Style",
 					"info": "Style der Tabs"
+				},
+				"arr_data_tabPosition":{
+					"name": "Tabs Position",
+					"info": "Position der Tab-Selektion"
 				},
 				"arr_icon_icons":{
 					"name": "Icons",
@@ -1617,6 +1728,10 @@
 				"arr_style_iconColors":{
 					"name": "Icon-Farben",
 					"info": "Eine Liste von Icon Farben"
+				},
+				"arr_style_iconOnColors":{
+					"name": "Icon-ON-Farben",
+					"info": "Eine Liste von Icon Farben im ON Zustand"
 				},
 				"arr_style_backGroundColors":{
 					"name": "Hintergrundfarben",
@@ -1878,6 +1993,10 @@
 					"TITLE": "Verbindung aktiv halten",
 					"INFO": "Verbindung zu FHEM auch im Hintergrund aktiv halten"
 				},
+				"VARIABLES":{
+					"TITLE": "FhemNative Variablen",
+					"INFO": "FhemNative Variablen anzeigen/nicht anzeigen"
+				},
 				"LOAD_WHICH_DEVICES":{
 					"TITLE": "Geräte laden definieren",
 					"INFO": "Welche Geräte sollen beim App Start geladen werden?",
@@ -2044,7 +2163,30 @@
 			},
 			"ADVANCED":{
 				"TITLE": "Erweiterte Einstellungen",
-				"INFO": "Zeige die erweiterten Einstellungen von FhemNative."
+				"INFO": "Zeige die erweiterten Einstellungen von FhemNative.",
+				"WINDOW":{
+					"TITLE": "Fenster Einstellungen",
+					"SELECT_DEVICE":{
+						"TITLE": "Gerät auswählen",
+						"INFO": "Ziel-Gerät auswählen. FhemNative ändert die Fenstergröße auf das Ziel-Gerät."
+					},
+					"ENABLE":{
+						"TITLE": "Angepasste Fenstergröße beim start von FhemNative",
+						"INFO": "Aktivieren/deaktivieren der angepassten Fenstergröße beim Start von FhemNative"
+					},
+					"CUSTOM":{
+						"TITLE": "Eigene Fenstergröße",
+						"INFO": "Aktivieren/deaktivieren der eigenen Fenstergröße",
+						"SUB_INFO": "Achte darauf keine Pixel einzusetzen, sondern die Viewport-Größe des Geräts",
+						"WIDTH": "Viewport Breite:",
+						"HEIGHT": "Viewport Höhe:",
+						"BUTTON": "Fenstergröße anpassen",
+						"ERROR":{
+							"TITLE": "Es ist ein Fehler aufgetreten.",
+							"INFO": "Breite und Höhe müssen gefüllt sein."
+						}
+					}
+				}
 			}
 		},
 		"TASKS":{
@@ -2070,7 +2212,7 @@
 			"CHANGE_TASK": {
 				"MISSING":{
 					"TITLE": "Fehlende Werte",
-					"INFO": "Es fehlen Eingabewerte in der Task-Definition. Bitte stell sicher, dass alle Felder Gefüllt sind."
+					"INFO": "Es fehlen Eingabewerte in der Definition. Bitte stell sicher, dass alle Felder Gefüllt sind."
 				}
 			},
 			"REMOVE_TASK":{
@@ -2088,6 +2230,52 @@
 			"REMOVE_ELSE":{
 				"TITLE": "Else Block entfernen",
 				"INFO": "Else Kondition entfernen"
+			}
+		},
+		"VARIABLES":{
+			"TITLE": "FhemNative Variablen",
+			"CREATE_VARIABLE": {
+				"TITLE": "Variable erstellen",
+				"INFO": "Erstelle eine Variable für FhemNative. Die Variable erstellt eine Syntax, die in Komponenten verwendet werden kann.",
+				"NAME": {
+					"TITLE": "Variablen Name",
+					"INFO": "Name der Variable"
+				},
+				"DES": {
+					"TITLE": "Variablen Beschreibung",
+					"INFO": "Beschreibung der Variable (für eigene Übersichtlichkeit)"
+				},
+				"TYPE":{
+					"TITLE": "Variablen Typ",
+					"INFO": "Typ der Variable (statisch/dynamisch)"
+				},
+				"PREVIEW":{
+					"TITLE": "Variablen Preview",
+					"INFO": "Diese Syntax kann verwendet werden, um den Wert der Variable zu nutzen:"
+				}
+			},
+			"EDIT_VARIABLE": {
+				"TITLE": "Variable bearbeiten"
+			},
+			"CONFIG_VARIABLE": {
+				"TITLE": "Variable konfigurieren",
+				"PREVIEW": "Wert Preview:",
+				"SELECT_INPUT":{
+					"TITLE": "Input Option",
+					"INFO": "Selektion der Input Optionen"
+				},
+				"SELECT_UPDATER":{
+					"TITLE": "Update Option",
+					"INFO": "Selektion der Update Optionen"
+				},
+				"SELECT_REGEX":{
+					"TITLE": "Regex Option",
+					"INFO": "Selektion der Regex Optionen"
+				}
+			},
+			"REMOVE_VARIABLE":{
+				"TITLE": "Variable entfernen",
+				"INFO": "Sind sie sicher die Variable zu löschen?"
 			}
 		},
 		"RESET":{

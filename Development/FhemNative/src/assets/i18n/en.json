@@ -612,7 +612,7 @@
 					"info": "Custom border radius for each corner"
 				},
 				"bool_data_customAnimation":{
-					"name": "Custom popup Aaimation",
+					"name": "Custom popup animation",
 					"info": "Enable/disable custom popup animation"
 				},
 				"bool_data_invertAnimation":{
@@ -622,6 +622,27 @@
 			},
 			"TRANSLATOR":{
 				"NO_FAVOURITES": "No favourite colors found."
+			}
+		},
+		"Html":{
+			"NAME": "Html (Beta)",
+			"DES": "A component, that can display HTML texts.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading (if needed)"
+				},
+				"data_rawHtml":{
+					"name": "Raw HTML",
+					"info": "Define HTML text directly"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_LABEL": "No HTML text found. Please edit your settings."
 			}
 		},
 		"IFrame":{
@@ -647,6 +668,55 @@
 			},
 			"TRANSLATOR":{
 				"NO_URL": "No URL found."
+			}
+		},
+		"Input":{
+			"NAME": "Input",
+			"DES": "An input field, that can send values to Fhem.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device (if needed)"
+				},
+				"data_setReading":{
+					"name": "Set Reading",
+					"info": "Name of the set command (if needed)"
+				},
+				"bool_data_showShadow":{
+					"name": "Show shadow",
+					"info": "Show/hide box shadow"
+				},
+				"bool_data_showFavorites":{
+					"name": "Show last commands",
+					"info": "Show/hide last send commands and save them"
+				},
+				"icon_sendIcon":{
+					"name": "Send icon",
+					"info": "Icon for the send button"
+				},
+				"style_backgroundColor":{
+					"name": "Background color",
+					"info": "Background color of the input field"
+				},
+				"style_textColor":{
+					"name": "Text color",
+					"info": "Text color of the input field"
+				},
+				"style_iconColor":{
+					"name": "Icon color",
+					"info": "Icon color of the buttons"
+				},
+				"style_borderColor":{
+					"name": "Border color",
+					"info": "Border color of the input"
+				},
+				"style_buttonColor":{
+					"name": "Button background color",
+					"info": "Background color of the buttons"
+				}
+			},
+			"TRANSLATOR":{
+				"NO_FAVOURITES": "No command favourites found."
 			}
 		},
 		"Icon":{
@@ -1115,6 +1185,10 @@
 			"NAME": "Select",
 			"DES": "A selection menu, that can hold FHEM or manual lists.",
 			"INPUTS":{
+				"data_fixed_var_variable":{
+					"name": "Variable name",
+					"info": "Name of the variable, that should be changed"
+				},
 				"data_device": {
 					"name": "Device name",
 					"info": "Name of the Fhem device"
@@ -1171,6 +1245,10 @@
 					"name": "Custom border radius",
 					"info": "Custom border radius for each corner"
 				},
+				"bool_data_useForVariables":{
+					"name": "Use variables",
+					"info": "Change variables instead of fhem values"
+				},
 				"style_borderColor":{
 					"name": "Border color",
 					"info": "Border color of the select-box"
@@ -1179,7 +1257,8 @@
 			},
 			"TRANSLATOR":{
 				"NO_ITEMS": "No items found",
-				"ADD": "Add:"
+				"ADD": "Add:",
+				"NO_VARIABLE": "No variable was found or the selected variable is not static. Please edit your component settings."
 			}
 		},
 		"Slider":{
@@ -1614,9 +1693,41 @@
 					"name": "Pages",
 					"info": "Amount of pages of the tabs component"
 				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border radius of the tabs"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the tabs top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the tabs top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the tabs bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the tabs bottom right"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
+				},
+				"bool_data_customIconColors":{
+					"name": "Cusom icon ON color",
+					"info": "Custom colors of the icons in ON state"
+				},
 				"arr_data_style":{
 					"name": "Style",
 					"info": "Style of the tabs"
+				},
+				"arr_data_tabPosition":{
+					"name": "Tabs position",
+					"info": "Position of the tab selection"
 				},
 				"arr_icon_icons":{
 					"name": "Icons",
@@ -1625,6 +1736,10 @@
 				"arr_style_iconColors":{
 					"name": "Icon colors",
 					"info": "A list of icon colors"
+				},
+				"arr_style_iconOnColors":{
+					"name": "Icon-ON-colors",
+					"info": "List of icon colors in ON state"
 				},
 				"arr_style_backGroundColors":{
 					"name": "Background colors",
@@ -1882,6 +1997,10 @@
 					"TITLE": "Keep connection",
 					"INFO": "Keep FHEM connection always on, even in background"
 				},
+				"VARIABLES":{
+					"TITLE": "FhemNative variables",
+					"INFO": "Show/hide FhemNative variables"
+				},
 				"LOAD_WHICH_DEVICES":{
 					"TITLE": "Define device loader",
 					"INFO": "Which devices should be loaded on app start?",
@@ -2048,7 +2167,30 @@
 			},
 			"ADVANCED":{
 				"TITLE": "Advanced options",
-				"INFO": "Show the advanced options of FhemNative."
+				"INFO": "Show the advanced options of FhemNative.",
+				"WINDOW":{
+					"TITLE": "Window Settings",
+					"SELECT_DEVICE":{
+						"TITLE": "Select device",
+						"INFO": "Select target device. FhemNative will change the window size to the target device."
+					},
+					"ENABLE":{
+						"TITLE": "Custom window size on start of FhemNative",
+						"INFO": "Activate/deactivate to set the adjusted window size on start of FhemNative"
+					},
+					"CUSTOM":{
+						"TITLE": "Custom window size",
+						"INFO": "Enable/disable to use custom window size",
+						"SUB_INFO": "Please endure, that you pass the viewport size of the device instad of the pixels.",
+						"WIDTH": "Viewport width:",
+						"HEIGHT": "Viewport height:",
+						"BUTTON": "Set window size",
+						"ERROR":{
+							"TITLE": "An error occured.",
+							"INFO": "Width and height must be filled."
+						}
+					}
+				}
 			}
 		},
 		"TASKS":{
@@ -2061,7 +2203,7 @@
 					"INFO": "Name of the task"
 				},
 				"DES": {
-					"TITLE": "Task Description",
+					"TITLE": "Task description",
 					"INFO": "Description of the task (for own clarity)"
 				}
 			},
@@ -2074,7 +2216,7 @@
 			"CHANGE_TASK": {
 				"MISSING":{
 					"TITLE": "Missing values",
-					"INFO": "There are missing Input values in the task definition. Please ensure, that all fields are filled."
+					"INFO": "There are missing Input values in the definition. Please ensure, that all fields are filled."
 				}
 			},
 			"REMOVE_TASK":{
@@ -2092,6 +2234,52 @@
 			"REMOVE_ELSE":{
 				"TITLE": "Remove Else Block",
 				"INFO": "Remove Else Condition"
+			}
+		},
+		"VARIABLES":{
+			"TITLE": "FhemNative variables",
+			"CREATE_VARIABLE": {
+				"TITLE": "Create variable",
+				"INFO": "Create a variable for FhemNative. The variable creates a syntax, that is useable in components",
+				"NAME": {
+					"TITLE": "Variable name",
+					"INFO": "Name of the variable"
+				},
+				"DES": {
+					"TITLE": "Variable description",
+					"INFO": "Description of the variable (for own clarity)"
+				},
+				"TYPE":{
+					"TITLE": "Variable type",
+					"INFO": "Type of the variable (static/dynamic)"
+				},
+				"PREVIEW":{
+					"TITLE": "Variable preview",
+					"INFO": "This syntax can be used, to access the value in the variable:"
+				}
+			},
+			"EDIT_VARIABLE": {
+				"TITLE": "Edit variable"
+			},
+			"CONFIG_VARIABLE": {
+				"TITLE": "Configure variable",
+				"PREVIEW": "Value preview:",
+				"SELECT_INPUT":{
+					"TITLE": "Input options",
+					"INFO": "Selection of input options"
+				},
+				"SELECT_UPDATER":{
+					"TITLE": "Update option",
+					"INFO": "Selection of update options"
+				},
+				"SELECT_REGEX":{
+					"TITLE": "Regex option",
+					"INFO": "Selection of regex options"
+				}
+			},
+			"REMOVE_VARIABLE":{
+				"TITLE": "Remove variable",
+				"INFO": "Are you sure about removing this variable?"
 			}
 		},
 		"RESET":{

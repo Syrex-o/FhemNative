@@ -419,6 +419,33 @@
       			{"TYPE": "FIX", "CHANGE": "Icon in swiper position"},
       			{"TYPE": "FIX", "CHANGE": "Chart Time selection unfold overlap"}
       		]
+      	},
+      	{
+      		"VERSION": "2.6.0",
+      		"DATE": "18.06.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "FhemNative variables beta"},
+      			{"TYPE": "NEW", "CHANGE": "Select component is able to change static variables"},
+      			{"TYPE": "NEW", "CHANGE": "Tab custom borders"},
+      			{"TYPE": "NEW", "CHANGE": "Tab custom icon ON state colors"},
+      			{"TYPE": "NEW", "CHANGE": "Custom Tab Header position"},
+      			{"TYPE": "NEW", "CHANGE": "Mobile device presets/custom viewports (Advanced settings)"},
+      			{"TYPE": "NEW", "CHANGE": "Input component"},
+      			{"TYPE": "NEW", "CHANGE": "Html component"},
+      			{"TYPE": "FIX", "CHANGE": "Toast messages combiner"},
+      			{"TYPE": "FIX", "CHANGE": "Color Picker size for mobile and desktop"},
+      			{"TYPE": "FIX", "CHANGE": "Swich and select: no text selection while moving mouse"},
+      			{"TYPE": "FIX", "CHANGE": "Slider value center position for vertical slider"},
+      			{"TYPE": "FIX", "CHANGE": "Select value position in swiper"},
+      			{"TYPE": "FIX", "CHANGE": "Select value text shorten"},
+      			{"TYPE": "FIX", "CHANGE": "Popup close position in swiper"},
+      			{"TYPE": "FIX", "CHANGE": "Popup edit button position"},
+      			{"TYPE": "FIX", "CHANGE": "Popup close button in tabs"},
+      			{"TYPE": "FIX", "CHANGE": "Tabs edit button position"},
+      			{"TYPE": "FIX", "CHANGE": "Icon default"},
+      			{"TYPE": "FIX", "CHANGE": "Label (no label found) position"},
+      			{"TYPE": "FIX", "CHANGE": "Icon and label position in menu"}
+      		]
       	}
 	]
 }
