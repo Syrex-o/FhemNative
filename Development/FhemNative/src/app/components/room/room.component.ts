@@ -8,6 +8,7 @@ import { FhemService } from '../../services/fhem.service';
 import { TaskService } from '../../services/task.service';
 import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
+import { VariableService } from '../../services/variable.service';
 import { ComponentLoaderService } from '../../services/component-loader.service';
 import { SelectComponentService } from '../../services/select-component.service';
 
@@ -37,6 +38,7 @@ export class RoomComponent implements OnDestroy {
 		private platform: Platform,
 		private task: TaskService,
 		private fhem: FhemService,
+		private variable: VariableService,
 		private zone: NgZone){
 
 		// subscribe to route change
@@ -73,6 +75,8 @@ export class RoomComponent implements OnDestroy {
 	  			this.fhem.noReconnect = true;
 	  			this.fhem.disconnect();
 	  		}
+	  		// unlisten to variables
+	  		this.variable.unlisten();
 	  	});
 	  	this.onResumeSubscription = this.platform.resume.subscribe(() => {
 	  		if(!this.fhem.connected){
@@ -87,6 +91,9 @@ export class RoomComponent implements OnDestroy {
 					this.createHelpers();
 				}
 	  		}
+	  		// listen to variables
+	  		this.variable.listen();
+	  		// init room 
 	  		this.initRoom();
 
 	  	});
