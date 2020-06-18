@@ -24,6 +24,7 @@ import { SettingsService } from './services/settings.service';
 import { StorageService } from './services/storage.service';
 import { StructureService } from './services/structure.service';
 import { TaskService } from './services/task.service';
+import { VariableService } from './services/variable.service';
 import { ToastService } from './services/toast.service';
 import { VersionService } from './services/version.service';
 import { UndoRedoService } from './services/undo-redo.service';
@@ -48,47 +49,48 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 @NgModule({
-  	declarations: [AppComponent],
-  	imports: [
-      	BrowserModule,
-      	BrowserAnimationsModule,
-      	ToastrModule.forRoot(),
-      	IonicModule.forRoot(),
-      	IonicStorageModule.forRoot(),
-      	HotkeyModule.forRoot(),
-      	AppRoutingModule,
-      	ComponentsModule,
-        TranslateModule,
-      	// FhemNative Logger
+	declarations: [AppComponent],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		ToastrModule.forRoot(),
+		IonicModule.forRoot(),
+		IonicStorageModule.forRoot(),
+		HotkeyModule.forRoot(),
+		AppRoutingModule,
+		ComponentsModule,
+		TranslateModule,
+		// FhemNative Logger
 		LoggerModule,
-      	ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-  	],
-  	providers: [
-    	StatusBar,
-    	SplashScreen,
-    	{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    	// FhemNative Services
-    	FhemService,
-    	SettingsService,
-    	StorageService,
-    	StructureService,
-    	TaskService,
-    	ToastService,
-    	VersionService,
-    	UndoRedoService,
-    	BackButtonService,
-    	HotKeyService,
-    	TimeService,
-    	ElectronService,
-    	FileManagerService,
-    	NativeFunctionsService,
-    	// Plugins
-    	File,
-    	Chooser,
-    	Vibration,
-    	NativeAudio,
-    	SocialSharing
-  	],
-  	bootstrap: [AppComponent]
+			ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+	],
+	providers: [
+		StatusBar,
+		SplashScreen,
+		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+		// FhemNative Services
+		FhemService,
+		SettingsService,
+		StorageService,
+		StructureService,
+		TaskService,
+		VariableService,
+		ToastService,
+		VersionService,
+		UndoRedoService,
+		BackButtonService,
+		HotKeyService,
+		TimeService,
+		ElectronService,
+		FileManagerService,
+		NativeFunctionsService,
+		// Plugins
+		File,
+		Chooser,
+		Vibration,
+		NativeAudio,
+		SocialSharing
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule {}

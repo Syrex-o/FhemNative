@@ -3,12 +3,18 @@
         &.bigSettings .settings {
             height: 138px;
         }
+        &.biggerSettings .settings {
+            height: 207px;
+        }
         .list {
             overflow: auto;
             height: calc(100% - 69px);
         }
         &.bigSettings .list {
             height: calc(100% - 138px);
+        }
+        &.biggerSettings .list{
+            height: calc(100% - 207px);
         }
         button {
             background: none;
@@ -89,6 +95,13 @@
                     display: inline-flex;
                     padding-left: 0;
                     line-height: 24px;
+                    ion-icon,
+                    icon,
+                    ion-label{
+                        position: relative;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
                     &.resize {
                         ion-label {
                             text-align: left;

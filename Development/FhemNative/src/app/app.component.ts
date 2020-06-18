@@ -16,6 +16,7 @@ import { SettingsService } from './services/settings.service';
 import { StructureService } from './services/structure.service';
 import { VersionService } from './services/version.service';
 import { TaskService } from './services/task.service';
+import { VariableService } from './services/variable.service';
 import { ComponentLoaderService } from './services/component-loader.service';
 
 // Room Component
@@ -44,10 +45,13 @@ export class AppComponent {
     	public settings: SettingsService,
     	public structure: StructureService,
     	public task: TaskService,
+    	private variable: VariableService,
     	private fhem: FhemService,
     	private logger: LoggerService,
     	private undoManager: UndoRedoService,
     	private componentLoader: ComponentLoaderService) {
+  		// variables
+		this.variable.listen();
   		// load room structure
 		this.structure.loadRooms(true, RoomComponent);
 
@@ -62,6 +66,11 @@ export class AppComponent {
 			// listen to tasks
 			if(this.settings.app.showTasks){
 				this.task.listen();
+			}
+			// check for desktop resizing
+			if(this.settings.app.customWindowScale.enable){
+				this.logger.info('Rescaling window');
+				this.settings.scaleWindow();
 			}
 		});
   	}
@@ -179,6 +188,23 @@ export class AppComponent {
 
   		let comp;
   		await this.componentLoader.loadDynamicComponent('tasks/tasks', false).then((ComponentType: any)=>{
+  			comp = ComponentType;
+  		});
+
+  		const modal = await this.modalController.create({
+			component: comp,
+			backdropDismiss: false,
+			cssClass: 'modal-fullscreen'
+		});
+		return await modal.present();
+  	}
+
+  	async openVariables(){
+  		this.logger.info('Switch room to: Variables');
+  		this.menu.close();
+
+  		let comp;
+  		await this.componentLoader.loadDynamicComponent('variables/variables', false).then((ComponentType: any)=>{
   			comp = ComponentType;
   		});
 
