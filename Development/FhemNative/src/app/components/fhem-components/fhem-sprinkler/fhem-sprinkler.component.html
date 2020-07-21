@@ -1,10 +1,11 @@
 <fhem-component-container 
-	[specs]="{ID: ID, device: data_device, reading: null, connected: true, forceReload: true}" 
+	[specs]="{ID: ID, device: data_device, reading: null, connected: true}" 
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="200"
 	[minimumHeight]="200">
 	<div class="sprinkler">
-		<div class="sprinkler-page-container" *ngIf="sprinklers.states?.length > 0">
+		<loader *ngIf="!menus.fullyLoaded"></loader>
+		<div class="sprinkler-page-container" *ngIf="sprinklers.states?.length > 0 && menus.fullyLoaded">
 			<div class="btn-box">
 				<div class="row">
 					<button *ngIf="sprinklers.smart.winterMode" matRipple [matRippleColor]="'#d4d4d480'" class="btn-icon" (click)="openSettings('winterMenu')">
@@ -36,7 +37,10 @@
 					<switch
 						[(ngModel)]="sprinklers.smart.runInterval.Value"
 						[label]="'COMPONENTS.Sprinkler.TRANSLATOR.RUN_INTERVAL.TITLE' | translate"
-						[subTitle]="'COMPONENTS.Sprinkler.TRANSLATOR.RUN_INTERVAL.INFO' | translate"
+						[subTitle]="
+							('COMPONENTS.Sprinkler.TRANSLATOR.RUN_INTERVAL.INFO' | translate) + ' (' +
+							(sprinklers.smart.manualRuntime?.Value ? sprinklers.smart.manualRuntime.Value : 30) + 'min)'
+						"
 						[actOnCallback]="true"
 						(onToggle)="toggleAll($event)">
 					</switch>
@@ -356,6 +360,7 @@
 
 <!-- Timeline Menu -->
 <picker
+	*ngIf="sprinklers.smart.enableInterval2"
 	[(ngModel)]="menus.timelineMenu"
 	[height]="80"
 	[showConfirmBtn]="false"
