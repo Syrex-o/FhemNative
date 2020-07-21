@@ -90,7 +90,7 @@
             [class.resize]="settings.modes.roomEdit"
             class="button" matRipple [matRippleColor]="'#d4d4d480'" 
             (click)="switchRoom(name, ID)">
-            <ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" *ngIf="settings.modes.roomEdit" class="less-margin" slot="start" name="reorder-three"></ion-icon>
+            <ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" *ngIf="settings.modes.roomEdit" class="less-margin reorder" slot="start" name="reorder-three"></ion-icon>
             <icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" [icon]="icon"></icon>
             <ion-label colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{name}}</ion-label>
         </button>
