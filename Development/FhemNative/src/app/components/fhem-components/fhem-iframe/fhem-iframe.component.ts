@@ -33,11 +33,15 @@ export class FhemIframeComponent implements OnInit, OnDestroy {
 	src: SafeResourceUrl;
 
 	ngOnInit(){
-		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
-			this.getState(device);
-		}).then(device=>{
-			this.getState(device);
-		});
+		if(this.data_device !== ''){
+			this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+				this.getState(device);
+			}).then(device=>{
+				this.getState(device);
+			});
+		}else{
+			this.src = (this.data_url !== '') ? this.sanitizer.bypassSecurityTrustResourceUrl(this.data_url) : '';
+		}
 	}
 
 	private getState(device){
