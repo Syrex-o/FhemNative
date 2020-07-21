@@ -44,7 +44,7 @@ export class FhemService {
 	public listenDevices: Array<ListenDevice> = [];
 
 	// connection 
-	private socket: any;
+	private socket: WebSocket;
 	// current connection profile
 	// initial -1 to add
 	private currentProfile: number = -1;
@@ -72,7 +72,7 @@ export class FhemService {
 			this.connected = next;
 		});
 		// device update subscription
-		let timerRuns = false;
+		let timerRuns: boolean = false;
 		let toasterDevices: string[] = [];
 		this.deviceUpdateSub.subscribe((device: FhemDevice)=>{
 			// inform logger
@@ -117,9 +117,9 @@ export class FhemService {
 
 	// get url for connection
 	private getConnectionURL(){
-		let url;
+		let url: string;
 		// get the desired url for fhem connection
-		const type = this.connectionType();
+		const type: string = this.connectionType();
 		// different websocket types
 		if(type.match(/websocket|fhemweb/)){
 			url = (this.settings.connectionProfiles[this.currentProfile].WSS ? 'wss://' : 'ws://') + 
@@ -148,13 +148,12 @@ export class FhemService {
 			// clearing device lists
 			this.devices = [];
 			// get url
-			const url = this.getConnectionURL();
+			const url: string = this.getConnectionURL();
 			// get the desired url for fhem connection
-			const type = this.connectionType();
+			const type: string = this.connectionType();
 			
 			if(type.match(/websocket|fhemweb/)){
 				this.socket = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url);
-
 				// timeout
 				const timeout = setTimeout(()=>{
 					if(!this.connected){
@@ -167,7 +166,7 @@ export class FhemService {
 						);
 						this.socket.close();
 					}
-				}, 1500);
+				}, 1000);
 				// open
 				this.socket.onopen = (e)=>{
 					this.connectionInProgress = false;
@@ -511,7 +510,7 @@ export class FhemService {
 							this.sendCommand({command: 'list', arg: deviceList});
 						}
 					}
-				});
+				}, 50);
 			}
 		});
 	}
@@ -669,44 +668,6 @@ export class FhemService {
 		});
 	}
 
-	// get
-   //  public get(device, property) {
-   //  	return new Promise((resolve)=>{
-   //  		let gotReply: boolean = false;
-   //  		// subscribe to get listener
-   //  		const sub = this.deviceGetSub.subscribe((data)=>{
-   //  			gotReply = true;
-   //  			sub.unsubscribe();
-   //  			// check if the reply is for the correct device
-   //  			if(data.device === device){
-   //  				resolve(data.value);
-   //  			}
-   //  		});
-   //  		// check for reply
-   //  		setTimeout(()=>{
-			// 	if(!gotReply){
-			// 		sub.unsubscribe();
-			// 		// no reply --> no device found
-			// 		resolve(null);
-			// 	}
-			// }, 1000);
-   //  		// send get request
-   //  		const type = this.connectionType();
-	  //   	if (type === 'websocket') {
-	  //   		this.sendCommand({
-		 //            command: 'get',
-		 //            device,
-		 //            property
-		 //        });
-	  //   	}
-	  //   	if (type === 'fhemweb') {
-	  //   		this.sendCommand({
-	  //   			command: 'get ' + device + ' ' + property
-	  //   		});
-	  //   	}
-   //  	});
-   //  }
-
 	// set reading
 	public setReading(device, reading, value) {
 		this.sendCommand({
@@ -723,7 +684,7 @@ export class FhemService {
 
 	// send list command to fhem for relevant connection type
 	public listDevices(value: string){
-		const type = this.connectionType();
+		const type: string = this.connectionType();
 		if (type === 'websocket') {
 			this.socket.send(JSON.stringify(
 				{type: 'command', payload: {command: 'list', arg: value}}
