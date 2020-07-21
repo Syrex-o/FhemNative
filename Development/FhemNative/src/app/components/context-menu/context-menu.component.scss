@@ -40,18 +40,19 @@
 			}
 			icon{
 				margin-left: 8px;
+				top: 5px;
 				&.opacity{
 					opacity: 0.5;
 				}
 				&.smaller{
 					height: 20px;
-					top: 5px;
+					top: 8px;
 				}
 			}
 			p{
-				line-height: 25px;
-    			padding-left: 8px;
-    			margin: 0;
+				line-height: 35px;
+				padding-left: 8px;
+				margin: 0;
 			}
 		}
 	}
@@ -64,11 +65,15 @@
 		}
 		.key,
 		.value{
-		    width: 150px;
-		    display: inline-block;
+			width: 150px;
+			display: inline-block;
 		}
 		.user-attr{
-			width: calc(100% - 100px);
+			position: relative;
+			background: transparent;
+			resize: none;
+			border: none;
+			width: 100%;
 			user-select: all;
 		}
 	}

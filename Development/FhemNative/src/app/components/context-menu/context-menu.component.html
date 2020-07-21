@@ -89,6 +89,7 @@
 	</div>
 	<picker
 		[height]="'65'"
+		[zIndex]="1101"
 		[confirmBtn]="'GENERAL.BUTTONS.OKAY' | translate"
 		[showCancelBtn]="false"
 		[ngModel]="show.componentDetails.show"
@@ -112,11 +113,10 @@
 				</div>
 				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.TITLE' | translate }}</p>
 				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.INFO' | translate }}</p>
-				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="user-attr">{{show.componentDetails.fhem.value.short}}</p>
-
+				<textarea colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="user-attr">{{show.componentDetails.fhem.value.short}}</textarea>
 				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.TITLE' | translate }}</p>
 				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.INFO' | translate }}</p>
-				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="user-attr">{{show.componentDetails.fhem.value.long}}</p>
+				<textarea colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="user-attr">{{show.componentDetails.fhem.value.long}}</textarea>
 			</div>
 		</div>
 	</picker>
