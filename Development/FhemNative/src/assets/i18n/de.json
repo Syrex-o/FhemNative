@@ -613,7 +613,7 @@
 			}
 		},
 		"Html":{
-			"NAME": "Html (Beta)",
+			"NAME": "Html",
 			"DES": "Ein Komponente, die HTML Texte darstellen kann.",
 			"INPUTS":{
 				"data_device": {
@@ -1379,7 +1379,8 @@
 			"TRANSLATOR":{
 				"RUN_INTERVAL": {
 					"TITLE": "Sofort Programm",
-					"INFO": "Alle Regner-Kreise für 30 Minuten laufen lassen"
+					"INFO": "Alle Regner-Kreise laufen lassen",
+					"SELECT_MANUAL": "Manuelle Laufzeit auswählen:"
 				},
 				"RUNTIMES":{
 					"TITLE": "Bewässerungs Einstellungen",

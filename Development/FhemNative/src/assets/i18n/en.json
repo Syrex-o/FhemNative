@@ -625,7 +625,7 @@
 			}
 		},
 		"Html":{
-			"NAME": "Html (Beta)",
+			"NAME": "Html",
 			"DES": "A component, that can display HTML texts.",
 			"INPUTS":{
 				"data_device": {
@@ -1387,7 +1387,8 @@
 			"TRANSLATOR":{
 				"RUN_INTERVAL": {
 					"TITLE": "Run interval",
-					"INFO": "Run all sprinklers for 30 minutes"
+					"INFO": "Run all sprinklers cycles",
+					"SELECT_MANUAL": "Select manual runtime:"
 				},
 				"RUNTIMES":{
 					"TITLE": "Sprinkler settings",

@@ -446,6 +446,29 @@
       			{"TYPE": "FIX", "CHANGE": "Label (no label found) position"},
       			{"TYPE": "FIX", "CHANGE": "Icon and label position in menu"}
       		]
+      	},
+      	{
+      		"VERSION": "2.6.1",
+      		"DATE": "21.07.2020",
+      		"CHANGES":[
+      			{"TYPE": "NEW", "CHANGE": "Secure websocket"},
+      			{"TYPE": "NEW", "CHANGE": "HTML out of beta state"},
+      			{"TYPE": "NEW", "CHANGE": "Sprinkler manual runtime setter"},
+      			{"TYPE": "NEW", "CHANGE": "Component Loading Animation handling (allow 5 sec loading before error message)"},
+      			{"TYPE": "FIX", "CHANGE": "Component details menu z-index"},
+      			{"TYPE": "FIX", "CHANGE": "PWA command"},
+      			{"TYPE": "FIX", "CHANGE": "PWA icon sizes"},
+      			{"TYPE": "FIX", "CHANGE": "Icon and label position in menu"},
+      			{"TYPE": "FIX", "CHANGE": "HTML default text color (match with app theme)"},
+      			{"TYPE": "FIX", "CHANGE": "Copy of component details for FhemNative_userAttr"},
+      			{"TYPE": "FIX", "CHANGE": "IFrame URL faster response"},
+      			{"TYPE": "FIX", "CHANGE": "Label component position fix"},
+      			{"TYPE": "FIX", "CHANGE": "Secure waiting on default settings load"},
+      			{"TYPE": "FIX", "CHANGE": "Context menu label and icon position"},
+      			{"TYPE": "FIX", "CHANGE": "Sprinkler loader and initial error"},
+      			{"TYPE": "FIX", "CHANGE": "Settings importer"},
+      			{"TYPE": "FIX", "CHANGE": "Reload rooms after IP change"}
+      		]
       	}
 	]
 }
