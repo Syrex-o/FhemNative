@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } f
 
 // Services
 import { SettingsService } from '../../services/settings.service';
+import { StructureService } from '../../services/structure.service';
 import { StorageService } from '../../services/storage.service';
 import { FhemService } from '../../services/fhem.service';
 
@@ -19,6 +20,7 @@ export class FhemMenuComponent implements OnChanges {
 
 	constructor(
 		public settings: SettingsService,
+		private structure: StructureService,
 		private storage: StorageService,
 		private fhem: FhemService){}
 
@@ -61,6 +63,14 @@ export class FhemMenuComponent implements OnChanges {
 			change: JSON.stringify(this.settings.connectionProfiles)
 		}).then((res)=>{
 			this.resetModes();
+			// reload room 
+			const room = this.structure.currentRoom;
+			this.structure.navigateToRoom(room.name, room.ID, { 
+				name: room.name,
+				ID: room.ID,
+				UID: room.UID,
+				reload: true
+			});
 		})
 	}
 
