@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
 // Components
 import { IonicModule } from '@ionic/angular';
 import { ComponentsModule } from '../components.module';
-
 // Services
 import { FhemService } from '../../services/fhem.service';
 import { StructureService } from '../../services/structure.service';
@@ -17,6 +16,7 @@ import { FileManagerService } from '../../services/file-manager.service';
 import { StorageService } from '../../services/storage.service';
 import { ToastService } from '../../services/toast.service';
 import { TaskService } from '../../services/task.service';
+import { LoggerService } from '../../services/logger/logger.service';
 import { NativeFunctionsService } from '../../services/native-functions.service';
 import { ComponentLoaderService } from '../../services/component-loader.service';
 
@@ -29,8 +29,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 @Component({
 	selector: 'settings',
 	templateUrl: './settings.component.html',
-  	styleUrls: ['./settings.component.scss'],
-  	changeDetection: ChangeDetectionStrategy.OnPush
+  	styleUrls: ['./settings.component.scss']
 })
 
 export class SettingsComponent implements OnInit {
@@ -69,8 +68,8 @@ export class SettingsComponent implements OnInit {
 		private task: TaskService,
 		private http: HttpClient,
 		private platform: Platform,
-		private socialSharing: SocialSharing,
-		private cdr: ChangeDetectorRef){
+		private logger: LoggerService,
+		private socialSharing: SocialSharing){
 	}
 
 	ngOnInit(){
@@ -148,16 +147,17 @@ export class SettingsComponent implements OnInit {
 
 	// import FhemNative settings
 	async importSettings(){
+		this.logger.info('Start settings import');
 		const data: any = await this.fileManager.readFile();
+		this.logger.info('Settings loaded from file. Start procedure');
 		let isValid: boolean = false;
-		if(data && data.IPsettings){
+		if(data && data.connectionProfiles){
 			isValid = true;
 			// disconnect from fhem
 			this.fhem.noReconnect = true;
 			if(this.fhem.connected){
 				this.fhem.disconnect();
 			}
-
 			// start import
 			const len = Object.keys(data).length;
 			let i = 0;
@@ -172,21 +172,26 @@ export class SettingsComponent implements OnInit {
 						if (i === len) {
 							// reconnect to fhem with new IP
 							this.settings.loadDefaults().then(()=>{
-								this.fhem.noReconnect = false;
-								this.fhem.connectFhem();
-								this.structure.loadRooms(true, false, true);
-								// close menu
-								this.closeSettings();
-								this.toast.showAlert(
-									this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.TITLE'),
-									this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.INFO'),
-									false
-								);
+								setTimeout(()=>{
+									this.fhem.noReconnect = false;
+									this.fhem.connectFhem();
+									this.structure.loadRooms(true, false, true);
+									// close menu
+									this.closeSettings();
+									this.toast.showAlert(
+										this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.TITLE'),
+										this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.INFO'),
+										false
+									);
+									this.logger.info('Settings import was successful');
+								}, 100);
 							});
 						}
 					});
 				}
 			}
+		}else{
+			this.logger.info('Settings not imported (not valid)');
 		}
 	}
 
@@ -198,7 +203,6 @@ export class SettingsComponent implements OnInit {
 			this.http.get('https://raw.githubusercontent.com/Syrex-o/FhemNative/master/DEVICE_SIZE_LIST.json').subscribe((res:any)=>{
 				if(res && res.DEVICES){
 					this.devices = res.DEVICES;
-					this.cdr.detectChanges();
 				}
 			});
 		}
@@ -289,10 +293,8 @@ export class SettingsComponent implements OnInit {
 				this.toast.addNotify('Changelog', this.translate.instant('GENERAL.DICTIONARY.NO_CHANGELOG_PRESENT'), false);
 			}
 			this.settings.modes.showLoader = false;
-			this.cdr.detectChanges();
 		}, (error)=>{
 			this.settings.modes.showLoader = false;
-			this.cdr.detectChanges();
 		});
 	}
 
