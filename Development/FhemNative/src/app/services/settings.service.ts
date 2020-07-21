@@ -228,7 +228,10 @@ export class SettingsService {
 					}
 					//
 					if(index === this.appDefaults.length -1){
-						resolve();
+						// secure timeout, to ensure all settings are fully loaded
+						setTimeout(()=>{
+							resolve();
+						}, 0);
 					}
 				});
 			});
