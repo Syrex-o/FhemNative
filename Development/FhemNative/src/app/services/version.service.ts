@@ -7,6 +7,7 @@ import { Platform } from '@ionic/angular';
 // Services
 import { StorageService } from './storage.service';
 import { ToastService } from './toast.service';
+import { LoggerService } from './logger/logger.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,10 +17,11 @@ export class VersionService {
 	// github repo
 	private repo: string = 'https://api.github.com/repos/Syrex-o/FhemNative/';
 	// current App Version
-	public appVersion: string = '2.6.0';
+	public appVersion: string = '2.6.1';
 
 	constructor(
 		private http: HttpClient,
+		private logger: LoggerService,
 		private storage: StorageService,
 		private platform: Platform,
 		private toast: ToastService){
@@ -38,9 +40,10 @@ export class VersionService {
 				const lastVersion = parseInt(releases[0].tag_name.match(/\d+/g).join(''));
 				const currentVersion = parseInt(this.appVersion.match(/\d+/g).join(''));
 				if(lastVersion > currentVersion){
+					this.logger.info('New version of FhemNative is available');
+					// get correct system
 					const assets: Array<any> = releases[0].assets;
 					let relevant: {os: string, obj: any};
-					console.log(assets);
 					// check operating systems
 					if(this.platform.is('android')){
 						relevant = {os: 'Android', obj: assets.find(x=> x.name.match(/\_(.*?)\_/g)[0] === '_Android_')};
