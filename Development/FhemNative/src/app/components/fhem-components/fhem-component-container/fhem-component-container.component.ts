@@ -82,6 +82,10 @@ export class FhemComponentContainerComponent implements OnInit, OnChanges, OnDes
 		}
 		// initial test
 		this.testDevice();
+		// set timer for testDone after 5 secs
+		setTimeout(()=>{
+			this.deviceState.testDone = true;
+		}, 5000);
 	}
 
 	ngOnChanges(changes: SimpleChanges){
@@ -104,7 +108,6 @@ export class FhemComponentContainerComponent implements OnInit, OnChanges, OnDes
 				this.deviceState.readingPresent = false;
 			}
 		}
-		this.deviceState.testDone = true;
 	}
 
 	ngOnDestroy(){
