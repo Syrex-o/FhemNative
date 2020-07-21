@@ -74,6 +74,7 @@ export class RoomComponent implements OnDestroy {
 	  		if(!this.settings.app.keepConnected){
 	  			this.fhem.noReconnect = true;
 	  			this.fhem.disconnect();
+	  			this.fhem.listenDevices = [];
 	  		}
 	  		// unlisten to variables
 	  		this.variable.unlisten();
