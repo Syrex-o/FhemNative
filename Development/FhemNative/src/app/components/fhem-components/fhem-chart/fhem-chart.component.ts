@@ -2,6 +2,9 @@ import { Component, Input, NgModule, OnInit, OnDestroy, ElementRef } from '@angu
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
+// Interfaces
+import { ComponentSettings, CustomComponentInputs, DynamicComponentDefinition, FhemDevice } from '../../../interfaces/interfaces.type';
+
 // Drag and Drop
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -21,7 +24,7 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
 @Component({
 	selector: 'fhem-chart',
 	templateUrl: './fhem-chart.component.html',
-  	styleUrls: ['./fhem-chart.component.scss']
+	styleUrls: ['./fhem-chart.component.scss']
 })
 export class FhemChartComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
@@ -54,15 +57,15 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	@Input() arr_data_labelExtensions: string[] = [];
 
 	// position information
-	@Input() width: any;
-	@Input() height: any;
+	@Input() width: string;
+	@Input() height: string;
 	@Input() top: number;
 	@Input() left: number;
 	@Input() zIndex: number;
 
-	fhemDevice: any;
+	fhemDevice: FhemDevice|null;
 	// custom input properties
-	private customInputs: any;
+	private customInputs: CustomComponentInputs;
 	// data state
 	noData: boolean = true;
 	// edit chart properties
@@ -97,31 +100,31 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	private xAxis: any;
 
 	// left and right y axis
-    private leftY: any;
-    private rightY: any;
-    // scales for left and right y
-    private leftYScale: any;
-    private rightYScale: any;
-    // axis for left and right y
-    private leftYAxis: any;
-    private rightYAxis: any;
-    // selector list --> build early to reduce calculations
-    private zoomSelectors: string;
-    // band width --> scaletime is used, so calc manually after axis creation
-    private xBand: any;
+	private leftY: any;
+	private rightY: any;
+	// scales for left and right y
+	private leftYScale: any;
+	private rightYScale: any;
+	// axis for left and right y
+	private leftYAxis: any;
+	private rightYAxis: any;
+	// selector list --> build early to reduce calculations
+	private zoomSelectors: string;
+	// band width --> scaletime is used, so calc manually after axis creation
+	private xBand: any;
 
-    // svg dimensions
-    private dim: any = {
-  		padding: {top: 20, right: 30, bottom: 30, left: 40},
-  		svg: {width: 0, height: 0},
-  		content: {width: 0, height: 0}
-  	};
-    // unique ID for clip path
-    private UID: string = '_' + Math.random().toString(36).substr(2, 9);
+	// svg dimensions
+	private dim: {[key: string]: {[key: string]: number}} = {
+		padding: {top: 20, right: 30, bottom: 30, left: 40},
+		svg: {width: 0, height: 0},
+		content: {width: 0, height: 0}
+	};
+	// unique ID for clip path
+	private UID: string = '_' + Math.random().toString(36).substr(2, 9);
 
 	ngOnInit(){
 		if(this.data_device){
-			this.fhem.getDevice(this.ID, this.data_device).then((device: any)=>{
+			this.fhem.getDevice(this.ID, this.data_device).then((device: FhemDevice|null)=>{
 				if(device){
 					this.fhemDevice = device;
 					// detect the type to get data
@@ -143,7 +146,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 			this.showEditButton = true;
 		}
 		// assign while resize handle
-		this.selectComponent.addHandle(this.ID, 'whileResize', (dimensions)=>{
+		this.selectComponent.addHandle(this.ID, 'whileResize', (dimensions: {[key: string]: number})=>{
 			if(!this.noData && this.arr_data_readings.length > 0){
 				this.draw({width: dimensions.width, height: dimensions.height});
 			}
@@ -151,11 +154,11 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// load the additional component information
-	private loadCustomInputs(){
+	private loadCustomInputs(): void{
 		// load the additional information
-		this.componentLoader.assignCustomInputData(this.ID, 'Chart').then((customInputs: any)=>{
+		this.componentLoader.assignCustomInputData(this.ID, 'Chart').then((customInputs: CustomComponentInputs)=>{
 			// assign colors as array
-			customInputs.arr_data_colors.forEach((color, index: number)=>{
+			(customInputs.arr_data_colors).forEach((color, index: number)=>{
 				if(typeof color === 'string'){
 					customInputs.arr_data_colors[index] = color.split(',');
 				}
@@ -174,15 +177,15 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// raw data fetch
-	private getDataRaw(type: string){
+	private getDataRaw(type: string): Promise<any>{
 		return new Promise((resolve)=>{
 			this.fhem.get(this.data_device, type === 'log' ? this.getLog() : this.getDbLog()).then((data:any)=>{
 				if(data){
 					if(this.fhemDevice.internals.TYPE === 'FileLog'){
-						data.forEach((line)=>{
-							const date = line.match(/([^\s]*)/i)[0];
-							const value = line.match(/([^\s]*)$/g)[0];
-							const reading = line.match(/.*\s(.*?(?=:))/);
+						data.forEach((line: string)=>{
+							const date: string = line.match(/([^\s]*)/i)[0];
+							const value: any = line.match(/([^\s]*)$/g)[0];
+							const reading: string[] = line.match(/.*\s(.*?(?=:))/);
 							if(date && value && reading && reading[1]){
 								this.rawData.push({
 									date: d3.timeParse('%Y-%m-%d_%H:%M:%S')(date),
@@ -196,9 +199,9 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 					}else{
 						this.readings = [data[data.length - 1].match(/(?<=:)(.\w+)/g)[0]];
 						for(let i = 0; i < data.length - 1; i++){
-							const line = data[i];
-							const date = line.match(/.*?(?=\s)/g)[0];
-							const value = line.match(/(?<=\s).+/g)[0];
+							const line: string = data[i];
+							const date: string = line.match(/.*?(?=\s)/g)[0];
+							const value: string = line.match(/(?<=\s).+/g)[0];
 
 							this.rawData.push({
 								date: d3.timeParse('%Y-%m-%d_%H:%M:%S')(date),
@@ -214,10 +217,10 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// assign formatted data
-	private getDataFormatted(){
+	private getDataFormatted(): void{
 		this.data = {};
 		this.arr_data_readings.forEach((reading: string, index: number)=>{
-			const readingData = this.rawData.filter(x=> x.reading === reading).map(({date, value})=>({date: date, value: +value}));
+			const readingData: Array<{date: any, value: any}> = this.rawData.filter(x=> x.reading === reading).map(({date, value})=>({date: date, value: +value}));
 			if(readingData){
 				// assign index instead of reading name, to allow duplicates
 				this.data[index] = readingData;
@@ -232,16 +235,16 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 		// sort the timestamps
 		this.dates.sort();
 		// get unique values
-		let uniqueDates = this.dates.map(d => d.getTime()).filter((date, i, array)=> {
-    		return array.indexOf(date) === i;
- 		}).map((time)=> new Date(time));
+		let uniqueDates: Array<any> = this.dates.map(d => d.getTime()).filter((date: string, i: number, array: Array<any>)=> {
+			return array.indexOf(date) === i;
+		}).map((time: string)=> new Date(time));
 
- 		this.dates = uniqueDates;
+		this.dates = uniqueDates;
 	}
 
 	// logfile request for data
-	private getLog(){
-		const d = new Date();
+	private getLog(): string{
+		const d: Date = new Date();
 		const result = [
 			// log:
 			'',
@@ -264,8 +267,8 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// get db log data
-	private getDbLog(){
-		const d = new Date();
+	private getDbLog(): string{
+		const d: Date = new Date();
 		const result = [
 			// log:
 			'- -',
@@ -282,15 +285,15 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// data aggregation
-	private aggregate(){
+	private aggregate(): void{
 		// aggregate timestamps
 		// create unique timestamps based on time format
-		let transformedDates = [...new Set(
+		let transformedDates: Array<any> = [...new Set(
 			this.dates.map(d => d3.timeFormat(this.data_timeFormat)(d))
 		)].map((d: any)=> d3.timeParse(this.data_timeFormat)(d));
 
 		// create unique data based on aggregation
-		let transformedData = {};
+		let transformedData: any = {};
 
 		this.arr_data_readings.forEach((reading: string, index: number)=>{
 			transformedData[index] = [];
@@ -317,7 +320,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// aggregate single dataset
-	private aggregateDataset(data: any, aggregation: string){
+	private aggregateDataset(data: any, aggregation: string): any{
 		// sum aggregation
 		if(aggregation === 'sum'){
 			return d3.sum(data, (d: any)=>{return d.value}) as any;
@@ -349,12 +352,12 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// edit chart properties
-	editChart(){
+	editChart(): void{
 		this.showChartConfig = !this.showChartConfig;
 	}
 
 	// add new graph block
-	addGraph(){
+	addGraph(): void{
 		// graph assign
 		this.arr_data_chartTypes.push(this.chartTypes[0]);
 		this.arr_data_forAxis.push('left');
@@ -366,7 +369,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// remove graph block
-	removeGraph(index){
+	removeGraph(index: number): void{
 		this.arr_data_chartTypes.splice(index, 1);
 		this.arr_data_forAxis.splice(index, 1);
 		this.arr_data_readings.splice(index, 1);
@@ -377,8 +380,8 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// save the configuration
-	saveChartConfig(){
-		let component = this.structure.getComponent(this.ID);
+	saveChartConfig(): void{
+		let component: DynamicComponentDefinition = this.structure.getComponent(this.ID);
 		if(component && this.customInputs){
 			// assign props
 			this.customInputs.data_leftMaxY = this.data_leftMaxY;
@@ -398,7 +401,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// drag start
-	onDragStart(){
+	onDragStart(): void{
 		// remove unfold items
 		this.arr_data_chartTypes.forEach((item: string, index: number)=>{
 			const elem: HTMLElement = this.ref.nativeElement.querySelector('#config-data-' + index);
@@ -407,7 +410,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// reorder graphs
-	reorderGraphs(event: CdkDragDrop<string[]>){
+	reorderGraphs(event: CdkDragDrop<string[]>): void{
 		if(event.previousIndex !== event.currentIndex){
 			// move items
 			moveItemInArray(this.arr_data_chartTypes, event.previousIndex, event.currentIndex);
@@ -423,14 +426,14 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// unfold/fold
-	unfoldItem(index: number){
+	unfoldItem(index: number): void{
 		const elem: HTMLElement = this.ref.nativeElement.querySelector('#config-data-' + index);
 		elem.classList.toggle('unfold');
 	}
 
 	// CHARTS PART
 	// draw chart
-	private draw(size){
+	private draw(size: any): void{
 		// getting size
 		this.dim.svg = size || this.getSize('.chart');
 		this.dim.content.width = this.dim.svg.width - this.dim.padding.left - this.dim.padding.right;
@@ -444,39 +447,39 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 		// build axis
 		this.buildAxis();
 		// build Charts
- 		this.drawCharts();
- 		// buikld the selectors
- 		this.zoomSelectors = [...new Set(this.arr_data_chartTypes.map(x=> '.' + x))].join(',');
+		this.drawCharts();
+		// buikld the selectors
+		this.zoomSelectors = [...new Set(this.arr_data_chartTypes.map(x=> '.' + x))].join(',');
 	}
 
 	// build relevant chart content
-	private buildContent(){
+	private buildContent(): void{
 		// only build clip path for time charts
 		if(this.arr_data_chartTypes.join('').match(/(bar|line|area)/)){
 			// clip path
 			this.svg.append('defs').append('clipPath')
 				.attr('id', this.UID)
-			  	.append('rect')
-			    .attr('width', this.dim.content.width)
-			    .attr('height', this.dim.content.height);
+				.append('rect')
+				.attr('width', this.dim.content.width)
+				.attr('height', this.dim.content.height);
 			 // focus
 			this.buildFocus();
 		}
 	}
 
 	// focus for movements
-	private buildFocus(){
+	private buildFocus(): void{
 		this.svg.append('g')
-    		.attr('class', 'focus')
-    		.attr('transform', 'translate(' + this.dim.padding.left + ',' + this.dim.padding.top + ')');
+			.attr('class', 'focus')
+			.attr('transform', 'translate(' + this.dim.padding.left + ',' + this.dim.padding.top + ')');
 
-    	this.svg.select('.focus').append('g')
-    		.attr('clip-path', 'url(#' + this.UID + ')')
-    		.attr('class', 'chart');
+		this.svg.select('.focus').append('g')
+			.attr('clip-path', 'url(#' + this.UID + ')')
+			.attr('class', 'chart');
 	}
 
 	// axis of chart
-	private buildAxis(){
+	private buildAxis(): void{
 		// only build axis for time charts
 		if(this.arr_data_chartTypes.join('').match(/(bar|line|area)/)){
 			// X Axis
@@ -487,7 +490,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 				])
 
 			// x axis ticks
-			const xTicks = Math.min(this.data[[0][0]].length, Math.floor(this.dim.content.width / 80));
+			const xTicks: number = Math.min(this.data[[0][0]].length, Math.floor(this.dim.content.width / 80));
 			// draw x axis
 			this.xScale = d3.axisBottom(this.x)
 				.tickFormat(d3.timeFormat(this.data_timeFormat))
@@ -562,17 +565,17 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 			// apply zoom
 			const zoom = d3.zoom()
 				.extent([[0, this.dim.padding.top], [this.dim.svg.width-(this.dim.padding.left + this.dim.padding.right), this.dim.svg.width-this.dim.padding.top]])
-	 			.scaleExtent([0.9, 10])
-	 			.translateExtent([[0, this.dim.padding.top], [this.dim.svg.width-(this.dim.padding.left + this.dim.padding.right), this.dim.svg.width-this.dim.padding.top]])
+				.scaleExtent([0.9, 10])
+				.translateExtent([[0, this.dim.padding.top], [this.dim.svg.width-(this.dim.padding.left + this.dim.padding.right), this.dim.svg.width-this.dim.padding.top]])
 				.on('zoom', this.zoomed.bind(this));
 
 			// zoom content
-	  		this.svg.append('rect').attr('class', 'zoom')
-	  			.attr('width', this.dim.content.width)
-	      		.attr('height', this.dim.content.height)
-	      		.attr('fill', 'transparent')
-	      		.attr('transform', 'translate(' + [this.dim.padding.left, this.dim.padding.top] + ')')
-	      		.call(zoom);
+			this.svg.append('rect').attr('class', 'zoom')
+				.attr('width', this.dim.content.width)
+				.attr('height', this.dim.content.height)
+				.attr('fill', 'transparent')
+				.attr('transform', 'translate(' + [this.dim.padding.left, this.dim.padding.top] + ')')
+				.call(zoom);
 
 			// color axis
 			this.colorAxis();
@@ -580,7 +583,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 	}
 
 	// zoom behaviour
-	private zoomed(){
+	private zoomed(): void{
 		// rescale axis
 		const newXscale = d3.event.transform.rescaleX(this.x);
 		// X
@@ -614,58 +617,63 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 		this.colorAxis();
 	}
 
+	// get color style
+	private getThemeStyle(): string {
+		return (this.settings.app.theme === 'dark' || this.settings.app.theme === 'dark-alternative') ? '#fff' : '#000';
+	}
+
 	// colorize axis valus
-	private colorAxis(){
-		const color = (this.settings.app.theme === 'dark') ? '#fff' : '#000';
+	private colorAxis(): void{
+		const color: string = this.getThemeStyle();
 		this.svg.selectAll('.axis path').style('stroke', color);
-      	this.svg.selectAll('.axis line').style('stroke', color);
-      	this.svg.selectAll('.axis text').style('fill', color);
+		this.svg.selectAll('.axis line').style('stroke', color);
+		this.svg.selectAll('.axis text').style('fill', color);
 	}
 
 	// get size 
-	private getSize(el) {
-    	const elem = this.ref.nativeElement.querySelector(el);
-    	return {
-    	  	width: elem.clientWidth > 0 ? elem.clientWidth : parseInt(this.width),
-    	  	height: elem.clientHeight > 0 ? elem.clientHeight : parseInt(this.height)
-    	};
-  	}
+	private getSize(el: string): {width: number, height: number} {
+		const elem = this.ref.nativeElement.querySelector(el);
+		return {
+			width: elem.clientWidth > 0 ? elem.clientWidth : parseInt(this.width),
+			height: elem.clientHeight > 0 ? elem.clientHeight : parseInt(this.height)
+		};
+	}
 
-  	// Draw Charts
-  	private drawCharts(){
-  		this.arr_data_chartTypes.forEach((chartType:string, index: number)=>{
-  			let chart = chartType.toUpperCase();
-  			// create the chart
-  			this['create' + chart + 'chart'](index);
-  			if(chartType.match(/(bar|line|area)/) && this.arr_data_displayLabels[index]){
-  				this.createLabels(index);
-  			}
-  		});
-  	}
+	// Draw Charts
+	private drawCharts(): void{
+		this.arr_data_chartTypes.forEach((chartType:string, index: number)=>{
+			let chart: string = chartType.toUpperCase();
+			// create the chart
+			this['create' + chart + 'chart'](index);
+			if(chartType.match(/(bar|line|area)/) && this.arr_data_displayLabels[index]){
+				this.createLabels(index);
+			}
+		});
+	}
 
-  	// create labels for specific chart type
-  	private createLabels(index: number){
-  		const axis = this.arr_data_forAxis[index];
+	// create labels for specific chart type
+	private createLabels(index: number): void{
+		const axis: string = this.arr_data_forAxis[index];
 
-  		this.svg.select('.chart').selectAll('.g')
-  			.data(this.data[index]).enter()
-  			.append("text")
-  			.attr("class","label")
-  			.attr("fill", (this.settings.app.theme === 'dark') ? '#fff' : '#000')
-  			.attr('x', d => this.x(d.date) - this.xBand.bandwidth() / 2 )
-  			.attr('y',  d => (axis === 'left' ? this.leftY(d.value) : this.rightY(d.value)) + this.dim.padding.top / 2)
-  			.text(d=> Math.round(d.value) + this.arr_data_labelExtensions[index]);   
-  	}
+		this.svg.select('.chart').selectAll('.g')
+			.data(this.data[index]).enter()
+			.append("text")
+			.attr("class","label")
+			.attr("fill", this.getThemeStyle())
+			.attr('x', d => this.x(d.date) - this.xBand.bandwidth() / 2 )
+			.attr('y',  d => (axis === 'left' ? this.leftY(d.value) : this.rightY(d.value)) + this.dim.padding.top / 2)
+			.text(d=> Math.round(d.value) + this.arr_data_labelExtensions[index]);   
+	}
 
-  	// color getter
-  	private getColor(index: number){
-  		let colors: string|string[] = this.arr_data_colors[index];
-  		let res;
-  		if(Array.isArray(colors)){
-  			// UID for svg gradient
-  			const UID: string = '_' + Math.random().toString(36).substr(2, 9);
+	// color getter
+	private getColor(index: number): string|string[]{
+		let colors: string|string[] = this.arr_data_colors[index];
+		let res: string|string[];
+		if(Array.isArray(colors)){
+			// UID for svg gradient
+			const UID: string = '_' + Math.random().toString(36).substr(2, 9);
 
-  			let gradient = this.svg.select('defs')
+			let gradient = this.svg.select('defs')
 				.append('svg:linearGradient')
 				.attr("id", UID)
 				.attr("x1", "0%")
@@ -674,7 +682,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 				.attr("y2", "100%")
 				.attr("spreadMethod", "pad");
 
-			const p = 100 / colors.length;
+			const p: number = 100 / colors.length;
 
 			colors.forEach((color: string, index: number)=>{
 				const offset: string = (index === colors.length -1) ? '100%' : (index * p) + '%';
@@ -684,74 +692,74 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 					.attr("stop-opacity", 1);
 			});
 			res = 'url(#'+UID+')';
-  		}else{
-  			res = colors;
-  		}
-  		return res;
-  	}
+		}else{
+			res = colors;
+		}
+		return res;
+	}
 
-  	// create bar chart
-  	private createBARchart(index: number) {
-  		const axis = this.arr_data_forAxis[index];
-  		const totalBarcharts = this.arr_data_chartTypes.filter(x=> x=== 'bar').length;
-  		const color = this.getColor(index);
-  		
-  		this.svg.select('.chart').selectAll('.g')
-  			.data(this.data[index]).enter()
-  			.append('rect')
-  			.attr('class', 'bar')
-  			.style('opacity', totalBarcharts > 1 ? 0.7 : 1.0)
-  			.style('fill', color)
-  			.attr('x', d => this.x(d.date) - this.xBand.bandwidth() * 0.9 / 2 )
-  			// .attr('width', (this.dim.content.width / this.data[index].length) )
-  			.attr('width', this.xBand.bandwidth() * 0.9 )
-  				// animate
-  				.attr('y',  d => this.dim.content.height)
-  				.attr('height', 0)
+	// create bar chart
+	private createBARchart(index: number): void {
+		const axis: string = this.arr_data_forAxis[index];
+		const totalBarcharts: number = this.arr_data_chartTypes.filter(x=> x=== 'bar').length;
+		const color: string|string[] = this.getColor(index);
+		
+		this.svg.select('.chart').selectAll('.g')
+			.data(this.data[index]).enter()
+			.append('rect')
+			.attr('class', 'bar')
+			.style('opacity', totalBarcharts > 1 ? 0.7 : 1.0)
+			.style('fill', color)
+			.attr('x', d => this.x(d.date) - this.xBand.bandwidth() * 0.9 / 2 )
+			// .attr('width', (this.dim.content.width / this.data[index].length) )
+			.attr('width', this.xBand.bandwidth() * 0.9 )
+				// animate
+				.attr('y',  d => this.dim.content.height)
+				.attr('height', 0)
 				.transition()
-	        	.duration(600)
-	        .attr('y',  d => axis === 'left' ? this.leftY(d.value) : this.rightY(d.value))
-	        .attr('height', d => this.dim.content.height - (axis === 'left' ? this.leftY(d.value) : this.rightY(d.value)) );
-  	}
+				.duration(600)
+			.attr('y',  d => axis === 'left' ? this.leftY(d.value) : this.rightY(d.value))
+			.attr('height', d => this.dim.content.height - (axis === 'left' ? this.leftY(d.value) : this.rightY(d.value)) );
+	}
 
-  	// line chart
-  	private createLINEchart(index: number) {
-  		const axis = this.arr_data_forAxis[index];
-  		const color = this.getColor(index);
+	// line chart
+	private createLINEchart(index: number): void {
+		const axis: string = this.arr_data_forAxis[index];
+		const color: string|string[] = this.getColor(index);
 
-  		const line = d3.line()
-  			.x((d:any) => this.x(d.date))
-      		.y((d:any) => axis === 'left' ? this.leftY(d.value) : this.rightY(d.value))
-      		.curve(d3.curveNatural);
+		const line = d3.line()
+			.x((d:any) => this.x(d.date))
+			.y((d:any) => axis === 'left' ? this.leftY(d.value) : this.rightY(d.value))
+			.curve(d3.curveNatural);
 
-      	const line0 = d3.line()
-      		.x((d:any) => this.x(d.date))
-      		.y(axis === 'left' ? this.leftY(d3.min(this.data[index].map(x=> x.value))) : this.rightY(d3.min(this.data[index].map(x=> x.value))))
-      		.curve(d3.curveNatural);
+		const line0 = d3.line()
+			.x((d:any) => this.x(d.date))
+			.y(axis === 'left' ? this.leftY(d3.min(this.data[index].map(x=> x.value))) : this.rightY(d3.min(this.data[index].map(x=> x.value))))
+			.curve(d3.curveNatural);
 
-      	this.svg.select('.chart')
-      		.append('path')
-  			.datum(this.data[index])
-      		.attr('class', 'line')
-      		.attr('fill', 'none')
-      		.attr('stroke', color)
-      		.attr('stroke-linejoin', 'round')
-      		.attr('stroke-linecap', 'round')
-      		.attr('stroke-width', 1.5)
-        		.attr('d', line0)
-        		.transition()
-        		.duration(600)
-      		.attr('d', line);
-  	}
+		this.svg.select('.chart')
+			.append('path')
+			.datum(this.data[index])
+			.attr('class', 'line')
+			.attr('fill', 'none')
+			.attr('stroke', color)
+			.attr('stroke-linejoin', 'round')
+			.attr('stroke-linecap', 'round')
+			.attr('stroke-width', 1.5)
+				.attr('d', line0)
+				.transition()
+				.duration(600)
+			.attr('d', line);
+	}
 
-  	private createAREAchart(index: number) {
-  		const axis = this.arr_data_forAxis[index];
-  		const color = this.getColor(index);
+	private createAREAchart(index: number): void {
+		const axis: string = this.arr_data_forAxis[index];
+		const color: string|string[] = this.getColor(index);
 
-  		this.svg.select('.chart')
-  			.append('path')
-  			.datum(this.data[index])
-  			.attr('class', 'area')
+		this.svg.select('.chart')
+			.append('path')
+			.datum(this.data[index])
+			.attr('class', 'area')
 			.attr('fill', color)
 			.attr('fill-opacity', '0.7')
 			.attr('stroke', color)
@@ -762,130 +770,129 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 					.y1(d => axis === 'left' ? this.leftY(d3.min(this.data[index].map(x=> x.value))) : this.rightY(d3.min(this.data[index].map(x=> x.value))))
 				)
 				.transition()
-        		.duration(600)
-        	.attr('d', d3.area()
+				.duration(600)
+			.attr('d', d3.area()
 				.x((d:any) => this.x(d.date))
 				.y0(axis === 'left' ? this.leftY(0) : this.rightY(0))
 				.y1((d:any) => axis === 'left' ? this.leftY(d.value) : this.rightY(d.value))
 			);
-  	}
+	}
 
-  	// Gauge Chart
-  	private createGAUGEchart(index: number) {
-  		// get relevant values
-  		const value = this.aggregateDataset(this.data[index], this.arr_data_aggregation[index]);
-  		const minValue: number = d3.min(this.data[index].map(d=> d.value)) as unknown as number;
-  		const maxValue: number = d3.max(this.data[index].map(d=> d.value)) as unknown as number;
+	// Gauge Chart
+	private createGAUGEchart(index: number): void {
+		// get relevant values
+		const value: any = this.aggregateDataset(this.data[index], this.arr_data_aggregation[index]);
+		const minValue: number = d3.min(this.data[index].map(d=> d.value)) as unknown as number;
+		const maxValue: number = d3.max(this.data[index].map(d=> d.value)) as unknown as number;
 
-  		const radius = Math.min(this.dim.svg.width - 40, this.dim.svg.height - 40) / 2;
-	  	const locationX = this.dim.svg.width / 2;
-	  	const locationY = this.dim.svg.height / 2;
-	  	const textPixels = (radius / 2);
+		const radius: number = Math.min(this.dim.svg.width - 40, this.dim.svg.height - 40) / 2;
+		const locationX: number = this.dim.svg.width / 2;
+		const locationY: number = this.dim.svg.height / 2;
+		const textPixels: number = (radius / 2);
 
-	  	const textRounder = (value) => Math.round(value);
-	  	const animateTime = 1000;
+		const textRounder = (value): number => Math.round(value);
 
-	  	const group = this.svg.append('g').attr('transform', 'translate(' + locationX + ',' + locationY + ')');
-	  	const arc = d3.arc().innerRadius(radius - 10).outerRadius(radius).startAngle(0);
-	  	const ring1 = d3.arc().innerRadius(radius + 18).outerRadius(radius + 20).startAngle(0);
-	 	const ring2 = d3.arc().innerRadius(radius - 1).outerRadius(radius + 11).startAngle(0);
+		const group = this.svg.append('g').attr('transform', 'translate(' + locationX + ',' + locationY + ')');
+		const arc = d3.arc().innerRadius(radius - 10).outerRadius(radius).startAngle(0);
+		const ring1 = d3.arc().innerRadius(radius + 18).outerRadius(radius + 20).startAngle(0);
+		const ring2 = d3.arc().innerRadius(radius - 1).outerRadius(radius + 11).startAngle(0);
 
-	 	group.append('path').datum({endAngle: 2 * Math.PI}).style('fill', '#ffffff').attr('fill-opacity', 0.3).attr('d', arc);
-	 	group.append('path').datum({endAngle: 2 * Math.PI}) .style('stroke-opacity', 0.1).style('opacity', 0.1).style('fill', '#ffffff').attr('d', ring2);
-	 	group.append('path').datum({endAngle: 2 * Math.PI}).style('stroke-opacity', 0.3).style('opacity', 0.3).style('fill', '#ffffff').attr('d', ring1);
+		group.append('path').datum({endAngle: 2 * Math.PI}).style('fill', '#ffffff').attr('fill-opacity', 0.3).attr('d', arc);
+		group.append('path').datum({endAngle: 2 * Math.PI}) .style('stroke-opacity', 0.1).style('opacity', 0.1).style('fill', '#ffffff').attr('d', ring2);
+		group.append('path').datum({endAngle: 2 * Math.PI}).style('stroke-opacity', 0.3).style('opacity', 0.3).style('fill', '#ffffff').attr('d', ring1);
 
-	 	const foreground = group.append('path').datum({endAngle: 0 }).style('fill', '#A4DBf8').attr('d', arc);
+		const foreground = group.append('path').datum({endAngle: 0 }).style('fill', '#A4DBf8').attr('d', arc);
 
-	 	if(value){
-	 		const toPercent = 1 - ( (value - minValue) / (maxValue - minValue) );
+		if(value){
+			const toPercent: number = 1 - ( (value - minValue) / (maxValue - minValue) );
 
-		   	const arcTween = (newAngle) => {
-	      		return (d) => {
-	      			const i = d3.interpolate(d.endAngle, newAngle);
-	      			return (t) => {
-	      				d.endAngle = i(t);
-	      				const path = arc(d);
-	          			return path;
-	      			};
-	      		};
-	      	};
-	      	foreground.transition()
-		   	.duration(1000)
-	      	.attrTween('d', arcTween( toPercent * (2 * Math.PI)));
+			const arcTween = (newAngle: number) => {
+				return (d) => {
+					const i = d3.interpolate(d.endAngle, newAngle);
+					return (t) => {
+						d.endAngle = i(t);
+						const path = arc(d);
+						return path;
+					};
+				};
+			};
+			foreground.transition()
+			.duration(1000)
+			.attrTween('d', arcTween( toPercent * (2 * Math.PI)));
 
-	      	// text
-		   	const text1 = group.append('text')
-	            .attr('text-anchor', 'middle')
-	            .attr('font-size', textPixels + 'px')
-	            .style('fill', '#A4DBf8')
-	            .attr('transform', 'translate(' + 0 + ',' + textPixels / 4 + ')');
+			// text
+			const text1 = group.append('text')
+				.attr('text-anchor', 'middle')
+				.attr('font-size', textPixels + 'px')
+				.style('fill', '#A4DBf8')
+				.attr('transform', 'translate(' + 0 + ',' + textPixels / 4 + ')');
 
-	        const transition = (from, to, riseWave, animateText) => {
-		        if (animateText) {
-		            const textTween = () => {
-		                const i  = d3.interpolate(from, to);
-		                return (t) => {
-		                    text1.text(textRounder(i(t)) + this.arr_data_labelExtensions[index]);
-		                };
-		            };
-		            text1.transition()
-		                .duration(animateTime)
-		                .tween('text', textTween);
-		        }
-		    };
-		    transition(0, value, true && true, true && true);
-	 	}
-  	}
+			const transition = (from, to, riseWave, animateText) => {
+				if (animateText) {
+					const textTween = () => {
+						const i  = d3.interpolate(from, to);
+						return (t) => {
+							text1.text(textRounder(i(t)) + this.arr_data_labelExtensions[index]);
+						};
+					};
+					text1.transition()
+						.duration(1000)
+						.tween('text', textTween);
+				}
+			};
+			transition(0, value, true && true, true && true);
+		}
+	}
 
-  	// Gauge Chart
-  	private createLIQUIDGAUGEchart(index: number) {
-  		// get relevant values
-  		const value = this.aggregateDataset(this.data[index], this.arr_data_aggregation[index]);
-  		const minValue: number = d3.min(this.data[index].map(d=> d.value)) as unknown as number;
-  		const maxValue: number = d3.max(this.data[index].map(d=> d.value)) as unknown as number,
+	// Gauge Chart
+	private createLIQUIDGAUGEchart(index: number): void {
+		// get relevant values
+		const value: any = this.aggregateDataset(this.data[index], this.arr_data_aggregation[index]);
+		const minValue: number = d3.min(this.data[index].map(d=> d.value)) as unknown as number;
+		const maxValue: number = d3.max(this.data[index].map(d=> d.value)) as unknown as number;
 
-  		// Styles
-        circleThicknessConfig = 0.05, // The outer circle thickness as a percentage of it's radius.
-        circleFillGapConfig = 0.05, // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
-        circleColor = '#014469', // The color of the outer circle.
-        backgroundColor = 'gray', // The color of the background
-        waveColor = '#014469', // The color of the fill wave.
+		// Styles
+		const circleThicknessConfig: number = 0.05; // The outer circle thickness as a percentage of it's radius.
+		const circleFillGapConfig: number = 0.05; // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
+		const circleColor: string = '#014469'; // The color of the outer circle.
+		const backgroundColor: string = 'gray' // The color of the background
+		const waveColor: string = '#014469'; // The color of the fill wave.
 
-        // Waves
-        waveHeightConfig = 0.09, // The wave height as a percentage of the radius of the wave circle.
-        waveCount = 3, // The number of full waves per width of the wave circle.
-        waveOffset = 0, // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
+		// Waves
+		const waveHeightConfig: number = 0.09; // The wave height as a percentage of the radius of the wave circle.
+		const waveCount: number = 3; // The number of full waves per width of the wave circle.
+		const waveOffset: number = 0; // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
 
-        // Animations
-        waveRiseTime = 1000, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
-        waveAnimateTime = 5000, // The amount of time in milliseconds for a full wave to enter the wave circle.
+		// Animations
+		const waveRiseTime: number = 1000; // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
+		const waveAnimateTime: number = 5000; // The amount of time in milliseconds for a full wave to enter the wave circle.
 
-        // Text
-        textVertPosition = 0.5, // The height at which to display the percentage text withing the wave circle. 0 = bottom, 1 = top.
-        textSize = 1, // The relative height of the text to display in the wave circle. 1 = 50%
-        waveTextColor = '#A4DBf8'; // The color of the value text when the wave overlaps it.
+		// Text
+		const textVertPosition: number = 0.5; // The height at which to display the percentage text withing the wave circle. 0 = bottom, 1 = top.
+		const textSize: number = 1; // The relative height of the text to display in the wave circle. 1 = 50%
+		const waveTextColor: string = '#A4DBf8'; // The color of the value text when the wave overlaps it.
 
-        const gauge = this.svg;
-        const radius = Math.min(this.dim.svg.width, this.dim.svg.height) / 2;
-		const locationX = this.dim.svg.width / 2 - radius;
-		const locationY = this.dim.svg.height / 2 - radius;
+		const gauge = this.svg;
+		const radius: number = Math.min(this.dim.svg.width, this.dim.svg.height) / 2;
+		const locationX: number = this.dim.svg.width / 2 - radius;
+		const locationY: number = this.dim.svg.height / 2 - radius;
 		// const fillPercent = Math.max(minValue, Math.min(maxValue, value)) / maxValue;
 
-		const fillPercent = 1 - ( (value - minValue) / (maxValue - minValue) );
+		const fillPercent: number = 1 - ( (value - minValue) / (maxValue - minValue) );
 
 		const waveHeightScale = d3.scaleLinear().range([waveHeightConfig, waveHeightConfig]).domain([0, 100]);
-		const textPixels = (textSize * radius / 2);
-		const textFinalValue = Math.round(value);
-		const circleThickness = circleThicknessConfig * radius;
-		const circleFillGap = circleFillGapConfig * radius;
-		const fillCircleMargin = circleThickness + circleFillGap;
-		const fillCircleRadius = radius - fillCircleMargin;
+		const textPixels: number = (textSize * radius / 2);
+		const textFinalValue: number = Math.round(value);
+		const circleThickness: number = circleThicknessConfig * radius;
+		const circleFillGap: number = circleFillGapConfig * radius;
+		const fillCircleMargin: number = circleThickness + circleFillGap;
+		const fillCircleRadius: number = radius - fillCircleMargin;
 		// const waveHeight = fillCircleRadius * waveHeightScale(fillPercent);
-		const waveHeight = fillCircleRadius * waveHeightScale(fillPercent);
+		const waveHeight: number = fillCircleRadius * waveHeightScale(fillPercent);
 
-		const waveLength = fillCircleRadius * 2 / waveCount;
-		const waveClipCount = 1 + waveCount;
-		const waveClipWidth = waveLength * waveClipCount;
+		const waveLength: number = fillCircleRadius * 2 / waveCount;
+		const waveClipCount: number = 1 + waveCount;
+		const waveClipWidth: number = waveLength * waveClipCount;
 		const textRounder = (value) => Math.round(value);
 		const data = [];
 		for (let i = 0; i <= 40 * waveClipCount; i++) {data.push({x: i / (40 * waveClipCount), y: (i / (40))}); }
@@ -908,70 +915,70 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 		gaugeGroup.append('path').attr('d', gaugeCircleArc).style('fill', circleColor).attr('transform', 'translate(' + radius + ', ' + radius + ')');
 		// Text where the wave does not overlap.
 		const text1 = gaugeGroup.append('text')
-            .attr('class', 'liquidFillGaugeText')
-            .attr('text-anchor', 'middle')
-            .attr('font-size', textPixels + 'px')
-            .style('fill', this.arr_data_colors[index])
-            .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(textVertPosition) + ')');
+			.attr('class', 'liquidFillGaugeText')
+			.attr('text-anchor', 'middle')
+			.attr('font-size', textPixels + 'px')
+			.style('fill', this.arr_data_colors[index])
+			.attr('transform', 'translate(' + radius + ',' + textRiseScaleY(textVertPosition) + ')');
 
-        if(value){
-        	const clipArea = d3.area()
-	            .x((d:any) => waveScaleX(d.x) )
-	            .y0((d:any) => waveScaleY(Math.sin(Math.PI * 2 * waveOffset * -1 + Math.PI * 2 * (1 - waveCount) + d.y * 2 * Math.PI)) )
-	            .y1((d) => (fillCircleRadius * 2 + waveHeight) );
+		if(value){
+			const clipArea = d3.area()
+				.x((d:any) => waveScaleX(d.x) )
+				.y0((d:any) => waveScaleY(Math.sin(Math.PI * 2 * waveOffset * -1 + Math.PI * 2 * (1 - waveCount) + d.y * 2 * Math.PI)) )
+				.y1((d) => (fillCircleRadius * 2 + waveHeight) );
 
-	        const gaugeGroupDefs = gaugeGroup.append('defs');
-	        const waveGroup = gaugeGroupDefs.append('clipPath').attr('id', this.UID);
-        	const wave = waveGroup.append('path').datum(data).attr('d', clipArea);
-        	const fillCircleGroup = gaugeGroup.append('g').attr('clip-path', 'url(#' + this.UID + ')');
-        	fillCircleGroup.append('circle').attr('cx', radius).attr('cy', radius).attr('r', fillCircleRadius).style('fill', waveColor);
+			const gaugeGroupDefs = gaugeGroup.append('defs');
+			const waveGroup = gaugeGroupDefs.append('clipPath').attr('id', this.UID);
+			const wave = waveGroup.append('path').datum(data).attr('d', clipArea);
+			const fillCircleGroup = gaugeGroup.append('g').attr('clip-path', 'url(#' + this.UID + ')');
+			fillCircleGroup.append('circle').attr('cx', radius).attr('cy', radius).attr('r', fillCircleRadius).style('fill', waveColor);
 
-	        const text2 = fillCircleGroup.append('text')
-	            .attr('class', 'liquidFillGaugeText')
-	            .attr('text-anchor', 'middle')
-	            .attr('font-size', textPixels + 'px')
-	            .style('fill', waveTextColor)
-	            .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(textVertPosition) + ')');
+			const text2 = fillCircleGroup.append('text')
+				.attr('class', 'liquidFillGaugeText')
+				.attr('text-anchor', 'middle')
+				.attr('font-size', textPixels + 'px')
+				.style('fill', waveTextColor)
+				.attr('transform', 'translate(' + radius + ',' + textRiseScaleY(textVertPosition) + ')');
 
-	        const waveGroupXPosition = fillCircleMargin + fillCircleRadius * 2 - waveClipWidth;
-	        const animateWave = () => {
-	            wave.transition()
-	            .duration(waveAnimateTime)
-	            .ease(d3.easeLinear)
-	            .attr('transform', 'translate(' + waveAnimateScale(1) + ',0)')
-	            .on('end', () => {
-	                wave.attr('transform', 'translate(' + waveAnimateScale(0) + ',0)');
-	                animateWave();
-	            });
-	        };
+			const waveGroupXPosition = fillCircleMargin + fillCircleRadius * 2 - waveClipWidth;
+			const animateWave = () => {
+				wave.transition()
+				.duration(waveAnimateTime)
+				.ease(d3.easeLinear)
+				.attr('transform', 'translate(' + waveAnimateScale(1) + ',0)')
+				.on('end', () => {
+					wave.attr('transform', 'translate(' + waveAnimateScale(0) + ',0)');
+					animateWave();
+				});
+			};
 
-	        animateWave();
-	        const transition = (from, to, riseWave, animateText) => {
-	            if (animateText) {
-	                const textTween = () => {
-	                    const i  = d3.interpolate(from, to);
-	                    return (t) => {
-	                        text1.text(textRounder(i(t)) + this.arr_data_labelExtensions[index]);
-	                        text2.text(textRounder(i(t)) + this.arr_data_labelExtensions[index]);
-	                    };
-	                };
-	                text1.transition()
-	                    .duration(waveRiseTime)
-	                    .tween('text', textTween);
-	                text2.transition()
-	                    .duration(waveRiseTime)
-	                    .tween('text', textTween);
-	            }
+			animateWave();
+			const transition = (from, to, riseWave, animateText) => {
+				if (animateText) {
+					const textTween = () => {
+						const i  = d3.interpolate(from, to);
+						return (t) => {
+							text1.text(textRounder(i(t)) + this.arr_data_labelExtensions[index]);
+							text2.text(textRounder(i(t)) + this.arr_data_labelExtensions[index]);
+						};
+					};
+					text1.transition()
+						.duration(waveRiseTime)
+						.tween('text', textTween);
+					text2.transition()
+						.duration(waveRiseTime)
+						.tween('text', textTween);
+				}
 
-	            if (riseWave) {
-	                waveGroup.attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(0) + ')')
-	                    .transition().duration(waveRiseTime)
-	                    .attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(fillPercent) + ')');
-	            }
-	        };
-	        transition(0, textFinalValue, true, true );
-        }
-  	}
+				if (riseWave) {
+					waveGroup.attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(0) + ')')
+						.transition().duration(waveRiseTime)
+						.attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(fillPercent) + ')');
+				}
+			};
+			transition(0, textFinalValue, true, true );
+		}
+	}
 
 	ngOnDestroy(){
 		this.fhem.removeDevice(this.ID);
@@ -988,7 +995,7 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 		private componentLoader: ComponentLoaderService){
 	}
 
-	static getSettings() {
+	static getSettings(): ComponentSettings {
 		return {
 			name: 'Chart',
 			type: 'fhem',
@@ -1028,6 +1035,6 @@ export class FhemChartComponent implements OnInit, OnDestroy {
 }
 @NgModule({
 	imports: [ComponentsModule, IonicModule, TranslateModule],
-  	declarations: [FhemChartComponent]
+	declarations: [FhemChartComponent]
 })
 class FhemButtonComponentModule {}
