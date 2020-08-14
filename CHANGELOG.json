@@ -33,442 +33,459 @@
 			]
 		},
 		{
-      		"VERSION": "2.0.1",
-      		"DATE": "23.09.2019",
-      		"CHANGES":[
-        		{"TYPE": "NEW", "CHANGE": "App reload after settings import is not needed anymore"},
-        		{"TYPE": "NEW", "CHANGE": "Implemented new default settings loader"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed Thermostat Dragger and initial value display"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed undefined settings in export and import"},
-        		{"TYPE": "FIX", "CHANGE": "App ID back to de.FhemNative.FhemNative"},
-        		{"TYPE": "FIX", "CHANGE": "Responsive resize is ON by default"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed settings import for mobile"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.0.2",
-      		"DATE": "27.09.2019",
-      		"CHANGES":[
-        		{"TYPE": "NEW", "CHANGE": "New component loader to reduce storage and create components faster"},
-        		{"TYPE": "NEW", "CHANGE": "New Menu Edit Buttons"},
-        		{"TYPE": "NEW", "CHANGE": "New Room Edit Buttons"},
-        		{"TYPE": "NEW", "CHANGE": "Enable Editing as settings entry --> used for new Buttons"},
-        		{"TYPE": "NEW", "CHANGE": "Added auto Device Loader"},
-        		{"TYPE": "NEW", "CHANGE": "Label Extension attribute for Thermostat"},
-        		{"TYPE": "DEL", "CHANGE": "Removed big Menu Edit Buttons and longpress"},
-        		{"TYPE": "FIX", "CHANGE": "Slider acccepts min max value changes (directional changes)"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.0.3",
-      		"DATE": "07.10.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Rooms can be used as structures for 'menu-in-menu' support"},
-      			{"TYPE": "NEW", "CHANGE": "Rooms as group-structures and individual rooms"},
-      			{"TYPE": "NEW", "CHANGE": "Back Button to settings"},
-        		{"TYPE": "FIX", "CHANGE": "Room links to wrong room"},
-        		{"TYPE": "FIX", "CHANGE": "New created components are always on top now"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed chart name fetch"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed chart value fetch"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.0.4",
-      		"DATE": "14.10.2019",
-      		"CHANGES":[
-            	{"TYPE": "NEW", "CHANGE": "Added FontAwesome Icons"},
-            	{"TYPE": "NEW", "CHANGE": "Added Indicator possibility to Icon Component"},
-      			{"TYPE": "NEW", "CHANGE": "Implemented multiple selection for copy and delete"},
-      			{"TYPE": "NEW", "CHANGE": "Implemented quick select all and auto-unselect for components outside the current container"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed settings reset after app reload"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed settings description label length"},
-        		{"TYPE": "FIX", "CHANGE": "Fixed swiper creation"},
-            	{"TYPE": "FIX", "CHANGE": "Language in Room-Edit-Menu"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.0.5",
-      		"DATE": "14.10.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Undo Redo options. Default to off."},
-      			{"TYPE": "NEW", "CHANGE": "Create and Change room use same component."},
-      			{"TYPE": "NEW", "CHANGE": "Less saves. Only applying changes result to save."},
-      			{"TYPE": "NEW", "CHANGE": "Added animation to submenu."},
-      			{"TYPE": "NEW", "CHANGE": "Rooms are editable at any time now."},
-      			{"TYPE": "NEW", "CHANGE": "Rooms are clickable at any time now."},
-            	{"TYPE": "FIX", "CHANGE": "Sized create room container."},
-            	{"TYPE": "FIX", "CHANGE": "Removing group room while in sub room is now possible."},
-            	{"TYPE": "FIX", "CHANGE": "Fixed submenu change and creation container."},
-            	{"TYPE": "FIX", "CHANGE": "Fixed bug in undo/redo for intuitive forward and backward jumps."},
-            	{"TYPE": "FIX", "CHANGE": "Context/Edit Menu now disappears on click start."},
-            	{"TYPE": "DEL", "CHANGE": "Change Room in picker"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.0.6",
-      		"DATE": "30.10.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Undo Redo Button availability indicator"},
-      			{"TYPE": "NEW", "CHANGE": "Added more Font Awesome Icons"},
-      			{"TYPE": "NEW", "CHANGE": "Custom colors from user (will be added to default list, after first confirmation)"},
-      			{"TYPE": "NEW", "CHANGE": "Thermostat Animation can be switched off"},
-      			{"TYPE": "NEW", "CHANGE": "Added Thermostat steps"},
-      			{"TYPE": "NEW", "CHANGE": "FhemNative now accepts float values"},
-      			{"TYPE": "FIX", "CHANGE": "Slider Update bar"},
-      			{"TYPE": "FIX", "CHANGE": "Label decimals"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.0.7",
-      		"DATE": "11.11.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Line component can now be curved and rotated"},
-      			{"TYPE": "NEW", "CHANGE": "Added Donation Area in settings"},
-      			{"TYPE": "NEW", "CHANGE": "Added Support Area in settings"},
-      			{"TYPE": "NEW", "CHANGE": "Added MediaList Component"},
-      			{"TYPE": "NEW", "CHANGE": "Added Custom Websocket Loader"},
-      			{"TYPE": "FIX", "CHANGE": "Sliding Menu in edit mode crashes app"},
-      			{"TYPE": "FIX", "CHANGE": "Button Cotainer z-index in popup"},
-      			{"TYPE": "FIX", "CHANGE": "Reconnect handler"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.0.8",
-      		"DATE": "12.11.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "New auto generate devices strategy"},
-      			{"TYPE": "NEW", "CHANGE": "New auto generate rooms strategy"},
-      			{"TYPE": "NEW", "CHANGE": "New Fhem change and init handler"},
-      			{"TYPE": "NEW", "CHANGE": "Component description in device importer"},
-      			{"TYPE": "FIX", "CHANGE": "Edit Component for Swiper"},
-      			{"TYPE": "FIX", "CHANGE": "Swiper Properties"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.1.0",
-      		"DATE": "22.11.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Component Containers can now be passed in component containers"},
-      			{"TYPE": "NEW", "CHANGE": "New component selection strategy"},
-      			{"TYPE": "NEW", "CHANGE": "Moving multiple components at the same time is now possible"},
-      			{"TYPE": "NEW", "CHANGE": "Added Fhem connection tries"},
-      			{"TYPE": "NEW", "CHANGE": "Popup has width and height property now"},
-      			{"TYPE": "NEW", "CHANGE": "New deep UID generator for copy and paste"},
-      			{"TYPE": "NEW", "CHANGE": "New Grid creation strategy (only one grid at the same time)"},
-      			{"TYPE": "NEW", "CHANGE": "Right click context menu is now available"},
-      			{"TYPE": "NEW", "CHANGE": "Auto selection of new components after paste"},
-      			{"TYPE": "NEW", "CHANGE": "Added Shortcuts for Desktop"},
-      			{"TYPE": "NEW", "CHANGE": "Added Basic Authentification for FHEMWEB"},
-      			{"TYPE": "NEW", "CHANGE": "Longpress for context menu"},
-      			{"TYPE": "NEW", "CHANGE": "More Option in context menu on grid"},
-      			{"TYPE": "FIX", "CHANGE": "Changelog now shows current app version at first"},
-      			{"TYPE": "FIX", "CHANGE": "Fixed Sweiper Grid construction on change to room"},
-      			{"TYPE": "FIX", "CHANGE": "Changelog disabled selection for not available versions"},
-      			{"TYPE": "FIX", "CHANGE": "Circle Slider decimals display"},
-      			{"TYPE": "FIX", "CHANGE": "Response of Auto generators"},
-      			{"TYPE": "FIX", "CHANGE": "Device Getter now accepts deep nested components"},
-      			{"TYPE": "DEL", "CHANGE": "Removed restrictions to copy/paste and create components"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.1.1",
-      		"DATE": "25.11.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Select component with Strg and click"},
-      			{"TYPE": "NEW", "CHANGE": "Implemented Select Rectangle on Shift Shortcut"},
-      			{"TYPE": "NEW", "CHANGE": "Label can have min/max values and min/max colors"},
-      			{"TYPE": "FIX", "CHANGE": "Mover not resetting moved event"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.1.2",
-      		"DATE": "29.11.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Clock component"},
-      			{"TYPE": "NEW", "CHANGE": "Weather component"},
-      			{"TYPE": "NEW", "CHANGE": "Added Icons"},
-      			{"TYPE": "FIX", "CHANGE": "Label component extension"},
-      			{"TYPE": "FIX", "CHANGE": "Fixed Changelog JSON"},
-      			{"TYPE": "FIX", "CHANGE": "Click Events for context menu --> easier to access now"},
-      			{"TYPE": "FIX", "CHANGE": "Create component for partly device/reading availability"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.1.3",
-      		"DATE": "03.12.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "IFrame border option"},
-      			{"TYPE": "NEW", "CHANGE": "Weather current day display"},
-      			{"TYPE": "FIX", "CHANGE": "Fixed Resize Event Call"},
-      			{"TYPE": "FIX", "CHANGE": "Chart Component Version"},
-      			{"TYPE": "FIX", "CHANGE": "Weather Component Sorting/Scaling/Moving"},
-      			{"TYPE": "FIX", "CHANGE": "Weather Component Area draw"},
-      			{"TYPE": "DEL", "CHANGE": "Unused Stuff from IFrame Component"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.1.4",
-      		"DATE": "06.12.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Weather temperature label animation"},
-      			{"TYPE": "NEW", "CHANGE": "Slider ios-style"},
-      			{"TYPE": "FIX", "CHANGE": "Same basic icons for ios and android"},
-      			{"TYPE": "FIX", "CHANGE": "Ios Layout"},
-      			{"TYPE": "FIX", "CHANGE": "cordova res icon generator"},
-      			{"TYPE": "FIX", "CHANGE": "Slider update value in wrong direction"},
-      			{"TYPE": "FIX", "CHANGE": "Popup font-awesome icon finder"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.2.0",
-      		"DATE": "19.12.2019",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Label component text align option"},
-      			{"TYPE": "NEW", "CHANGE": "Fhem device list strategy"},
-      			{"TYPE": "NEW", "CHANGE": "Alpha version of Tasks"},
-      			{"TYPE": "NEW", "CHANGE": "Component Details --> reachable from context menu"},
-      			{"TYPE": "NEW", "CHANGE": "Task Types: Fhem, Time, Weekday"},
-      			{"TYPE": "NEW", "CHANGE": "Task Options: hide_room, hide_component, switch_room, show_alert"},
-      			{"TYPE": "NEW", "CHANGE": "Rooms automatically get UID"},
-      			{"TYPE": "FIX", "CHANGE": "Room list height --> settings not reachable"},
-      			{"TYPE": "FIX", "CHANGE": "Back Button Service for unattatched subscribtion --> close event before open event"},
-      			{"TYPE": "FIX", "CHANGE": "All components for fhem-container --> components submit ID to fhem-container"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.2.1",
-      		"DATE": "06.01.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Transparent color selection"},
-      			{"TYPE": "NEW", "CHANGE": "Colorpicker width and height attributes"},
-      			{"TYPE": "NEW", "CHANGE": "Device and Room generators detect pseudo rooms and creates them"},
-      			{"TYPE": "FIX", "CHANGE": "State evaluation for numeric values --> Switch, Button, Icon"},
-      			{"TYPE": "FIX", "CHANGE": "Image position"},
-      			{"TYPE": "FIX", "CHANGE": "Room UID in Auto generators"},
-      			{"TYPE": "FIX", "CHANGE": "Resize icons"},
-      			{"TYPE": "FIX", "CHANGE": "Select box size for low configurable components"},
-      			{"TYPE": "FIX", "CHANGE": "Listen Updates for 0 values"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.2.2",
-      		"DATE": "13.01.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "FhemNative userAttr display for fhem --> reachable from context menu"},
-      			{"TYPE": "NEW", "CHANGE": "Dynamic component attribute loader"},
-      			{"TYPE": "FIX", "CHANGE": "Clock component spacing"},
-      			{"TYPE": "FIX", "CHANGE": "Shortcuts only if needed"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.2.3",
-      		"DATE": "20.01.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Added media player icons"},
-      			{"TYPE": "NEW", "CHANGE": "Pin components to disable movement"},
-      			{"TYPE": "NEW", "CHANGE": "Vibration and sound from --> enable from settings"},
-      			{"TYPE": "NEW", "CHANGE": "New component attributes are automatically in edit menu"},
-      			{"TYPE": "FIX", "CHANGE": "Display context Menu too fast on little movements"},
-      			{"TYPE": "FIX", "CHANGE": "Disable scroll on component movement"},
-      			{"TYPE": "FIX", "CHANGE": "Slider Update infinity bug"},
-      			{"TYPE": "FIX", "CHANGE": "Settings back button color in bright mode"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.2.4",
-      		"DATE": "27.01.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Button Multistate component"},
-      			{"TYPE": "NEW", "CHANGE": "Added more music player icons"},
-      			{"TYPE": "NEW", "CHANGE": "Added quick component switch selection menu"},
-      			{"TYPE": "NEW", "CHANGE": "Components can be grouped now"},
-      			{"TYPE": "NEW", "CHANGE": "Component Details moved to extra picker"},
-      			{"TYPE": "NEW", "CHANGE": "Slider Height is now seperatly configurable"},
-      			{"TYPE": "NEW", "CHANGE": "arr_icon for multiple icon selection"},
-      			{"TYPE": "FIX", "CHANGE": "Visible Pin in edit Mode while switching rooms"},
-      			{"TYPE": "FIX", "CHANGE": "Slider Bug to select Thumb, while value is in thumb"},
-      			{"TYPE": "FIX", "CHANGE": "Pinned component gets removed from selected list, when other components are selected and pin is activated"},
-      			{"TYPE": "FIX", "CHANGE": "Color selection for multi color components"},
-      			{"TYPE": "FIX", "CHANGE": "Double click to edit component is working again"},
-      			{"TYPE": "FIX", "CHANGE": "Positioning bug of components for top offset property"},
-      			{"TYPE": "FIX", "CHANGE": "Positioning bug of components for left offset property in containers"},
-      			{"TYPE": "FIX", "CHANGE": "Creation of context menu based on different click events"},
-      			{"TYPE": "FIX", "CHANGE": "Swiper edit on mobile"},
-      			{"TYPE": "DEL", "CHANGE": "Component Details Menu as side menu"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.2.5",
-      		"DATE": "19.02.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Tasks support multiple outputs"},
-      			{"TYPE": "NEW", "CHANGE": "Tasks support else condition"},
-      			{"TYPE": "NEW", "CHANGE": "Tasks deletion Notification"},
-      			{"TYPE": "NEW", "CHANGE": "Tasks sound/vibration output"},
-      			{"TYPE": "NEW", "CHANGE": "New component creation menu"},
-      			{"TYPE": "NEW", "CHANGE": "New context menu"},
-      			{"TYPE": "NEW", "CHANGE": "New component configuration test"},
-      			{"TYPE": "NEW", "CHANGE": "Component Test area in component edit menu"},
-      			{"TYPE": "NEW", "CHANGE": "New component demo in configuration"},
-      			{"TYPE": "FIX", "CHANGE": "Task time compare operators (> and <)"},
-      			{"TYPE": "FIX", "CHANGE": "Fixed Icon component"},
-      			{"TYPE": "FIX", "CHANGE": "Task time setter"},
-      			{"TYPE": "FIX", "CHANGE": "Swiper Pager show/hide"},
-      			{"TYPE": "FIX", "CHANGE": "Device in component details"},
-      			{"TYPE": "FIX", "CHANGE": "Copy/Paste components from one room to another --> resize error"},
-      			{"TYPE": "DEL", "CHANGE": "Fhem Notify Editor from tasks"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.5.0",
-      		"DATE": "21.04.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Full App rewrite"},
-      			{"TYPE": "NEW", "CHANGE": "Update to Angular 9"},
-      			{"TYPE": "NEW", "CHANGE": "Update to Ionic 5"},
-      			{"TYPE": "NEW", "CHANGE": "Alignment to Android Color Sheme"},
-      			{"TYPE": "NEW", "CHANGE": "Custom Color Sheme"},
-      			{"TYPE": "NEW", "CHANGE": "Redesign of Popup component"},
-      			{"TYPE": "NEW", "CHANGE": "Popup animations"},
-      			{"TYPE": "NEW", "CHANGE": "Task change recognition"},
-      			{"TYPE": "NEW", "CHANGE": "Task fhem device handler"},
-      			{"TYPE": "NEW", "CHANGE": "New Picker component"},
-      			{"TYPE": "NEW", "CHANGE": "New Tabs component"},
-      			{"TYPE": "NEW", "CHANGE": "New Table component"},
-      			{"TYPE": "NEW", "CHANGE": "New custom inputs for chart/table/weather"},
-      			{"TYPE": "NEW", "CHANGE": "Component export/import"},
-      			{"TYPE": "NEW", "CHANGE": "Advanced settings"},
-      			{"TYPE": "NEW", "CHANGE": "Component dependOn parameters"},
-      			{"TYPE": "NEW", "CHANGE": "Grid auto resize"},
-      			{"TYPE": "NEW", "CHANGE": "New hotkey logic to prevent default"},
-      			{"TYPE": "NEW", "CHANGE": "New back button handler"},
-      			{"TYPE": "NEW", "CHANGE": "Factory reset"},
-      			{"TYPE": "NEW", "CHANGE": "Component getDevice from fhem optimization"},
-      			{"TYPE": "NEW", "CHANGE": "New Slider selectable"},
-      			{"TYPE": "NEW", "CHANGE": "New Thermostat selectable"},
-      			{"TYPE": "NEW", "CHANGE": "Circle Slider Animation"},
-      			{"TYPE": "NEW", "CHANGE": "Implemented Loader component to visualize waiting"},
-      			{"TYPE": "FIX", "CHANGE": "Fhem connection handler"},
-      			{"TYPE": "FIX", "CHANGE": "All components"},
-      			{"TYPE": "FIX", "CHANGE": "Task handling"},
-      			{"TYPE": "FIX", "CHANGE": "Chart/Weather label outside of view"},
-      			{"TYPE": "DEL", "CHANGE": "Select Rectangle"}
-      		]
-    	},
-    	{
-      		"VERSION": "2.5.1",
-      		"DATE": "24.04.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Thermostat update animation"},
-      			{"TYPE": "NEW", "CHANGE": "Slider update animation"},
-      			{"TYPE": "NEW", "CHANGE": "Two new switch styles"},
-      			{"TYPE": "NEW", "CHANGE": "New responsive resize handler"},
-      			{"TYPE": "NEW", "CHANGE": "Alternative dark style"},
-      			{"TYPE": "NEW", "CHANGE": "New component style for most components (neumorph)"},
-      			{"TYPE": "NEW", "CHANGE": "New Thermostat style"},
-      			{"TYPE": "NEW", "CHANGE": "FhemNative PWA possibility --> see forum"},
-      			{"TYPE": "NEW", "CHANGE": "FhemNative asset image compression, to reduce size"},
-      			{"TYPE": "NEW", "CHANGE": "dependOn can handle multiple dependency values"},
-      			{"TYPE": "NEW", "CHANGE": "ChangeDetection change for: (create/edit component, create/edit room, fhem-menu, grid, settings, tasks, select)"},
-      			{"TYPE": "FIX", "CHANGE": "Circle slider decimal endless animation"},
-      			{"TYPE": "FIX", "CHANGE": "Slider Time handling on init"},
-      			{"TYPE": "FIX", "CHANGE": "Chart round elem for round chartTypes"},
-      			{"TYPE": "FIX", "CHANGE": "Switch UX Adaption"},
-      			{"TYPE": "FIX", "CHANGE": "Menu Buttons click on component edit"},
-      			{"TYPE": "FIX", "CHANGE": "remove component creation Menu after close --> previously was still in view"},
-      			{"TYPE": "FIX", "CHANGE": "Copy component from room to room while editing --> no moving"}
-      		]
-      	},
-      	{
-      		"VERSION": "2.5.2",
-      		"DATE": "02.06.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "New Slider style (tick-slider-inline)"},
-      			{"TYPE": "NEW", "CHANGE": "Chart/Weather can handle multiple colors"},
-      			{"TYPE": "NEW", "CHANGE": "Chart/Weather readings can be reordered"},
-      			{"TYPE": "NEW", "CHANGE": "Label Font Style (B/I)"},
-      			{"TYPE": "NEW", "CHANGE": "Swiper pager colors"},
-      			{"TYPE": "NEW", "CHANGE": "Icon min max colors"},
-      			{"TYPE": "NEW", "CHANGE": "default images in image component"},
-      			{"TYPE": "NEW", "CHANGE": "custom headers in swiper"},
-      			{"TYPE": "FIX", "CHANGE": "Changelog display change detection"},
-      			{"TYPE": "FIX", "CHANGE": "Label Fix 0 Reading"},
-      			{"TYPE": "FIX", "CHANGE": "Slider horizontal value center in thumb"},
-      			{"TYPE": "FIX", "CHANGE": "Label Fix 0 Reading"},
-      			{"TYPE": "FIX", "CHANGE": "Popup in Swiper position"},
-      			{"TYPE": "FIX", "CHANGE": "Color Picker canvas position in Swiper"},
-      			{"TYPE": "FIX", "CHANGE": "Slider thumb value position in Swiper"},
-      			{"TYPE": "FIX", "CHANGE": "Slider thumb value center position"},
-      			{"TYPE": "FIX", "CHANGE": "Select creation size adjustment, to fit container"},
-      			{"TYPE": "FIX", "CHANGE": "label line spacing"},
-      			{"TYPE": "FIX", "CHANGE": "change detection bug in create/edit component"},
-      			{"TYPE": "FIX", "CHANGE": "outside click directive"},
-      			{"TYPE": "DEL", "CHANGE": "Removed ChangeDetection OnPush from tasks"}
-      		]
-      	},
-      	{
-      		"VERSION": "2.5.3",
-      		"DATE": "05.06.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Select Styles (custom borders/border colors)"},
-      			{"TYPE": "NEW", "CHANGE": "More icons"},
-      			{"TYPE": "NEW", "CHANGE": "Icon indicator custom position"},
-      			{"TYPE": "NEW", "CHANGE": "Get commands via single connection (closed after time or feedback)"},
-      			{"TYPE": "FIX", "CHANGE": "Select position of unfold list"},
-      			{"TYPE": "FIX", "CHANGE": "Iframe in swiper position"},
-      			{"TYPE": "FIX", "CHANGE": "Icon in swiper position"},
-      			{"TYPE": "FIX", "CHANGE": "Chart Time selection unfold overlap"}
-      		]
-      	},
-      	{
-      		"VERSION": "2.6.0",
-      		"DATE": "18.06.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "FhemNative variables beta"},
-      			{"TYPE": "NEW", "CHANGE": "Select component is able to change static variables"},
-      			{"TYPE": "NEW", "CHANGE": "Tab custom borders"},
-      			{"TYPE": "NEW", "CHANGE": "Tab custom icon ON state colors"},
-      			{"TYPE": "NEW", "CHANGE": "Custom Tab Header position"},
-      			{"TYPE": "NEW", "CHANGE": "Mobile device presets/custom viewports (Advanced settings)"},
-      			{"TYPE": "NEW", "CHANGE": "Input component"},
-      			{"TYPE": "NEW", "CHANGE": "Html component"},
-      			{"TYPE": "FIX", "CHANGE": "Toast messages combiner"},
-      			{"TYPE": "FIX", "CHANGE": "Color Picker size for mobile and desktop"},
-      			{"TYPE": "FIX", "CHANGE": "Swich and select: no text selection while moving mouse"},
-      			{"TYPE": "FIX", "CHANGE": "Slider value center position for vertical slider"},
-      			{"TYPE": "FIX", "CHANGE": "Select value position in swiper"},
-      			{"TYPE": "FIX", "CHANGE": "Select value text shorten"},
-      			{"TYPE": "FIX", "CHANGE": "Popup close position in swiper"},
-      			{"TYPE": "FIX", "CHANGE": "Popup edit button position"},
-      			{"TYPE": "FIX", "CHANGE": "Popup close button in tabs"},
-      			{"TYPE": "FIX", "CHANGE": "Tabs edit button position"},
-      			{"TYPE": "FIX", "CHANGE": "Icon default"},
-      			{"TYPE": "FIX", "CHANGE": "Label (no label found) position"},
-      			{"TYPE": "FIX", "CHANGE": "Icon and label position in menu"}
-      		]
-      	},
-      	{
-      		"VERSION": "2.6.1",
-      		"DATE": "21.07.2020",
-      		"CHANGES":[
-      			{"TYPE": "NEW", "CHANGE": "Secure websocket"},
-      			{"TYPE": "NEW", "CHANGE": "HTML out of beta state"},
-      			{"TYPE": "NEW", "CHANGE": "Sprinkler manual runtime setter"},
-      			{"TYPE": "NEW", "CHANGE": "Component Loading Animation handling (allow 5 sec loading before error message)"},
-      			{"TYPE": "FIX", "CHANGE": "Component details menu z-index"},
-      			{"TYPE": "FIX", "CHANGE": "PWA command"},
-      			{"TYPE": "FIX", "CHANGE": "PWA icon sizes"},
-      			{"TYPE": "FIX", "CHANGE": "Icon and label position in menu"},
-      			{"TYPE": "FIX", "CHANGE": "HTML default text color (match with app theme)"},
-      			{"TYPE": "FIX", "CHANGE": "Copy of component details for FhemNative_userAttr"},
-      			{"TYPE": "FIX", "CHANGE": "IFrame URL faster response"},
-      			{"TYPE": "FIX", "CHANGE": "Label component position fix"},
-      			{"TYPE": "FIX", "CHANGE": "Secure waiting on default settings load"},
-      			{"TYPE": "FIX", "CHANGE": "Context menu label and icon position"},
-      			{"TYPE": "FIX", "CHANGE": "Sprinkler loader and initial error"},
-      			{"TYPE": "FIX", "CHANGE": "Settings importer"},
-      			{"TYPE": "FIX", "CHANGE": "Reload rooms after IP change"}
-      		]
-      	}
+			"VERSION": "2.0.1",
+			"DATE": "23.09.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "App reload after settings import is not needed anymore"},
+				{"TYPE": "NEW", "CHANGE": "Implemented new default settings loader"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Thermostat Dragger and initial value display"},
+				{"TYPE": "FIX", "CHANGE": "Fixed undefined settings in export and import"},
+				{"TYPE": "FIX", "CHANGE": "App ID back to de.FhemNative.FhemNative"},
+				{"TYPE": "FIX", "CHANGE": "Responsive resize is ON by default"},
+				{"TYPE": "FIX", "CHANGE": "Fixed settings import for mobile"}
+			]
+		},
+		{
+			"VERSION": "2.0.2",
+			"DATE": "27.09.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "New component loader to reduce storage and create components faster"},
+				{"TYPE": "NEW", "CHANGE": "New Menu Edit Buttons"},
+				{"TYPE": "NEW", "CHANGE": "New Room Edit Buttons"},
+				{"TYPE": "NEW", "CHANGE": "Enable Editing as settings entry --> used for new Buttons"},
+				{"TYPE": "NEW", "CHANGE": "Added auto Device Loader"},
+				{"TYPE": "NEW", "CHANGE": "Label Extension attribute for Thermostat"},
+				{"TYPE": "DEL", "CHANGE": "Removed big Menu Edit Buttons and longpress"},
+				{"TYPE": "FIX", "CHANGE": "Slider acccepts min max value changes (directional changes)"}
+			]
+		},
+		{
+			"VERSION": "2.0.3",
+			"DATE": "07.10.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Rooms can be used as structures for 'menu-in-menu' support"},
+				{"TYPE": "NEW", "CHANGE": "Rooms as group-structures and individual rooms"},
+				{"TYPE": "NEW", "CHANGE": "Back Button to settings"},
+				{"TYPE": "FIX", "CHANGE": "Room links to wrong room"},
+				{"TYPE": "FIX", "CHANGE": "New created components are always on top now"},
+				{"TYPE": "FIX", "CHANGE": "Fixed chart name fetch"},
+				{"TYPE": "FIX", "CHANGE": "Fixed chart value fetch"}
+			]
+		},
+		{
+			"VERSION": "2.0.4",
+			"DATE": "14.10.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Added FontAwesome Icons"},
+				{"TYPE": "NEW", "CHANGE": "Added Indicator possibility to Icon Component"},
+				{"TYPE": "NEW", "CHANGE": "Implemented multiple selection for copy and delete"},
+				{"TYPE": "NEW", "CHANGE": "Implemented quick select all and auto-unselect for components outside the current container"},
+				{"TYPE": "FIX", "CHANGE": "Fixed settings reset after app reload"},
+				{"TYPE": "FIX", "CHANGE": "Fixed settings description label length"},
+				{"TYPE": "FIX", "CHANGE": "Fixed swiper creation"},
+				{"TYPE": "FIX", "CHANGE": "Language in Room-Edit-Menu"}
+			]
+		},
+		{
+			"VERSION": "2.0.5",
+			"DATE": "14.10.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Undo Redo options. Default to off."},
+				{"TYPE": "NEW", "CHANGE": "Create and Change room use same component."},
+				{"TYPE": "NEW", "CHANGE": "Less saves. Only applying changes result to save."},
+				{"TYPE": "NEW", "CHANGE": "Added animation to submenu."},
+				{"TYPE": "NEW", "CHANGE": "Rooms are editable at any time now."},
+				{"TYPE": "NEW", "CHANGE": "Rooms are clickable at any time now."},
+				{"TYPE": "FIX", "CHANGE": "Sized create room container."},
+				{"TYPE": "FIX", "CHANGE": "Removing group room while in sub room is now possible."},
+				{"TYPE": "FIX", "CHANGE": "Fixed submenu change and creation container."},
+				{"TYPE": "FIX", "CHANGE": "Fixed bug in undo/redo for intuitive forward and backward jumps."},
+				{"TYPE": "FIX", "CHANGE": "Context/Edit Menu now disappears on click start."},
+				{"TYPE": "DEL", "CHANGE": "Change Room in picker"}
+			]
+		},
+		{
+			"VERSION": "2.0.6",
+			"DATE": "30.10.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Undo Redo Button availability indicator"},
+				{"TYPE": "NEW", "CHANGE": "Added more Font Awesome Icons"},
+				{"TYPE": "NEW", "CHANGE": "Custom colors from user (will be added to default list, after first confirmation)"},
+				{"TYPE": "NEW", "CHANGE": "Thermostat Animation can be switched off"},
+				{"TYPE": "NEW", "CHANGE": "Added Thermostat steps"},
+				{"TYPE": "NEW", "CHANGE": "FhemNative now accepts float values"},
+				{"TYPE": "FIX", "CHANGE": "Slider Update bar"},
+				{"TYPE": "FIX", "CHANGE": "Label decimals"}
+			]
+		},
+		{
+			"VERSION": "2.0.7",
+			"DATE": "11.11.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Line component can now be curved and rotated"},
+				{"TYPE": "NEW", "CHANGE": "Added Donation Area in settings"},
+				{"TYPE": "NEW", "CHANGE": "Added Support Area in settings"},
+				{"TYPE": "NEW", "CHANGE": "Added MediaList Component"},
+				{"TYPE": "NEW", "CHANGE": "Added Custom Websocket Loader"},
+				{"TYPE": "FIX", "CHANGE": "Sliding Menu in edit mode crashes app"},
+				{"TYPE": "FIX", "CHANGE": "Button Cotainer z-index in popup"},
+				{"TYPE": "FIX", "CHANGE": "Reconnect handler"}
+			]
+		},
+		{
+			"VERSION": "2.0.8",
+			"DATE": "12.11.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "New auto generate devices strategy"},
+				{"TYPE": "NEW", "CHANGE": "New auto generate rooms strategy"},
+				{"TYPE": "NEW", "CHANGE": "New Fhem change and init handler"},
+				{"TYPE": "NEW", "CHANGE": "Component description in device importer"},
+				{"TYPE": "FIX", "CHANGE": "Edit Component for Swiper"},
+				{"TYPE": "FIX", "CHANGE": "Swiper Properties"}
+			]
+		},
+		{
+			"VERSION": "2.1.0",
+			"DATE": "22.11.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Component Containers can now be passed in component containers"},
+				{"TYPE": "NEW", "CHANGE": "New component selection strategy"},
+				{"TYPE": "NEW", "CHANGE": "Moving multiple components at the same time is now possible"},
+				{"TYPE": "NEW", "CHANGE": "Added Fhem connection tries"},
+				{"TYPE": "NEW", "CHANGE": "Popup has width and height property now"},
+				{"TYPE": "NEW", "CHANGE": "New deep UID generator for copy and paste"},
+				{"TYPE": "NEW", "CHANGE": "New Grid creation strategy (only one grid at the same time)"},
+				{"TYPE": "NEW", "CHANGE": "Right click context menu is now available"},
+				{"TYPE": "NEW", "CHANGE": "Auto selection of new components after paste"},
+				{"TYPE": "NEW", "CHANGE": "Added Shortcuts for Desktop"},
+				{"TYPE": "NEW", "CHANGE": "Added Basic Authentification for FHEMWEB"},
+				{"TYPE": "NEW", "CHANGE": "Longpress for context menu"},
+				{"TYPE": "NEW", "CHANGE": "More Option in context menu on grid"},
+				{"TYPE": "FIX", "CHANGE": "Changelog now shows current app version at first"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Sweiper Grid construction on change to room"},
+				{"TYPE": "FIX", "CHANGE": "Changelog disabled selection for not available versions"},
+				{"TYPE": "FIX", "CHANGE": "Circle Slider decimals display"},
+				{"TYPE": "FIX", "CHANGE": "Response of Auto generators"},
+				{"TYPE": "FIX", "CHANGE": "Device Getter now accepts deep nested components"},
+				{"TYPE": "DEL", "CHANGE": "Removed restrictions to copy/paste and create components"}
+			]
+		},
+		{
+			"VERSION": "2.1.1",
+			"DATE": "25.11.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Select component with Strg and click"},
+				{"TYPE": "NEW", "CHANGE": "Implemented Select Rectangle on Shift Shortcut"},
+				{"TYPE": "NEW", "CHANGE": "Label can have min/max values and min/max colors"},
+				{"TYPE": "FIX", "CHANGE": "Mover not resetting moved event"}
+			]
+		},
+		{
+			"VERSION": "2.1.2",
+			"DATE": "29.11.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Clock component"},
+				{"TYPE": "NEW", "CHANGE": "Weather component"},
+				{"TYPE": "NEW", "CHANGE": "Added Icons"},
+				{"TYPE": "FIX", "CHANGE": "Label component extension"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Changelog JSON"},
+				{"TYPE": "FIX", "CHANGE": "Click Events for context menu --> easier to access now"},
+				{"TYPE": "FIX", "CHANGE": "Create component for partly device/reading availability"}
+			]
+		},
+		{
+			"VERSION": "2.1.3",
+			"DATE": "03.12.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "IFrame border option"},
+				{"TYPE": "NEW", "CHANGE": "Weather current day display"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Resize Event Call"},
+				{"TYPE": "FIX", "CHANGE": "Chart Component Version"},
+				{"TYPE": "FIX", "CHANGE": "Weather Component Sorting/Scaling/Moving"},
+				{"TYPE": "FIX", "CHANGE": "Weather Component Area draw"},
+				{"TYPE": "DEL", "CHANGE": "Unused Stuff from IFrame Component"}
+			]
+		},
+		{
+			"VERSION": "2.1.4",
+			"DATE": "06.12.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Weather temperature label animation"},
+				{"TYPE": "NEW", "CHANGE": "Slider ios-style"},
+				{"TYPE": "FIX", "CHANGE": "Same basic icons for ios and android"},
+				{"TYPE": "FIX", "CHANGE": "Ios Layout"},
+				{"TYPE": "FIX", "CHANGE": "cordova res icon generator"},
+				{"TYPE": "FIX", "CHANGE": "Slider update value in wrong direction"},
+				{"TYPE": "FIX", "CHANGE": "Popup font-awesome icon finder"}
+			]
+		},
+		{
+			"VERSION": "2.2.0",
+			"DATE": "19.12.2019",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Label component text align option"},
+				{"TYPE": "NEW", "CHANGE": "Fhem device list strategy"},
+				{"TYPE": "NEW", "CHANGE": "Alpha version of Tasks"},
+				{"TYPE": "NEW", "CHANGE": "Component Details --> reachable from context menu"},
+				{"TYPE": "NEW", "CHANGE": "Task Types: Fhem, Time, Weekday"},
+				{"TYPE": "NEW", "CHANGE": "Task Options: hide_room, hide_component, switch_room, show_alert"},
+				{"TYPE": "NEW", "CHANGE": "Rooms automatically get UID"},
+				{"TYPE": "FIX", "CHANGE": "Room list height --> settings not reachable"},
+				{"TYPE": "FIX", "CHANGE": "Back Button Service for unattatched subscribtion --> close event before open event"},
+				{"TYPE": "FIX", "CHANGE": "All components for fhem-container --> components submit ID to fhem-container"}
+			]
+		},
+		{
+			"VERSION": "2.2.1",
+			"DATE": "06.01.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Transparent color selection"},
+				{"TYPE": "NEW", "CHANGE": "Colorpicker width and height attributes"},
+				{"TYPE": "NEW", "CHANGE": "Device and Room generators detect pseudo rooms and creates them"},
+				{"TYPE": "FIX", "CHANGE": "State evaluation for numeric values --> Switch, Button, Icon"},
+				{"TYPE": "FIX", "CHANGE": "Image position"},
+				{"TYPE": "FIX", "CHANGE": "Room UID in Auto generators"},
+				{"TYPE": "FIX", "CHANGE": "Resize icons"},
+				{"TYPE": "FIX", "CHANGE": "Select box size for low configurable components"},
+				{"TYPE": "FIX", "CHANGE": "Listen Updates for 0 values"}
+			]
+		},
+		{
+			"VERSION": "2.2.2",
+			"DATE": "13.01.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "FhemNative userAttr display for fhem --> reachable from context menu"},
+				{"TYPE": "NEW", "CHANGE": "Dynamic component attribute loader"},
+				{"TYPE": "FIX", "CHANGE": "Clock component spacing"},
+				{"TYPE": "FIX", "CHANGE": "Shortcuts only if needed"}
+			]
+		},
+		{
+			"VERSION": "2.2.3",
+			"DATE": "20.01.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Added media player icons"},
+				{"TYPE": "NEW", "CHANGE": "Pin components to disable movement"},
+				{"TYPE": "NEW", "CHANGE": "Vibration and sound from --> enable from settings"},
+				{"TYPE": "NEW", "CHANGE": "New component attributes are automatically in edit menu"},
+				{"TYPE": "FIX", "CHANGE": "Display context Menu too fast on little movements"},
+				{"TYPE": "FIX", "CHANGE": "Disable scroll on component movement"},
+				{"TYPE": "FIX", "CHANGE": "Slider Update infinity bug"},
+				{"TYPE": "FIX", "CHANGE": "Settings back button color in bright mode"}
+			]
+		},
+		{
+			"VERSION": "2.2.4",
+			"DATE": "27.01.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Button Multistate component"},
+				{"TYPE": "NEW", "CHANGE": "Added more music player icons"},
+				{"TYPE": "NEW", "CHANGE": "Added quick component switch selection menu"},
+				{"TYPE": "NEW", "CHANGE": "Components can be grouped now"},
+				{"TYPE": "NEW", "CHANGE": "Component Details moved to extra picker"},
+				{"TYPE": "NEW", "CHANGE": "Slider Height is now seperatly configurable"},
+				{"TYPE": "NEW", "CHANGE": "arr_icon for multiple icon selection"},
+				{"TYPE": "FIX", "CHANGE": "Visible Pin in edit Mode while switching rooms"},
+				{"TYPE": "FIX", "CHANGE": "Slider Bug to select Thumb, while value is in thumb"},
+				{"TYPE": "FIX", "CHANGE": "Pinned component gets removed from selected list, when other components are selected and pin is activated"},
+				{"TYPE": "FIX", "CHANGE": "Color selection for multi color components"},
+				{"TYPE": "FIX", "CHANGE": "Double click to edit component is working again"},
+				{"TYPE": "FIX", "CHANGE": "Positioning bug of components for top offset property"},
+				{"TYPE": "FIX", "CHANGE": "Positioning bug of components for left offset property in containers"},
+				{"TYPE": "FIX", "CHANGE": "Creation of context menu based on different click events"},
+				{"TYPE": "FIX", "CHANGE": "Swiper edit on mobile"},
+				{"TYPE": "DEL", "CHANGE": "Component Details Menu as side menu"}
+			]
+		},
+		{
+			"VERSION": "2.2.5",
+			"DATE": "19.02.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Tasks support multiple outputs"},
+				{"TYPE": "NEW", "CHANGE": "Tasks support else condition"},
+				{"TYPE": "NEW", "CHANGE": "Tasks deletion Notification"},
+				{"TYPE": "NEW", "CHANGE": "Tasks sound/vibration output"},
+				{"TYPE": "NEW", "CHANGE": "New component creation menu"},
+				{"TYPE": "NEW", "CHANGE": "New context menu"},
+				{"TYPE": "NEW", "CHANGE": "New component configuration test"},
+				{"TYPE": "NEW", "CHANGE": "Component Test area in component edit menu"},
+				{"TYPE": "NEW", "CHANGE": "New component demo in configuration"},
+				{"TYPE": "FIX", "CHANGE": "Task time compare operators (> and <)"},
+				{"TYPE": "FIX", "CHANGE": "Fixed Icon component"},
+				{"TYPE": "FIX", "CHANGE": "Task time setter"},
+				{"TYPE": "FIX", "CHANGE": "Swiper Pager show/hide"},
+				{"TYPE": "FIX", "CHANGE": "Device in component details"},
+				{"TYPE": "FIX", "CHANGE": "Copy/Paste components from one room to another --> resize error"},
+				{"TYPE": "DEL", "CHANGE": "Fhem Notify Editor from tasks"}
+			]
+		},
+		{
+			"VERSION": "2.5.0",
+			"DATE": "21.04.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Full App rewrite"},
+				{"TYPE": "NEW", "CHANGE": "Update to Angular 9"},
+				{"TYPE": "NEW", "CHANGE": "Update to Ionic 5"},
+				{"TYPE": "NEW", "CHANGE": "Alignment to Android Color Sheme"},
+				{"TYPE": "NEW", "CHANGE": "Custom Color Sheme"},
+				{"TYPE": "NEW", "CHANGE": "Redesign of Popup component"},
+				{"TYPE": "NEW", "CHANGE": "Popup animations"},
+				{"TYPE": "NEW", "CHANGE": "Task change recognition"},
+				{"TYPE": "NEW", "CHANGE": "Task fhem device handler"},
+				{"TYPE": "NEW", "CHANGE": "New Picker component"},
+				{"TYPE": "NEW", "CHANGE": "New Tabs component"},
+				{"TYPE": "NEW", "CHANGE": "New Table component"},
+				{"TYPE": "NEW", "CHANGE": "New custom inputs for chart/table/weather"},
+				{"TYPE": "NEW", "CHANGE": "Component export/import"},
+				{"TYPE": "NEW", "CHANGE": "Advanced settings"},
+				{"TYPE": "NEW", "CHANGE": "Component dependOn parameters"},
+				{"TYPE": "NEW", "CHANGE": "Grid auto resize"},
+				{"TYPE": "NEW", "CHANGE": "New hotkey logic to prevent default"},
+				{"TYPE": "NEW", "CHANGE": "New back button handler"},
+				{"TYPE": "NEW", "CHANGE": "Factory reset"},
+				{"TYPE": "NEW", "CHANGE": "Component getDevice from fhem optimization"},
+				{"TYPE": "NEW", "CHANGE": "New Slider selectable"},
+				{"TYPE": "NEW", "CHANGE": "New Thermostat selectable"},
+				{"TYPE": "NEW", "CHANGE": "Circle Slider Animation"},
+				{"TYPE": "NEW", "CHANGE": "Implemented Loader component to visualize waiting"},
+				{"TYPE": "FIX", "CHANGE": "Fhem connection handler"},
+				{"TYPE": "FIX", "CHANGE": "All components"},
+				{"TYPE": "FIX", "CHANGE": "Task handling"},
+				{"TYPE": "FIX", "CHANGE": "Chart/Weather label outside of view"},
+				{"TYPE": "DEL", "CHANGE": "Select Rectangle"}
+			]
+		},
+		{
+			"VERSION": "2.5.1",
+			"DATE": "24.04.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Thermostat update animation"},
+				{"TYPE": "NEW", "CHANGE": "Slider update animation"},
+				{"TYPE": "NEW", "CHANGE": "Two new switch styles"},
+				{"TYPE": "NEW", "CHANGE": "New responsive resize handler"},
+				{"TYPE": "NEW", "CHANGE": "Alternative dark style"},
+				{"TYPE": "NEW", "CHANGE": "New component style for most components (neumorph)"},
+				{"TYPE": "NEW", "CHANGE": "New Thermostat style"},
+				{"TYPE": "NEW", "CHANGE": "FhemNative PWA possibility --> see forum"},
+				{"TYPE": "NEW", "CHANGE": "FhemNative asset image compression, to reduce size"},
+				{"TYPE": "NEW", "CHANGE": "dependOn can handle multiple dependency values"},
+				{"TYPE": "NEW", "CHANGE": "ChangeDetection change for: (create/edit component, create/edit room, fhem-menu, grid, settings, tasks, select)"},
+				{"TYPE": "FIX", "CHANGE": "Circle slider decimal endless animation"},
+				{"TYPE": "FIX", "CHANGE": "Slider Time handling on init"},
+				{"TYPE": "FIX", "CHANGE": "Chart round elem for round chartTypes"},
+				{"TYPE": "FIX", "CHANGE": "Switch UX Adaption"},
+				{"TYPE": "FIX", "CHANGE": "Menu Buttons click on component edit"},
+				{"TYPE": "FIX", "CHANGE": "remove component creation Menu after close --> previously was still in view"},
+				{"TYPE": "FIX", "CHANGE": "Copy component from room to room while editing --> no moving"}
+			]
+		},
+		{
+			"VERSION": "2.5.2",
+			"DATE": "02.06.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "New Slider style (tick-slider-inline)"},
+				{"TYPE": "NEW", "CHANGE": "Chart/Weather can handle multiple colors"},
+				{"TYPE": "NEW", "CHANGE": "Chart/Weather readings can be reordered"},
+				{"TYPE": "NEW", "CHANGE": "Label Font Style (B/I)"},
+				{"TYPE": "NEW", "CHANGE": "Swiper pager colors"},
+				{"TYPE": "NEW", "CHANGE": "Icon min max colors"},
+				{"TYPE": "NEW", "CHANGE": "default images in image component"},
+				{"TYPE": "NEW", "CHANGE": "custom headers in swiper"},
+				{"TYPE": "FIX", "CHANGE": "Changelog display change detection"},
+				{"TYPE": "FIX", "CHANGE": "Label Fix 0 Reading"},
+				{"TYPE": "FIX", "CHANGE": "Slider horizontal value center in thumb"},
+				{"TYPE": "FIX", "CHANGE": "Label Fix 0 Reading"},
+				{"TYPE": "FIX", "CHANGE": "Popup in Swiper position"},
+				{"TYPE": "FIX", "CHANGE": "Color Picker canvas position in Swiper"},
+				{"TYPE": "FIX", "CHANGE": "Slider thumb value position in Swiper"},
+				{"TYPE": "FIX", "CHANGE": "Slider thumb value center position"},
+				{"TYPE": "FIX", "CHANGE": "Select creation size adjustment, to fit container"},
+				{"TYPE": "FIX", "CHANGE": "label line spacing"},
+				{"TYPE": "FIX", "CHANGE": "change detection bug in create/edit component"},
+				{"TYPE": "FIX", "CHANGE": "outside click directive"},
+				{"TYPE": "DEL", "CHANGE": "Removed ChangeDetection OnPush from tasks"}
+			]
+		},
+		{
+			"VERSION": "2.5.3",
+			"DATE": "05.06.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Select Styles (custom borders/border colors)"},
+				{"TYPE": "NEW", "CHANGE": "More icons"},
+				{"TYPE": "NEW", "CHANGE": "Icon indicator custom position"},
+				{"TYPE": "NEW", "CHANGE": "Get commands via single connection (closed after time or feedback)"},
+				{"TYPE": "FIX", "CHANGE": "Select position of unfold list"},
+				{"TYPE": "FIX", "CHANGE": "Iframe in swiper position"},
+				{"TYPE": "FIX", "CHANGE": "Icon in swiper position"},
+				{"TYPE": "FIX", "CHANGE": "Chart Time selection unfold overlap"}
+			]
+		},
+		{
+			"VERSION": "2.6.0",
+			"DATE": "18.06.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "FhemNative variables beta"},
+				{"TYPE": "NEW", "CHANGE": "Select component is able to change static variables"},
+				{"TYPE": "NEW", "CHANGE": "Tab custom borders"},
+				{"TYPE": "NEW", "CHANGE": "Tab custom icon ON state colors"},
+				{"TYPE": "NEW", "CHANGE": "Custom Tab Header position"},
+				{"TYPE": "NEW", "CHANGE": "Mobile device presets/custom viewports (Advanced settings)"},
+				{"TYPE": "NEW", "CHANGE": "Input component"},
+				{"TYPE": "NEW", "CHANGE": "Html component"},
+				{"TYPE": "FIX", "CHANGE": "Toast messages combiner"},
+				{"TYPE": "FIX", "CHANGE": "Color Picker size for mobile and desktop"},
+				{"TYPE": "FIX", "CHANGE": "Swich and select: no text selection while moving mouse"},
+				{"TYPE": "FIX", "CHANGE": "Slider value center position for vertical slider"},
+				{"TYPE": "FIX", "CHANGE": "Select value position in swiper"},
+				{"TYPE": "FIX", "CHANGE": "Select value text shorten"},
+				{"TYPE": "FIX", "CHANGE": "Popup close position in swiper"},
+				{"TYPE": "FIX", "CHANGE": "Popup edit button position"},
+				{"TYPE": "FIX", "CHANGE": "Popup close button in tabs"},
+				{"TYPE": "FIX", "CHANGE": "Tabs edit button position"},
+				{"TYPE": "FIX", "CHANGE": "Icon default"},
+				{"TYPE": "FIX", "CHANGE": "Label (no label found) position"},
+				{"TYPE": "FIX", "CHANGE": "Icon and label position in menu"}
+			]
+		},
+		{
+			"VERSION": "2.6.1",
+			"DATE": "21.07.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Secure websocket"},
+				{"TYPE": "NEW", "CHANGE": "HTML out of beta state"},
+				{"TYPE": "NEW", "CHANGE": "Sprinkler manual runtime setter"},
+				{"TYPE": "NEW", "CHANGE": "Component Loading Animation handling (allow 5 sec loading before error message)"},
+				{"TYPE": "FIX", "CHANGE": "Component details menu z-index"},
+				{"TYPE": "FIX", "CHANGE": "PWA command"},
+				{"TYPE": "FIX", "CHANGE": "PWA icon sizes"},
+				{"TYPE": "FIX", "CHANGE": "Icon and label position in menu"},
+				{"TYPE": "FIX", "CHANGE": "HTML default text color (match with app theme)"},
+				{"TYPE": "FIX", "CHANGE": "Copy of component details for FhemNative_userAttr"},
+				{"TYPE": "FIX", "CHANGE": "IFrame URL faster response"},
+				{"TYPE": "FIX", "CHANGE": "Label component position fix"},
+				{"TYPE": "FIX", "CHANGE": "Secure waiting on default settings load"},
+				{"TYPE": "FIX", "CHANGE": "Context menu label and icon position"},
+				{"TYPE": "FIX", "CHANGE": "Sprinkler loader and initial error"},
+				{"TYPE": "FIX", "CHANGE": "Settings importer"},
+				{"TYPE": "FIX", "CHANGE": "Reload rooms after IP change"}
+			]
+		},
+		{
+			"VERSION": "2.6.2",
+			"DATE": "14.08.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Sprinkler 0% smart settings"},
+				{"TYPE": "NEW", "CHANGE": "Box Notch options"},
+				{"TYPE": "NEW", "CHANGE": "Service TypeScript adjustment"},
+				{"TYPE": "NEW", "CHANGE": "Not needed stuff from components is not saved to storage"},
+				{"TYPE": "DEL", "CHANGE": "Old component loader"},
+				{"TYPE": "FIX", "CHANGE": "Sprinkler disable interval display + positioning + manual runtime typos + timeline fix"},
+				{"TYPE": "FIX", "CHANGE": "Version download manager (Android redirect to release for manual download)"},
+				{"TYPE": "FIX", "CHANGE": "Context Menu cancel + save saved unwanted changes before"},
+				{"TYPE": "FIX", "CHANGE": "Context Menu save + changed compoonents while editing just reloaded partially"},
+				{"TYPE": "FIX", "CHANGE": "Mail formatting in Sprinkler"},
+				{"TYPE": "FIX", "CHANGE": "Device generator"}
+			]
+		}
 	]
 }
