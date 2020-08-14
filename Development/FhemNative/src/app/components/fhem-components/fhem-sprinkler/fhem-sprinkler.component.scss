@@ -51,15 +51,17 @@
 				margin-bottom: 10px;
 				margin-left: 8px;
 				margin-right: 8px;
-				border-bottom: var(--dark-border-full);
+				border-bottom: 1px solid #565656;
 			}
 		}
 	}
 	// settings pages
 	.page{
+		position: relative;
 		.category{
-			margin-bottom: 10px;
-			border-bottom: var(--dark-border-full);
+			margin-bottom: 8px;
+			padding-bottom: 8px;
+			border-bottom: 1px solid #565656;
 			&.no-border{
 				border-bottom: none;
 			}
@@ -88,17 +90,17 @@
 			button{
 				background: var(--btn-blue);
 				height: 35px;
-    			top: 5px;
-    			border-radius: 2px;
-    			ion-icon{
-    				font-size: 25px;
-    			}
+				top: 5px;
+				border-radius: 2px;
+				ion-icon{
+					font-size: 25px;
+				}
 			}
 			selector{
 				position: absolute;
-			    right: 8px;
-			    width: 180px;
-			    top: 0;
+				right: 8px;
+				width: 180px;
+				top: 0;
 			}
 			.des,
 			.des_small{
@@ -117,15 +119,15 @@
 			}
 			.color-palette-value{
 				position: absolute;
-			    width: 25px;
-			    height: 25px;
-			    border-radius: 50%;
-			    top: 5px;
-			    left: 5px;
+				width: 25px;
+				height: 25px;
+				border-radius: 50%;
+				top: 5px;
+				left: 5px;
 			}
 			.color-palette-label{
 				position: absolute;
-    			left: 35px;
+				left: 35px;
 			}
 		}
 		.des{
@@ -148,7 +150,7 @@
 				height: inherit;
 				ion-slide{
 					overflow-y: auto;
-    				overflow-x: hidden;
+					overflow-x: hidden;
 				}
 			}
 			.sprinkler-interval{
@@ -185,7 +187,7 @@
 					left: 0;
 					z-index: 10;
 					transition: all .3s ease;
-					background: var(--dark-overlay);
+					background: rgba(0,0,0,0.3);
 				}
 				.singleSprinkler{
 					h4{
@@ -224,18 +226,18 @@
 					}
 					.sprinkler-duration{
 						margin-top: 10px;
-						height: 50px;
+						height: 35px;
 					}
 					.select-btn{
 						position: relative;
 						width: 100%;
-						height: 50px;
+						height: 35px;
 						background: transparent;
 						display: inline-flex;
 						.des{
 							font-size: 16px;
 							margin-left: 0px;
-							line-height: 50px;
+							line-height: 35px;
 							width: calc(100% - 150px);
 							white-space: nowrap;
 							overflow: hidden;
@@ -246,7 +248,7 @@
 							width: 150px;
 							position: absolute;
 							right: 0;
-							height: 50px;
+							height: 35px;
 							font-size: 16px;
 						}
 					}
@@ -259,19 +261,16 @@
 		}
 		// timeline page
 		.calendar{
-			width: calc(100% - 32px);
+			width: 100%;
 			height: 60px;
-			border-bottom: var(--dark-border-full);
-			position: fixed;
+			border-bottom: 1px solid #565656;
+			position: absolute;
 			z-index: 2;
 			margin-top: -10px;
-			left: 8px;
 			.weekdays {
 				td{
 					width: 12.5%;
 					height: 40px;
-					top: -1px;
-					border-right: var(--dark-border-full);
 					p{
 						text-align: center;
 					}
@@ -286,16 +285,16 @@
 			width: 100%;
 			.local-percentage{
 				position: absolute;
-			    width: 100%;
-			    height: 1px;
-			    background: var(--btn-green);
-			    opacity: 0.5;
-			    margin-top: -10px;
+				width: 100%;
+				height: 1px;
+				background: var(--btn-green);
+				opacity: 0.5;
+				margin-top: -10px;
 			}
 			.timeContainer{
 				width: 12.5%;
 				height: 100%;
-				border-right: var(--dark-border-full);
+				border-right: 1px solid #565656;
 				.day-time{
 					height: 60px;
 					line-height: 100px;
@@ -317,7 +316,7 @@
 				height: 1440px;
 				width: 12.5%;
 				left: 12.5%;
-				border-right: var(--dark-border-full);
+				border-right: 1px solid #565656;
 				&:nth-child(3){
 					left: 12.5%;
 				}

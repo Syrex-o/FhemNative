@@ -186,39 +186,39 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 
 	// calc days and reformat
 	private days(weekdays) {
-				let days = [], arr = [], allDays = false;
-				weekdays = typeof weekdays === 'number' ? weekdays.toString() : weekdays;
-				for (let i = 0; i < weekdays.length; i++) {
-						days.push(weekdays.slice(i, i + 1));
-						if (weekdays[i] === '1') {
-								arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.MONDAY'));
-						}
-						if (weekdays[i] === '2') {
-								arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.TUESDAY'));
-						}
-						if (weekdays[i] === '3') {
-								arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.WEDNESDAY'));
-						}
-						if (weekdays[i] === '4') {
-								arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.THURSDAY'));
-						}
-						if (weekdays[i] === '5') {
-								arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.FRIDAY'));
-						}
-						if (weekdays[i] === '6') {
-								arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.SATURDAY'));
-						}
-						if (weekdays[i] === '0') {
-								arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.SUNDAY'));
-						}
-				}
-				for (let k = 0; k < arr.length - 2; k++) {
-						arr[k] = arr[k] + ', ';
-				}
-				arr[arr.length - 2] = arr[arr.length - 2] + ' ' + this.translate.instant('GENERAL.DICTIONARY.AND') + ' ';
-				if (weekdays.length === 7) {allDays = true; }
-				return { days, textDays: arr, fhemDays: weekdays, allDays};
+		let days = [], arr = [], allDays = false;
+		weekdays = typeof weekdays === 'number' ? weekdays.toString() : weekdays;
+		for (let i = 0; i < weekdays.length; i++) {
+			days.push(weekdays.slice(i, i + 1));
+			if (weekdays[i] === '1') {
+				arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.MONDAY'));
+			}
+			if (weekdays[i] === '2') {
+				arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.TUESDAY'));
+			}
+			if (weekdays[i] === '3') {
+				arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.WEDNESDAY'));
+			}
+			if (weekdays[i] === '4') {
+				arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.THURSDAY'));
+			}
+			if (weekdays[i] === '5') {
+				arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.FRIDAY'));
+			}
+			if (weekdays[i] === '6') {
+				arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.SATURDAY'));
+			}
+			if (weekdays[i] === '0') {
+				arr.push(this.translate.instant('GENERAL.DICTIONARY.WEEKDAYS.SUNDAY'));
+			}
 		}
+		for (let k = 0; k < arr.length - 2; k++) {
+			arr[k] = arr[k] + ', ';
+		}
+		arr[arr.length - 2] = arr[arr.length - 2] + ' ' + this.translate.instant('GENERAL.DICTIONARY.AND') + ' ';
+		if (weekdays.length === 7) {allDays = true; }
+		return { days, textDays: arr, fhemDays: weekdays, allDays};
+	}
 
 		private detectNextTimes() {
 			this.sprinklers.times.next = [];
@@ -348,9 +348,8 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 		// toggle all sprinklers
 		toggleAll(state: boolean){
 			if (!this.checkWinter()) {
-
 				if (!state) {
-					this.checkManualRntime().then(()=>{
+					this.checkManualRuntime().then(()=>{
 						this.fhem.setAttr(this.data_smartSprinkler, 'runInterval', 'true');
 					});
 				} else {
@@ -376,7 +375,7 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 								this.fhem.setAttr(this.data_device[i], 'manualTime', '00:00-00:00');
 							}
 						}
-						this.checkManualRntime().then((duration: number)=>{
+						this.checkManualRuntime().then((duration: number)=>{
 							this.fhem.setAttr(
 								this.data_device[index], 'manualTime', 
 								this.time.local().time + '-' + 
@@ -408,9 +407,9 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 		}
 
 		// check for manual runtime
-		private checkManualRntime(){
+		private checkManualRuntime(){
 			return new Promise((resolve)=>{
-				if(this.sprinklers.smart.manualRuntime.Value){
+				if(this.sprinklers.smart.manualRuntime && this.sprinklers.smart.manualRuntime.Value){
 					this.toast.showAlert(
 						this.translate.instant('COMPONENTS.Sprinkler.TRANSLATOR.RUN_INTERVAL.SELECT_MANUAL'),
 						'',
@@ -477,7 +476,7 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 				{
 					inputs: [{
 						name: 'newName',
-						placeholder: this.formatMail(this.sprinklers.smart.mail.Value, 'display')
+						placeholder: this.sprinklers.smart.mail.Value
 					}],
 					buttons: [
 						{
@@ -492,7 +491,7 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 															this.translate.instant('COMPONENTS.Sprinkler.TRANSLATOR.MAIL.WRONG_FORMAT.TITLE') + ' ' + this.translate.instant('COMPONENTS.Sprinkler.TRANSLATOR.MAIL.WRONG_FORMAT.INFO')
 														);
 													} else {
-														this.changeSmartSetting('mail', this.formatMail(data.newName, 'fhem'));
+														this.changeSmartSetting('mail', data.newName);
 													}
 											}
 									}
@@ -506,19 +505,6 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 		const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return (re.test(String(mail).toLowerCase())) ? true : false;
 	}
-
-	// format mail to needs
-	public formatMail(mail: string, condition: string) {
-				// formatting mail for fhem or for user display
-				if (condition === 'display') {
-						const index = mail.indexOf('\\');
-						return this.replaceAt(mail, index, '');
-				}
-				if (condition === 'fhem') {
-						const index = mail.indexOf('@');
-						return this.replaceAt(mail, index, '\\@');
-				}
-		}
 
 		private replaceAt(string: string, index: number, replacement: any) {
 				return string.substr(0, index) + replacement + string.substr(index + 1);
