@@ -28,6 +28,10 @@
 					"name": "Rand-Radius unten rechts",
 					"info": "Radius vom Rand der Box unten rechts"
 				},
+				"data_notchDefinition": {
+					"name": "Notch Definition",
+					"info": "Details unter: https://css-tricks.com/notched-boxes/"
+				},
 				"arr_data_style":{
 					"name": "Style",
 					"info": "Style der Box"
@@ -51,6 +55,10 @@
 				"bool_data_customBorder":{
 					"name": "Eigener Rand-Radius",
 					"info": "Eigenen Rand-Radius für jede Ecke definieren"
+				},
+				"bool_data_customNotch":{
+					"name": "Eigene Notch",
+					"info": "Eigenen Notch für jede Ecke definieren"
 				}
 			}
 		},
@@ -1385,7 +1393,7 @@
 				"RUNTIMES":{
 					"TITLE": "Bewässerungs Einstellungen",
 					"INTERVAL":{
-						"TITLE": "Regner-Kreis: ",
+						"TITLE": "Bewässerungs-Zyklus: ",
 						"START_TIME": "Start Zeit:",
 						"RUNTIME": "Laufzeit: ",
 						"TOTAL_RUNTIME": "Gesamtlaufzeit:",
@@ -1481,10 +1489,10 @@
 				"WINTER_MODE":{
 					"STATES":{
 						"ACTIVE":{
-							"TITLE": "Der Winter Modus is aktiv",
+							"TITLE": "Der Winter Modus is aktiv. ",
 							"INFO": "Die Bewässerung ist deaktiviert.",
 							"CAN_NOT_START":{
-								"INFO": "Einzelne Bewässerungs-Kreise können nicht gestartet werden."
+								"INFO": "Bewässerungs-Kreise können nicht gestartet werden."
 							}
 						}
 					}

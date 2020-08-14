@@ -17,7 +17,7 @@ export class VersionService {
 	// github repo
 	private repo: string = 'https://api.github.com/repos/Syrex-o/FhemNative/';
 	// current App Version
-	public appVersion: string = '2.6.1';
+	public appVersion: string = '2.6.2';
 
 	constructor(
 		private http: HttpClient,
@@ -33,39 +33,42 @@ export class VersionService {
 	}
 
 	// check version of FhemNative
-	private checkVersion(){
+	private checkVersion(): void{
 		const checkRepo = this.http.get(this.repo + 'releases').subscribe((releases:any)=>{
 			checkRepo.unsubscribe();
 			if(releases){
-				const lastVersion = parseInt(releases[0].tag_name.match(/\d+/g).join(''));
-				const currentVersion = parseInt(this.appVersion.match(/\d+/g).join(''));
+				const lastVersion: number = parseInt(releases[0].tag_name.match(/\d+/g).join(''));
+				const currentVersion: number = parseInt(this.appVersion.match(/\d+/g).join(''));
 				if(lastVersion > currentVersion){
 					this.logger.info('New version of FhemNative is available');
 					// get correct system
 					const assets: Array<any> = releases[0].assets;
-					let relevant: {os: string, obj: any};
-					// check operating systems
-					if(this.platform.is('android')){
-						relevant = {os: 'Android', obj: assets.find(x=> x.name.match(/\_(.*?)\_/g)[0] === '_Android_')};
+					let os: string;
+					let link: string = 'https://github.com/Syrex-o/FhemNative/releases/' + releases[0].tag_name;
 
+					// check operating systems
+					// windows and mac will directly opwn download 
+					// Android: Current release, to manually download
+					if(this.platform.is('android')){
+						os = 'Android';
 					}else{
 						if(window.navigator.userAgent.indexOf("Mac") !== -1){
-							relevant = {os: 'MacOS', obj: assets.find(x=> x.name.match(/\_(.*?)\_/g)[0] === '_MacOS_')};
+							os = 'MacOS';
+							link = assets.find(x=> x.name.match(/\_(.*?)\_/g)[0] === '_MacOS_').browser_download_url;
 						}
 						if(window.navigator.userAgent.indexOf("Windows") !== -1){
-							relevant = {os: 'Windows', obj: assets.find(x=> x.name.match(/\_(.*?)\_/g)[0] === '_Windows_')};
+							os = 'Windows';
+							link = assets.find(x=> x.name.match(/\_(.*?)\_/g)[0] === '_Windows_').browser_download_url;
 						}
 					}
-					if(relevant.obj){
-						this.createUpdateToast(relevant.os, relevant.obj.browser_download_url);
-					}
+					this.createUpdateToast(os, link);
 				}
 			}
 		});
 	}
 
 	// notify creator for version
-	private createUpdateToast(os: string, link: string){
+	private createUpdateToast(os: string, link: string): void{
 		this.toast.addNotify(
 			'New '+ os + ' version available',
 			'Download', 

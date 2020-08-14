@@ -28,6 +28,10 @@
 					"name": "Border radius bottom right",
 					"info": "Border radius of the box bottom right"
 				},
+				"data_notchDefinition": {
+					"name": "Notch definition",
+					"info": "Details available here: https://css-tricks.com/notched-boxes/"
+				},
 				"arr_data_style":{
 					"name": "Style",
 					"info": "Style of the box"
@@ -51,6 +55,10 @@
 				"bool_data_customBorder":{
 					"name": "Custom border radius",
 					"info": "Custom border radius for each corner"
+				},
+				"bool_data_customNotch":{
+					"name": "Custom notch",
+					"info": "Custom notch for each corner"
 				}
 			}
 		},
