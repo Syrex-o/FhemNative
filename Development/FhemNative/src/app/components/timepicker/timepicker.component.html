@@ -1,4 +1,7 @@
-<div class="timepicker-container" [class.full-height]="fullHeight" [class.border]="showBorder">
+<div class="timepicker-container" 
+	[class.full-height]="fullHeight" 
+	[class.border]="showBorder"
+	[ngStyle]="{'min-height.px': staticHeight > 0 ? staticHeight : 45}">
 	<button class="btn" (click)="openPicker()" matRipple [matRippleColor]="'#d4d4d480'">
 		<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{label}}</p>
 		<ion-datetime 

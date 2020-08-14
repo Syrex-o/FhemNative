@@ -33,6 +33,7 @@ export class TimepickerComponent implements OnInit{
     @Input() timeFormat: string = 'HH:mm';
 
     @Input() fullHeight: boolean = false;
+    @Input() staticHeight: number = 0;
     @Input() showBorder: boolean = false;
 
     // time values
