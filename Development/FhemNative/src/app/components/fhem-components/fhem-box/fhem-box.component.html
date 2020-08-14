@@ -11,7 +11,8 @@
 			'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
 			'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
 			'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,
-			'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius
+			'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius,
+			'clip-path': bool_data_customNotch ? 'polygon('+ (data_notchDefinition !== '' ? data_notchDefinition : '') +')' : 'none'
 		}">
 		<div 
 			*ngIf="bool_data_showHeader" class="box-header"

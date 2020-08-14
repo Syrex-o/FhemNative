@@ -3,6 +3,9 @@ import { Component, Input, NgModule } from '@angular/core';
 // Components
 import { ComponentsModule } from '../../components.module';
 
+// Interfaces
+import { ComponentSettings } from '../../../interfaces/interfaces.type';
+
 // Services
 import { SettingsService } from '../../../services/settings.service';
 
@@ -22,10 +25,13 @@ export class FhemBoxComponent{
 	@Input() data_borderRadiusBottomRight: string;
 	@Input() arr_data_style: string[];
 
+	// notch values
+	@Input() data_notchDefinition: string;
 
 	@Input() bool_data_showShadow: boolean;
 	@Input() bool_data_showHeader: boolean;
 	@Input() bool_data_customBorder: boolean;
+	@Input() bool_data_customNotch: boolean;
 
 	// Styling
 	@Input() style_headerColor: string;
@@ -41,7 +47,7 @@ export class FhemBoxComponent{
 
 	constructor(public settings: SettingsService){}
 
-	static getSettings() {
+	static getSettings(): ComponentSettings {
 		return {
 			name: 'Box',
 			type: 'style',
@@ -52,20 +58,26 @@ export class FhemBoxComponent{
 				{variable: 'data_borderRadiusTopRight', default: '5'},
 				{variable: 'data_borderRadiusBottomLeft', default: '5'},
 				{variable: 'data_borderRadiusBottomRight', default: '5'},
+				// box notch
+				{variable: 'data_notchDefinition', default: '0% 5%, 5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%'},
 				{variable: 'style_headerColor', default: '#434E5D'},
 				{variable: 'style_backgroundColor', default: '#58677C'},
 				{variable: 'bool_data_showHeader', default: true},
 				{variable: 'bool_data_showShadow', default: true},
 				{variable: 'bool_data_customBorder', default: false},
+				{variable: 'bool_data_customNotch', default: false},
 				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'}
 
 			],
 			dependencies: {
+				// custom border
 				data_borderRadius: { dependOn: 'bool_data_customBorder', value: false },
 				data_borderRadiusTopLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+				// custom notch
+				data_notchDefinition: { dependOn: 'bool_data_customNotch', value: true },
 				// neumorph dependencies
 				bool_data_showShadow: { dependOn: 'arr_data_style', value: 'standard' },
 				style_headerColor: { dependOn: 'arr_data_style', value: 'standard' },
