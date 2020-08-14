@@ -4,7 +4,7 @@
 	[height]="85"
 	[zIndex]="100002"
 	(onConfirm)="saveComponent()"
-	(onClose)="removeMenu()">
+	(onCancel)="cancel()">
 	<div header class="header">
 		<h2 *ngIf="component" colorizer [theme]="settings.app.theme" [style]="['color', 'text']">
 				{{ 'GENERAL.COMPONENT.GENERAL.CONFIG' | translate }} {{'COMPONENTS.'+[component.name]+'.NAME' | translate}}

@@ -4,6 +4,9 @@ import { IonicModule } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
+// interfaces
+import { FhemDevice, DynamicComponentDefinition } from '../../interfaces/interfaces.type';
+
 // Components
 import { ComponentsModule } from '../components.module';
 
@@ -47,13 +50,17 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	}
 
 	// component information
-	component: any;
+	component: DynamicComponentDefinition;
 
 	// component list - jump between components for fast change
-	componentList: any = {
+	componentList: {components: DynamicComponentDefinition[], selected: null|string} = {
 		components: [],
 		selected: null
 	};
+
+	// list of touched components
+	// used to revert to last state, when cancel pressed
+	private touchedComponents: DynamicComponentDefinition[] = [];
 
 	constructor(
 		private fhem: FhemService,
@@ -67,8 +74,10 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	ngOnInit(){
 		if(this.type === 'edit'){
 			// get component for edit state
-			this.componentLoader.getFormattedComponent(this.componentID).then((component)=>{
+			this.componentLoader.getFormattedComponent(this.componentID).then((component: DynamicComponentDefinition)=>{
 				this.component = component;
+				// push current settings to touch list
+				this.addToTouched(component);
 			});
 			// get the component list of the current container
 			this.componentList.components = this.structure.getComponentContainer(this.componentLoader.currentContainer);
@@ -76,8 +85,25 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// change the selected component
+	changeSelectedComponent(ID: string): void{
+		this.componentLoader.getFormattedComponent(ID).then((component: DynamicComponentDefinition)=>{
+			this.component = component;
+			// push current settings to touch list
+			this.addToTouched(component);
+			this.changedSlide();
+		});
+	}
+
+	// add to touched components
+	private addToTouched(component: DynamicComponentDefinition){
+		if(this.touchedComponents.length === 0 || !this.touchedComponents.find(x=> x.ID === component.ID)){
+			this.touchedComponents.push(JSON.parse(JSON.stringify(component)));
+		}
+	}
+
 	// determine if config part should be hidden due to dependencies
-	hideConfig(attr){
+	hideConfig(attr): boolean{
 		let shouldHide: boolean = false;
 		if(this.component.dependencies && this.component.dependencies[attr]){
 			let keys: string[] = Object.keys(this.component.attributes);
@@ -106,7 +132,7 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	}
 
 	// change config slide
-	changedSlide(){
+	changedSlide(): void{
 		this.slides.isEnd().then(end=>{
 			if(end && this.component){
 				this.testComponentConfig();
@@ -115,7 +141,7 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	}
 
 	// test component device configuration
-	private testComponentConfig(){
+	private testComponentConfig(): Promise<any>{
 		return new Promise((resolve)=>{
 			// test params
 			this.componentTest = {
@@ -128,7 +154,7 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 				if(this.component.attributes.attr_data && this.component.attributes.attr_data.find(x=> x.attr === 'data_device')){
 					this.componentTest.Device.available = true;
 					// check for filled device
-					const device = this.component.attributes.attr_data.find(x=> x.attr === 'data_device').value;
+					const device: string|null = this.component.attributes.attr_data.find(x=> x.attr === 'data_device').value;
 					if(device && device !== ''){
 						this.componentTest.Device.defined = true;
 						// find device in fhem device list
@@ -140,7 +166,7 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 						}else{
 							// send request
 							let gotReply: boolean = false;
-							const sub: Subscription = this.fhem.deviceListSub.subscribe(next=>{
+							const sub: Subscription = this.fhem.deviceListSub.subscribe((next: FhemDevice[])=>{
 								gotReply = true;
 								sub.unsubscribe();
 								if(next){
@@ -175,7 +201,7 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	}
 
 	// test component reading configuration
-	private testReading(device){
+	private testReading(device: any): void{
 		if(this.component.attributes.attr_data){
 			const reading = this.component.attributes.attr_data.find(x=> x.attr === 'data_reading');
 			if(reading){
@@ -200,23 +226,15 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	}
 
 	// create component selection
-	selectComponent(componentName: string){
-		this.componentLoader.getFhemComponentData(componentName).then((component)=>{
+	selectComponent(componentName: string): void{
+		this.componentLoader.getFhemComponentData(componentName).then((component: DynamicComponentDefinition)=>{
 			this.component = component;
 			this.slides.slideNext();
 		});
 	}
 
-	// change the selected component
-	changeSelectedComponent(ID: string){
-		this.componentLoader.getFormattedComponent(ID).then((component)=>{
-			this.component = component;
-			this.changedSlide();
-		});
-	}
-
 	// test container config
-	toggleTestContainer(state){
+	toggleTestContainer(state: boolean): void{
 		this.testContainer.clear();
 		this.settings.modes.componentTest = true;
 		if(state && this.testContainer){
@@ -253,7 +271,7 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 	}
 
 	// save the component config
-	saveComponent(){
+	saveComponent(): void{
 		if(this.component){
 			if(this.type === 'create'){
 				// define place for component
@@ -291,14 +309,20 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 						);
 					}
 				}
-				this.componentLoader.removeDynamicComponent(this.componentList.selected);
-				this.componentLoader.loadRoomComponents([this.component], this.componentLoader.currentContainer, false);
-				// logging
-				this.logger.info('Component: ' + this.component.name + ' changed');
+				// get components that should re reloaded
+				let reloadComponents: DynamicComponentDefinition[] = [];
+				this.touchedComponents.forEach((component: DynamicComponentDefinition)=>{
+					this.componentLoader.removeDynamicComponent(component.ID);
+					let comp = this.structure.getComponent(component.ID);
+					reloadComponents.push(comp);
+					// logging
+					this.logger.info('Component: ' + component.name + ', ID: '+ component.ID +' modified');
+				});
+				this.componentLoader.loadRoomComponents(reloadComponents, this.componentLoader.currentContainer, false);
 			}
 			// find new colors
 			this.settings.findNewColors([this.component.attributes.attr_style, this.component.attributes.attr_arr_style]);
-			// remove settings component
+			// remove menu component
 			this.removeMenu();
 			// add to change stack
 			this.undoManager.addChange();
@@ -307,15 +331,31 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// cancel changes or creation
+	cancel(){
+		// restore components
+		this.touchedComponents.forEach((component: DynamicComponentDefinition)=>{
+			let comp = this.structure.getComponent(component.ID);
+			comp.attributes = component.attributes;
+			// logging
+			this.logger.info('Component: ' + component.name + ', ID: '+ component.ID +' restored to unchanged');
+		});
+
+		// remove menu component
+		this.removeMenu();
+		// reset values
+		this.resetValues();
+	}
+
 	// remove component
-	removeMenu(){
+	private removeMenu(): void{
 		setTimeout(()=>{
 			this.componentLoader.removeDynamicComponent('CreateEditComponent');
 		}, 300);
 	}
 
 	// reset values
-	private resetValues(){
+	private resetValues(): void{
 		this.settings.modes.componentTest = false;
 		this.show.componentPreview = false;
 		if(this.testContainer){
