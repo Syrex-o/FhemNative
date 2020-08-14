@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 
+// interfaces
+import { FhemDevice } from '../interfaces/interfaces.type';
+
+// Services
 import { StorageService } from './storage.service';
 import { StructureService } from './structure.service';
 import { LoggerService } from './logger/logger.service';
@@ -73,7 +77,7 @@ export class VariableService {
 	// Get Variable options --> Show raw output --> Define updater --> additional regex --> Show modified output
 
 	// variable options for input
-	public variableOptions: Array<any> = [
+	public variableOptions: Array<{name: string, inputs: Array<any>, dependOn: string}> = [
 		{
 			name: 'Shortcode',
 			inputs: [
@@ -116,7 +120,7 @@ export class VariableService {
 	];
 
 	// variable options for update
-	public updateOptions: Array<any> = [
+	public updateOptions: Array<{name: string, options?: Array<any>, dependOn: string[]}> = [
 		{
 			name: 'Update Interval',
 			options: [10, 20, 30, 60, 120],
@@ -129,7 +133,7 @@ export class VariableService {
 	];
 
 	// regex options
-	public regexOptions: Array<any> = [
+	public regexOptions: Array<{name: string, input?: string, options?: Array<any>, dependOn: string[]}> = [
 		{
 			name: 'regex custom',
 			input: '',
@@ -147,7 +151,7 @@ export class VariableService {
 	}
 
 	// get the list of variables from storage
-	public getVariables(){
+	public getVariables(): Promise<any>{
 		return new Promise((resolve)=>{
 			this.storage.setAndGetSetting({
 				name: 'variables',
@@ -160,7 +164,7 @@ export class VariableService {
 		});
 	}
 
-	public changeVariable(index: number, obj: any){
+	public changeVariable(index: number, obj: any): Promise<any>{
 		return new Promise((resolve)=>{
 			for(const [key, value] of Object.entries(obj)){
 				this.storageVariables[index][key] = value;
@@ -172,7 +176,7 @@ export class VariableService {
 	}
 
 	// create variable
-	public createVariable(obj: StorageVariable){
+	public createVariable(obj: StorageVariable): Promise<any>{
 		return new Promise((resolve)=>{
 			let task: StorageVariable = {
 				ID: '_' + Math.random().toString(36).substr(2, 9),
@@ -193,7 +197,7 @@ export class VariableService {
 	}
 
 	// change variables in storage
-	public changeVariableStorage(variables: Array<StorageVariable>){
+	public changeVariableStorage(variables: StorageVariable[]): Promise<any>{
 		return new Promise((resolve)=>{
 			this.unlisten();
 			this.storage.changeSetting({
@@ -210,8 +214,8 @@ export class VariableService {
 	}
 
 	// update static variable
-	public updateStaticVariable(variableDefSyntax: string, value: string){
-		let foundVariable = this.storageVariables.find(x=> x.defSyntax === variableDefSyntax);
+	public updateStaticVariable(variableDefSyntax: string, value: string): void{
+		let foundVariable: StorageVariable|null = this.storageVariables.find(x=> x.defSyntax === variableDefSyntax);
 		if(foundVariable){
 			// modify
 			foundVariable.attributes.inputOption.inputs[0].value = value;
@@ -222,7 +226,7 @@ export class VariableService {
 
 	// get variable value update
 	// ask for devices only in initial stage
-	private updateVariables(initial?: boolean){
+	private updateVariables(initial?: boolean): void{
 		this.variables.forEach((variable: Variable)=>{
 			if(variable.attributes.type === 'dynamic'){
 				const attr = variable.attributes;
@@ -234,14 +238,14 @@ export class VariableService {
 									variableID: variable.ID,
 									timer: setInterval(()=>{
 										// allow dirty fhem question, to receive new raw device
-										this.fhem.getDevice(variable.ID, attr.inputOption.inputs[0].value, false, true).then((dev)=>{
+										this.fhem.getDevice(variable.ID, attr.inputOption.inputs[0].value, false, true).then((dev: FhemDevice|null)=>{
 											this.analyseVariables(dev);
 										});
 									}, attr.updateOption.value * 1000)
 								});
 							}
 							// send request
-							this.fhem.getDevice(variable.ID, attr.inputOption.inputs[0].value, false, true).then((dev)=>{
+							this.fhem.getDevice(variable.ID, attr.inputOption.inputs[0].value, false, true).then((dev: FhemDevice|null)=>{
 								this.analyseVariables(dev);
 							});
 						}
@@ -276,7 +280,7 @@ export class VariableService {
 	}
 
 	// analyseVariables except get
-	private analyseVariables(device){
+	private analyseVariables(device: FhemDevice|null): void{
 		if(device){
 			this.variables.forEach((variable: Variable)=>{
 				if(variable.attributes.type === 'dynamic'){
@@ -310,19 +314,19 @@ export class VariableService {
 		}
 	}
 
-	private analyseGetVariables(variable: Variable, reply: any){
+	private analyseGetVariables(variable: Variable, reply: any): void{
 		if(reply !== null){
-			let res = reply.join(' ');
+			let res: string = reply.join(' ');
 			variable.rawValue = res;
 			this.analyseRegex(variable);
 		}
 	}
 
-	private analyseRegex(variable: Variable){
-		const prevValue = variable.modValue;
+	private analyseRegex(variable: Variable): void{
+		const prevValue: any = variable.modValue;
 
 		if(variable.attributes.regexOption.name !== '' && variable.attributes.regexOption.value && variable.attributes.regexOption.value !== ''){
-			let regex = new RegExp(variable.attributes.regexOption.value, '');
+			let regex: RegExp = new RegExp(variable.attributes.regexOption.value, '');
 			try{
 				let res = variable.rawValue.toString().match(regex);
 				if(res){
@@ -348,7 +352,7 @@ export class VariableService {
 
 
 	// listen to changes
-	public listen(){
+	public listen(): void{
 		this.variablesLoadedSub.next(false);
 		this.getVariables().then(()=>{
 			// clear
@@ -358,7 +362,7 @@ export class VariableService {
 				clearInterval(variableTimer.timer);
 			});
 			if(this.variables.length > 0){
-				this.fhemSub = this.fhem.deviceUpdateSub.subscribe((device)=>{
+				this.fhemSub = this.fhem.deviceUpdateSub.subscribe((device:FhemDevice)=>{
 					this.analyseVariables(device);
 				});
 
@@ -372,7 +376,7 @@ export class VariableService {
 	}
 
 	// reset listener
-	public unlisten(){
+	public unlisten(): void{
 		if(this.connectedSub) this.connectedSub.unsubscribe();
 		if(this.fhemSub) this.fhemSub.unsubscribe();
 		this.timers.forEach((variableTimer)=>{

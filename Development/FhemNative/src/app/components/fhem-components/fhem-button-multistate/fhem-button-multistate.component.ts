@@ -3,6 +3,9 @@ import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
 // Components
 import { ComponentsModule } from '../../components.module';
 
+// Interfaces
+import { ComponentSettings, FhemDevice } from '../../../interfaces/interfaces.type';
+
 // Services
 import { FhemService } from '../../../services/fhem.service';
 import { SettingsService } from '../../../services/settings.service';
@@ -45,13 +48,13 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	fhemDevice: any;
+	fhemDevice: FhemDevice|null;
 
 	ngOnInit(){
-		if(this.data_device){
-			this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+		if(this.data_device !== ''){
+			this.fhem.getDevice(this.ID, this.data_device, (device: FhemDevice)=>{
 				this.getState(device);
-			}).then(device=>{
+			}).then((device: FhemDevice|null)=>{
 				this.getState(device);
 				// attatch label
 				if(device){
@@ -61,23 +64,23 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	private getState(device){
+	private getState(device: FhemDevice|null){
 		this.fhemDevice = device;
 	}
 
-	private initStates(){
+	private initStates(): void{
 		this.data_getOn = this.data_getOn !== '' ? this.data_getOn.replace(/\s/g, '').split(',') : [''];
 		this.data_setOn = this.data_setOn !== '' ? this.data_setOn.replace(/\s/g, '').split(',') : [''];
 		this.data_label = (this.data_label && this.data_label !== '') ? this.data_label : this.fhemDevice.device;
 	}
 
 	// get the dedicated values from arrays
-	getArrValue(arr, def){
+	getArrValue(arr: string, def: string|boolean): string{
 		// fallback if needed, to reduce errors
-		let res = def ? def : (this[arr][0] ? this[arr][0] : '#ddd');
+		let res: string = def ? def : (this[arr][0] ? this[arr][0] : '#ddd');
 		if(this.fhemDevice){
-			const value = this.fhemDevice.readings[this.data_reading].Value.toString().toLowerCase();
-			const getList = this.data_getOn.map(x=> x.toString().toLowerCase());
+			const value: any = this.fhemDevice.readings[this.data_reading].Value.toString().toLowerCase();
+			const getList: string[] = this.data_getOn.map(x=> x.toString().toLowerCase());
 			if(getList.includes(value)){
 				if(this[arr][getList.indexOf(value)]){
 					res = this[arr][getList.indexOf(value)];
@@ -87,11 +90,11 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 		return res;
 	}
 
-	sendCmd(){
+	sendCmd(): void{
 		if (this.fhemDevice){
-			const currentCommand = this.getArrValue('data_setOn', 'unrecognized');
+			const currentCommand: string = this.getArrValue('data_setOn', 'unrecognized');
 			if(currentCommand !== 'unrecognized'){
-				const command = this.data_setOn[this.data_setOn.indexOf(currentCommand) + 1] ? this.data_setOn[this.data_setOn.indexOf(currentCommand) + 1] : this.data_setOn[0];
+				const command: string = this.data_setOn[this.data_setOn.indexOf(currentCommand) + 1] ? this.data_setOn[this.data_setOn.indexOf(currentCommand) + 1] : this.data_setOn[0];
 				if (this.data_setReading !== '') {
 					this.fhem.setAttr(this.fhemDevice.device, this.data_setReading, command);
 				} else {
@@ -108,7 +111,7 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 
 	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService){}
 
-	static getSettings() {
+	static getSettings(): ComponentSettings {
 		return {
 			name: 'Button Multistate',
 			type: 'fhem',

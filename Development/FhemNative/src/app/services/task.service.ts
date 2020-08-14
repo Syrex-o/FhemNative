@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
+// interfaces
+import { FhemDevice, Room, RoomParams } from '../interfaces/interfaces.type';
+
 // Services
 import { NativeFunctionsService } from './native-functions.service';
 import { StorageService } from './storage.service';
@@ -23,12 +26,12 @@ interface CodeBlock {
 	name: string,
 	inputs?: Array<TaskProperty>,
 	compare?: Compare,
-	output: Array<TaskProperty>|TaskProperty
+	output: TaskProperty[]|TaskProperty
 }
 
 interface TaskInput {
 	name: string,
-	inputs?: Array<TaskProperty>,
+	inputs?: TaskProperty[],
 	operators: Array<string>,
 	operatorParam?: string,
 	operatorValues?: Array<string>
@@ -129,7 +132,7 @@ export class TaskService {
 
 
 	// get the list of tasks from storage
-	public getTasks(){
+	public getTasks(): Promise<Task[]> {
 		return new Promise((resolve)=>{
 			this.storage.setAndGetSetting({
 				name: 'tasks',
@@ -152,7 +155,7 @@ export class TaskService {
 	}
 
 	// create a task
-	public createTask(name: string, des: string){
+	public createTask(name: string, des: string): Promise<Task[]> {
 		return new Promise((resolve)=>{
 			let task: any = {
 				ID: '_' + Math.random().toString(36).substr(2, 9),
@@ -170,12 +173,12 @@ export class TaskService {
 				name: name,
 				description: des
 			};
-			this.changeTaskStorage(this.tasks.concat(task)).then(res=> resolve(res) );
+			this.changeTaskStorage(this.tasks.concat(task)).then((res: Task[])=> resolve(res) );
 		});
 	}
 
 	// remove a task
-	public removeTask(index: number){
+	public removeTask(index: number): Promise<Task[]> {
 		return new Promise((resolve)=>{
 			this.tasks.splice(index, 1);
 			this.changeTaskStorage(this.tasks).then(res=> resolve(res) );
@@ -183,7 +186,7 @@ export class TaskService {
 	}
 
 	// change task
-	public changeTask(index: number, obj: any){
+	public changeTask(index: number, obj: any): Promise<Task[]> {
 		return new Promise((resolve)=>{
 			for(const [key, value] of Object.entries(obj)){
 				this.tasks[index][key] = value;
@@ -193,8 +196,8 @@ export class TaskService {
 	}
 
 	// returns arguments from task options
-	public getOperators(name: string, output: string){
-		const res = this.taskOptions.find(x=> x.name === name);
+	public getOperators(name: string, output: string): string|boolean{
+		const res: any = this.taskOptions.find(x=> x.name === name);
 		if(res){
 			return res[output];
 		}
@@ -202,7 +205,7 @@ export class TaskService {
 	}
 
 	// apply changes to storage
-	private changeTaskStorage(tasks){
+	private changeTaskStorage(tasks: Task[]): Promise<Task[]>{
 		return new Promise((resolve)=>{
 			this.storage.changeSetting({
 				name: 'tasks',
@@ -215,7 +218,7 @@ export class TaskService {
 	}
 
 	// get the hide rooms and components
-	public getHideElements(){
+	public getHideElements(): void{
 		this.tasksLoadedSub.next(false);
 		// reset hide list
 		this.hideList.rooms = [];
@@ -240,29 +243,29 @@ export class TaskService {
 			// fhem devices needed
 			deviceList.forEach((device)=>{
 				// allow dirty fhem question, to receive new raw device
-				this.fhem.getDevice(device.taskID, device.fhemDevice, false, true).then((dev)=>{
+				this.fhem.getDevice(device.taskID, device.fhemDevice, false, true).then((dev: FhemDevice)=>{
 					this.analyseTasks([dev]);
 				});
 			});
 		}
 	}
 
-	private analyseTasks(devices){
+	private analyseTasks(devices: FhemDevice[]|[]): void{
 		this.tasks.forEach((task, i)=>{
 			// blocking indicator
-			let block = false;
+			let block: boolean = false;
 			// loop over conditions (IF, ELSE)
 			for( const [condition, value] of Object.entries(task.attributes)){
 				if(condition.match(/IF/g)){
 					// check for fhem
 					if(task.attributes[condition].name === 'Fhem'){
 						// get device from task
-						const taskDevice = task.attributes[condition].inputs.find(x=> x.variable === 'device');
+						const taskDevice: any = task.attributes[condition].inputs.find(x=> x.variable === 'device');
 						if(taskDevice && taskDevice.value !== ''){
 							if(devices[0] !== null){
-								const device = devices.find(x=> x.device === taskDevice.value);
+								const device: FhemDevice|null = devices.find((x: FhemDevice)=> x.device === taskDevice.value);
 								if(device){
-									const reading = task.attributes[condition].inputs.find(x=> x.variable === 'reading');
+									const reading: any = task.attributes[condition].inputs.find(x=> x.variable === 'reading');
 									if(reading && reading.value !== ''){
 										// check for reading presence
 										if( !(reading.value in device.readings) ){
@@ -326,11 +329,11 @@ export class TaskService {
 	}
 
 	// check the value combination
-	private propertyChecker(value:any, operator:string, compareTo:any){
+	private propertyChecker(value:number|string, operator:string, compareTo:number|string): boolean{
 		value = value.toString().toLowerCase();
 		compareTo = compareTo.toString().toLowerCase();
 
-		let numTest = (test:any)=>{
+		let numTest = (test:any): number =>{
 			if(isNaN(test)){
 				return test;
 			}else{
@@ -364,8 +367,9 @@ export class TaskService {
 	// handle output
 	// only use this handler for true block conditions
 	// hide rooms, components...
-	private outputHandler(outputs){
-		outputs.forEach((output)=>{
+	private outputHandler(outputs: TaskProperty[]|TaskProperty): void{
+		outputs = Array.isArray(outputs) ? outputs : [outputs];
+		outputs.forEach((output: TaskProperty)=>{
 			// hide room
 			if(output.variable === 'hide_room' && !this.hideList.rooms.includes(output.value)){
 				this.hideList.rooms.push(output.value);
@@ -378,13 +382,15 @@ export class TaskService {
 			if(output.variable === 'change_room'){
 				// detect if room exists to switch
 				// detect if current room is room to switch to
-				const room = this.structure.rooms.find(x=> x.UID === output.value);
+				const room: Room = this.structure.rooms.find(x=> x.UID === output.value);
 				if(room && this.structure.currentRoom.ID !== room.ID){
-					this.structure.navigateToRoom(room.name, room.ID, { 
+					// navigation params
+					const params: RoomParams = { 
 						name: room.name,
 						ID: room.ID,
 						UID: room.UID
-					});
+					};
+					this.structure.navigateToRoom(room.name, room.ID, params);
 				}
 			}
 			// show toast
@@ -404,8 +410,8 @@ export class TaskService {
 
 	// time listener
 	// only used, if one task has a timer
-	private timeChangeListener(){
-		let date = new Date();
+	private timeChangeListener(): void{
+		let date: Date = new Date();
 		if(this.timer){
 			clearInterval(this.timer);
 		}
@@ -418,7 +424,7 @@ export class TaskService {
 	}
 
 	// evaluate hide elem
-	public hide(ID, where){
+	public hide(ID: string|number, where: string): any{
 		if(!this.tasksLoaded){
 			const sub = this.tasksLoadedSub.subscribe((state) => {
 				if(state){
@@ -432,7 +438,7 @@ export class TaskService {
 	}
 
 	// listen to changes and execute task
-	public listen(){
+	public listen(): void{
 		this.getTasks().then((res)=>{
 			// connection sub remove
 			if(this.connectedSub) this.connectedSub.unsubscribe();
@@ -450,7 +456,7 @@ export class TaskService {
 	}
 
 	// reset listener
-	public unlisten(){
+	public unlisten(): void{
 		if(this.connectedSub) this.connectedSub.unsubscribe();
 		if(this.fhemSub) this.fhemSub.unsubscribe();
 		if(this.timer) clearInterval(this.timer);

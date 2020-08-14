@@ -39,7 +39,7 @@ export class FhemMenuComponent implements OnChanges {
 	}
 
 	// Add connection profile
-	addProfile(){
+	addProfile(): void{
 		this.settings.connectionProfiles.push({
 			IP: '',
 			PORT: '8080',
@@ -52,12 +52,12 @@ export class FhemMenuComponent implements OnChanges {
 	}
 
 	// delete profile
-	deleteProfile(index: number){
+	deleteProfile(index: number): void{
 		this.settings.connectionProfiles.splice(index, 1);
 	}
 
 	// save settings
-	saveIPSettings(){
+	saveIPSettings(): void{
 		this.storage.changeSetting({
 			name: 'connectionProfiles',
 			change: JSON.stringify(this.settings.connectionProfiles)
@@ -75,7 +75,7 @@ export class FhemMenuComponent implements OnChanges {
 	}
 
 	// cancel settings
-	cancelIPSettings(){
+	cancelIPSettings(): void{
 		this.storage.getSetting('connectionProfiles').then((res: any)=>{
 			this.settings.connectionProfiles = res;
 			this.resetModes();
@@ -83,7 +83,7 @@ export class FhemMenuComponent implements OnChanges {
 	}
 
 	// reset menu modes
-	resetModes(){
+	resetModes(): void{
 		this.settings.modes.fhemMenuMode = '';
 		this.fhem.noReconnect = false;
 		this.fhem.connectFhem();

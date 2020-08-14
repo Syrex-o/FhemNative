@@ -3,6 +3,9 @@ import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
 // Components
 import { ComponentsModule } from '../../components.module';
 
+// Interfaces
+import { ComponentSettings, FhemDevice } from '../../../interfaces/interfaces.type';
+
 // Services
 import { FhemService } from '../../../services/fhem.service';
 import { SettingsService } from '../../../services/settings.service';
@@ -53,15 +56,15 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	fhemDevice: any;
+	fhemDevice: FhemDevice|null;
 	// state of fhem device
 	buttonState: boolean;
 
 	ngOnInit() {
 		if(this.data_device){
-			this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+			this.fhem.getDevice(this.ID, this.data_device, (device: FhemDevice)=>{
 				this.getState(device);
-			}).then(device=>{
+			}).then((device: FhemDevice|null)=>{
 				this.getState(device);
 				// attatch label
 				if(device){
@@ -71,15 +74,15 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	private getState(device){
+	private getState(device: FhemDevice|null): void{
 		this.fhemDevice = device;
 		this.buttonState = this.fhem.deviceReadingActive(device, this.data_reading, this.data_getOn);
 	}
 
-	sendCmd(){
+	sendCmd(): void{
 		if (this.data_sendCommand === '') {
 			if(this.fhemDevice){
-				const command = this.fhem.deviceReadingActive(this.fhemDevice, this.data_reading, this.data_getOn) ? this.data_setOff : this.data_setOn;
+				const command: string = this.fhem.deviceReadingActive(this.fhemDevice, this.data_reading, this.data_getOn) ? this.data_setOff : this.data_setOn;
 				if (this.data_setReading !== '') {
 						this.fhem.setAttr(this.fhemDevice.device, this.data_setReading, command);
 				} else {
@@ -98,7 +101,7 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 	
 	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService){}
 
-	static getSettings() {
+	static getSettings(): ComponentSettings {
 		return {
 			name: 'Button',
 			type: 'fhem',

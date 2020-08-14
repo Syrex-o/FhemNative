@@ -16,7 +16,7 @@ export class BackButtonService {
 		private hotkey: HotKeyService,
 		private platform: Platform){}
 
-	public handle(handleID: string, callback: any){
+	public handle(handleID: string, callback: any): void{
 		// determine priority
 		const priority = this.subs.length > 0 ? this.subs.length + 1 : 1;
 		// Add to stack
@@ -34,7 +34,7 @@ export class BackButtonService {
 	}
 
 	// remove a handle
-	public removeHandle(handleID: string){
+	public removeHandle(handleID: string): void{
 		const index = this.subs.findIndex(x => x.handleID === handleID);
 		if(index > -1){
 			// remove listener

@@ -1,30 +1,13 @@
 import { Injectable, Compiler, Injector, ComponentFactoryResolver, NgModuleFactory, Type } from '@angular/core';
 import { Subject } from 'rxjs';
 
+// interfaces
+import { DynamicComponentDefinition, ComponentSettings, CustomComponentInputs, DynamicComponent } from '../interfaces/interfaces.type';
+
 // Services
 import { LoggerService } from './logger/logger.service';
 import { StructureService } from './structure.service';
 import { VariableService } from './variable.service';
-
-interface DynamicComponent {
-	name: string,
-	path: string
-}
-
-interface ComponentData {
-	name: string,
-	attributes: any,
-	type: string,
-	dimensions: {minX: number, minY: number},
-	dependencies?: any,
-	container?: string,
-	customInputs?: any
-}
-
-interface LoadedComponents {
-	path: string,
-	type: any
-}
 
 interface ContainerSub {
 	ID: string|number,
@@ -124,8 +107,8 @@ export class ComponentLoaderService {
 		this.variable.variableUpdate.subscribe((variable)=>{
 			if(this.containerComponents.length > 0){
 				// get current room components
-				const allComponents = this.structure.getAllComponents();
-				let filteredComponents = allComponents.filter(x=> x.roomID === this.structure.currentRoom.UID).map(x=> x.component);
+				const allComponents: any = this.structure.getAllComponents();
+				let filteredComponents: any = allComponents.filter(x=> x.roomID === this.structure.currentRoom.UID).map(x=> x.component);
 				if(filteredComponents.length > 0){
 					// make copy
 					filteredComponents = JSON.parse(JSON.stringify(filteredComponents));
@@ -144,29 +127,6 @@ export class ComponentLoaderService {
 							}
 						});
 					}
-					// search for variables
-					// filteredComponents.forEach((component)=>{
-					// 	// keep track of modified
-					// 	let modified = false;
-					// 	// loop attributes
-					// 	for (const key of Object.keys(component.attributes)) {
-					// 		component.attributes[key].forEach((attribute)=>{
-					// 			// skip special snytax for fixed variable values (Exp. data_fixed_var_...)
-					// 			// loop all variables, to ensure that not modified values are also included in changed component
-					// 			let foundVar = this.variable.variables.find(x=> attribute.attr.indexOf('fixed_var') === -1 && attribute.value === x.defSyntax);
-					// 			if(foundVar && foundVar.modValue !== undefined){
-					// 				// modify component
-					// 				attribute.value = foundVar.modValue;
-					// 				modified = true;
-					// 			}
-					// 		});
-					// 	}
-					// 	// add modified components for reload only
-					// 	if(modified){
-					// 		reloadComponents.push(component);
-					// 	}
-					// });
-					// reload the modified components (respect their container)
 				}
 			}
 		});
@@ -174,9 +134,9 @@ export class ComponentLoaderService {
 
 	// load a dynamic component
 	// determine if fhem component or standard component
-	public loadDynamicComponent(path: string, fhemComponent: boolean){
+	public loadDynamicComponent(path: string, fhemComponent: boolean): Promise<Type<any>>{
 		return new Promise((resolve)=>{
-			const prefix = fhemComponent ? 'components/fhem-components/' : 'components/';
+			const prefix: string = fhemComponent ? 'components/fhem-components/' : 'components/';
 			import(`../${ prefix + path}.component`).then((componentData: any)=>{
 				const comp: string = Object.keys(componentData)[0];
 				const ComponentType: Type<any> = componentData[comp];
@@ -186,13 +146,13 @@ export class ComponentLoaderService {
 	}
 
 	// get the component information --> needs to load the component 
-	public getFhemComponentData(name: string){
+	public getFhemComponentData(name: string): Promise<DynamicComponentDefinition>{
 		return new Promise((resolve)=>{
 			const fhemComponent: DynamicComponent = this.fhemComponents.find(x => x.name === name);
 			this.loadDynamicComponent(fhemComponent.path, true).then((ComponentType: any)=>{
-				const comp = ComponentType.getSettings();
+				const comp: ComponentSettings = ComponentType.getSettings();
 
-				const res: ComponentData = {
+				const res: DynamicComponentDefinition = {
 					name: comp.name,
 					attributes: this.seperateComponentValues(this.arrange(comp.inputs)),
 					type: comp.type,
@@ -217,7 +177,7 @@ export class ComponentLoaderService {
 	}
 
 	// get the component custom input data and assign to ref
-	public assignCustomInputData(ID: string, name: string){
+	public assignCustomInputData(ID: string, name: string): Promise<CustomComponentInputs>{
 		return new Promise((resolve)=>{
 			const structureComponent = this.structure.getComponent(ID);
 			const component = this.containerComponents.find(x => x.ID === ID);
@@ -229,7 +189,7 @@ export class ComponentLoaderService {
 					}
 					resolve(structureComponent.customInputs);
 				}else{
-					this.getFhemComponentData(name).then((componentData: ComponentData)=>{
+					this.getFhemComponentData(name).then((componentData: DynamicComponentDefinition)=>{
 						for (const [key, value] of Object.entries(componentData.customInputs)) {
 							component.REF.instance[key] = value;
 						}
@@ -243,12 +203,12 @@ export class ComponentLoaderService {
 	// get a formatted fhem component
 	// new values + already defined values
 	// component can be passed directly as input --> no structure call needed
-	public getFormattedComponent(ID: string, componentInput?: any){
+	public getFormattedComponent(ID: string, componentInput?: any): Promise<DynamicComponentDefinition>{
 		return new Promise((resolve)=>{
 			// get the component
-			let component = componentInput ? componentInput : this.structure.getComponent(ID);
+			let component: DynamicComponentDefinition = componentInput ? componentInput : this.structure.getComponent(ID);
 			// get component defaults
-			this.getFhemComponentData(component.name).then((compData: ComponentData)=>{
+			this.getFhemComponentData(component.name).then((compData: DynamicComponentDefinition)=>{
 				const componentDefaults = compData;
 				// look for new props in component
 				for(const key of Object.keys(componentDefaults.attributes)){
@@ -330,7 +290,7 @@ export class ComponentLoaderService {
 	}
 
 	// arrange component inputs
-	private arrange(item: Array<any>) {
+	private arrange(item: Array<any>): Array<any> {
 		const data = [];
 		for (let i = 0; i < item.length; i++) {
 			if (item[i].variable.substr(0, 8) !== 'arr_data') {
@@ -343,7 +303,7 @@ export class ComponentLoaderService {
 	}
 
 	// check if variables are loaded
-	private variablesLoaded(){
+	private variablesLoaded(): Promise<any>{
 		return new Promise((resolve)=>{
 			if(this.variable.variablesLoaded){
 				resolve();
@@ -367,7 +327,7 @@ export class ComponentLoaderService {
 	}
 
 	// get modified list of components to load
-	private getModifiedComponents(components: Array<any>){
+	private getModifiedComponents(components: Array<any>): Array<{component: any, modified: boolean}>{
 		// list of components with modified mark
 		let modifiedComponents: Array<{component: any, modified: boolean}> = [];
 
@@ -408,7 +368,7 @@ export class ComponentLoaderService {
 	// load relevant components for the room/container component
 	// clearAll: container cleared
 	// clearPartially: just container (not storage)
-	public loadRoomComponents(components: Array<any>, container: any, clearAll: boolean, clearPartially?: boolean){
+	public loadRoomComponents(components: Array<any>, container: any, clearAll: boolean, clearPartially?: boolean): Promise<any>{
 		return new Promise((resolve)=>{
 			this.variablesLoaded().then(()=>{
 				// only clear container if needed
@@ -421,7 +381,7 @@ export class ComponentLoaderService {
 				// get modified list
 				const modifiedComponents = this.getModifiedComponents(components).map(x=> x.component);
 				// create components one by one, search for variable instances
-				modifiedComponents.forEach((comp, i)=>{
+				modifiedComponents.forEach((comp, i: number)=>{
 					// get a formatted component with new and already saved values
 					this.getFormattedComponent(comp.ID, comp).then((component: any)=>{
 						// remove the component, to ensure it is only created once
@@ -461,60 +421,11 @@ export class ComponentLoaderService {
 					});
 				});
 			});
-
-			// OLD Loader (Backup)
-
-			// only clear container if needed
-			// if (clearAll) {
-			// 	container.clear();
-			// 	if(!clearPartially){
-			// 		this.containerComponents = [];
-			// 	}
-			// }
-			// components.forEach((comp, i)=>{
-			// 	// get a formatted component with new and already saved values
-			// 	this.getFormattedComponent(comp.ID, comp).then((component: any)=>{
-			// 		// remove the component, to ensure it is only created once
-			// 		this.removeDynamicComponent(comp.ID);
-			// 		// add the component to view
-			// 		this.addFhemComponent(component.name, container).then((ref:any)=>{
-			// 			// load component info
-			// 			for (const [key, value] of Object.entries(component.attributes)) {
-			// 				if(component.attributes[key]){
-			// 					component.attributes[key].forEach((el)=>{
-			// 						ref.instance[el.attr] = el.value;
-			// 					});
-			// 				}
-			// 			}
-			// 			// assign other values
-			// 			ref.instance.ID = component.ID;
-			// 			// positioning
-			// 			const width: number = parseInt(component.position.width || component.dimensions.minX);
-			// 			const height: number = parseInt(component.position.height || component.dimensions.minY);
-			// 			const top: number = parseInt(component.position.top || 0);
-			// 			const left: number = parseInt(component.position.left || 0);
-			// 			// assign
-			// 			ref.instance.width = width + 'px';
-			// 			ref.instance.height = height + 'px';
-			// 			ref.instance.top = top + 'px';
-			// 			ref.instance.left = left + 'px';
-			// 			ref.instance.zIndex = component.position.zIndex;
-			// 			// push comp to containerComponents
-			// 			this.containerComponents.push({ID: component.ID, REF: ref, container: container});
-			// 			// logging
-			// 			this.logger.info('Component: ' + component.name + ' ID: ' + component.ID + ' added');
-			// 			// check for length
-			// 			if(components.length -1 === i){
-			// 				resolve();
-			// 			}
-			// 		});
-			// 	});
-			// });
 		});
 	}
 
 	// add a fhem component
-	public addFhemComponent(name: string, container: any) {
+	public addFhemComponent(name: string, container: any): Promise<any> {
 		return new Promise((resolve)=>{
 			// create the Component
 			const fhemComponent: DynamicComponent = this.fhemComponents.find(x => x.name === name);
@@ -532,7 +443,7 @@ export class ComponentLoaderService {
 	}
 
 	// create a standard helper component
-	public createSingleComponent(name: string, container: any, opts?: any) {
+	public createSingleComponent(name: string, container: any, opts?: any): void {
 		// remove the component, to ensure it is only created once
 		this.removeDynamicComponent(name);
 		// create the Component
@@ -554,7 +465,7 @@ export class ComponentLoaderService {
 	}
 
 	// removes any dynamic component in the current container
-	public removeDynamicComponent(ID: string) {
+	public removeDynamicComponent(ID: string): void {
 		const componentIndex = this.containerComponents.findIndex(x => x.ID === ID);
 		if(componentIndex > -1){
 			this.containerComponents[componentIndex].REF.destroy();
@@ -563,16 +474,16 @@ export class ComponentLoaderService {
 	}
 
 	// find fhem component by ID in container
-	public findFhemComponent(componentID: string) {
+	public findFhemComponent(componentID: string): any {
 		return this.containerComponents.find(x=> x.ID === componentID);
 	}
 
 	// seperate component values into arrays
-	public seperateComponentValues(obj:any){
+	public seperateComponentValues(obj:any): any{
 		let res = {};
 		// information push
 		// determine if values should be transformed to json and split, due to arrays
-		let push = (attr: string, key: string, value: any, json: boolean, split: boolean)=>{
+		let push = (attr: string, key: string, value: any, json: boolean, split: boolean): void =>{
 			res[attr] = res[attr] || [];
 			res[attr].push({
 				attr: key,
@@ -614,7 +525,7 @@ export class ComponentLoaderService {
 	}
 
 	// push a component to a desired place/container
-	public pushComponentToPlace(place: Array<any>, component: any){
+	public pushComponentToPlace(place: Array<any>, component: any): void{
 		place.push({
 			ID: '_' + Math.random().toString(36).substr(2, 9),
 			name: component.name,

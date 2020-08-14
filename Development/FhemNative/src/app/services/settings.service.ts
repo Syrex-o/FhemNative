@@ -112,10 +112,10 @@ export class SettingsService {
 	public modeSub = new Subject<any>();
 
 	// app error events -- for export to file
-	public log: Array<any> = [];
+	public log: string[] = [];
 
 	// app defaults
-	public appDefaults:Array<AppSetting> = [
+	public appDefaults: AppSetting[] = [
 		// Theme of the App
 		{name: 'theme', default: 'dark', toStorage: true},
 		// Custom color theming colors
@@ -178,7 +178,7 @@ export class SettingsService {
 	}
 
 	// load app defaults
-	public loadDefaults(){
+	public loadDefaults(): Promise<any>{
 		return new Promise((resolve)=>{
 			this.appDefaults.forEach((setting: AppSetting, index: number)=>{
 				this.storage.setAndGetSetting({
@@ -239,7 +239,7 @@ export class SettingsService {
 	}
 
 	// scale electron window
-	public scaleWindow(){
+	public scaleWindow(): void{
 		// only scale electorn windows
 		if(this.platform.is('electron') && !this.platform.is('mobile')){
 			let ipc = this.electron.ipcRenderer;
@@ -256,8 +256,8 @@ export class SettingsService {
 	}
 
 	// find new colors
-	public findNewColors(arr){
-		let newColors = [];
+	public findNewColors(arr: Array<any>): void{
+		let newColors: string[] = [];
 		arr.forEach((elem)=>{
 			// check if attribute is defined
 			if(elem){
@@ -289,13 +289,13 @@ export class SettingsService {
 	}
 
 	// test for json
-	private testJSON(str) {
+	private testJSON(str: any): boolean {
 		try { JSON.parse(str); } catch (e) { return false; }
 		return true;
 	}
 
 	// check valid hex codes
-	public checkValidHex(str){
+	public checkValidHex(str: string): boolean{
 		return (/^#([0-9A-F]{3}){1,2}$/i).test(str);
 	}
 }

@@ -2,10 +2,15 @@ import { Component, OnInit, NgModule } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+
+// interfaces
+import { FhemDevice, DynamicComponent, DynamicComponentDefinition } from '../../interfaces/interfaces.type';
 
 // Components
 import { IonicModule } from '@ionic/angular';
 import { ComponentsModule } from '../components.module';
+
 // Services
 import { FhemService } from '../../services/fhem.service';
 import { StructureService } from '../../services/structure.service';
@@ -371,46 +376,49 @@ export class SettingsComponent implements OnInit {
 		// list of generated devices
 		let generatedDevices = [];
 		let gotReply: boolean = false;
-		const sub = this.fhem.deviceListSub.subscribe(next=>{
+		const sub: Subscription = this.fhem.deviceListSub.subscribe(next=>{
 			this.settings.modes.showLoader = false;
 			gotReply = true;
 			sub.unsubscribe();
 			// generate the rooms
-			const generatedRooms = this.addRooms(this.fhem.devices.filter((x)=>{ return Object.getOwnPropertyNames(x.attributes).find((y)=>{ return y === 'room'}) }));
-
-			// generate the devices
-			const relevantDevices = this.fhem.devices.filter((x:any)=> {return Object.getOwnPropertyNames(x.attributes).find((y:any) => {return y.match(/FhemNative_.*/)})});
-			relevantDevices.forEach((device)=>{
-				// get the relevant FhemNative readings
-				const relevantReadings = Object.getOwnPropertyNames(device.attributes).filter(y => y.match(/FhemNative_.*/));
-				relevantReadings.forEach((reading)=>{
-					const component = reading.match(/(_.*)$/g)[0].replace('_', '');
-					const fhemNativeComponent = this.componentLoader.fhemComponents.find(x=> x.name.replace(' ', '').toLowerCase() === component.toLowerCase());
-					if(component && fhemNativeComponent){
-						this.componentLoader.getFhemComponentData(component).then((componentData: any)=>{
-							const creatorComponent = componentData;
-
-							// get fhemnative attr
-							const attr = device.attributes[reading];
-							attr.match(/[\w+:]+(?=;)/g).forEach((singleAttr)=>{
-								// loop single attr and value combination
-								const reading = singleAttr.match(/\w+/g)[0];
-								const definedValue = singleAttr.match(/:.*/g)[0].slice(1);
-								// assign the values in component
-								for (const key of Object.keys(creatorComponent.attributes)) {
-									creatorComponent.attributes[key].forEach((fhemNativeAttr: any)=>{
-										// underscore to ensure unique values (Exp. reading and setReading should not be equal)
-										if(fhemNativeAttr.attr.toLowerCase().indexOf( '_' + reading.toLowerCase()) > -1){
-											fhemNativeAttr.value = definedValue;
-										}
-										// assign device
-										if(fhemNativeAttr.attr === 'data_device'){
-											fhemNativeAttr.value = device.device;
-										}
-									});
-								}
-							});
-							if(creatorComponent){
+			const generatedRooms: string[] = this.addRooms(
+				this.fhem.devices.filter((x)=>{ return Object.getOwnPropertyNames(x.attributes).find((y)=>{ return y === 'room'}) })
+			);
+			// save the generated rooms
+			this.structure.saveRooms().then(() => {
+				// generate the devices
+				const relevantDevices: FhemDevice[]  = this.fhem.devices.filter((x:any)=> {return Object.getOwnPropertyNames(x.attributes).find((y:any) => {return y.match(/FhemNative_.*/)})});
+				relevantDevices.forEach((device: FhemDevice)=>{
+					// get the relevant FhemNative readings
+					const relevantAttributes: string[] = Object.getOwnPropertyNames(device.attributes).filter(y => y.match(/FhemNative_.*/));
+					relevantAttributes.forEach((attribute: string)=>{
+						const component: string = attribute.match(/(_.*)$/g)[0].replace('_', '');
+						const fhemNativeComponent: DynamicComponent|null = this.componentLoader.fhemComponents.find(x=> x.name.replace(' ', '').toLowerCase() === component.toLowerCase());
+						// create component
+						if(component && fhemNativeComponent){
+							this.componentLoader.getFhemComponentData(component).then((componentData: DynamicComponentDefinition)=>{
+								const creatorComponent: DynamicComponentDefinition = componentData;
+								// get fhemnative attr
+								const attr: string = device.attributes[attribute];
+								attr.match(/[\w+:]+(?=;)/g).forEach((singleAttr: string)=>{
+									// loop single attr and value combination
+									const reading: string = singleAttr.match(/\w+/g)[0];
+									const definedValue: any = singleAttr.match(/:.*/g)[0].slice(1);
+									// assign the values in component
+									for (const key of Object.keys(creatorComponent.attributes)) {
+										creatorComponent.attributes[key].forEach((fhemNativeAttr: {attr: string, value: any})=>{
+											// underscore to ensure unique values (Exp. reading and setReading should not be equal)
+											if(fhemNativeAttr.attr.toLowerCase().indexOf( '_' + reading.toLowerCase()) > -1){
+												fhemNativeAttr.value = definedValue;
+											}
+											// assign device
+											if(fhemNativeAttr.attr === 'data_device'){
+												fhemNativeAttr.value = device.device;
+											}
+										});
+									}
+								});
+								// component modified from fhem userAttr
 								// get room information
 								if(device.attributes.room){
 									let rooms = [];
@@ -436,8 +444,7 @@ export class SettingsComponent implements OnInit {
 												this.componentLoader.pushComponentToPlace(foundRoom.components, creatorComponent);
 												generatedDevices.push({device: device.device, generated: true, room: room, as: component});
 											}
-										}else{
-											
+										}else{	
 											// component rejected because of strange room values
 											generatedDevices.push({device: device.device, generated: false, reason: 'ROOM_NAME', as: component});
 										}
@@ -446,18 +453,16 @@ export class SettingsComponent implements OnInit {
 									// no room for component
 									generatedDevices.push({device: device.device, generated: false, reason: 'NO_ROOM', as: component});
 								}
-							}else{
-								// wrong definition
-								generatedDevices.push({device: device.device, generated: false, reason: 'NO_COMPONENT', as: component});
-							}
-							if(generatedDevices.length > 0){
-								this.devicesAdded(generatedDevices);
-							}else{
-								// No devices for FhemNative found
-								this.toast.showAlert(this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_TITLE'),this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_INFO'),false);
-							}
-						});
-					}
+								
+								if(generatedDevices.length > 0){
+									this.devicesAdded(generatedDevices);
+								}else{
+									// No devices for FhemNative found
+									this.toast.showAlert(this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_TITLE'),this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_INFO'),false);
+								}
+							});
+						}
+					});
 				});
 			});
 		});
@@ -478,7 +483,7 @@ export class SettingsComponent implements OnInit {
 	}
 
 	// add rooms from devices to FhemNative
-	addRooms(devices: Array<any>){
+	addRooms(devices: FhemDevice[]){
 		let generatedRooms = [];
 		const settingsRooms = this.structure.rooms.map(x=> x.name);
 

@@ -3,6 +3,9 @@ import { Component, Input, NgModule, AfterViewInit, OnDestroy, HostListener, Vie
 // Components
 import { ComponentsModule } from '../../components.module';
 
+// Interfaces
+import { ComponentSettings, FhemDevice } from '../../../interfaces/interfaces.type';
+
 // Services
 import { FhemService } from '../../../services/fhem.service';
 import { SelectComponentService } from '../../../services/select-component.service';
@@ -51,7 +54,7 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	fhemDevice: any;
+	fhemDevice: FhemDevice|null;
 	value: number = 0;
 
 	// threshold
@@ -68,7 +71,7 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 	thickness: number = 6;
 	pinRadius: number = 10;
 
-	styles: any = {
+	styles: {[key: string]: any} = {
 		viewBox: '0 0 300 300',
 		arcTranslateStr: 'translate(0, 0)',
 		clipPathStr: '',
@@ -81,7 +84,7 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 
 	@HostListener('mousedown', ['$event', '$event.target'])
 	@HostListener('touchstart', ['$event', '$event.target'])
-	onTouchstart(event, target) {
+	onTouchstart(event: TouchEvent|MouseEvent, target: any) {
 		if (target.className.baseVal === 'circle') {
 			const whileMove = (e) => {
 				e.stopPropagation();
@@ -118,18 +121,18 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 			this.data_arcThickness = parseFloat(this.data_arcThickness);
 		});
 		// get fhem device
-		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+		this.fhem.getDevice(this.ID, this.data_device, (device: FhemDevice)=>{
 			this.fhemDevice = device;
 			// update
 			if(device){
-				const updateValue = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
-				const oldValue = this.value;
+				const updateValue: number = parseFloat(this.fhemDevice.readings[this.data_reading].Value);
+				const oldValue: number = this.value;
 				if (updateValue !== this.value) {
 					this.value = updateValue;
 					this.animateMove(oldValue);
 				}
 			}
-		}).then((device)=>{
+		}).then((device: FhemDevice|null)=>{
 			this.fhemDevice = device;
 			this.svgRoot = this.ref.nativeElement.querySelector('.fhem-component-container');
 			setTimeout(()=>{
@@ -149,7 +152,7 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 		});
 	}
 
-	private invalidate(){
+	private invalidate(): void{
 		setTimeout(()=>{
 			this.calculateVars();
 			this.invalidateClipPathStr();
@@ -158,7 +161,7 @@ export class FhemCircleSliderComponent implements AfterViewInit, OnDestroy {
 		});
 	}
 
-	private calculateVars(){
+	private calculateVars(): void{
 		const halfAngle = this.bottomAngleRad / 2;
 		const svgBoundingRect = this.svgRoot.getBoundingClientRect();
 		

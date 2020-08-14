@@ -21,7 +21,7 @@ export class FileManagerService {
 		private electron: ElectronService){}
 
 	// get relevant OS path
-	private getDirectory(){
+	private getDirectory(): string{
 		if (this.platform.is('mobile')) {
 			return (this.file.externalRootDirectory === null) ? this.file.externalDataDirectory : this.file.externalRootDirectory;
 		} else {
@@ -31,7 +31,7 @@ export class FileManagerService {
 	}
 
 	// open file access menu and select file
-	public async readFile(){
+	public async readFile(): Promise<any>{
 		let data;
 		if (this.platform.is('mobile')) {
 			await this.chooser.getFile('').then((file) => {
@@ -60,7 +60,7 @@ export class FileManagerService {
 	}
 
 	// write local file
-	public writeFile(name: string, data: any){
+	public writeFile(name: string, data: any): Promise<any>{
 		return new Promise((resolve, reject)=>{
 			const dir = this.getDirectory();
 			if (dir) {
@@ -84,7 +84,7 @@ export class FileManagerService {
 	}
 
 	// test for json
-    private IsJsonString(str) {
+    private IsJsonString(str): boolean {
     	try {
 	        JSON.parse(str);
 	    } catch (e) {

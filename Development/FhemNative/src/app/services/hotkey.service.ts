@@ -17,7 +17,7 @@ export class HotKeyService {
 
 	// add a hotkey (Exp. 'meta+shift+g')
 	// action as keyup/keydown
-	public add(handleID:string, combination:string, callback:any, action?: string){
+	public add(handleID:string, combination:string, callback:any, action?: string): void{
 		// detect if combination already exists + ID 
 		if(!this.hotkeys.find(x => x.combination === combination && x.handleID === handleID)){
 			// register a new hotkey
@@ -32,7 +32,7 @@ export class HotKeyService {
 		this.hotkeys.push({handleID: handleID, combination: combination, callback: callback, action: action});
 	}
 
-	private makeCallback(combination: string, e?: KeyboardEvent){
+	private makeCallback(combination: string, e?: KeyboardEvent): void{
 		const callbackItems = this.hotkeys.filter(x => x.combination === combination && x.callback);
 
 		callbackItems.forEach((item)=>{
@@ -47,7 +47,7 @@ export class HotKeyService {
 	}
 
 	// remove hotkey 
-	public remove(handleID: string){
+	public remove(handleID: string): void{
 		const index = this.hotkeys.findIndex(x=> x.handleID === handleID);
 		if(index > -1){
 			this.hotkeys.splice(index, 1);

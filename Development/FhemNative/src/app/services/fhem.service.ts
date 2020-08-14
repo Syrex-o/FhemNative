@@ -1,6 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Subject } from 'rxjs';
 
+// interfaces
+import { FhemDevice } from '../interfaces/interfaces.type';
+
 // Services
 import { LoggerService } from './logger/logger.service';
 import { SettingsService } from './settings.service';
@@ -9,14 +12,6 @@ import { ToastService } from './toast.service';
 
 // Translator
 import { TranslateService } from '@ngx-translate/core';
-
-interface FhemDevice {
-	id: number,
-	device: string,
-	readings: any,
-	internals: any,
-	attributes: any
-};
 
 interface ListenDevice {
 	id: string,
@@ -106,17 +101,17 @@ export class FhemService {
 
 	// seperate component devices into array
 	// needs string of data_device
-	public seperateDevices(device){
+	public seperateDevices(device): string[]{
 		return device.toString().replace(/\s/g, '').split(',');
 	}
 
 	// get the connection type
-	private connectionType(){
+	private connectionType(): string{
 		return this.settings.connectionProfiles[this.currentProfile].type.toLowerCase();
 	}
 
 	// get url for connection
-	private getConnectionURL(){
+	private getConnectionURL(): string{
 		let url: string;
 		// get the desired url for fhem connection
 		const type: string = this.connectionType();
@@ -130,7 +125,7 @@ export class FhemService {
 		}
 	}
 
-	public connectFhem(){
+	public connectFhem(): void{
 		this.devices = [];
 		if(!this.noReconnect && !this.connected && !this.connectionInProgress){
 			this.connectionInProgress = true;
@@ -229,7 +224,7 @@ export class FhemService {
 	}
 
 	// handle connection open
-	private connectionOpenHandler(){
+	private connectionOpenHandler(): void{
 		this.logger.info('Connected to Fhem');
 		this.connectedSub.next(true);
 		// get relevant devices
@@ -244,7 +239,7 @@ export class FhemService {
 	}
 
 	// disconnect
-	public disconnect() {
+	public disconnect(): void {
 		if(this.connected){
 			this.socket.close();
 			this.devices = [];
@@ -259,7 +254,7 @@ export class FhemService {
 	}
 
 	// get the list of relevant devices
-	private getRelevantDevices(){
+	private getRelevantDevices(): string{
 		let list: string[] = [];
 
 		if(this.settings.app.fhemDeviceLoader === 'Component'){
@@ -286,11 +281,11 @@ export class FhemService {
 
 	// websocket event handler
 	// handle fhemweb and external websocket
-	private websocketEvents(){
+	private websocketEvents(): void{
 		const type: string = this.connectionType();
 		// list of catched devices
 		let listDevices: Array<FhemDevice> = [];
-		const message = this.socket.onmessage = (e)=>{
+		const message: any = this.socket.onmessage = (e: any)=>{
 			// initial message
 			let msg = e.data;
 			// handle external websocket
@@ -334,7 +329,7 @@ export class FhemService {
 					}else{
 						// evaluation of changes
 						// device got an update
-						const device = JSON.parse(lines[0])[0];
+						const device: string = JSON.parse(lines[0])[0];
 						const change = {};
 						if(this.listenDevices.find(x=> x.device === device)){
 							// listen to device
@@ -353,8 +348,8 @@ export class FhemService {
 
 	// device transformer
 	// determines already found devices and creates unique standard
-	private deviceTransformer(device: any, capital: boolean){
-		const deviceName = capital ? device.Name : device.name;
+	private deviceTransformer(device: any, capital: boolean): FhemDevice{
+		const deviceName: string = capital ? device.Name : device.name;
 		const readings = this.objResolver( (capital ? device.Readings : device.readings), 1);
 		const push: FhemDevice = {
 			id: capital ? device.Internals.NR : device.internals.NR,
@@ -378,8 +373,8 @@ export class FhemService {
 	// device updater
 	// update fhem devices and look for listen device
 	// only update devices, that FhemNative listens to
-	private updateListenDevice(deviceName: string, change: any){
-		const index = this.devices.findIndex(x=> x.device === deviceName);
+	private updateListenDevice(deviceName: string, change: any): void{
+		const index: number = this.devices.findIndex(x=> x.device === deviceName);
 		if(index > -1){
 			change = this.objResolver(change, 2);
 			for (const key in this.devices[index].readings) {
@@ -403,7 +398,7 @@ export class FhemService {
 
 	// get device from fhem
 	// dirty allows to send fhem device list command even, if device is already present
-	public getDevice(id: string, deviceName: string, callback?: any, dirty?: boolean){
+	public getDevice(id: string, deviceName: string, callback?: any, dirty?: boolean): Promise<FhemDevice|null>{
 		return new Promise((resolve) => {
 			if(!this.connected){
 				let gotReply: boolean = false;
@@ -412,7 +407,7 @@ export class FhemService {
 					gotReply = true;
 					if(state){
 						sub.unsubscribe();
-						this.listen(id, deviceName, callback, dirty).then(device=> resolve(device));
+						this.listen(id, deviceName, callback, dirty).then((device: FhemDevice|null)=> resolve(device));
 					}else{
 						if(this.noReconnect){
 							sub.unsubscribe();
@@ -427,7 +422,7 @@ export class FhemService {
 					}
 				}, 5000);
 			}else{
-				this.listen(id, deviceName, callback, dirty).then(device=> resolve(device));
+				this.listen(id, deviceName, callback, dirty).then((device: FhemDevice|null)=> resolve(device));
 			}
 		});
 	}
@@ -436,7 +431,7 @@ export class FhemService {
 	private askForDevices: string[] = [];
 	// device listener
 	// add the device to listen list and call callback, if needed
-	public listen(id: string, deviceName: string, callback?: any, dirty?: boolean){
+	public listen(id: string, deviceName: string, callback?: any, dirty?: boolean): Promise<FhemDevice|null>{
 		return new Promise((resolve)=>{
 			// connection type
 			const type = this.connectionType();
@@ -474,7 +469,7 @@ export class FhemService {
 				// list device handler
 				// determine if device was found
 				let gotReply: boolean = false;
-				const sub = this.deviceListSub.subscribe((next)=>{
+				const sub = this.deviceListSub.subscribe((next: FhemDevice[])=>{
 					device = next.find(x => x.device === deviceName);
 					if(device){
 						gotReply = true;
@@ -495,7 +490,7 @@ export class FhemService {
 				setTimeout(()=>{
 					if(this.askForDevices.length > 0){
 						// build copy
-						let deviceList: any = this.askForDevices;
+						let deviceList: string[]|string = this.askForDevices;
 						// reset ask array
 						this.askForDevices = [];
 
@@ -516,7 +511,7 @@ export class FhemService {
 	}
 
 	// get command
-	public get(device: string, property: any){
+	public get(device: string, property: any): Promise<any>{
 		return new Promise((resolve)=>{
 			if(!this.connected){
 				let gotReply: boolean = false;
@@ -546,7 +541,7 @@ export class FhemService {
 	}
 
 	// build single connection for 
-	public sendSingleGetRequest(device: string, property: any){
+	public sendSingleGetRequest(device: string, property: any): Promise<any>{
 		return new Promise((resolve)=>{
 			// get url
 			const url: string = this.getConnectionURL();
@@ -625,7 +620,7 @@ export class FhemService {
 	}
 
 	// remove device and stop listen, if no other listener for same device is present
-	public removeDevice(id: string){
+	public removeDevice(id: string): void{
 		const index = this.listenDevices.findIndex(x=> x.id === id);
 		if(index > -1){
 			this.listenDevices.splice(index, 1);
@@ -633,7 +628,7 @@ export class FhemService {
 	}
 
 	// look for device and subscribe to changes
-	public deviceReadingFinder(deviceName: string, reading: string|null){
+	public deviceReadingFinder(deviceName: string, reading: string|null): boolean{
 		const device = this.devices.find(x => x.device === deviceName);
 		return (
 			// check for device
@@ -648,7 +643,7 @@ export class FhemService {
 	}
 
 	// send commands
-	public sendCommand(cmd) {
+	public sendCommand(cmd: any): void{
 		const type = this.connectionType();
 		if (type === 'websocket') {
 			this.socket.send(JSON.stringify({
@@ -662,20 +657,20 @@ export class FhemService {
 	}
 
 	// set
-	public set(device, value) {
+	public set(device: string, value: any): void {
 		this.sendCommand({
 			command: 'set ' + device + ' ' + value
 		});
 	}
 
 	// set reading
-	public setReading(device, reading, value) {
+	public setReading(device: string, reading: string, value: any): void {
 		this.sendCommand({
 			command: 'setReading ' + device + ' ' + reading + ' ' + value
 		});
 	}
 	// set attr
-	public setAttr(device, prop, value) {
+	public setAttr(device: string, prop: string, value: any): void {
 		this.sendCommand({
 			command: 'set ' + device + ' ' + prop + ' ' + value
 		});
@@ -683,7 +678,7 @@ export class FhemService {
 
 
 	// send list command to fhem for relevant connection type
-	public listDevices(value: string){
+	public listDevices(value: string): void{
 		const type: string = this.connectionType();
 		if (type === 'websocket') {
 			this.socket.send(JSON.stringify(
@@ -696,7 +691,7 @@ export class FhemService {
 	}
 
 	// test for json
-	public IsJsonString(str) {
+	public IsJsonString(str): boolean {
 		try {
 			JSON.parse(str);
 		} catch (e) {
@@ -706,7 +701,7 @@ export class FhemService {
 	}
 
 	// test for state values, true or false decisions
-	public deviceReadingActive(device, reading, compareTo){
+	public deviceReadingActive(device: FhemDevice|null, reading: string, compareTo: any): boolean{
 		if(device && device.readings[reading]){
 			const value = device.readings[reading].Value.toString().toLowerCase();
 			compareTo = compareTo.toString().toLowerCase();
@@ -718,7 +713,7 @@ export class FhemService {
 	}
 
 	// websocket reply transformer
-	public objResolver(obj, level) {
+	public objResolver(obj, level: number): any {
 		const keys = Object.keys(obj);
 		const result = {};
 		for (let i = 0; i < keys.length; i++) {

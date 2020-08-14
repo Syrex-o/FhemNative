@@ -29,7 +29,7 @@ export class NativeFunctionsService {
 	}
 
 	// native event trigger
-	public nativeClickTrigger(){
+	public nativeClickTrigger(): void{
 		if(this.platform.is('android') || this.platform.is('ios')){
 			if(this.settings.app.hapticFeedback.enable){
 				this.vibrate(this.settings.app.hapticFeedback.duration * 1000);
@@ -41,12 +41,12 @@ export class NativeFunctionsService {
 	}
 
 	// vibration
-	public vibrate(dur: number){
+	public vibrate(dur: number): void{
 		this.vibration.vibrate(dur);
 	}
 
 	// play sound
-	public playAudio(id: string){
+	public playAudio(id: string): void{
 		this.audio.play(id);
 	}
 }

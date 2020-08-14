@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+// interfaces
+import { RoomParams } from './interfaces/interfaces.type';
+
 import { Platform, MenuController, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -88,12 +91,14 @@ export class AppComponent {
 		this.logger.info('Switch room to: ' + name);
 
 		const roomToSwitch = this.structure.rooms.find(x=> x.ID === ID);
-		this.structure.navigateToRoom(name, ID, {
+		// router params
+		const params: RoomParams = {
 			name: name,
 			ID: ID,
 			UID: roomToSwitch.UID,
 			reload: reload || false
-		});
+		}
+		this.structure.navigateToRoom(name, ID, params);
 		this.menu.close();
 	}
 

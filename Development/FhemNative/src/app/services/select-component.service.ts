@@ -1,6 +1,9 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Subject } from 'rxjs';
 
+// interfaces
+import { DynamicComponentDefinition } from '../interfaces/interfaces.type';
+
 // Services
 import { StructureService } from './structure.service';
 import { ComponentLoaderService } from './component-loader.service';
@@ -17,9 +20,9 @@ export class SelectComponentService {
 	private renderer: Renderer2;
 
 	// list of selected components
-	public selectorList: Array<any> = [];
+	public selectorList: Array<DynamicComponentDefinition> = [];
 	// list of copy components
-	public copyList: Array<any> = [];
+	public copyList: Array<DynamicComponentDefinition> = [];
 
 	// handles for resize/move
 	public handles = new Subject<HandleUpdate>();
@@ -51,14 +54,14 @@ export class SelectComponentService {
 	}
 
 	// add handle event, because 
-	public addHandle(ID: string, forHandle: string, callback: any){
+	public addHandle(ID: string, forHandle: string, callback: any): void{
 		if(!this[forHandle + 'Handles'].find(x => x.ID === ID)){
 			this[forHandle + 'Handles'].push({ID: ID, callback: callback});
 		}
 	}
 
 	// remove handle event
-	public removeHandle(ID: string, forHandle: string){
+	public removeHandle(ID: string, forHandle: string): void{
 		const index = this[forHandle + 'Handles'].findIndex(x=> x.ID === ID);
 		if(index > -1){
 			this[forHandle + 'Handles'].splice(index, 1);
@@ -66,27 +69,27 @@ export class SelectComponentService {
 	}
 
 	// receives full element properties
-	private addSelector(component: any){
+	private addSelector(component: any): void{
 		if(!this.selectorList.find(x => x.ID === component.ID)){
 			this.selectorList.push(component);
 		}
 	}
 
 	// receives only ID to remove
-	private removeSelector(ID: string){
+	private removeSelector(ID: string): void{
 		if(this.selectorList.findIndex(x=> x.ID === ID) > -1){
 			this.selectorList.splice(this.selectorList.findIndex(x=> x.ID === ID), 1);
 		}
 	}
 
 	// evaluate if component has selector
-	public evalCopySelector(ID: string){
-		const element = document.getElementById(ID);
+	public evalCopySelector(ID: string): boolean{
+		const element: HTMLElement = document.getElementById(ID);
 		return element.classList.contains('selected-for-copy') ? true : false;
 	}
 
 	// evaluate all components in container for selector
-	public evalCopySelectorAll(container: any){
+	public evalCopySelectorAll(container: any): boolean{
 		const containerComponents = this.structure.getComponentContainer(container);
 		let allSelected: boolean = true;
 		if(containerComponents && containerComponents.length > 0){
@@ -104,7 +107,7 @@ export class SelectComponentService {
 	}
 
 	// build the copy selector for all components in one container
-	public buildCopySelectorAll(container: any){
+	public buildCopySelectorAll(container: any): void{
 		const roomElements = this.structure.getComponentContainer(container);
 		roomElements.forEach((el)=>{
 			this.buildCopySelector(el.ID, false);
@@ -115,7 +118,7 @@ export class SelectComponentService {
 	// build the copy selector
 	// unselect selected elements if needed
 	// dirty allows selection, even if component is pinned
-	public buildCopySelector(ID: string, unselect: boolean, dirty?: boolean){
+	public buildCopySelector(ID: string, unselect: boolean, dirty?: boolean): void{
 		const el: HTMLElement = document.getElementById(ID);
 		const component: any = this.structure.getComponent(ID);
 		if(component && el){
@@ -136,7 +139,7 @@ export class SelectComponentService {
 
 	// build copy selector for grouped components
 	// dirty allows selection, even if component is pinned
-	public buildCopySelectorForRelevant(ID: string, unselect?: boolean, dirty?: boolean){
+	public buildCopySelectorForRelevant(ID: string, unselect?: boolean, dirty?: boolean): void{
 		if(this.isGrouped(ID)){
 			let componentGroups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
 			if(componentGroups){
@@ -166,7 +169,7 @@ export class SelectComponentService {
 	}
 
 	// copy a component
-	public copyComponent(ID: string, container: any){
+	public copyComponent(ID: string, container: any): void{
 		// clear the copy List
 		this.copyList = [];
 		// build copy selector for selected elem
@@ -191,13 +194,13 @@ export class SelectComponentService {
 	}
 
 	// paste the relevant components to container
-	public pasteComponent(container: any){
+	public pasteComponent(container: any): void{
 		// get room components
 		const roomComponents = this.structure.getComponentContainer(container);
 		// get the selected elements from selector service
 		const copyList = JSON.parse(JSON.stringify(this.copyList));
 		// detect grouping
-		let isGrouped = this.isGroupedAny(copyList);
+		let isGrouped: any = this.isGroupedAny(copyList);
 		// get the group reference
 		const group: string[] = isGrouped ? this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group] : [];
 		// placeholder for new group of copied components
@@ -215,7 +218,7 @@ export class SelectComponentService {
 			}
 		});
 
-		copyList.forEach((copy)=>{
+		copyList.forEach((copy: any)=>{
 			// get the container of the component
 			// position elements 20px below
 			copy.position.top = parseInt(copy.position.top) + 20 + 'px';
@@ -238,7 +241,7 @@ export class SelectComponentService {
 	}
 
 	// remove the relevant components to container
-	public removeComponent(ID: string){
+	public removeComponent(ID: string): void{
 		// get room components
 		const roomComponents = this.structure.getComponentContainer(this.componentLoader.currentContainer);
 		const removeList = [];
@@ -264,7 +267,7 @@ export class SelectComponentService {
 
 	// group components
 	// custom list is used, to build group for specific list
-	public groupComponents(componentID: string, customList?: Array<any>){
+	public groupComponents(componentID: string, customList?: Array<any>): void{
 		const isGrouped = this.isGroupedAny();
 		if(isGrouped && componentID !== ''){
 			// ungroup
@@ -291,7 +294,7 @@ export class SelectComponentService {
 	}
 
 	// remove unused groups on delete
-	private removeGroups(removeList: Array<any>){
+	private removeGroups(removeList: Array<any>): void{
 		// check if component is in group
 		let componentGroups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
 		if(componentGroups){
@@ -313,8 +316,8 @@ export class SelectComponentService {
 	}
 
 	// remove the selector in any container
-	public removeCopySelector(ID: string){
-		const el = document.getElementById(ID);
+	public removeCopySelector(ID: string): void{
+		const el: HTMLElement = document.getElementById(ID);
 		this.renderer.removeClass(el, 'selected-for-copy');
 		this.removeSelector(ID);
 	}
@@ -323,7 +326,7 @@ export class SelectComponentService {
 	// enables fast changes between different containers
 	// defines if all should be removed or just the ones outside the container
 	// container must not be defined for all removal
-	public removeContainerCopySelector(container: any, all: boolean){
+	public removeContainerCopySelector(container: any, all: boolean): void{
 		const containerComponents = container ? this.structure.getComponentContainer(container) : false;
 		// build selector list to untouch selector array first
 		const selectorList = Array.from(document.querySelectorAll('.selected-for-copy'), x=> x.id);
@@ -341,7 +344,7 @@ export class SelectComponentService {
 
 	// eval grouped components
 	// determine grouped components, component is in other groups
-	public isGrouped(ID: string){
+	public isGrouped(ID: string): any{
 		let result: any = false;
 		let componentGroups = this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'];
 		if(componentGroups){
@@ -368,7 +371,7 @@ export class SelectComponentService {
 
 	// detect if any of the selected components is grouped
 	// can receive Array as well --> detect grouping in copys
-	public isGroupedAny(arr?: Array<any>){
+	public isGroupedAny(arr?: Array<any>): any{
 		let result: any = false;
 		for(const selector of arr || this.selectorList){
 			let group = this.isGrouped(selector.ID);

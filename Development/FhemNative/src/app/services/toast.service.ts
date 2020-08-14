@@ -48,7 +48,7 @@ export class ToastService {
 	}
 
 	// add a toast message
-	public addToast(head: string, message: string, style: string) {
+	public addToast(head: string, message: string, style: string): void {
 		this.zone.run(() => {
 			const styling = style.toLowerCase();
 			if (this.settings.app.showToastMessages) {
@@ -61,15 +61,17 @@ export class ToastService {
 	}
 
 	// add a notify message
-	public addNotify(head: string, message: string, handle: boolean) {
+	public addNotify(head: string, message: string, handle: boolean): Promise<boolean> {
 		return new Promise((resolve) => {
 			this.zone.run(() => {
 				const t = this.toast.info(message, head, this.notifySettings);
 				if (handle) {
-					t.onTap.subscribe((action) => {
+					t.onTap.subscribe((action: any) => {
 						resolve(true);
 					});
-					const time = setTimeout(() => {resolve(false); }, this.notifySettings.timeOut);
+					const time = setTimeout(() => {
+						resolve(false); 
+					}, this.notifySettings.timeOut);
 				} else {
 					resolve(false);
 				}
@@ -78,7 +80,7 @@ export class ToastService {
 	}
 
 	// add an alert message
-	async showAlert(head: string, message: string, buttons: any) {
+	async showAlert(head: string, message: string, buttons: any): Promise<any> {
 		const opts = {
 			header: head,
 			message,

@@ -1,6 +1,9 @@
 import { Component, Input, NgModule, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
+// interfaces
+import { DynamicComponentDefinition } from '../../interfaces/interfaces.type';
+
 // Components
 import { ComponentsModule } from '../components.module';
 
@@ -81,7 +84,7 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// edit a selected component
-	toggleComponentSettings(){
+	toggleComponentSettings(): void{
 		// create edit menu at base level
 		// pass current container
 		this.componentLoader.createSingleComponent('CreateEditComponent', this.componentLoader.containerStack[0].container, {
@@ -93,19 +96,20 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// component details
-	toggleComponentDetails(){
+	toggleComponentDetails(): void{
 		// toggle menu
 		this.show.componentDetails.show = !this.show.componentDetails.show;
 		if(this.show.componentDetails.show){
 			// get component
-			const component = this.structure.getComponent(this.componentID);
+			const component: DynamicComponentDefinition|null = this.structure.getComponent(this.componentID);
 			this.show.componentDetails.component = {
 				ID: this.componentID,
 				name: component.name
 			}
 			// fhem userAttr info
-			let attrValue = {long: '', short: ''};
-			let giveText = (attr, key, val)=>{
+			let attrValue: {[key: string]: string} = {long: '', short: ''};
+
+			let giveText = (attr: string, key: string, val: any) =>{
 				attrValue[attr] += val.attr.replace(key.replace('attr_', '')+'_', '') + ':' + ( Array.isArray(val.value) ? val.value[0] : val.value ) + ';';
 			}
 			// get default component
@@ -149,15 +153,15 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// export component selection
-	exportComponents(){
+	exportComponents(): void{
 		// allow dirty selection for pinned components
 		if(this.componentID){
 			this.selectComponent.buildCopySelectorForRelevant(this.componentID, false, true);
 		}
-		let components = JSON.parse(JSON.stringify(this.selectComponent.selectorList));
+		let components: DynamicComponentDefinition[] = JSON.parse(JSON.stringify(this.selectComponent.selectorList));
 
 		// remove unneded information for export
-		components.forEach((component)=>{
+		components.forEach((component: DynamicComponentDefinition)=>{
 			if(component.dependencies){
 				delete component.dependencies;
 			}
@@ -187,7 +191,7 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// import component selection from file
-	async importComponents(){
+	async importComponents(): Promise<any>{
 		const data: any = await this.fileManager.readFile();
 		let isValid: boolean = false;
 		if(data){
@@ -251,8 +255,8 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// pin/unpin component --> block component movement
-	pinComponent(){
-		let pinner = (comp)=>{
+	pinComponent(): void{
+		let pinner = (comp): void =>{
 			if(comp.pinned){
 				document.getElementById(comp.ID).classList.add('pinned');
 				// remove the copy selector
@@ -289,7 +293,7 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// detect pinned component
-	private isPinned(ID: string){
+	private isPinned(ID: string): boolean{
 		// get the component
 		const component = this.structure.getComponent(this.componentID);
 		if('pinned' in component){
@@ -304,7 +308,7 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// send component to from/back
-	sendTo(param: string){
+	sendTo(param: string): void{
 		const component = this.structure.getComponent(this.componentID);
 		const roomComponents = this.structure.getComponentContainer(this.componentLoader.currentContainer);
 		console.log(roomComponents);
@@ -327,7 +331,7 @@ export class ContextMenuComponent implements OnInit {
 
 	// select/unselect component 
 	// respect groups
-	markForSelection(){
+	markForSelection(): void{
 		if(this.selectComponent.evalCopySelector(this.componentID)){
 			// is selected, should be deselected
 			this.selectComponent.buildCopySelectorForRelevant(this.componentID, true);
@@ -337,12 +341,12 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// copy component
-	copyComp(){
+	copyComp(): void{
 		this.selectComponent.copyComponent( (this.componentID ? this.componentID : ''), this.componentLoader.currentContainer);
 	}
 
 	// paste component
-	pasteComp(){
+	pasteComp(): void{
 		// paste component
 		this.selectComponent.pasteComponent(this.componentLoader.currentContainer);
 		// save config
@@ -351,14 +355,14 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// group components
-	groupComponents(){
+	groupComponents(): void{
 		this.selectComponent.groupComponents(this.componentID);
 		// add to change stack
 		this.undoManager.addChange();
 	}
 
 	// delete component
-	compDelete(){
+	compDelete(): void{
 		const component = this.structure.getComponent(this.componentID);
 
 		this.selectComponent.removeComponent(component ? component.ID : '');
@@ -366,12 +370,12 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// remove context menu on outside click
-	removeContextMenu(){
+	removeContextMenu(): void{
 		this.componentLoader.removeDynamicComponent('ContextMenuComponent');
 	}
 
 	// change component attribute
-	private changeAttr(ID: string, attr: string, value: any) {
+	private changeAttr(ID: string, attr: string, value: any): void {
 		const elem = this.componentLoader.findFhemComponent(ID);
 		if (elem) {
 			elem.REF.instance[attr] = value;
@@ -379,7 +383,7 @@ export class ContextMenuComponent implements OnInit {
 	}
 
 	// saving rooms
-	private saveComp() {
+	private saveComp(): void {
 		this.removeContextMenu();
 		this.undoManager.addChange();
 	}

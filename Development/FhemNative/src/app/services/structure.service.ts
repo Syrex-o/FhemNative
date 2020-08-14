@@ -1,27 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
+// interfaces
+import { Room, RoomParams, DynamicComponentDefinition } from '../interfaces/interfaces.type';
+
 // Services
 import { StorageService } from './storage.service';
 import { SettingsService } from './settings.service';
-
-interface Room {
-	ID: number,
-	name: string,
-	icon: string,
-	UID: string,
-	components: Array<any>,
-	useRoomAsGroup?: boolean,
-	groupRooms?:Array<any>,
-	groupComponents?: Object
-}
-
-interface RoomParams {
-	name: string,
-	ID: number,
-	UID: string,
-	reload?: boolean
-}
 
 @Injectable({
 	providedIn: 'root'
@@ -30,10 +15,10 @@ interface RoomParams {
 export class StructureService {
 	// list of all rooms
 	// will be generated on start
-	public rooms: Array<Room> = [];
+	public rooms: Room[]= [];
 
 	// list of structured rooms
-	public structuredRooms: Array<Room> = [];
+	public structuredRooms: Room[] = [];
 
 	// reserved storage of the current room for refereces
 	// filled on room entrance
@@ -41,7 +26,7 @@ export class StructureService {
 
 	// list of room defauls
 	// will be loaded on initial load
-	private roomDefaults: Array<Room> = [{ID: 0, name: 'Home', icon: 'home', UID: '_s01tz3k9x', components: []}];
+	private roomDefaults: Room[] = [{ID: 0, name: 'Home', icon: 'home', UID: '_s01tz3k9x', components: []}];
 
 
 	constructor(
@@ -52,25 +37,25 @@ export class StructureService {
 	}
 
 	// get the current room
-	public getCurrentRoom(ID: any){
+	public getCurrentRoom(ID: any): void{
 		this.currentRoom = this.rooms.find(x=> x.ID.toString() === ID.toString());
 	}
 
 	// navigate rooms
-	public navigateToRoom(name: string, ID: number, params?: RoomParams){
+	public navigateToRoom(name: string, ID: number, params?: RoomParams): void{
 		this.router.navigate(['/room', name + '_' + ID], { replaceUrl: true, queryParams: params });
 	}
 
 	// load rooms from storage
-	public loadRooms(navigate?: boolean, component?: any, reload?: boolean){
+	public loadRooms(navigate?: boolean, component?: any, reload?: boolean): void{
 		this.zone.run(()=>{
 			this.storage.setAndGetSetting({
 				name: 'rooms',
 				default: this.roomDefaults
-			}).then((result: Array<Room>) => {
+			}).then((result: Room[]) => {
 				// generate Unique ID for rooms, if not defined
 				let allUID: boolean = true;
-				result.forEach((room)=>{
+				result.forEach((room: Room)=>{
 					if(!room.UID){
 						allUID = false;
 						room.UID = '_' + Math.random().toString(36).substr(2, 9);
@@ -91,12 +76,13 @@ export class StructureService {
 					}]);
 				}
 				if(navigate){
-					this.navigateToRoom(this.rooms[0].name, this.rooms[0].ID, { 
+					const params: RoomParams = {
 						name: this.rooms[0].name,
 						ID: this.rooms[0].ID,
 						UID: this.rooms[0].UID,
 						reload: reload || false
-					});
+					};
+					this.navigateToRoom(this.rooms[0].name, this.rooms[0].ID, params);
 				}
 				this.getStructuredRoomList();
 			});
@@ -104,12 +90,25 @@ export class StructureService {
 	}
 
 	// saving room configuraion
-	public saveRooms() {
+	public saveRooms(): Promise<Room[]> {
 		return new Promise((resolve) => {
+			// remove not needed stuff from components, to reduce room storage
+			let allComponents: any = this.getAllComponents();
+			allComponents.forEach((componentDefinition: {component: any, room: string, roomID: string})=>{
+				let component = componentDefinition.component;
+				// delete parts that where added from component loader
+				// no need to save them. Will be generated from config
+				delete component.dimensions;
+				delete component.type;
+				if(component.dependencies){
+					delete component.dependencies;
+				}
+			});
+			// save rooms
 			this.storage.changeSetting({
 				name: 'rooms',
 				change: this.rooms
-			}).then((res: Array<Room>) => {
+			}).then((res: Room[]) => {
 				this.rooms = res;
 				this.getCurrentRoom(this.currentRoom.ID);
 				this.getStructuredRoomList();
@@ -119,8 +118,8 @@ export class StructureService {
 	}
 
 	// returning the list of rooms structured into submenus
-	public getStructuredRoomList(){
-		let structuredRooms = JSON.parse(JSON.stringify(this.rooms));
+	public getStructuredRoomList(): void{
+		let structuredRooms: Room[] = JSON.parse(JSON.stringify(this.rooms));
 		this.rooms.forEach((room: Room, i: number)=>{
 			if(room.groupRooms){
 				room.groupRooms.forEach((groupRoom, j)=>{
@@ -138,8 +137,8 @@ export class StructureService {
 	}
 
 	// pushing rooms back to normal structure and removing unused rooms
-	public modifyRooms(){
-		let modifiedRooms = [];
+	public modifyRooms(): void{
+		let modifiedRooms: Room[] = [];
 		this.structuredRooms.forEach((room: Room, i: number)=>{
 			if(room.useRoomAsGroup){
 				let found = this.rooms.find(x=> x.ID === room.ID);
@@ -172,8 +171,8 @@ export class StructureService {
 	// return a Array of all components
 	// includes {component: comp, room: roomName}
 	// custom obj can be passed --> get components from a previous state
-	public getAllComponents(){
-		let components: Array<{ component: any, room: string, roomID: string }> = [];
+	public getAllComponents(): Array<{component: DynamicComponentDefinition, room: string, roomID: string}>{
+		let components: Array<{component: DynamicComponentDefinition, room: string, roomID: string}> = [];
 		// looper for nested components
 		let looper = (arr: Array<any>, roomName: string, roomID: any)=>{
 			for(let item of arr){
@@ -208,7 +207,7 @@ export class StructureService {
 
 	// exec callback on each nested component inside arr
 	// searches for deep components
-	public modifyComponentList(arr: Array<any>, callback: any){
+	public modifyComponentList(arr: Array<any>, callback: any): void{
 		for(let item of arr){
 			if(item.ID){
 				callback(item);
@@ -228,8 +227,8 @@ export class StructureService {
 	}
 
 	// get a specifiv component
-	public getComponent(ID: string){
-		const comp = this.searchForComp(this.rooms, ID);
+	public getComponent(ID: string): DynamicComponentDefinition|null{
+		const comp: any = this.searchForComp(this.rooms, ID);
 		if(comp){
 			return comp;
 		}
@@ -237,9 +236,9 @@ export class StructureService {
 	}
 
 	// get the container in rooms, that should be used for component creation
-	public getComponentContainer(container: any){
+	public getComponentContainer(container: any): Array<DynamicComponentDefinition>|null{
 		// check if a container as ref or the HTML element is passed --> extract ID
-		const containerID = container.element ? container.element.nativeElement.parentNode.id : container.id;
+		const containerID: any = container.element ? container.element.nativeElement.parentNode.id : container.id;
 		// container are defined ..._@ID (exp. room_@0, popup_@0123)
 		// multi container components have special syntax containerID_component_@ID (exp. 1_swiper_@123)
 		let relevantID = /_@(.*)/.exec(containerID);
@@ -249,7 +248,7 @@ export class StructureService {
 				if(comp.attributes){
 					if(comp.attributes.components[0] && comp.attributes.components[0].components){
 						// multi container --> match first digits until underscore
-						let multiContainerID = containerID.match(/\d+_/);
+						let multiContainerID: number = containerID.match(/\d+_/);
 						if(multiContainerID){
 							multiContainerID = parseInt(multiContainerID[0].replace('_', ''));
 							return comp.attributes.components[multiContainerID] ? comp.attributes.components[multiContainerID].components : [];
@@ -269,7 +268,7 @@ export class StructureService {
 	}
 
 	// searches for component in defined Array
-	private searchForComp(arr: Array<any>, ID: string){
+	private searchForComp(arr: Array<any>, ID: string): any{
 		for(let item of arr){
 			// item found in top structure
 			if(item.ID !== undefined && ID !== undefined && item.ID.toString() === ID.toString()){
@@ -311,7 +310,7 @@ export class StructureService {
 
 	// determine if the component is editable
 	// rectangle is created in edit mode
-	public canEditComponent(ID: string){
+	public canEditComponent(ID: string): boolean{
 		const container = this.searchForComp(this.rooms, this.settings.modes.roomEditFrom);
 		if(container){
 			let canEdit = this.searchForComp( (container.attributes ? container.attributes.components : container.components), ID );
@@ -324,7 +323,7 @@ export class StructureService {
 
 	// determine if the container is editable
 	// grid is created on true in edit mode
-	public canEditContainer(ID: any){
+	public canEditContainer(ID: any): boolean{
 		const container = this.searchForComp(this.rooms, ID);
 		if(container && container.ID === this.settings.modes.roomEditFrom){
 			return true;
@@ -335,7 +334,7 @@ export class StructureService {
 	// used to save the changed item position of a component
 	// needs object of {item: 'position attributes of the item', dimenstions: 'dimensions that should be changed'}
 	// will evaluate the available dimensions
-	public saveItemPosition(obj: any, save: boolean) {
+	public saveItemPosition(obj: any, save: boolean) : void{
 		for (const [key, value] of Object.entries(obj.dimensions)) {
 			if (value !== undefined) {
 				obj.item[key] = value + 'px';

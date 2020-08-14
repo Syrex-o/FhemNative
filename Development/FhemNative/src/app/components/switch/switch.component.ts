@@ -13,7 +13,7 @@ import { SettingsService } from '../../services/settings.service';
 
 export class SwitchComponent {
 	// Events
-	@Output() onToggle: EventEmitter<any> = new EventEmitter();
+	@Output() onToggle: EventEmitter<boolean> = new EventEmitter();
 
 	// Switch Config
 	// style of the switch

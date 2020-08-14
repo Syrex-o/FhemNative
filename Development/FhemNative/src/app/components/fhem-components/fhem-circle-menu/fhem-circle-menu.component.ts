@@ -3,6 +3,9 @@ import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
 // Components
 import { ComponentsModule } from '../../components.module';
 
+// Interfaces
+import { ComponentSettings, FhemDevice } from '../../../interfaces/interfaces.type';
+
 // Services
 import { FhemService } from '../../../services/fhem.service';
 import { SettingsService } from '../../../services/settings.service';
@@ -55,7 +58,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	@Input() left: string;
 	@Input() zIndex: string;
 
-	fhemDevice: any;
+	fhemDevice: FhemDevice|null;
 	// state of fhem device
 	buttonState: boolean = false;
 	// build items based on user input
@@ -64,9 +67,9 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	currentValue: string;
 
 	ngOnInit() {
-		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+		this.fhem.getDevice(this.ID, this.data_device, (device: FhemDevice)=>{
 			this.getState(device);
-		}).then(device=>{
+		}).then((device: FhemDevice|null)=>{
 			this.getState(device);
 			// build item list
 			for (let i = 1; i <= 6; i++) {
@@ -77,24 +80,24 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	private getState(device){
+	private getState(device: FhemDevice|null): void{
 		this.fhemDevice = device;
 		if(device){
 			this.currentValue = this.fhemDevice.readings[this.data_reading].Value.toString();
 		}
 	}
 
-	toggleMenu(){
+	toggleMenu(): void{
 		this.buttonState = !this.buttonState;
 	}
 
-	closeMenu(){
+	closeMenu(): void{
 		this.buttonState = false;
 	}
 
-	translator(style: string, index: number) {
+	translator(style: string, index: number): string {
 		const max: number = Math.max(parseInt(this.width), parseInt(this.height));
-		let translate;
+		let translate: string;
 		if (style === 'top') {
 			translate = 'translate3d(0px,' + ((parseInt(this.height) * (index + 1)) * -1) + 'px, 0px)';
 		}
@@ -113,8 +116,8 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 		return translate;
 	}
 
-	select(index: number){
-		const command = this.items[index];
+	select(index: number): void{
+		const command: string = this.items[index];
 		if (this.data_setReading !== '') {
 			this.fhem.setAttr(this.fhemDevice.device, this.data_setReading, command);
 		} else {
@@ -130,7 +133,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 
 	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService){}
 
-	static getSettings() {
+	static getSettings(): ComponentSettings {
 		return {
 			name: 'Circle Menu',
 			type: 'fhem',

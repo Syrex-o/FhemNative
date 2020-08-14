@@ -36,7 +36,7 @@ export class UndoRedoService {
 	}
 
 	// load components for a room
-	private loadRoomStructure(isEditMode?: boolean){
+	private loadRoomStructure(isEditMode?: boolean): void{
 		// reassign current room
 		this.structure.getCurrentRoom(this.structure.currentRoom.ID);
 		// get the structured room list
@@ -63,7 +63,7 @@ export class UndoRedoService {
 	}
 
 	// Mark a change to the structure
-	public addChange(){
+	public addChange(): void{
 		// evaluate the stack
 		this.evaluateStack(1);
 
@@ -79,7 +79,7 @@ export class UndoRedoService {
 	}
 
 	// Change stack evaluation
-	private evaluateStack(num: number){
+	private evaluateStack(num: number): void{
 		this.currentStack = (this.currentStack + num >= 0 ? this.currentStack + num : -1);
 
 		if(this.currentStack === 0){
@@ -89,7 +89,7 @@ export class UndoRedoService {
 	}
 
 	// undo the last event
-	public undoChange(){
+	public undoChange(): void{
 		if (this.dataUndoArray.length != 0) {
 			this.dataRedoArray.push(this.dataCurrentArray.pop());
 			this.dataCurrentArray.push(this.dataUndoArray.pop());
@@ -104,7 +104,7 @@ export class UndoRedoService {
 	}
 
 	// redo the last event
-	public redoChange(){
+	public redoChange(): void{
 		if (this.dataRedoArray.length != 0) {
 			this.dataUndoArray.push(this.dataCurrentArray.pop());
 			this.dataCurrentArray.push(this.dataRedoArray.pop());
@@ -117,7 +117,7 @@ export class UndoRedoService {
 		}
 	}
 
-	public cancelChanges(){
+	public cancelChanges(): void{
 		// apply old structure
 		this.structure.rooms = JSON.parse(JSON.stringify(this.roomBackup));
 		// load relevant components
@@ -126,13 +126,13 @@ export class UndoRedoService {
 		this.resetValues();
 	}
 
-	public applyChanges(){
+	public applyChanges(): void{
 		this.structure.saveRooms();
 		// reset values
 		this.resetValues();
 	}
 
-	private resetValues(){
+	private resetValues(): void{
 		this.dataCurrentArray = [];
 		this.dataUndoArray = [];
 		this.dataRedoArray = [];

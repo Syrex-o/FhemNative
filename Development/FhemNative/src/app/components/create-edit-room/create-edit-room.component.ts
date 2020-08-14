@@ -54,7 +54,7 @@ export class CreateEditRoomComponent implements OnInit {
 		this.popupState = true;
 	}
 
-	grouper(scenario: string, event: boolean){
+	grouper(scenario: string, event: boolean): void{
 		if(event){
 			if(scenario === 'useAsGroup'){
 				this.roomToGroup = false;
@@ -65,7 +65,7 @@ export class CreateEditRoomComponent implements OnInit {
 	}
 
 	// check values
-	private valueChecker(){
+	private valueChecker(): boolean{
 		if(this.roomName && this.roomName !== ''){
 			return true;
 		}else{
@@ -79,7 +79,7 @@ export class CreateEditRoomComponent implements OnInit {
 	}
 
 	// save room
-	save(){
+	save(): void{
 		if(this.valueChecker()){
 			if(this.type === 'create'){
 				this.structure.rooms.push({
@@ -151,7 +151,7 @@ export class CreateEditRoomComponent implements OnInit {
 		}
 	}
 
-	close(){
+	close(): void{
 		this.componentLoader.removeDynamicComponent('CreateEditRoomComponent');
 	}
 

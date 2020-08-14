@@ -100,7 +100,7 @@ export class RoomComponent implements OnDestroy {
 	  	});
 	}
 
-	private initRoom(params?: any){
+	private initRoom(params?: any): void{
 		// reset selector list
 		this.selectComponent.selectorList = [];
 		// check for params
@@ -124,7 +124,7 @@ export class RoomComponent implements OnDestroy {
 		}
 	}
 
-	edit(){
+	edit(): void{
 		// tell the indicator, that editing was triggered from room with ID
 		this.settings.modeSub.next({
 			roomEdit: true,
@@ -133,7 +133,7 @@ export class RoomComponent implements OnDestroy {
 	}
 
 	// create help menu
-	private createHelpers() {
+	private createHelpers(): void {
 		if(this.structure.canEditContainer(this.structure.currentRoom.ID)){
 			this.componentLoader.createSingleComponent('GridComponent', this.container, {
 				container: this.container
@@ -144,18 +144,18 @@ export class RoomComponent implements OnDestroy {
 	}
 
 	// remove help menu
-	private removeHelpers(){
+	private removeHelpers(): void{
 		this.componentLoader.removeDynamicComponent('GridComponent');
 	}
 
-	private loadRoomComponents(){
+	private loadRoomComponents(): void{
 		this.zone.run(()=>{
 			this.componentLoader.loadRoomComponents(this.structure.currentRoom.components, this.container, true);
 		});
 	}
 
 	// create the menu, to create components
-	createComponentMenu(){
+	createComponentMenu(): void{
 		this.componentLoader.createSingleComponent('CreateEditComponent', this.container, {
 			container: this.componentLoader.currentContainer,
 			type: 'create'

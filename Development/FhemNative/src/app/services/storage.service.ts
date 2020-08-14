@@ -20,7 +20,7 @@ export class StorageService {
 
 	// used to get setting or to define a default setting
 	// needs object of {name: '', default: ''}
-	public setAndGetSetting(obj: Setting ) {
+	public setAndGetSetting(obj: Setting ): Promise<any> {
 		return new Promise((resolve) => {
 			this.storage.get(obj.name).then((value:any) => {
 				if(value === null){
@@ -39,7 +39,7 @@ export class StorageService {
 
 	// used to update setting
 	// needs object of {name: '', change: ''}
-	public changeSetting(obj: Setting) {
+	public changeSetting(obj: Setting): Promise<any> {
 		return new Promise((resolve) => {
 			this.storage.set(obj.name, obj.change).then(() => {
 				resolve(this.testJSON(obj.change) ? JSON.parse(obj.change) : obj.change);
@@ -50,7 +50,7 @@ export class StorageService {
 	// used to get a desired settings value
 	// returnes null if undefined
 	// needs name
-	public getSetting(name: string) {
+	public getSetting(name: string): Promise<any> {
 		return new Promise((resolve) => {
 			this.storage.get(name).then((value) => {
 				resolve(this.testJSON(value) ? JSON.parse(value) : value);
@@ -59,7 +59,7 @@ export class StorageService {
 	}
 
 	// get all settings
-	public getAllSettings() {
+	public getAllSettings(): Promise<any>{
 		return new Promise((resolve) => {
 			const res = {};
 			this.storage.keys().then((keys) => {
@@ -78,7 +78,7 @@ export class StorageService {
 	}
 
 	// test for json
-	private testJSON(str) {
+	private testJSON(str): boolean{
 		try { JSON.parse(str); } catch (e) { return false; }
 		return true;
 	}
