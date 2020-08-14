@@ -115,10 +115,10 @@
 					<ion-select 
 						colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
 						[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-		                [(ngModel)]="sprinklers.smart.rainOff.Value" (ionChange)="changeSmartSetting('rainOff', $event.detail.value)">
+						[(ngModel)]="sprinklers.smart.rainOff.Value" (ionChange)="changeSmartSetting('rainOff', $event.detail.value)">
 						<ion-select-option [value]="5">5 l/m2</ion-select-option>
-					    <ion-select-option [value]="10">10 l/m2</ion-select-option>
-					    <ion-select-option [value]="15">15 l/m2</ion-select-option>
+						<ion-select-option [value]="10">10 l/m2</ion-select-option>
+						<ion-select-option [value]="15">15 l/m2</ion-select-option>
 					</ion-select>
 				</div>
 			</div>
@@ -133,68 +133,70 @@
 				<div class="options" *ngIf="sprinklers.smart.wind.Value">
 					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND_VALUE.TITLE' | translate}}</p>
 					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND_VALUE.INFO' | translate}}</p>
-		            <ion-select 
-		            	colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-		            	[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-		            	[(ngModel)]="sprinklers.smart.windOff.Value" (ionChange)="changeSmartSetting('windOff', $event.detail.value)">
-					    <ion-select-option [value]="30">30 km/h</ion-select-option>
-					    <ion-select-option [value]="35">35 km/h</ion-select-option>
-					    <ion-select-option [value]="40">40 km/h</ion-select-option>
-					    <ion-select-option [value]="45">45 km/h</ion-select-option>
-					    <ion-select-option [value]="50">50 km/h</ion-select-option>
+					<ion-select 
+						colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+						[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+						[(ngModel)]="sprinklers.smart.windOff.Value" (ionChange)="changeSmartSetting('windOff', $event.detail.value)">
+						<ion-select-option [value]="30">30 km/h</ion-select-option>
+						<ion-select-option [value]="35">35 km/h</ion-select-option>
+						<ion-select-option [value]="40">40 km/h</ion-select-option>
+						<ion-select-option [value]="45">45 km/h</ion-select-option>
+						<ion-select-option [value]="50">50 km/h</ion-select-option>
 					</ion-select>
 				</div>
 			</div>
 			<div class="category">
 				<div class="options">
 					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP.TITLE' | translate}}</p>
-	                <p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP.INFO' | translate}}{{sprinklers.smart.highTemp.Value}}&#8451;.</p>
-	                <ion-select 
-	                	colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-	                	[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-	                	[(ngModel)]="sprinklers.smart.highTemp.Value" (ionChange)="changeSmartSetting('highTemp', $event.detail.value)">
-				        <ion-select-option [value]="25">25&#8451;</ion-select-option>
-				        <ion-select-option [value]="30">30&#8451;</ion-select-option>
-				    </ion-select>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP.INFO' | translate}}{{sprinklers.smart.highTemp.Value}}&#8451;.</p>
+					<ion-select 
+						colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+						[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+						[(ngModel)]="sprinklers.smart.highTemp.Value" (ionChange)="changeSmartSetting('highTemp', $event.detail.value)">
+						<ion-select-option [value]="25">25&#8451;</ion-select-option>
+						<ion-select-option [value]="30">30&#8451;</ion-select-option>
+					</ion-select>
 				</div>
-			    <div class="options">
-			    	<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP_VALUE.TITLE' | translate}}</p>
-	                <p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP_VALUE.INFO' | translate}}</p>
-	                <ion-select 
-	                	colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-	                	[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-	                	[(ngModel)]="sprinklers.smart.highPercentage.Value" (ionChange)="changeSmartSetting('highPercentage', $event.detail.value)">
-				        <ion-select-option [value]="10">10%</ion-select-option>
-			            <ion-select-option [value]="20">20%</ion-select-option>
-			            <ion-select-option [value]="30">30%</ion-select-option>
-			            <ion-select-option [value]="40">40%</ion-select-option>
-				    </ion-select>
-			    </div>
+				<div class="options">
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP_VALUE.TITLE' | translate}}</p>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP_VALUE.INFO' | translate}}</p>
+					<ion-select 
+						colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+						[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+						[(ngModel)]="sprinklers.smart.highPercentage.Value" (ionChange)="changeSmartSetting('highPercentage', $event.detail.value)">
+						<ion-select-option [value]="0">0%</ion-select-option>
+						<ion-select-option [value]="10">10%</ion-select-option>
+						<ion-select-option [value]="20">20%</ion-select-option>
+						<ion-select-option [value]="30">30%</ion-select-option>
+						<ion-select-option [value]="40">40%</ion-select-option>
+					</ion-select>
+				</div>
 			</div>
 			<div class="category">
 				<div class="options">
 					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP.TITLE' | translate}}</p>
-                	<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP.INFO' | translate}}{{sprinklers.smart.lowTemp.Value}}&#8451;.</p>
-                	<ion-select 
-                		colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-                		[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-                		[(ngModel)]="sprinklers.smart.lowTemp.Value" (ionChange)="changeSmartSetting('lowTemp', $event.detail.value)">
-			            <ion-select-option [value]="15">15&#8451;</ion-select-option>
-			            <ion-select-option [value]="10">10&#8451;</ion-select-option>
-			        </ion-select>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP.INFO' | translate}}{{sprinklers.smart.lowTemp.Value}}&#8451;.</p>
+					<ion-select 
+						colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+						[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+						[(ngModel)]="sprinklers.smart.lowTemp.Value" (ionChange)="changeSmartSetting('lowTemp', $event.detail.value)">
+						<ion-select-option [value]="15">15&#8451;</ion-select-option>
+						<ion-select-option [value]="10">10&#8451;</ion-select-option>
+					</ion-select>
 				</div>
 				<div class="options">
 					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP_VALUE.TITLE' | translate}}</p>
-                	<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP_VALUE.INFO' | translate}}</p>
-                	<ion-select 
-                		colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-                		[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-                		[(ngModel)]="sprinklers.smart.lowPercentage.Value" (ionChange)="changeSmartSetting('lowPercentage', $event.detail.value)">
-			            <ion-select-option [value]="10">10%</ion-select-option>
-		                <ion-select-option [value]="20">20%</ion-select-option>
-		                <ion-select-option [value]="30">30%</ion-select-option>
-		                <ion-select-option [value]="40">40%</ion-select-option>
-			        </ion-select>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP_VALUE.INFO' | translate}}</p>
+					<ion-select 
+						colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+						[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+						[(ngModel)]="sprinklers.smart.lowPercentage.Value" (ionChange)="changeSmartSetting('lowPercentage', $event.detail.value)">
+						<ion-select-option [value]="0">0%</ion-select-option>
+						<ion-select-option [value]="10">10%</ion-select-option>
+						<ion-select-option [value]="20">20%</ion-select-option>
+						<ion-select-option [value]="30">30%</ion-select-option>
+						<ion-select-option [value]="40">40%</ion-select-option>
+					</ion-select>
 				</div>
 			</div>
 			<div class="category">
@@ -207,7 +209,7 @@
 				</switch>
 				<div class="options" *ngIf="sprinklers.smart.winterProtect.Value">
 					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAIL_VALUE.TITLE' | translate}}</p>
-					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{formatMail(sprinklers.smart.mail.Value, 'display')}}</p>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{sprinklers.smart.mail.Value}}</p>
 					<button (click)="editMail('')">
 						<ion-icon colorizer [theme]="settings.app.theme" [style]="['color', 'text']" name="create"></ion-icon>
 					</button>
@@ -306,52 +308,53 @@
 						</timepicker>
 					</div>
 					<div class="category">
-	                    <h4 colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.TOTAL_RUNTIME' | translate}}</h4>
-	                    <p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{sprinklers.totalDuration['start'+j]}} - {{sprinklers.totalDuration['end'+j]}}</p>
-	            	</div>
-	            	<div class="singleSprinkler category" *ngFor="let item of sprinklers.times['interval'+j]; let i = index">
-	            		<h4 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.CYCLE' | translate}}</h4>
-	            		<div class="naming" (click)="editName(i)">
-	            			<span *ngIf="sprinklerColors?.color" class="sprinkler-color" [style.background]="sprinklerColors.color[i].val"></span>
-	            			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="sprinkler-name">{{sprinklers.names[i]}}</p>
-	            			<ion-icon name="create"></ion-icon>
-	            		</div>
-	            		<div class="sprinkler-duration">
-	            			<timepicker
+						<h4 colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.TOTAL_RUNTIME' | translate}}</h4>
+						<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des_small">{{sprinklers.totalDuration['start'+j]}} - {{sprinklers.totalDuration['end'+j]}}</p>
+					</div>
+					<div class="singleSprinkler category" *ngFor="let item of sprinklers.times['interval'+j]; let i = index">
+						<h4 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.CYCLE' | translate}}</h4>
+						<div class="naming" (click)="editName(i)">
+							<span *ngIf="sprinklerColors?.color" class="sprinkler-color" [style.background]="sprinklerColors.color[i].val"></span>
+							<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="sprinkler-name">{{sprinklers.names[i]}}</p>
+							<ion-icon name="create"></ion-icon>
+						</div>
+						<div class="sprinkler-duration">
+							<timepicker
 								[actOnCallback]="true"
+								[staticHeight]="35"
 								[label]="'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.RUNTIME' | translate"
 								[maxHours]="'4'"
 								[(ngModel)]="sprinklers.times['interval'+j][i].duration"
 								(onTimeChange)="setEnd(sprinklers.times['interval'+j][i].device, i, sprinklers.times['interval'+j][i].startTime, $event, 'inter'+j)">
 							</timepicker>
-	            		</div>
-	            		<button matRipple [matRippleColor]="'#d4d4d480'" (click)="select.open()" class="select-btn">
-	            			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}}</p>
-	            			<ion-select 
-	            				colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-	            				#select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-			                    multiple="true" [(ngModel)]="sprinklers.times['interval'+j][i].days.days" (ionChange)="changeWeekdays($event, i, 'inter'+j)">
-			                    <ion-select-option value="1">{{'GENERAL.DICTIONARY.WEEKDAYS.MONDAY' | translate}}</ion-select-option>
-			                    <ion-select-option value="2">{{'GENERAL.DICTIONARY.WEEKDAYS.TUESDAY' | translate}}</ion-select-option>
-			                    <ion-select-option value="3">{{'GENERAL.DICTIONARY.WEEKDAYS.WEDNESDAY' | translate}}</ion-select-option>
-			                    <ion-select-option value="4">{{'GENERAL.DICTIONARY.WEEKDAYS.THURSDAY' | translate}}</ion-select-option>
-			                    <ion-select-option value="5">{{'GENERAL.DICTIONARY.WEEKDAYS.FRIDAY' | translate}}</ion-select-option>
-			                    <ion-select-option value="6">{{'GENERAL.DICTIONARY.WEEKDAYS.SATURDAY' | translate}}</ion-select-option>
-			                    <ion-select-option value="0">{{'GENERAL.DICTIONARY.WEEKDAYS.SUNDAY' | translate}}</ion-select-option>
-			                </ion-select>
-	            		</button>
-	            		<div class="summary">
-	            			<h4 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.SUMMARY' | translate}}</h4>
-	            			<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="runtime">
-			                    {{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.RUNTIME' | translate}} {{sprinklers.times['interval'+j][i].startTime}} - {{sprinklers.times['interval'+j][i].endTime}} ({{sprinklers.times['interval'+j][i].duration}})<br>
-			                    {{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}} 
-			                    <span *ngIf="sprinklers.times['interval'+j][i].days.allDays === true">{{'GENERAL.DICTIONARY.WEEKDAYS.DAILY' | translate}}.</span>
-			                    <span *ngIf="sprinklers.times['interval'+j][i].days.allDays === false">
-			                    	<span *ngFor="let day of sprinklers.times['interval'+j][i].days.textDays; let j = index">{{ day }}</span>
-			                    </span>
-			                </p>
-	            		</div>
-	            	</div>
+						</div>
+						<button matRipple [matRippleColor]="'#d4d4d480'" (click)="select.open()" class="select-btn">
+							<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}}</p>
+							<ion-select 
+								colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
+								#select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+								multiple="true" [(ngModel)]="sprinklers.times['interval'+j][i].days.days" (ionChange)="changeWeekdays($event, i, 'inter'+j)">
+								<ion-select-option value="1">{{'GENERAL.DICTIONARY.WEEKDAYS.MONDAY' | translate}}</ion-select-option>
+								<ion-select-option value="2">{{'GENERAL.DICTIONARY.WEEKDAYS.TUESDAY' | translate}}</ion-select-option>
+								<ion-select-option value="3">{{'GENERAL.DICTIONARY.WEEKDAYS.WEDNESDAY' | translate}}</ion-select-option>
+								<ion-select-option value="4">{{'GENERAL.DICTIONARY.WEEKDAYS.THURSDAY' | translate}}</ion-select-option>
+								<ion-select-option value="5">{{'GENERAL.DICTIONARY.WEEKDAYS.FRIDAY' | translate}}</ion-select-option>
+								<ion-select-option value="6">{{'GENERAL.DICTIONARY.WEEKDAYS.SATURDAY' | translate}}</ion-select-option>
+								<ion-select-option value="0">{{'GENERAL.DICTIONARY.WEEKDAYS.SUNDAY' | translate}}</ion-select-option>
+							</ion-select>
+						</button>
+						<div class="summary">
+							<h4 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.SUMMARY' | translate}}</h4>
+							<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="runtime">
+								{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.RUNTIME' | translate}} {{sprinklers.times['interval'+j][i].startTime}} - {{sprinklers.times['interval'+j][i].endTime}} ({{sprinklers.times['interval'+j][i].duration}})<br>
+								{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}} 
+								<span *ngIf="sprinklers.times['interval'+j][i].days.allDays === true">{{'GENERAL.DICTIONARY.WEEKDAYS.DAILY' | translate}}.</span>
+								<span *ngIf="sprinklers.times['interval'+j][i].days.allDays === false">
+									<span *ngFor="let day of sprinklers.times['interval'+j][i].days.textDays; let j = index">{{ day }}</span>
+								</span>
+							</p>
+						</div>
+					</div>
 				</div>
 			</ion-slide>
 		</ion-slides>
@@ -371,41 +374,41 @@
 	<div body class="page">
 		<table class="calendar" colorizer [theme]="settings.app.theme" [style]="['background', 'primary']">
 			<tr class="weekdays">
-			    <td *ngFor="let item of [
-			        '',
-			        ('GENERAL.DICTIONARY.WEEKDAYS.MONDAY' | translate),
-			        ('GENERAL.DICTIONARY.WEEKDAYS.TUESDAY' | translate),
-			        ('GENERAL.DICTIONARY.WEEKDAYS.WEDNESDAY' | translate),
-			        ('GENERAL.DICTIONARY.WEEKDAYS.THURSDAY' | translate),
-			        ('GENERAL.DICTIONARY.WEEKDAYS.FRIDAY' | translate),
-			        ('GENERAL.DICTIONARY.WEEKDAYS.SATURDAY' | translate),
-			        ('GENERAL.DICTIONARY.WEEKDAYS.SUNDAY' | translate)
-			        ]"><p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{item.substr(0,2)}}</p>
-			    </td>
+				<td *ngFor="let item of [
+					'',
+					('GENERAL.DICTIONARY.WEEKDAYS.MONDAY' | translate),
+					('GENERAL.DICTIONARY.WEEKDAYS.TUESDAY' | translate),
+					('GENERAL.DICTIONARY.WEEKDAYS.WEDNESDAY' | translate),
+					('GENERAL.DICTIONARY.WEEKDAYS.THURSDAY' | translate),
+					('GENERAL.DICTIONARY.WEEKDAYS.FRIDAY' | translate),
+					('GENERAL.DICTIONARY.WEEKDAYS.SATURDAY' | translate),
+					('GENERAL.DICTIONARY.WEEKDAYS.SUNDAY' | translate)
+					]"><p colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{item.substr(0,2)}}</p>
+				</td>
 			</tr>
 		</table>
 		<div class="content_calendar" [ngClass]="local.today" *ngIf="sprinklerColors?.color">
 			<span class="local-percentage" [ngStyle]="{'top': local.percentage}"></span>
 			<div class="timeContainer" colorizer [theme]="settings.app.theme" [style]="['color', 'text']">
-	            <p 
-	            	class="day-time" 
-	            	*ngFor="let item of ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']">{{item}}:00
-	            </p>
-	        </div>
-	        <div class="calendarDay" *ngFor="let day of ['1', '2', '3', '4', '5', '6', '7']; let i = index">
-	        	<div *ngFor="let values of timeArr; let j = index" class="times_calendar">
-	        		<span class="time-elem" *ngFor="let k of [1,2]"
-	                  	[class.disabled]="(sprinklers.smart.tooRainy || sprinklers.smart.tooWindy) || (k === 2 && !sprinklers.smart.enableInterval2.Value)"
-	                   	[ngStyle]="{'top': timeArr[j]['startP_'+k+'_'+day], 'height': timeArr[j]['heightP_'+k+'_'+day], 'background-color': sprinklerColors.color[j].val}"
-	                  	(click)="showRuntime(j)">
-	                </span>
-	                <span class="time-elem" *ngFor="let k of [1,2]"
-	                   	[class.disabled]="(sprinklers.smart.tooRainy || sprinklers.smart.tooWindy) || (k === 2 && !sprinklers.smart.enableInterval2.Value)"
-	                   	[ngStyle]="{'top': timeArr[j]['startFromNullP_'+k+'_'+day], 'height': timeArr[j]['heightFromNullP_'+k+'_'+day], 'background-color': sprinklerColors.color[j].val}"
-	                   	(click)="showRuntime(j)">
-	                </span>
-	        	</div>
-	        </div>
+				<p 
+					class="day-time" 
+					*ngFor="let item of ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']">{{item}}:00
+				</p>
+			</div>
+			<div class="calendarDay" *ngFor="let day of ['1', '2', '3', '4', '5', '6', '7']; let i = index">
+				<div *ngFor="let values of timeArr; let j = index" class="times_calendar">
+					<span class="time-elem" *ngFor="let k of [1,2]"
+						[class.disabled]="(sprinklers.smart.tooRainy || sprinklers.smart.tooWindy) || (k === 2 && !sprinklers.smart.enableInterval2.Value)"
+						[ngStyle]="{'top': timeArr[j]['startP_'+k+'_'+day], 'height': timeArr[j]['heightP_'+k+'_'+day], 'background-color': sprinklerColors.color[j].val}"
+						(click)="showRuntime(j)">
+					</span>
+					<span class="time-elem" *ngFor="let k of [1,2]"
+						[class.disabled]="(sprinklers.smart.tooRainy || sprinklers.smart.tooWindy) || (k === 2 && !sprinklers.smart.enableInterval2.Value)"
+						[ngStyle]="{'top': timeArr[j]['startFromNullP_'+k+'_'+day], 'height': timeArr[j]['heightFromNullP_'+k+'_'+day], 'background-color': sprinklerColors.color[j].val}"
+						(click)="showRuntime(j)">
+					</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </picker>
