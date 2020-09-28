@@ -70,11 +70,11 @@ export class ContextMenuComponent implements OnInit {
 			const container: ClientRect = this.componentLoader.containerStack[0].container.element.nativeElement.parentNode.getBoundingClientRect();
 			let x: number = 0; let y: number = 0;
 			if (this.x + menu.clientWidth >= container.width) {
-				const menuOverlap = container.width - (menu.getBoundingClientRect().left + menu.clientWidth + 10);
+				const menuOverlap: number = container.width - (menu.getBoundingClientRect().left + menu.clientWidth + 10);
 				x = menuOverlap;
 			}
 			if (this.y + menu.clientHeight >= container.height) {
-				const menuOverlap = container.height - (menu.getBoundingClientRect().top + menu.clientHeight + 10);
+				const menuOverlap: number = container.height - (menu.getBoundingClientRect().top + menu.clientHeight + 10);
 				y = menuOverlap;
 			}
 			menu.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
@@ -109,12 +109,12 @@ export class ContextMenuComponent implements OnInit {
 			// fhem userAttr info
 			let attrValue: {[key: string]: string} = {long: '', short: ''};
 
-			let giveText = (attr: string, key: string, val: any) =>{
+			let giveText = (attr: string, key: string, val: any): void =>{
 				attrValue[attr] += val.attr.replace(key.replace('attr_', '')+'_', '') + ':' + ( Array.isArray(val.value) ? val.value[0] : val.value ) + ';';
 			}
 			// get default component
-			this.componentLoader.getFhemComponentData(component.name).then((componentDefault)=>{
-				let defaultComp: any = componentDefault;
+			this.componentLoader.getFhemComponentData(component.name).then((componentDefault: DynamicComponentDefinition)=>{
+				let defaultComp: DynamicComponentDefinition = componentDefault;
 				// loop the default component
 				for(const key of Object.keys(defaultComp.attributes)){
 					defaultComp.attributes[key].forEach((defaultEntry: {attr: string, value: any})=>{
@@ -266,7 +266,7 @@ export class ContextMenuComponent implements OnInit {
 			}
 		};
 		// get the component
-		const component = this.structure.getComponent(this.componentID);
+		const component: DynamicComponentDefinition = this.structure.getComponent(this.componentID);
 		if('pinned' in component){
 			component.pinned = !component.pinned;
 		}else{
@@ -277,14 +277,14 @@ export class ContextMenuComponent implements OnInit {
 		// detect grouping and modify pinning
 		const isGrouped = this.selectComponent.isGrouped(component.ID);
 		// assign pinning to all selected components
-		this.selectComponent.selectorList.map(x=> x.ID).forEach((id)=>{
+		this.selectComponent.selectorList.map(x=> x.ID).forEach((id: string)=>{
 			let comp = this.structure.getComponent(id);
 			comp['pinned'] = component['pinned'];
 			pinner(comp);
 		});
 		
 		if(isGrouped){
-			this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group].forEach((id)=>{
+			this.structure.rooms[this.structure.currentRoom.ID]['groupComponents'][isGrouped.group].forEach((id: string)=>{
 				let comp = this.structure.getComponent(id);
 				comp['pinned'] = component['pinned'];
 				pinner(comp);
