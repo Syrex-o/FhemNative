@@ -309,23 +309,32 @@ export class ContextMenuComponent implements OnInit {
 
 	// send component to from/back
 	sendTo(param: string): void{
-		const component = this.structure.getComponent(this.componentID);
+		const component: DynamicComponentDefinition = this.structure.getComponent(this.componentID);
 		const roomComponents = this.structure.getComponentContainer(this.componentLoader.currentContainer);
-		console.log(roomComponents);
-		// get z-index values
-		const zIndex = [];
-		for (let i = 0; i < roomComponents.length; i++) {
-			if (this.componentID !== roomComponents[i].ID) {
-				roomComponents[i].position.zIndex = param === 'back' ? 
-				(roomComponents[i].position.zIndex + 1) : 
-				( (roomComponents[i].position.zIndex === 1) ? 1 : (roomComponents[i].position.zIndex - 1) );
-				this.changeAttr(roomComponents[i].ID, 'zIndex', roomComponents[i].position.zIndex);
-				// add to zindex arr
-				zIndex.push(roomComponents[i].position.zIndex);
-			}
+		
+		if(param == 'back'){
+			// change z-index of all other components
+			roomComponents.forEach((component: DynamicComponentDefinition, i: number)=>{
+				if (this.componentID !== component.ID) {
+					let changedIndex: number = component.position.zIndex;
+					changedIndex = changedIndex > 1 ? changedIndex : changedIndex + 1;
+					this.changeAttr(component.ID, 'zIndex', changedIndex);
+				}
+			});
+			// set z-index to 1 of selected component
+			this.changeAttr(component.ID, 'zIndex', 1);
+		}else{
+			// get z-index values
+			const zIndex: number[] = [];
+			roomComponents.forEach((component: DynamicComponentDefinition, i: number)=>{
+				if (this.componentID !== component.ID) {
+					let index: number = component.position.zIndex;
+					zIndex.push(index);
+				}
+			});
+			// change to max z-index + 1
+			this.changeAttr(component.ID, 'zIndex', Math.max(...zIndex) + 1);
 		}
-		component.position.zIndex = param === 'front' ? ( Math.max(...zIndex) + 1 ) : 1;
-		this.changeAttr(component.ID, 'zIndex', component.position.zIndex);
 		this.saveComp();
 	}
 
