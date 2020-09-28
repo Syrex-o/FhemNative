@@ -17,7 +17,7 @@ export class VersionService {
 	// github repo
 	private repo: string = 'https://api.github.com/repos/Syrex-o/FhemNative/';
 	// current App Version
-	public appVersion: string = '2.6.2';
+	public appVersion: string = '2.6.3';
 
 	constructor(
 		private http: HttpClient,

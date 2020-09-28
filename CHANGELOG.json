@@ -486,6 +486,17 @@
 				{"TYPE": "FIX", "CHANGE": "Mail formatting in Sprinkler"},
 				{"TYPE": "FIX", "CHANGE": "Device generator"}
 			]
+		},
+		{
+			"VERSION": "2.6.3",
+			"DATE": "31.08.2020",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Label component alias values"},
+				{"TYPE": "FIX", "CHANGE": "Icon component empty reading crash"},
+				{"TYPE": "FIX", "CHANGE": "Slider Init wrong sides animation for inverted min/max"},
+				{"TYPE": "FIX", "CHANGE": "Slider Box buttons for inverted min/max"},
+				{"TYPE": "FIX", "CHANGE": "Context Menu send to front/back"}
+			]
 		}
 	]
 }

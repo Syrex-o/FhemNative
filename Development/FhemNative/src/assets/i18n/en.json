@@ -876,6 +876,14 @@
 					"name": "Label",
 					"info": "Label to display (if needed)"
 				},
+				"data_items":{
+					"name": "Items",
+					"info": "Manual list of selectable items (comma seperated)"
+				},
+				"data_alias":{
+					"name": "Alias",
+					"info": "List of alias values (comma seperated)"
+				},
 				"data_labelExtension":{
 					"name": "Label extension",
 					"info": "Ending of the value label (Exp. %)"
@@ -903,6 +911,10 @@
 				"arr_data_textStyle":{
 					"name": "Text-Style",
 					"info": "Text-Style of the label"
+				},
+				"bool_data_useAlias":{
+					"name": "Use alias",
+					"info": "Activate/deactivate alias list for readings"
 				},
 				"style_color":{
 					"name": "Color",

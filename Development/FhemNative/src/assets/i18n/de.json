@@ -864,6 +864,14 @@
 					"name": "Label",
 					"info": "Anzuzeigendes Label (falls benötigt)"
 				},
+				"data_items":{
+					"name": "Elemente",
+					"info": "Manualle Liste von Elementen (Komma-separiert)"
+				},
+				"data_alias":{
+					"name": "Alias",
+					"info": "Liste von Alias Werten (Komma-separiert)"
+				},
 				"data_labelExtension":{
 					"name": "Label-Endung",
 					"info": "Endung des Werte-Labels (Bsp. %)"
@@ -891,6 +899,10 @@
 				"arr_data_textStyle":{
 					"name": "Text-Style",
 					"info": "Text-Style des Labels"
+				},
+				"bool_data_useAlias":{
+					"name": "Alias verwenden",
+					"info": "Alias Liste für Readings aktivieren/deaktivieren"
 				},
 				"style_color":{
 					"name": "Farbe",
