@@ -66,20 +66,22 @@ export class FhemIconComponent implements OnInit, OnDestroy {
 	}
 
 	getValueColor(){
-		// int colors
-		if(!isNaN(this.fhemDevice.readings[this.data_reading].Value)){
-			if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value < parseFloat(this.data_min)){
-				return this.style_minColor;
-			}
-			if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value > parseFloat(this.data_max)){
-				return this.style_maxColor;
-			}
-		}else{
-			if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_min){
-				return this.style_minColor;
-			}
-			if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_max){
-				return this.style_maxColor;
+		if(this.data_reading !== ''){
+			// int colors
+			if(!isNaN(this.fhemDevice.readings[this.data_reading].Value)){
+				if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value < parseFloat(this.data_min)){
+					return this.style_minColor;
+				}
+				if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value > parseFloat(this.data_max)){
+					return this.style_maxColor;
+				}
+			}else{
+				if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_min){
+					return this.style_minColor;
+				}
+				if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_max){
+					return this.style_maxColor;
+				}
 			}
 		}
 		// return default state
