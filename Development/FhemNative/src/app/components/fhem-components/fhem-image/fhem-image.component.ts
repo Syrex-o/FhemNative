@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { ComponentsModule } from '../../components.module';
+
 // Services
 import { FhemService } from '../../../services/fhem.service';
 import { SettingsService } from '../../../services/settings.service';
@@ -19,11 +20,13 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 	@Input() data_reading: string;
 	@Input() data_url: string;
 	@Input() data_updateInterval: string;
+	@Input() data_imageUrl: string;
 
 	@Input() arr_data_defaultImage: string[];
 
 	@Input() bool_data_cache: boolean;
 	@Input() bool_data_defaultImage: boolean;
+	@Input() bool_data_useLocalImage: boolean;
 
 	// position information
 	@Input() width: string;
@@ -38,13 +41,20 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 	private interval: any;
 
 	ngOnInit(){
-		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
-			this.getState(device);
-		}).then(device=>{
-			this.getState(device);
-		});
-		// get initial image
-		this.updateImageData('');
+		if(!this.bool_data_useLocalImage){
+			this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+				this.getState(device);
+			}).then(device=>{
+				this.getState(device);
+			});
+			// get initial image
+			this.updateImageData('');
+		}else{
+			// load local image
+			if(this.data_imageUrl !== ''){
+				this.src = (<any>window).Ionic.WebView.convertFileSrc(this.data_imageUrl);
+			}
+		}
 	}
 
 	private getState(device){
@@ -86,7 +96,8 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private fhem: FhemService,
-		public settings: SettingsService) {}
+		public settings: SettingsService) {
+	}
 
 	static getSettings() {
 		return {
@@ -97,13 +108,21 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 				{variable: 'data_reading', default: 'state'},
 				{variable: 'data_url', default: ''},
 				{variable: 'data_updateInterval', default: '10'},
+				{variable: 'data_imageUrl', default: ''},
 				{variable: 'arr_data_defaultImage', default: 'default-music.png,default-image.png'},
 				{variable: 'bool_data_cache', default: true},
-				{variable: 'bool_data_defaultImage', default: false}
+				{variable: 'bool_data_defaultImage', default: false},
+				{variable: 'bool_data_useLocalImage', default: false}
 			],
 			dependencies:{
 				data_updateInterval: {dependOn: 'bool_data_cache', value: false},
-				arr_data_defaultImage: {dependOn: 'bool_data_defaultImage', value: true}
+				arr_data_defaultImage: {dependOn: 'bool_data_defaultImage', value: true},
+				// local image
+				data_device: {dependOn: 'bool_data_useLocalImage', value: false},
+				data_reading: {dependOn: 'bool_data_useLocalImage', value: false},
+				data_url: {dependOn: 'bool_data_useLocalImage', value: false},
+				bool_data_cache: {dependOn: 'bool_data_useLocalImage', value: false},
+				data_imageUrl: {dependOn: 'bool_data_useLocalImage', value: true}
 			},
 			dimensions: {minX: 40, minY: 40}
 		};
