@@ -1,4 +1,4 @@
-import { Injectable, Compiler, Injector, ComponentFactoryResolver, NgModuleFactory, Type } from '@angular/core';
+import { Injectable, Injector, ComponentFactoryResolver, NgModuleFactory, Type } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // interfaces

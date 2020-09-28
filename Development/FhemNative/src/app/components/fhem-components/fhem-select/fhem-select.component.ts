@@ -13,7 +13,7 @@ import { NativeFunctionsService } from '../../../services/native-functions.servi
 @Component({
 	selector: 'fhem-select',
 	templateUrl: './fhem-select.component.html',
-  	styleUrls: ['./fhem-select.component.scss']
+	styleUrls: ['./fhem-select.component.scss']
 })
 export class FhemSelectComponent implements OnInit, OnDestroy {
 	@Input() ID: string;
@@ -25,10 +25,10 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 
 	@Input() data_seperator: string;
 	@Input() data_items: string;
-    @Input() data_alias: string;
-    @Input() data_placehoder: string;
+	@Input() data_alias: string;
+	@Input() data_placehoder: string;
 
-    @Input() data_borderRadius: string;
+	@Input() data_borderRadius: string;
 	@Input() data_borderRadiusTopLeft: string;
 	@Input() data_borderRadiusTopRight: string;
 	@Input() data_borderRadiusBottomLeft: string;
@@ -52,9 +52,9 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 	fhemDevice: any;
 	// list itmes
 	items: string[] = [];
-    alias: string[] = [];
-    // selected item
-    selected: string;
+	alias: string[] = [];
+	// selected item
+	selected: string;
 
 	ngOnInit(){
 		// get fhem values if needed
@@ -187,6 +187,6 @@ export class FhemSelectComponent implements OnInit, OnDestroy {
 }
 @NgModule({
 	imports: [ComponentsModule, TranslateModule],
-  	declarations: [FhemSelectComponent]
+	declarations: [FhemSelectComponent]
 })
 class FhemSelectComponentModule {}

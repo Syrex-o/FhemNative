@@ -151,7 +151,7 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	private getState(device, init: boolean){
 		this.fhemDevice = device;
 		if(device && this.fhemDevice.readings[this.data_reading]){
-			const oldValue = this.checkForTime(this.value || this.data_min, init);
+			const oldValue = this.checkForTime(this.value || ( Math.min(this.data_min, this.data_max) ), init);
 			const updateValue = this.checkForTime(this.fhemDevice.readings[this.data_reading].Value, false);
 			if (updateValue !== this.value) {
 				this.value = updateValue;
@@ -296,8 +296,11 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	// update value by step
 	setStep(direction: string){
 		let value = (direction === 'add') ? this.value + parseInt(this.data_steps) : this.value - parseInt(this.data_steps);
-		if (value <= parseInt(this.data_min)) value = parseInt(this.data_min);
-		if (value >= parseInt(this.data_max)) value = parseInt(this.data_max);
+		let min: number = Math.min(this.data_min, this.data_max);
+		let max: number = Math.max(this.data_min, this.data_max);
+
+		if (value <= min) value = min;
+		if (value >= max) value = max;
 		if (value !== this.value) {
 			this.value = value;
 			this.updateSliderValues();
