@@ -61,8 +61,6 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 	popupState: boolean = false;
 	showFavs: boolean = false;
 	colorFavs: string[] = [];
-	// block outside color update
-	private blockOuterUpdate: boolean = false;
 
 	color: string;
 	// container max dimension
@@ -81,8 +79,6 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 			// start move
 			if(target.className.match(/inner/)){
 				this.styles.outerRotation = 90;
-			}else{
-				this.blockOuterUpdate = true;
 			}
 			const whileMove = (e) => {
 				e.stopPropagation();
@@ -106,7 +102,6 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 	   				this.sendValue(color);
 	   			}
 	   			this.waitForThreshold = 0;
-	   			this.blockOuterUpdate = false;
 	   		}
 
 	        window.addEventListener('mousemove', whileMove);
@@ -122,6 +117,9 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 			this.getState(device);
 		}).then(device=>{
 			this.getState(device);
+			if(device && device.readings[this.data_reading]){
+				this.getOuterGradientColor();
+			}
 		});
 	}
 
@@ -130,9 +128,6 @@ export class FhemColorPickerComponent implements OnInit, OnDestroy {
 		if(device){
 			if(device.readings[this.data_reading]){
 				this.color = this.colorSelector(this.arr_data_colorInput[0], 'hex', device.readings[this.data_reading].Value.toString());
-				if(!this.blockOuterUpdate){
-					this.getOuterGradientColor();
-				}
 			}
 		}
 	}
