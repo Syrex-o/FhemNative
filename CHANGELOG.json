@@ -489,13 +489,16 @@
 		},
 		{
 			"VERSION": "2.6.3",
-			"DATE": "31.08.2020",
+			"DATE": "28.09.2020",
 			"CHANGES":[
-				{"TYPE": "NEW", "CHANGE": "Label component alias values"},
+				{"TYPE": "NEW", "CHANGE": "Label component alias values"},,
+				{"TYPE": "NEW", "CHANGE": "Image component can laod local images from device"}
 				{"TYPE": "FIX", "CHANGE": "Icon component empty reading crash"},
 				{"TYPE": "FIX", "CHANGE": "Slider Init wrong sides animation for inverted min/max"},
 				{"TYPE": "FIX", "CHANGE": "Slider Box buttons for inverted min/max"},
-				{"TYPE": "FIX", "CHANGE": "Context Menu send to front/back"}
+				{"TYPE": "FIX", "CHANGE": "Context Menu send to front/back"},
+				{"TYPE": "FIX", "CHANGE": "Sprinkler rain off better parameters"},
+				{"TYPE": "FIX", "CHANGE": "Color picker outside circle update every receive"}
 			]
 		}
 	]

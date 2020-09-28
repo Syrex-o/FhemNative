@@ -815,7 +815,11 @@
 				},
 				"data_url":{
 					"name": "Url",
-					"info": "External URL (otherwise it tries to find the URL in the reading) (if no url and reading is selected, a button for device image selection will be created)"
+					"info": "External URL (otherwise it tries to find the URL in the reading)"
+				},
+				"data_imageUrl":{
+					"name": "Device File Url",
+					"info": "Url of an image on the device (Exp. file:///storage/emulated/0/DCIM/Camera/IMG_20191213_134704.jpg)"
 				},
 				"data_updateInterval":{
 					"name": "Update interval",
@@ -832,6 +836,10 @@
 				"bool_data_defaultImage":{
 					"name": "Use default image",
 					"info": "Enabe/disable to use default image"
+				},
+				"bool_data_useLocalImage":{
+					"name": "Use image from device",
+					"info": "Enabe/disable to load local image from device"
 				}
 			},
 			"TRANSLATOR":{

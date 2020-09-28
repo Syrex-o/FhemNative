@@ -803,7 +803,11 @@
 				},
 				"data_url":{
 					"name": "Url",
-					"info": "Externe URL (anderenfalls versucht IFrame eine URL im Reading zu finden) (ist nichts selektiert, kreiert Image einen Button, um Bilder vom Gerät auswählen zu können)"
+					"info": "Externe URL (anderenfalls wird versucht eine URL im Reading zu finden)"
+				},
+				"data_imageUrl":{
+					"name": "Geräte Bild Url",
+					"info": "Url des Bildes auf dem Gerät (Bsp. file:///storage/emulated/0/DCIM/Camera/IMG_20191213_134704.jpg)"
 				},
 				"data_updateInterval":{
 					"name": "Updateinterval",
@@ -820,6 +824,10 @@
 				"bool_data_defaultImage":{
 					"name": "Standard Bild verwenden",
 					"info": "Standard Bild verwenden aktivieren/deaktivieren"
+				},
+				"bool_data_useLocalImage":{
+					"name": "Bild vom Gerät nutzen",
+					"info": "Lokales Bild vom Gerät laden aktivieren/deaktivieren"
 				}
 			},
 			"TRANSLATOR":{
