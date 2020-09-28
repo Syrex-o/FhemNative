@@ -17,3 +17,4 @@ plugins
 *.DS_Store
 
 app/scripts/configuration.js
+fhemnative-key.keystore
