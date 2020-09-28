@@ -116,9 +116,16 @@
 						colorizer [theme]="settings.app.theme" [style]="['color', 'text']" 
 						[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
 						[(ngModel)]="sprinklers.smart.rainOff.Value" (ionChange)="changeSmartSetting('rainOff', $event.detail.value)">
+						<ion-select-option [value]="1">1 l/m2</ion-select-option>
+						<ion-select-option [value]="2">2 l/m2</ion-select-option>
+						<ion-select-option [value]="3">3 l/m2</ion-select-option>
+						<ion-select-option [value]="4">4 l/m2</ion-select-option>
 						<ion-select-option [value]="5">5 l/m2</ion-select-option>
+						<ion-select-option [value]="6">6 l/m2</ion-select-option>
+						<ion-select-option [value]="7">7 l/m2</ion-select-option>
+						<ion-select-option [value]="8">8 l/m2</ion-select-option>
+						<ion-select-option [value]="9">9 l/m2</ion-select-option>
 						<ion-select-option [value]="10">10 l/m2</ion-select-option>
-						<ion-select-option [value]="15">15 l/m2</ion-select-option>
 					</ion-select>
 				</div>
 			</div>
