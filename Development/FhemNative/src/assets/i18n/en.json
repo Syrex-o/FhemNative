@@ -164,6 +164,102 @@
 				}
 			}
 		},
+		"Button Menu":{
+			"NAME": "Button Menu",
+			"DES": "A simple Button to switch rooms.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device name",
+					"info": "Name of the Fhem device"
+				},
+				"data_reading":{
+					"name": "Reading name",
+					"info": "Name of the Fhem Device Reading"
+				},
+				"data_room": {
+					"name": "Room",
+					"info": "Room to switch to (Roomname)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "State of the reading in ON state"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "State of the reading in OFF state"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label to display in the button (default: Fhem device name)"
+				},
+				"data_borderRadius":{
+					"name": "Border radius",
+					"info": "Border Radius of the button"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Border radius top left",
+					"info": "Border radius of the button top left"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Border radius top right",
+					"info": "Border radius of the button top right"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Border radius bottom left",
+					"info": "Border radius of the button bottom left"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Border radius bottom right",
+					"info": "Border radius of the button bottom right"
+				},
+				"data_iconSize":{
+					"name": "Icon size",
+					"info": "Size of the icon in the button"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style of the button"
+				},
+				"icon_iconOn":{
+					"name": "Icon on",
+					"info": "Desired Icon for ON state"
+				},
+				"icon_iconOff":{
+					"name": "Icon off",
+					"info": "Desired Icon for OFF state"
+				},
+				"bool_data_iconOnly":{
+					"name": "Show icon only",
+					"info": "Enable/disable to display icon only"
+				},
+				"bool_data_customBorder":{
+					"name": "Custom border radius",
+					"info": "Custom border radius for each corner"
+				},
+				"style_iconColorOn":{
+					"name": "Icon color on",
+					"info": "Icon color for ON state"
+				},
+				"style_iconColorOff":{
+					"name": "Icon color off",
+					"info": "Icon color for OFF state"
+				},
+				"style_buttonColor":{
+					"name": "Background color",
+					"info": "Button background color"
+				},
+				"style_labelColor":{
+					"name": "Label color",
+					"info": "Color of the label"
+				}
+			},
+			"TRANSLATOR":{
+				"ROOM_NOT_FOUND": {
+					"HEADER": "Info",
+					"MESSAGE": "Room not found"
+				}
+			}
+		},
 		"Button Multistate":{
 			"NAME": "Button Multistate",
 			"DES": "A Button to switch between different states in FHEM.",
@@ -381,6 +477,10 @@
 					"name": "Custom border radius",
 					"info": "Custom border radius for each corner"
 				},
+				"bool_data_useIcons":{
+					"name": "Icons instead of values",
+					"info": "Use Icons instead of values in multi menu"
+				},
 				"arr_data_expandStyle":{
 					"name": "Expand style",
 					"info": "Direction where the menu should unfold"
@@ -412,6 +512,14 @@
 				"style_activeColor":{
 					"name": "Active color",
 					"info": "Color of the active item"
+				},
+				"arr_icon_icons":{
+					"name": "Icons",
+					"info": "List of icons for multi menu"
+				},
+				"arr_style_iconColors":{
+					"name": "Icon colors",
+					"info": "List of icon colors for the multi menu"
 				}
 			}
 		},
@@ -607,9 +715,13 @@
 					"name": "Style",
 					"info": "Style of the color picker"
 				},
-				"bool_data_showSlider":{
-					"name": "Show slider",
-					"info": "Show/hide slider (Slider reading needed)"
+				"bool_data_showFavMenu": {
+					"name": "Favourites menu",
+					"info": "Show/Hide color favourites menu"
+				},
+				"bool_data_usePopup":{
+					"name": "Colorpicker in popup",
+					"info": "Activate/deactivate to use Colorpicker in Popup"
 				},
 				"bool_data_updateOnMove":{
 					"name": "Update on move",
@@ -2012,6 +2124,37 @@
 						}
 					}
 				},
+				"SHARED_CONFIG":{
+					"TITLE": "Shared FhemNative Config in FHEM Reading",
+					"INFO": "Dhare FhemNative configuration in FHEM Reading",
+					"BUTTON": "Configure",
+					"PICKER": {
+						"HEADER": "Shared Configuration",
+						"MESSAGE": "NOTE: Please Backup you existing configuration before using this option. FhemNative will propably overwrite your existing configuration.",
+						"SWITCH":{
+							"TITLE": "Share config",
+							"INFO": "Activate/deactivate shared configuration"
+						},
+						"DEVICE":{
+							"TITLE": "FHEM Device",
+							"INFO": "FHEM Device for Config"
+						},
+						"READING":{
+							"TITLE": "FHEM Device Reading",
+							"INFO": "FHEM Device Reading, that should contain the configuration"
+						},
+						"BUTTON": "Test Configuration",
+						"TRANSFER": {
+							"TITLE": "Transfer Config",
+							"INFO": "Send Config to FHEM Device Reading.",
+							"BUTTON": "Transfer",
+							"WARNING": {
+								"HEADER": "Attention! Please Backup before proceeding!",
+								"MESSAGE": "A Transfer is only needed for initial config sharing or when the config-sharing reading is exchanged. Are you sure you want to overwrite the reading? All Devices will use the current configuration of THIS device."
+							}
+						}
+					}
+				},
 				"AUTO_ROOMS":{
 					"TITLE": "Auto generate rooms",
 					"INFO": "Automatically generate rooms from FHEM.",
@@ -2029,14 +2172,6 @@
 				"VARIABLES":{
 					"TITLE": "FhemNative variables",
 					"INFO": "Show/hide FhemNative variables"
-				},
-				"LOAD_WHICH_DEVICES":{
-					"TITLE": "Define device loader",
-					"INFO": "Which devices should be loaded on app start?",
-					"OPTIONS":{
-						"ALL": "Load all Fhem devices.",
-						"Component": "Devices that are used in components."
-					}
 				},
 				"DYNAMIC_COMPONENT_LOADER":{
 					"TITLE": "Dynamic component loader",
@@ -2471,11 +2606,16 @@
 			}
 		},
 		"ERRORS":{
+			"GENERAL": {
+				"ERROR": "Error",
+				"ERROR_OCCOURED": "An error occoured."
+			},
 			"CONNECTION":{
 				"NO_CONNECTION": "No connection to Fhem.",
 				"CONNECTION_HELPER": "Please review your IP settings."
 			},
 			"NOT_FOUND":{
+				"DEVICE_NOT_DEFINED": "FHEM device not defined.",
 				"DEVICE_NOT_FOUND": "Fhem device not found.",
 				"READING_NOT_FOUND": "Device reading not found.",
 				"COMPONENT_HELPER": "Please review your component configuration."
@@ -2489,6 +2629,10 @@
 			"TIMEOUT": "Connection timeout to Fhem.",
 			"FETCHED_ALL_DEVICES": "Fetched all devices.",
 			"DEVICE_UPDATE": "Updated values of: "
+		},
+		"CONFIG":{
+			"TITLE": "Config",
+			"TRY_SHARED_CONFIG": "Try to load shared config."
 		}
 	}
 }

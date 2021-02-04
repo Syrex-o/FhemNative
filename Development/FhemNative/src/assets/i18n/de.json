@@ -164,6 +164,102 @@
 				}
 			}
 		},
+		"Button Menu":{
+			"NAME": "Button Menu",
+			"DES": "Ein einfacher Button, um Räume zu wechseln.",
+			"INPUTS":{
+				"data_device": {
+					"name": "Device Name",
+					"info": "Name des Fhem Geräts"
+				},
+				"data_reading":{
+					"name": "Reading Name",
+					"info": "Name des Fhem Readings"
+				},
+				"data_room": {
+					"name": "Raum",
+					"info": "Raum in den gewechselt werden soll (Raumname)"
+				},
+				"data_getOn":{
+					"name": "Get on",
+					"info": "Status des Readings im ON Zustand"
+				},
+				"data_getOff":{
+					"name": "Get off",
+					"info": "Status des Readings im OFF Zustand"
+				},
+				"data_label":{
+					"name": "Label",
+					"info": "Label das im Button angezeigt werden soll (Standard: Fhem Geräte Name)"
+				},
+				"data_borderRadius":{
+					"name": "Rand-Radius",
+					"info": "Radius vom Rand des Buttons"
+				},
+				"data_borderRadiusTopLeft":{
+					"name": "Rand-Radius oben links",
+					"info": "Radius vom Rand des Buttons oben links"
+				},
+				"data_borderRadiusTopRight":{
+					"name": "Rand-Radius oben rechts",
+					"info": "Radius vom Rand des Buttons oben rechts"
+				},
+				"data_borderRadiusBottomLeft":{
+					"name": "Rand-Radius unten links",
+					"info": "Radius vom Rand des Buttons unten links"
+				},
+				"data_borderRadiusBottomRight":{
+					"name": "Rand-Radius unten rechts",
+					"info": "Radius vom Rand des Buttons unten rechts"
+				},
+				"data_iconSize":{
+					"name": "Icon Größe",
+					"info": "Größe des Icons im Button"
+				},
+				"arr_data_style":{
+					"name": "Style",
+					"info": "Style des Buttons"
+				},
+				"icon_iconOn":{
+					"name": "Icon on",
+					"info": "Icon im ON Zustand"
+				},
+				"icon_iconOff":{
+					"name": "Icon off",
+					"info": "Icon im OFF Zustand"
+				},
+				"bool_data_iconOnly":{
+					"name": "Nur Icon anzeigen",
+					"info": "Aktivieren/deaktivieren, dass nur das Icon im Button angezeigt wird"
+				},
+				"bool_data_customBorder":{
+					"name": "Eigener Rand-Radius",
+					"info": "Eigenen Rand-Radius für jede Ecke definieren"
+				},
+				"style_iconColorOn":{
+					"name": "Icon Farbe on",
+					"info": "Icon Farbe im ON Zustand"
+				},
+				"style_iconColorOff":{
+					"name": "Icon Farbe off",
+					"info": "Icon Farbe im OFF Zustand"
+				},
+				"style_buttonColor":{
+					"name": "Hintergrundfarbe",
+					"info": "Hintergrundfarbe des Buttons"
+				},
+				"style_labelColor":{
+					"name": "Label-Farbe",
+					"info": "Farbe des Labels im Button"
+				}
+			},
+			"TRANSLATOR":{
+				"ROOM_NOT_FOUND": {
+					"HEADER": "Info",
+					"MESSAGE": "Raum nicht gefunden"
+				}
+			}
+		},
 		"Button Multistate":{
 			"NAME": "Button Multistate",
 			"DES": "Ein Button, um zwischen verschiedenen Werten in FHEM zu wechseln.",
@@ -381,6 +477,10 @@
 					"name": "Eigener Rand-Radius",
 					"info": "Eigenen Rand-Radius für jede Ecke definieren"
 				},
+				"bool_data_useIcons":{
+					"name": "Icons anstatt Werte",
+					"info": "Icons anstatt Werte in Multi-Menü verwenden"
+				},
 				"arr_data_expandStyle":{
 					"name": "Ausklapp-Richtung",
 					"info": "Richtung in die das Multi-Menü ausklappen soll"
@@ -412,6 +512,14 @@
 				"style_activeColor":{
 					"name": "Aktiv-Farbe",
 					"info": "Farbe des Items, dass gerdae aktiv ist"
+				},
+				"arr_icon_icons":{
+					"name": "Icons",
+					"info": "Liste von Icons für Multi-Menü"
+				},
+				"arr_style_iconColors":{
+					"name": "Icon-Farben",
+					"info": "Eine Liste von Icon Farben für das Multi-Menü"
 				}
 			}
 		},
@@ -598,6 +706,14 @@
 				"arr_data_style":{
 					"name": "Style",
 					"info": "Style der Colorpickers"
+				},
+				"bool_data_showFavMenu": {
+					"name": "Favoriten-Menü",
+					"info": "Anzeigen/nicht anzeigen des Farb-Favoriten-Menüs"
+				},
+				"bool_data_usePopup":{
+					"name": "Colorpicker in Popup",
+					"info": "Aktivieren/deaktivieren des Colorpickers im Popup"
 				},
 				"bool_data_updateOnMove":{
 					"name": "Update bei Bewegung",
@@ -2008,6 +2124,37 @@
 						}
 					}
 				},
+				"SHARED_CONFIG":{
+					"TITLE": "Geteilte FhemNative Config in FHEM Reading",
+					"INFO": "FhemNative Konfiguration in FHEM Reading hinterlegen",
+					"BUTTON": "Konfigurieren",
+					"PICKER": {
+						"HEADER": "Geteile Konfiguration",
+						"MESSAGE": "NOTE: Bitte machen sie ein Backup ihrer Konfiguration. FhemNative wird die aktuelle Konfiguration überschreiben.",
+						"SWITCH":{
+							"TITLE": "Konfiguration teilen",
+							"INFO": "Geteilte Konfiguration in FHEM Reading aktivieren/deaktivieren"
+						},
+						"DEVICE":{
+							"TITLE": "FHEM Device",
+							"INFO": "FHEM Device für Konfiguration"
+						},
+						"READING":{
+							"TITLE": "FHEM Device Reading",
+							"INFO": "FHEM Device Reading, dass die Konfiguration enthält/enthalten soll"
+						},
+						"BUTTON": "Konfiguration Testen",
+						"TRANSFER": {
+							"TITLE": "Konfiguration transferieren",
+							"INFO": "Konfiguration dieses Gerätes an FHEM Reading senden",
+							"BUTTON": "Transferieren",
+							"WARNING": {
+								"HEADER": "Achtung! Bitte machen Sie vorher ein Backup!",
+								"MESSAGE": "Ein Transfer wird nur für den iniitialen Transfer oder beim Wechsel des Konfigurations-Readings benötigt. Wollen Sie das Reading wirklich überschreiben? Alle Geräte verwenden dann die aktuelle Konfiguration DIESES Geräts."
+							}
+						}
+					}
+				},
 				"AUTO_ROOMS":{
 					"TITLE": "Automatisch Räume generieren",
 					"INFO": "Automatisch Räume aus FHEM kreieren.",
@@ -2025,14 +2172,6 @@
 				"VARIABLES":{
 					"TITLE": "FhemNative Variablen",
 					"INFO": "FhemNative Variablen anzeigen/nicht anzeigen"
-				},
-				"LOAD_WHICH_DEVICES":{
-					"TITLE": "Geräte laden definieren",
-					"INFO": "Welche Geräte sollen beim App Start geladen werden?",
-					"OPTIONS":{
-						"ALL": "Alle FHEM Geräte laden.",
-						"Component": "Geräte die in Komponenten enthalten sind."
-					}
 				},
 				"DYNAMIC_COMPONENT_LOADER":{
 					"TITLE": "Komponenten dynamisch laden",
@@ -2467,11 +2606,16 @@
 			}
 		},
 		"ERRORS":{
+			"GENERAL": {
+				"ERROR": "Fehler",
+				"ERROR_OCCOURED": "Es ist ein Fehler aufgetreten."
+			},
 			"CONNECTION":{
 				"NO_CONNECTION": "Keine Verbindung zu Fhem.",
 				"CONNECTION_HELPER": "Bitte bearbeite deine IP-Einstellungen."
 			},
 			"NOT_FOUND":{
+				"DEVICE_NOT_DEFINED": "FHEM Gerät nicht definiert.",
 				"DEVICE_NOT_FOUND": "Fhem Gerät nicht gefunden.",
 				"READING_NOT_FOUND": "Geräte Reading nicht gefunden.",
 				"COMPONENT_HELPER": "Bitte bearbeite deine Komponenten-Einstellungen."
@@ -2485,6 +2629,10 @@
 			"TIMEOUT": "Verdindungs-Timeout zu Fhem.",
 			"FETCHED_ALL_DEVICES": "Alle Geräte abgeholt.",
 			"DEVICE_UPDATE": "Werte aktuallisiert für: "
+		},
+		"CONFIG":{
+			"TITLE": "Config",
+			"TRY_SHARED_CONFIG": "Versuche geteilte Config zu laden."
 		}
 	}
 }
