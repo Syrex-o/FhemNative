@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 
+// interfaces
+import { Room } from '../interfaces/interfaces.type';
+
 import { SettingsService } from './settings.service';
+import { FhemService } from './fhem.service';
 import { StructureService } from './structure.service';
 import { SelectComponentService } from './select-component.service';
 import { ComponentLoaderService } from './component-loader.service';
@@ -20,6 +24,7 @@ export class UndoRedoService {
 	private currentStack: number = -1;
 
 	constructor(
+		private fhem: FhemService,
 		private settings: SettingsService,
 		private structure: StructureService,
 		private selectComponent: SelectComponentService,
@@ -127,7 +132,18 @@ export class UndoRedoService {
 	}
 
 	public applyChanges(): void{
-		this.structure.saveRooms();
+		this.structure.saveRooms().then((res)=>{
+			if(this.settings.app.sharedConfig.enable){
+				this.componentLoader.getMinifiedConfig().then((miniConf: Room[])=>{
+					// send miniconf to fhem reading
+					this.fhem.setAttr(
+						this.settings.app.sharedConfig.device,
+						this.settings.app.sharedConfig.reading,
+						JSON.stringify(miniConf)
+					);
+				});
+			}
+		});
 		// reset values
 		this.resetValues();
 	}
