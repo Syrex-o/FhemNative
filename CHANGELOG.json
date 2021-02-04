@@ -491,14 +491,53 @@
 			"VERSION": "2.6.3",
 			"DATE": "28.09.2020",
 			"CHANGES":[
-				{"TYPE": "NEW", "CHANGE": "Label component alias values"},,
-				{"TYPE": "NEW", "CHANGE": "Image component can laod local images from device"}
+				{"TYPE": "NEW", "CHANGE": "Label component alias values"},
+				{"TYPE": "NEW", "CHANGE": "Image component can laod local images from device"},
 				{"TYPE": "FIX", "CHANGE": "Icon component empty reading crash"},
 				{"TYPE": "FIX", "CHANGE": "Slider Init wrong sides animation for inverted min/max"},
 				{"TYPE": "FIX", "CHANGE": "Slider Box buttons for inverted min/max"},
 				{"TYPE": "FIX", "CHANGE": "Context Menu send to front/back"},
 				{"TYPE": "FIX", "CHANGE": "Sprinkler rain off better parameters"},
 				{"TYPE": "FIX", "CHANGE": "Color picker outside circle update every receive"}
+			]
+		},
+		{
+			"VERSION": "2.6.4",
+			"DATE": "04.02.2021",
+			"CHANGES":[
+				{"TYPE": "NEW", "CHANGE": "Shared FhemNative Room config"},
+				{"TYPE": "NEW", "CHANGE": "Shared config as minified config in percentages"},
+				{"TYPE": "NEW", "CHANGE": "Menu Button component to switch rooms"},
+				{"TYPE": "NEW", "CHANGE": "Color Picker without Popup Option"},
+				{"TYPE": "NEW", "CHANGE": "Color Picker show/hide favourites option"},
+				{"TYPE": "NEW", "CHANGE": "Color Picker calculate outer angle on update"},
+				{"TYPE": "NEW", "CHANGE": "Color Picker calulate inner position on update"},
+				{"TYPE": "NEW", "CHANGE": "Color Picker get color based on outer circle brightness"},
+				{"TYPE": "NEW", "CHANGE": "Color Picker animate inner/outer movement updates"},
+				{"TYPE": "NEW", "CHANGE": "Auto-check for IP and port (auto remove whitespaces)"},
+				{"TYPE": "NEW", "CHANGE": "Circle-Menu Icons instead of values"},
+				{"TYPE": "NEW", "CHANGE": "Circle-Menu Icons Colors"},
+				{"TYPE": "NEW", "CHANGE": "Slider Steps < 1"},
+				{"TYPE": "NEW", "CHANGE": "Grid 5 option"},
+				{"TYPE": "NEW", "CHANGE": "Additional multi variable dependencies for component creation/edit"},
+				{"TYPE": "NEW", "CHANGE": "Responsive Resize trigger resizing event handles"},
+				{"TYPE": "NEW", "CHANGE": "Not moving components can be rotated"},
+				{"TYPE": "NEW", "CHANGE": "Move and Scale rotated Components"},
+				{"TYPE": "NEW", "CHANGE": "Resize/Move/Rotate/Rect Builder in own Directives"},
+				{"TYPE": "NEW", "CHANGE": "Variable replace function + presets"},
+				{"TYPE": "FIX", "CHANGE": "Color Picker Size Adjustments"},
+				{"TYPE": "FIX", "CHANGE": "Changelog view"},
+				{"TYPE": "FIX", "CHANGE": "Circle Menu Fix (correct outside positions after resize)"},
+				{"TYPE": "FIX", "CHANGE": "Send to front/back fix"},
+				{"TYPE": "FIX", "CHANGE": "Multistate button wrong config crash fix"},
+				{"TYPE": "FIX", "CHANGE": "Line matching on arc usage"},
+				{"TYPE": "FIX", "CHANGE": "Fix Picker Cancel action event"},
+				{"TYPE": "FIX", "CHANGE": "Conext menu should disappear on move"},
+				{"TYPE": "FIX", "CHANGE": "Fhem service fix for leading zero strings"},
+				{"TYPE": "FIX", "CHANGE": "Label Error when Label is used but no reading"},
+				{"TYPE": "FIX", "CHANGE": "Variable component load fix on config open"},
+				{"TYPE": "FIX", "CHANGE": "Fix swiper orientation"},
+				{"TYPE": "DEL", "CHANGE": "all devices loader option (irrelevant now)"}
 			]
 		}
 	]
