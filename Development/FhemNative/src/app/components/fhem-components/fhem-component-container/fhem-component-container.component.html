@@ -1,19 +1,25 @@
 <div 
+	[attr.id]="specs.ID"
 	class="fhem-component-container"
-	resize
+	transformation-handler
+	dynamic-resize
+	resizer
+	rotator
+	mover
 	clicker
 	[source]="'component'"
 	[editingEnabled]="editable"
 	[minimumWidth]="minimumWidth"
 	[minimumHeight]="minimumHeight"
-	id="{{specs.ID}}"
+	[allowRotation]="allowRotation"
+	[id]="specs.ID"
 	[ngStyle]="{
 		'width': position?.width, 
 		'height': position?.height, 
 		'top': position?.top, 
 		'left': position?.left,
 		'z-index': position?.zIndex,
-		'transform': specs.ID === 'TEST_COMPONENT' ? 'translate(-50%, -50%)' : 'translate(0, 0)'
+		'transform': specs.ID === 'TEST_COMPONENT' ? 'translate(-50%, -50%)' : 'translate(0, 0) rotate('+(position.rotation || '0deg')+')'
 	}">
 	<ng-template [ngIf]="(task.hideList.components.indexOf(specs.ID)) > -1" [ngIfElse]="AVAILABLE_CONTAINER">
 		<!-- Hide Component -->
