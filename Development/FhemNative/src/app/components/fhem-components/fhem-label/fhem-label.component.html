@@ -1,7 +1,8 @@
 <fhem-component-container 
 	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true}" 
 	[fhemDevice]="fhemDevice"
-	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
 	[minimumWidth]="60"
 	[minimumHeight]="40">
 	<div class="label">
@@ -11,18 +12,15 @@
 			{{'COMPONENTS.Label.TRANSLATOR.NO_LABEL' | translate}}
 			{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
 		</p>
-		<p
-			*ngIf="label || label !== ''"
-			class="label-item"
+		<p class="label-item"
 			[ngStyle]="{
 				'font-size.px': data_size, 
 				'line-height.px': data_size,
 				'font-weight': data_fontWeight,
 				'font-style': arr_data_textStyle[0],
-				'color': fhemDevice ? getValueColor() : style_color,
+				'color': fhemDevice ? labelColor : style_color,
 				'text-align': arr_data_textAlign[0]
 			}">
-			{{ label + data_labelExtension }}
 		</p>
 	</div>
 </fhem-component-container>

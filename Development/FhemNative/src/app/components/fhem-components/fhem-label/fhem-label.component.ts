@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, NgModule, ElementRef, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 // Components
@@ -12,7 +12,7 @@ import { SettingsService } from '../../../services/settings.service';
 	templateUrl: './fhem-label.component.html',
   	styleUrls: ['./fhem-label.component.scss']
 })
-export class FhemLabelComponent implements OnInit, OnDestroy {
+export class FhemLabelComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() ID: string;
 
 	@Input() data_device: string;
@@ -42,9 +42,11 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 	@Input() top: string;
 	@Input() left: string;
 	@Input() zIndex: string;
+	@Input() rotation: string;
 
 	fhemDevice: any;
 	label: string;
+	labelColor: string;
 	// list itmes
 	private items: string[] = [];
 	private alias: string[] = [];
@@ -63,9 +65,16 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 		}).then(device=>{
 			this.getState(device);
 		});
+		// assign initial label color
+		this.getValueColor();
 	}
 
-	private getState(device){
+	ngAfterViewInit(){
+		// assign label
+		this.assignInnerHTML();
+	}
+
+	private getState(device): void{
 		this.fhemDevice = device;
 		let label: any;
 		if(device && this.data_reading in this.fhemDevice.readings){
@@ -77,24 +86,26 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 		this.getLabelValue(label);
 	}
 
-	getValueColor(){
+	private getValueColor(): void{
 		// int colors
-		if(!isNaN(this.fhemDevice.readings[this.data_reading].Value)){
-			if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value < parseFloat(this.data_min)){
-				return this.style_minColor;
-			}
-			if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value > parseFloat(this.data_max)){
-				return this.style_maxColor;
-			}
-		}else{
-			if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_min){
-				return this.style_minColor;
-			}
-			if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_max){
-				return this.style_maxColor;
+		if(this.fhemDevice && this.data_reading in this.fhemDevice.readings){
+			if(!isNaN(this.fhemDevice.readings[this.data_reading].Value)){
+				if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value < parseFloat(this.data_min)){
+					this.labelColor = this.style_minColor;
+				}
+				if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value > parseFloat(this.data_max)){
+					this.labelColor = this.style_maxColor;
+				}
+			}else{
+				if(this.data_min !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_min){
+					this.labelColor = this.style_minColor;
+				}
+				if(this.data_max !== '' && this.fhemDevice.readings[this.data_reading].Value === this.data_max){
+					this.labelColor = this.style_maxColor;
+				}
 			}
 		}
-		return this.style_color;
+		this.labelColor = this.style_color;
 	}
 
 	private getLabelValue(currentVal:any){
@@ -120,16 +131,25 @@ export class FhemLabelComponent implements OnInit, OnDestroy {
 		}else{
 			this.label = currentVal;
 		}
+		this.assignInnerHTML();
+		this.getValueColor();
+	}
+
+	private assignInnerHTML(): void {
+		// assign value as innerHtml
+		if(this.label || this.label !== ''){
+			const t: HTMLElement = this.ref.nativeElement.querySelector('.label-item');
+			if(t){
+				t.innerHTML = this.label + this.data_labelExtension;
+			}
+		}
 	}
 
 	ngOnDestroy(){
 		this.fhem.removeDevice(this.ID);
 	}
 
-	constructor(
-		private fhem: FhemService,
-		public settings: SettingsService) {
-	}
+	constructor(private ref: ElementRef,private fhem: FhemService,public settings: SettingsService) {}
 
 	static getSettings() {
 		return {
