@@ -19,14 +19,14 @@
 					<div class="category">
 						<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.FHEM_MENU.CONNECTION.IP.TITLE' | translate }}</p>
 						<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.FHEM_MENU.CONNECTION.IP.INFO' | translate }}</p>
-						<input [(ngModel)]="connection.IP" placeholder="{{connection.IP}}">
+						<input trim [(ngModel)]="connection.IP" placeholder="{{connection.IP}}">
 		      			<span class="bar"></span>
 					</div>
 					<!-- Port -->
 					<div class="category">
 						<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.FHEM_MENU.CONNECTION.PORT.TITLE' | translate }}</p>
 						<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.FHEM_MENU.CONNECTION.PORT.INFO' | translate }}</p>
-						<input [(ngModel)]="connection.PORT" placeholder="{{connection.PORT}}">
+						<input trim [(ngModel)]="connection.PORT" placeholder="{{connection.PORT}}">
 		      			<span class="bar"></span>
 					</div>
 					<!-- Type selection -->
