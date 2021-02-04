@@ -1,8 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 // interfaces
-import { FhemDevice } from '../interfaces/interfaces.type';
+import { FhemDevice, Room, ComponentInStructure } from '../interfaces/interfaces.type';
 
 // Services
 import { LoggerService } from './logger/logger.service';
@@ -28,10 +28,17 @@ export class FhemService {
 	public connectedSub = new Subject<boolean>();
 	public connected: boolean = false;
 
+	// shared config presence
+	public sharedConfigPresence: any = {
+		devicePresent: false,
+		readingPresent: false
+	};
+
 	// device subscriptions
 	public deviceListSub = new Subject<any>();
 	public deviceUpdateSub = new Subject<any>();
-	public deviceGetSub = new Subject<any>();
+	// public deviceGetSub = new Subject<any>();
+	public sharedConfigUpdateSub = new Subject<any>();
 
 	// Fhem device list
 	public devices: Array<FhemDevice> = [];
@@ -76,6 +83,20 @@ export class FhemService {
 			this.listenDevices.forEach((listenDevice: ListenDevice)=>{
 				if(listenDevice.device === device.device && listenDevice.handler){
 					listenDevice.handler(device);
+				}
+				// check for shared config device
+				if(listenDevice.device === device.device && listenDevice.id === 'SHARED_CONFIG_DEVICE'){
+					this.sharedConfigPresence.device = true;
+					// check if reading was updated
+					const relReading: string = this.settings.app.sharedConfig.reading;
+					if(relReading in device.readings){
+						this.sharedConfigPresence.reading = true;
+						const rooms: Room = device.readings[relReading].Value;
+						// validation of structure
+						if(rooms[0] && 'ID' in rooms[0] && 'components' in rooms[0]){
+							this.sharedConfigUpdateSub.next(rooms);
+						}
+					}
 				}
 			});
 			// inform abaout device update
@@ -229,13 +250,28 @@ export class FhemService {
 		this.connectedSub.next(true);
 		// get relevant devices
 		this.listDevices(this.getRelevantDevices());
-
+		// init websocket events
 		this.websocketEvents();
+		// show success connection message
 		this.toast.addToast(
 			this.translate.instant('GENERAL.FHEM.TITLE'),
 			this.translate.instant('GENERAL.FHEM.CONNECTED'),
 			'success'
 		);
+		// check for shared config enablement
+		if(this.settings.app.sharedConfig.enable){
+			// add shared config device to listen devices
+			if(this.settings.app.sharedConfig.device !== ''){
+				if(!this.listenDevices.find(x=> x.id === 'SHARED_CONFIG_DEVICE')){
+					this.listenDevices.push({id: 'SHARED_CONFIG_DEVICE', device: this.settings.app.sharedConfig.device, handler: null});
+				}
+			}
+			this.toast.addToast(
+				this.translate.instant('GENERAL.CONFIG.TITLE'),
+				this.translate.instant('GENERAL.CONFIG.TRY_SHARED_CONFIG'),
+				'info'
+			);
+		}
 	}
 
 	// disconnect
@@ -256,27 +292,21 @@ export class FhemService {
 	// get the list of relevant devices
 	private getRelevantDevices(): string{
 		let list: string[] = [];
-
-		if(this.settings.app.fhemDeviceLoader === 'Component'){
-			// loop rooms for components
-			this.structure.getAllComponents().forEach((item)=>{
-				// check for devices in components
-				if(item.component && item.component.attributes.attr_data && item.component.attributes.attr_data.find(x=> x.attr === 'data_device')){
-					// device is present in component
-					const devices: string[] = this.seperateDevices(item.component.attributes.attr_data.find(x=> x.attr === 'data_device').value);
-					devices.forEach((device: string)=>{
-						// check if device is already in list
-						if(!list.includes(device)){
-							list.push(device);
-						}
-					});
-				}
-			});
-			return list.length > 0 ? '('+list.join('|')+')' : '';
-		}else{
-			// all devices should be loaded
-			return '.*';
-		}
+		// loop rooms for components
+		this.structure.getAllComponents().forEach((item: ComponentInStructure)=>{
+			// check for devices in components
+			if(item.component && item.component.attributes.attr_data && item.component.attributes.attr_data.find(x=> x.attr === 'data_device')){
+				// device is present in component
+				const devices: string[] = this.seperateDevices(item.component.attributes.attr_data.find(x=> x.attr === 'data_device').value);
+				devices.forEach((device: string)=>{
+					// check if device is already in list
+					if(!list.includes(device)){
+						list.push(device);
+					}
+				});
+			}
+		});
+		return list.length > 0 ? '('+list.join('|')+')' : '';
 	}
 
 	// websocket event handler
@@ -611,9 +641,9 @@ export class FhemService {
 							type: 'command',
 							payload: {command: 'get', device, property}
 						}));
-			    	}else{
-			    		partialConnection.send('get ' + device + ' ' + property);
-			    	}
+					}else{
+						partialConnection.send('get ' + device + ' ' + property);
+					}
 				}
 			}
 		});
@@ -690,6 +720,33 @@ export class FhemService {
 		}
 	}
 
+	// handle single request and respond with device if found
+	public handleSimpleDeviceRequest(device: string, timeout?: number): Promise<FhemDevice|null> {
+		return new Promise((resolve)=>{
+			const foundDevice: FhemDevice|null = this.devices.find(x=> x.device === device);
+			if(foundDevice){
+				resolve(foundDevice);
+			}else{
+				// send sinple device request
+				let gotReply: boolean = false;
+				const sub: Subscription = this.deviceListSub.subscribe((device: FhemDevice[])=>{
+					gotReply = true;
+					sub.unsubscribe();
+					resolve((device ? device[0] : null));
+				});
+				// timeout time
+				let t: number = timeout || 1000;
+				setTimeout(()=>{
+					if(!gotReply){
+						sub.unsubscribe();
+						resolve(null);
+					}
+				}, t);
+				this.listDevices(device);
+			}
+		});
+	}
+
 	// test for json
 	public IsJsonString(str): boolean {
 		try {
@@ -716,14 +773,41 @@ export class FhemService {
 	public objResolver(obj, level: number): any {
 		const keys = Object.keys(obj);
 		const result = {};
+		// validate type of data
+		let transformRaw = (value: any)=>{
+			// transform string booleans
+			if(value === 'true' || value === 'false' || this.IsJsonString(value)){
+				// test for leading zero and containing string values
+				let test = JSON.parse(value);
+				if(value.toString() !== JSON.stringify(test)){
+					return value;
+				}
+				return JSON.parse(value)
+			}
+			// check for actual boolean
+			if(typeof value === 'boolean'){
+				return value;
+			}
+			// check for leading zeros and containing string values
+			if(value.toString().substring(0, 1) === '0' || value.toString().match(/[a-zA-Z]/) ){
+				// console.log(value);
+				return value;
+			}
+			// check for numbers
+			if(!isNaN(value)){
+				return parseFloat(value);
+			}
+			return value;
+		}
 		for (let i = 0; i < keys.length; i++) {
 			const val = (level === 1 ? obj[keys[i]].Value : obj[keys[i]]);
 			if (level === 1) {
 				result[keys[i]] = {Value: '', Time: ''};
 				result[keys[i]].Time = obj[keys[i]].Time;
-				result[keys[i]].Value = (val === 'true' || val === 'false' || this.IsJsonString(val)) ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
+				result[keys[i]].Value = transformRaw(val);
+				// (val === 'true' || val === 'false' || this.IsJsonString(val)) ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
 			} else {
-				result[keys[i]] = (val === 'true' || val === 'false' || this.IsJsonString(val)) ? JSON.parse(val) : (typeof val === 'boolean') ? val : !isNaN(val) ? parseFloat(val) : val;
+				result[keys[i]] = transformRaw(val);
 			}
 		}
 		return result;
