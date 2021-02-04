@@ -4,7 +4,8 @@
 	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
 	[minimumWidth]="30"
 	[minimumHeight]="30">
-	<button 
+	<button
+		*ngIf="bool_data_usePopup"
 		class="color-picker btn-round {{settings.app.theme}}"
 		[ngClass]="arr_data_style[0]" 
 		matRipple [matRippleColor]="'#d4d4d480'"
@@ -17,20 +18,15 @@
 			'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius
 		}">
 	</button>
-</fhem-component-container>
-<popup 
-	[(ngModel)]="popupState"
-	[width]="data_popupWidth"
-	[height]="data_popupHeight"
-	[animation]="bool_data_customAnimation ? arr_data_animationStyle[0] : 'scale'"
-	[invertAnimation]="bool_data_customAnimation ? bool_data_invertAnimation : false"
-	(onOpen)="popupOpened()"
-	(onClose)="popupClosed()">
-	<div header>
-		<h1 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ (data_headline !== '' ? data_headline : data_device) }}</h1>
+	<div *ngIf="!bool_data_usePopup" class="color-picker">
+		<ng-container *ngTemplateOutlet="COLOR_PICKER"></ng-container>
 	</div>
-	<div body class="content {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
-		<div class="favs">
+</fhem-component-container>
+
+<!-- Actual Color Picker Template -->
+<ng-template #COLOR_PICKER>
+	<div class="content {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
+		<div class="favs" *ngIf="bool_data_showFavMenu">
 			<button 
 				colorizer [theme]="settings.app.theme" [style]="['background', 'secondary']"
 				matRipple [matRippleColor]="'#d4d4d480'" 
@@ -44,7 +40,7 @@
 				<ion-icon name="star"></ion-icon>
 			</button>
 		</div>
-		<div class="color-selector" #Container>
+		<div class="color-selector" #Container [class.show-fav-menu]="bool_data_showFavMenu">
 			<div class="wheel-container" [ngStyle]="{'width.px': dimension,'height.px': dimension}">
 				<div class="outer-circle"
 					[ngStyle]="{'background': 'linear-gradient( rgb(0, 0, 0), '+ styles.outerGradient +', rgb(245, 243, 240) )'}">
@@ -52,23 +48,46 @@
 						<div colorizer [theme]="settings.app.theme" [style]="['background', 'primary']" class="overlay"></div>
 					</div>
 					<div class="rotator rotator-outer"
+						[class.animate]="styles.animateOuter"
 						[ngStyle]="{'transform': 'rotate('+ styles.outerRotation +'deg)'}">
 						<div class="knob knob-outer"></div>
 					</div>
 				</div>
 				<div class="inner-circle">
 					<canvas class="canvas canvas-inner"></canvas>
-						<div class="knob knob-inner">
-							<div [ngStyle]="{
-								'background': '#' + color,
-								'transform': styles.innerTranslate
-							}" class="knob-inner-move"></div>
+					<div class="knob knob-inner">
+						<div 
+							[class.animate]="styles.animateInner"
+							[ngStyle]="{
+							'background': '#' + color,
+							'transform': styles.innerTranslate
+							}" class="knob-inner-move">
 						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</ng-template>
+
+<!-- Used When Colorpicker is placed in Popup -->
+<popup
+	[(ngModel)]="popupState"
+	[width]="data_popupWidth"
+	[height]="data_popupHeight"
+	[animation]="bool_data_customAnimation ? arr_data_animationStyle[0] : 'scale'"
+	[invertAnimation]="bool_data_customAnimation ? bool_data_invertAnimation : false"
+	(onOpen)="popupOpened()"
+	(onClose)="popupClosed()">
+	<div header>
+		<h1 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ (data_headline !== '' ? data_headline : data_device) }}</h1>
+	</div>
+	<div body class="content" *ngIf="bool_data_usePopup">
+		<ng-container *ngTemplateOutlet="COLOR_PICKER"></ng-container>
+	</div>
 </popup>
+
+<!-- Color Favs Menu -->
 <picker
 	[(ngModel)]="showFavs"
 	[height]="60"
