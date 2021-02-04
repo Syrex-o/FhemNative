@@ -42,7 +42,8 @@ export class FhemBoxComponent{
 	@Input() height: string;
 	@Input() top: string;
 	@Input() left: string;
-	@Input() zIndex: string;
+	@Input() zIndex: number;
+	@Input() rotation: string;
 
 
 	constructor(public settings: SettingsService){}

@@ -29,6 +29,8 @@ export class FhemComponentContainerComponent implements OnInit, OnChanges, OnDes
 	// minimal properties
 	@Input() minimumWidth: string|number = 100;
 	@Input() minimumHeight: string|number = 50;
+	// allow component rotation
+	@Input() allowRotation: boolean = false;
 
 	// indicate if fhem device is available and fall devices are loaded
 	deviceState: any = {connected: false, devicePresent: false, readingPresent: false, testDone: false};

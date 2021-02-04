@@ -55,6 +55,7 @@ export class FhemButtonComponent implements OnInit, OnDestroy {
 	@Input() top: string;
 	@Input() left: string;
 	@Input() zIndex: string;
+	@Input() rotation: string;
 
 	fhemDevice: FhemDevice|null;
 	// state of fhem device

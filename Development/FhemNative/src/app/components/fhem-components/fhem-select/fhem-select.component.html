@@ -3,7 +3,8 @@
 	*ngIf="!bool_data_useForVariables"
 	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}" 
 	[fhemDevice]="fhemDevice"
-	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
 	[minimumWidth]="100"
 	[minimumHeight]="40">
 	<ng-container *ngTemplateOutlet="SELECTOR"></ng-container>

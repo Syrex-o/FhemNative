@@ -34,6 +34,7 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 	@Input() top: string;
 	@Input() left: string;
 	@Input() zIndex: string;
+	@Input() rotation: string;
 
 	fhemDevice: any;
 	src: string;
