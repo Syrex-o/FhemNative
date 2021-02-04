@@ -38,7 +38,6 @@ export class ClickerDirective implements OnChanges {
 		private hotKey: HotKeyService,
 		private ref: ElementRef,
 		private platform: Platform){
-
 	}
 
 	ngOnChanges(changes: SimpleChanges){
@@ -140,6 +139,36 @@ export class ClickerDirective implements OnChanges {
 					}
 					this.clicker = 0;
 				}, this.duration / 2);
+
+				const endMove = () => {
+					// remove listeners
+					window.removeEventListener('mousemove', whileMove);
+					window.removeEventListener('touchmove', whileMove);
+	   				window.removeEventListener('mouseup', endMove);
+	   				window.removeEventListener('touchend', endMove);
+	   			}
+
+	   			const whileMove = (e)=>{
+	   				let pos = {
+						x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
+						y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
+					};
+
+					if (Math.abs(this.startMouse.x - pos.x) > 10 || Math.abs(this.startMouse.y - pos.y) > 10) {
+						this.componentLoader.removeDynamicComponent('ContextMenuComponent');
+						// remove listeners
+						window.removeEventListener('mousemove', whileMove);
+						window.removeEventListener('touchmove', whileMove);
+		   				window.removeEventListener('mouseup', endMove);
+		   				window.removeEventListener('touchend', endMove);
+					}
+	   			}
+
+				// detection of move
+				window.addEventListener('mousemove', whileMove);
+	  			window.addEventListener('mouseup', endMove);
+	  			window.addEventListener('touchmove', whileMove);
+	  			window.addEventListener('touchend', endMove);
 			}
 		}
 	}
