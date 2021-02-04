@@ -47,6 +47,7 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 	@Input() top: string;
 	@Input() left: string;
 	@Input() zIndex: string;
+	@Input() rotation: string;
 
 	fhemDevice: FhemDevice|null;
 
@@ -78,7 +79,7 @@ export class FhemButtonMultistateComponent implements OnInit, OnDestroy {
 	getArrValue(arr: string, def: string|boolean): string{
 		// fallback if needed, to reduce errors
 		let res: string = def ? def : (this[arr][0] ? this[arr][0] : '#ddd');
-		if(this.fhemDevice){
+		if(this.fhemDevice && (this.data_reading in this.fhemDevice.readings)){
 			const value: any = this.fhemDevice.readings[this.data_reading].Value.toString().toLowerCase();
 			const getList: string[] = this.data_getOn.map(x=> x.toString().toLowerCase());
 			if(getList.includes(value)){
