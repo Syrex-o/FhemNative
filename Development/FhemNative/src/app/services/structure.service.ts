@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 // interfaces
-import { Room, RoomParams, DynamicComponentDefinition } from '../interfaces/interfaces.type';
+import { Room, RoomParams, ComponentPosition, DynamicComponentDefinition, ComponentInStructure } from '../interfaces/interfaces.type';
 
 // Services
 import { StorageService } from './storage.service';
@@ -104,6 +104,7 @@ export class StructureService {
 					delete component.dependencies;
 				}
 			});
+			// shared config handling is done by unde-redo-handler (avoid circular dependency and device specific saves)
 			// save rooms
 			this.storage.changeSetting({
 				name: 'rooms',
@@ -171,8 +172,8 @@ export class StructureService {
 	// return a Array of all components
 	// includes {component: comp, room: roomName}
 	// custom obj can be passed --> get components from a previous state
-	public getAllComponents(): Array<{component: DynamicComponentDefinition, room: string, roomID: string}>{
-		let components: Array<{component: DynamicComponentDefinition, room: string, roomID: string}> = [];
+	public getAllComponents(): ComponentInStructure[]{
+		let components: ComponentInStructure[] = [];
 		// looper for nested components
 		let looper = (arr: Array<any>, roomName: string, roomID: any)=>{
 			for(let item of arr){
@@ -268,7 +269,7 @@ export class StructureService {
 	}
 
 	// searches for component in defined Array
-	private searchForComp(arr: Array<any>, ID: string): any{
+	public searchForComp(arr: Array<any>, ID: string): any{
 		for(let item of arr){
 			// item found in top structure
 			if(item.ID !== undefined && ID !== undefined && item.ID.toString() === ID.toString()){
@@ -331,13 +332,86 @@ export class StructureService {
 		return false;
 	}
 
+	// number rounder helper
+	private numberRounder(num: number, digits: number, base?: number): number{
+		let pow: number = Math.pow(base||10, digits);
+		return Math.round(num * pow) / pow;
+	}
+
+	// get position of component in percentage points
+	// calulate percentage position from pixel position
+	public getComponentPositionPercentage(component: DynamicComponentDefinition): ComponentPosition {
+		// console.log(component);
+		return {
+			top: this.numberRounder((parseFloat(component.position.top) / window.innerHeight) * 100, 4) + '%',
+			left: this.numberRounder((parseFloat(component.position.left) / window.innerWidth) * 100, 4) + '%',
+			width: this.numberRounder((parseFloat(component.position.width) / window.innerWidth) * 100, 4) + '%',
+			height: this.numberRounder((parseFloat(component.position.height) / window.innerHeight) * 100, 4) + '%',
+			zIndex: component.position.zIndex,
+			rotation: component.position.rotation || '0deg'
+		}
+	}
+
+	// get position of component in pixel points
+	// calulate pixel position from percentage position
+	public getComponentPositionPixel(component: DynamicComponentDefinition): ComponentPosition {
+		return {
+			top: this.roundToGrid(this.numberRounder(window.innerHeight * (parseFloat(component.position_P.top) / 100), 2)) + 'px',
+			left: this.roundToGrid(this.numberRounder(window.innerWidth * (parseFloat(component.position_P.left) / 100), 2)) + 'px',
+			width: this.roundToGrid(this.numberRounder(window.innerWidth * (parseFloat(component.position_P.width) / 100), 2)) + 'px',
+			height: this.roundToGrid(this.numberRounder(window.innerHeight * (parseFloat(component.position_P.height) / 100), 2)) + 'px',
+			zIndex: component.position_P.zIndex,
+			rotation: component.position_P.rotation || '0deg'
+		}
+	}
+
+	// round pixel position to grid
+	public roundToGrid(p: number): number {
+		const n: number = this.settings.app.grid.gridSize;
+  		return (this.settings.app.grid.enabled ? (p % n < n / 2 ? p - (p % n) : p + n - (p % n)) : p );
+  	}
+
+  	// get mouse position
+	public getMousePosition(e): {x: number, y: number} {
+		return {
+			x: e.pageX || (e.touches ? e.touches[0].clientX : 0),
+			y: e.pageY || (e.touches ? e.touches[0].clientY : 0)
+		};
+	}
+
+	// get mouse delta
+	public getMouseDelta(start: {x: number, y: number}, e): {x: number, y: number} {
+		const current: {x: number, y: number} = this.getMousePosition(e);
+		return {
+			x: current.x - start.x,
+			y: current.y - start.y
+		}
+	}
+
+	// get offsets of host element
+	public getOffsets(hostEl: HTMLElement): {container: HTMLElement, offsets: { top: number, left: number, right: number, scroller: number }} {
+		const c: HTMLElement = hostEl.parentElement.parentElement.parentElement;
+		const container: DOMRect = c.getBoundingClientRect();
+		const offsets = {
+			top: container.top,
+			left: container.left,
+			right: window.innerWidth - (container.left + container.width),
+			scroller: c.scrollTop
+		};
+
+		return {
+			container: c,
+			offsets: offsets
+		}
+	}
+
 	// used to save the changed item position of a component
 	// needs object of {item: 'position attributes of the item', dimenstions: 'dimensions that should be changed'}
 	// will evaluate the available dimensions
 	public saveItemPosition(obj: any, save: boolean) : void{
 		for (const [key, value] of Object.entries(obj.dimensions)) {
 			if (value !== undefined) {
-				obj.item[key] = value + 'px';
+				obj.item[key] = value + (key === 'rotation' ? 'deg' : 'px');
 			}
 		}
 		// saving rooms after changing if needed
