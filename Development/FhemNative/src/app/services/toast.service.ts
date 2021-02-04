@@ -61,10 +61,16 @@ export class ToastService {
 	}
 
 	// add a notify message
-	public addNotify(head: string, message: string, handle: boolean): Promise<boolean> {
+	// styles. 'info', 'error'
+	public addNotify(head: string, message: string, handle: boolean, timeOut?: number): Promise<boolean> {
 		return new Promise((resolve) => {
 			this.zone.run(() => {
-				const t = this.toast.info(message, head, this.notifySettings);
+				let settings: NotifyDefaults = this.notifySettings;
+				if(timeOut){
+					settings = JSON.parse(JSON.stringify(this.notifySettings));
+					settings.timeOut = timeOut
+				}
+				const t = this.toast.info(message, head, settings);
 				if (handle) {
 					t.onTap.subscribe((action: any) => {
 						resolve(true);
