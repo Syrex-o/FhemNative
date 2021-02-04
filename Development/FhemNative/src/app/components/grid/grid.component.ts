@@ -1,4 +1,4 @@
-import { Component, NgModule, ViewChild, ElementRef, OnInit, OnDestroy, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, NgModule, ViewChild, ElementRef, OnInit, OnDestroy, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 // Components
 import { ComponentsModule } from '../components.module';
@@ -12,10 +12,10 @@ import { HotKeyService } from '../../services/hotkey.service';
 import { UndoRedoService } from '../../services/undo-redo.service';
 
 @Component({
-  	selector: 'grid',
-  	templateUrl: './grid.component.html',
-  	styleUrls: ['./grid.component.scss'],
-  	changeDetection: ChangeDetectionStrategy.OnPush
+	selector: 'grid',
+	templateUrl: './grid.component.html',
+	styleUrls: ['./grid.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridComponent implements OnInit, OnDestroy {
 	// input of the container, where grid is created
@@ -23,11 +23,13 @@ export class GridComponent implements OnInit, OnDestroy {
 
 	// grid properties
 	gridW: Array<number>;
-  	gridH: Array<number>;
-  	// Grid Height
-  	gridHeight = 0;
+	gridH: Array<number>;
+	// Grid Height
+	gridHeight = 0;
 
-  	constructor(
+	constructor(
+		private ref: ElementRef,
+		private cref: ChangeDetectorRef,
 		private settings: SettingsService,
 		private structure: StructureService,
 		private componentLoader: ComponentLoaderService,
@@ -109,20 +111,21 @@ export class GridComponent implements OnInit, OnDestroy {
 
 	private buildGrid(){
 		const parent: HTMLElement = this.container.element.nativeElement.parentNode;
-		const parentW = parent.clientWidth;
-		const parentH = parent.scrollHeight;
-		//  reset values
+		const parentW: number = parent.clientWidth;
+		const parentH: number = parent.scrollHeight;
+		// reset values
 		this.gridHeight = parentH;
 		this.gridW = [];
-	  	this.gridH = [];
-	  	const WS = Math.floor(parentW / this.settings.app.grid.gridSize);
-	  	const HS = Math.floor(parentH / this.settings.app.grid.gridSize);
-	  	for (let i = 1; i <= WS; i++) {
-		    this.gridW.push(this.settings.app.grid.gridSize * i);
+		this.gridH = [];
+		const WS = Math.floor(parentW / this.settings.app.grid.gridSize);
+		const HS = Math.floor(parentH / this.settings.app.grid.gridSize);
+		for (let i = 1; i <= WS; i++) {
+			this.gridW.push(this.settings.app.grid.gridSize * i);
 		}
 		for (let i = 1; i <= HS; i++) {
 			this.gridH.push(this.settings.app.grid.gridSize * i);
 		}
+		this.cref.detectChanges();
 	}
 
 	// refers to same logic as edit component
@@ -146,6 +149,6 @@ export class GridComponent implements OnInit, OnDestroy {
 
 @NgModule({
 	imports: [ComponentsModule],
-  	declarations: [GridComponent]
+	declarations: [GridComponent]
 })
 class GridComponentModule {}
