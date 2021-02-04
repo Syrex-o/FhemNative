@@ -146,14 +146,14 @@ export class SettingsService {
 		{name: 'hapticFeedback', default: JSON.stringify({enable: false, duration: 1}), toStorage: true},
 		// acustic feedback on events
 		{name: 'acusticFeedback', default: JSON.stringify({enable: false, audio: '1'}), toStorage: true},
-		// which devices to load from fhem --> component devices or all --> support end for fhem defined
-		{name: 'fhemDeviceLoader', default: 'Component', toStorage: true},
 		// custom component colors 
 		{name: 'customColors', default: JSON.stringify([]), toStorage: false, callback: (data:any)=>{if(data.length > 0){this.componentColors = this.componentColors.concat(data)}}},
 		// app language
 		{name: 'language', default: 'en', toStorage: true, callback: (lang:any)=> {this.translate.setDefaultLang(lang || 'en');}},
 		// fhem connection profiles
-		{name: 'connectionProfiles', default: JSON.stringify([]), toStorage: false, callback: (data)=>{if(data.length === 0){ this.connectionProfiles = [{IP: '', PORT: '8080', WSS: false, type: 'Websocket', basicAuth: false, USER: '', PASSW: ''}]; this.modes.fhemMenuMode = 'ip-config' }}}
+		{name: 'connectionProfiles', default: JSON.stringify([]), toStorage: false, callback: (data)=>{if(data.length === 0){ this.connectionProfiles = [{IP: '', PORT: '8080', WSS: false, type: 'Websocket', basicAuth: false, USER: '', PASSW: ''}]; this.modes.fhemMenuMode = 'ip-config' }}},
+		// share FhemNative config in FHEM Reading
+		{name: 'sharedConfig', default: JSON.stringify({enable: false, device: '', reading: ''}), toStorage: true}
 	];
 
 	constructor(
