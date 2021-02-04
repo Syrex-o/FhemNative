@@ -104,31 +104,61 @@ export class CreateEditComponentComponent implements OnInit, OnDestroy {
 
 	// determine if config part should be hidden due to dependencies
 	hideConfig(attr): boolean{
-		let shouldHide: boolean = false;
 		if(this.component.dependencies && this.component.dependencies[attr]){
 			let keys: string[] = Object.keys(this.component.attributes);
+			// loop keys
 			for(let i = 0; i < keys.length; i++){
-				let dependencyObject = this.component.attributes[keys[i]].find(x => x.attr === this.component.dependencies[attr].dependOn);
-				if(dependencyObject){
-					// determine array values position 0, if array
-					const compare = Array.isArray(dependencyObject.value) ? dependencyObject.value[0] : dependencyObject.value;
-					// determine if dependency value is array
-					const value = this.component.dependencies[attr].value;
-					if(Array.isArray(value)){
-						if(!value.includes(compare)){
-							shouldHide = true;
-							break;
+				// check if attr depends on multiple variables
+				if(Array.isArray(this.component.dependencies[attr].dependOn)){
+					// loop dependOn
+					for(let j = 0; j < this.component.dependencies[attr].dependOn.length; j++){
+						const dependencyObject = this.component.attributes[keys[i]].find(x => x.attr === this.component.dependencies[attr].dependOn[j]);
+						if(dependencyObject){
+							// determine if depency array values position 0 is array
+							const compare = Array.isArray(dependencyObject.value) ? dependencyObject.value[0] : dependencyObject.value;
+							// determine if dependency value is array
+							const value: any = this.component.dependencies[attr].value;
+							// loop values
+							// in cases of multi dependencies, the value object MUST be an Array representing length of dependency variables
+							// can be Array of Arrays in cases of multi dependencies
+							for(let k = 0; k < value.length; k++){
+								if(Array.isArray(value[k])){
+									if(!value[k].includes(compare)){
+										// trigger hide
+										return true;
+									}
+								}else{
+									// not nested
+									if(value[k] !== compare){
+										return true;
+									}
+								}
+							}
 						}
-					}else{
-						if(value !== compare){
-							shouldHide = true;
-							break;
+					}
+				}else{
+					// single dependency variables
+					const dependencyObject = this.component.attributes[keys[i]].find(x => x.attr === this.component.dependencies[attr].dependOn);
+					if(dependencyObject){
+						// determine array values position 0, if array
+						const compare = Array.isArray(dependencyObject.value) ? dependencyObject.value[0] : dependencyObject.value;
+						// determine if dependency value is array
+						const value: any = this.component.dependencies[attr].value;
+						if(Array.isArray(value)){
+							if(!value.includes(compare)){
+								return true;
+							}
+						}else{
+							if(value !== compare){
+								return true;
+							}
 						}
 					}
 				}
 			}
 		}
-		return shouldHide;
+		// should not hide
+		return false;
 	}
 
 	// change config slide
