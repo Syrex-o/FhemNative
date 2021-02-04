@@ -3,9 +3,13 @@ import { Platform } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+// interfaces
+import { Room } from '../../interfaces/interfaces.type';
+
 // Services
 import { FhemService } from '../../services/fhem.service';
 import { TaskService } from '../../services/task.service';
+import { LoggerService } from '../../services/logger/logger.service';
 import { StructureService } from '../../services/structure.service';
 import { SettingsService } from '../../services/settings.service';
 import { VariableService } from '../../services/variable.service';
@@ -13,9 +17,9 @@ import { ComponentLoaderService } from '../../services/component-loader.service'
 import { SelectComponentService } from '../../services/select-component.service';
 
 @Component({
-  	selector: 'room',
-  	templateUrl: './room.component.html',
-  	styleUrls: ['./room.component.scss']
+	selector: 'room',
+	templateUrl: './room.component.html',
+	styleUrls: ['./room.component.scss']
 })
 
 export class RoomComponent implements OnDestroy {
@@ -25,11 +29,14 @@ export class RoomComponent implements OnDestroy {
 	private routeSub: Subscription;
 	// edit change
 	private editSub: Subscription;
+	// shared config sub
+	private sharedConfigSub: Subscription;
 	// app pause and resume handlers
 	private onResumeSubscription: Subscription;
 	private onPauseSubscription: Subscription;
 
 	constructor(
+		private logger: LoggerService,
 		public settings: SettingsService,
 		public structure: StructureService,
 		private componentLoader: ComponentLoaderService,
@@ -57,8 +64,8 @@ export class RoomComponent implements OnDestroy {
 			}
 		});
 		// subscribe to room edit Changes
-	  	this.editSub = this.settings.modeSub.subscribe(next =>{
-	  		if(next.hasOwnProperty('roomEdit') || next.hasOwnProperty('roomEditFrom')){
+		this.editSub = this.settings.modeSub.subscribe(next =>{
+			if(next.hasOwnProperty('roomEdit') || next.hasOwnProperty('roomEditFrom')){
 				if(this.settings.modes.roomEdit){
 					// edit mode
 					this.createHelpers();
@@ -67,23 +74,23 @@ export class RoomComponent implements OnDestroy {
 					this.removeHelpers();
 				}
 			}
-	  	});
-	  	// App pause/resume
-	  	this.onPauseSubscription = this.platform.pause.subscribe(() => {
-	  		// check for always on
-	  		if(!this.settings.app.keepConnected){
-	  			this.fhem.noReconnect = true;
-	  			this.fhem.disconnect();
-	  			this.fhem.listenDevices = [];
-	  		}
-	  		// unlisten to variables
-	  		this.variable.unlisten();
-	  	});
-	  	this.onResumeSubscription = this.platform.resume.subscribe(() => {
-	  		if(!this.fhem.connected){
-	  			this.fhem.noReconnect = false;
-	  			this.fhem.connectFhem();
-	  			// listen to tasks
+		});
+		// App pause/resume
+		this.onPauseSubscription = this.platform.pause.subscribe(() => {
+			// check for always on
+			if(!this.settings.app.keepConnected){
+				this.fhem.noReconnect = true;
+				this.fhem.disconnect();
+				this.fhem.listenDevices = [];
+			}
+			// unlisten to variables
+			this.variable.unlisten();
+		});
+		this.onResumeSubscription = this.platform.resume.subscribe(() => {
+			if(!this.fhem.connected){
+				this.fhem.noReconnect = false;
+				this.fhem.connectFhem();
+				// listen to tasks
 				if(this.settings.app.showTasks){
 					this.task.listen();
 				}
@@ -91,15 +98,46 @@ export class RoomComponent implements OnDestroy {
 					// edit mode
 					this.createHelpers();
 				}
-	  		}
-	  		// listen to variables
-	  		this.variable.listen();
-	  		// init room 
-	  		this.initRoom();
-
-	  	});
+			}
+			// listen to variables
+			this.variable.listen();
+			// init room 
+			this.initRoom();
+		});
+		// listen to shared config
+		this.sharedConfigSub = this.fhem.sharedConfigUpdateSub.subscribe((next: Room[])=>{
+			const rooms: Room[] = next;
+			this.compareSharedConfig(rooms).then((shouldUpdate: boolean)=>{
+				if(shouldUpdate){
+					this.structure.rooms = rooms;
+					this.structure.getStructuredRoomList();
+					if(rooms.find(x=> x.ID === this.structure.currentRoom.ID)){
+						this.initRoom();
+					}
+				}
+			});
+		});
 	}
 
+	// compare configs
+	// returns wheather to update current room config or not (true: update, false: not update)
+	private compareSharedConfig(rooms: Room[]): Promise<boolean>{
+		return new Promise((resolve)=>{
+			// get current miniConf
+			this.componentLoader.getMinifiedConfig().then((miniConf: Room[])=>{
+				// compare configs
+				if( !(JSON.stringify(miniConf) === JSON.stringify(rooms)) ){
+					this.logger.info('Received new shared config. Updating rooms now.');
+					resolve(true);
+				}else{
+					this.logger.info('Received identical shared config. No update needed.');
+					resolve(false);
+				}
+			});
+		});
+	}
+
+	// initialize room
 	private initRoom(params?: any): void{
 		// reset selector list
 		this.selectComponent.selectorList = [];
@@ -166,5 +204,6 @@ export class RoomComponent implements OnDestroy {
 		// Unsubscribe Events
 		this.routeSub.unsubscribe();
 		this.editSub.unsubscribe();
+		this.sharedConfigSub.unsubscribe();
 	}
 }
