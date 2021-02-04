@@ -26,6 +26,32 @@ export interface DynamicComponent {
 	path: string
 }
 
+// positioning
+export interface ComponentPosition {
+	top: string,
+	left: string,
+	width: string,
+	height: string,
+	zIndex: number,
+	rotation: string
+}
+
+// elem pos in directives
+export interface ElementPosition {
+	top: number,
+	left: number,
+	width: number,
+	height: number
+}
+
+// elem pos in directives string 
+export interface ElementPositionString {
+	top: string,
+	left: string,
+	width: string,
+	height: string
+}
+
 // full defined component
 export interface DynamicComponentDefinition {
 	ID?: string,
@@ -34,17 +60,19 @@ export interface DynamicComponentDefinition {
 	container?: string,
 	pinned?: boolean,
 	attributes: ComponentAttributes,
-	position?: {
-		top: string, 
-		left: string, 
-		width: string,
-		height: string,
-		zIndex: number
-	},
+	position?: ComponentPosition,
+	position_P?: ComponentPosition,
 	dimensions?: { minX: number, minY: number},
 	createScaler?: {width: number, height: number},
 	dependencies?: ComponentDependencies,
 	customInputs?: CustomComponentInputs
+}
+
+// full component position in room definition
+export interface ComponentInStructure {
+	component: DynamicComponentDefinition,
+	room: string,
+	roomID: string
 }
 
 // dynamic component attributes
