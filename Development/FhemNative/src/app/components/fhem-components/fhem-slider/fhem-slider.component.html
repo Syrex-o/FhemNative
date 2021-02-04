@@ -24,8 +24,8 @@
 				</button>
 				<div class="slider-box-inner drag-item slider-two"
 					[ngStyle]="{
-						'height': arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% - 80px)',
-						'width': arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% - 80px)'
+						'height': arr_data_orientation[0] === 'horizontal' ? data_sliderHeight+'px' : 'calc(100% + '+(-90 - data_thumbHeight)+'px)',
+						'width': arr_data_orientation[0] === 'vertical' ? data_sliderHeight+'px' : 'calc(100% + '+(-90 - data_thumbWidth)+'px)'
 					}">
 					<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider-two', thumb: true, pin: false}"></ng-container>
 				</div>

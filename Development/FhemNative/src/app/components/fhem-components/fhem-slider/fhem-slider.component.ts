@@ -4,6 +4,9 @@ import { Component, Input, NgModule, OnInit, OnDestroy, ElementRef, HostListener
 import { IonicModule } from '@ionic/angular';
 import { ComponentsModule } from '../../components.module';
 
+// Interfaces
+import { FhemDevice } from '../../../interfaces/interfaces.type';
+
 // services
 import { FhemService } from '../../../services/fhem.service';
 import { SettingsService } from '../../../services/settings.service';
@@ -94,7 +97,7 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 			if (this.bool_data_showPin) this.styles.showPin = true;
 			// get the item container
 			this.container = this.ref.nativeElement.querySelector('.slider');
-			let bounding: ClientRect = this.container.getBoundingClientRect();
+			let bounding: DOMRect = this.container.getBoundingClientRect();
 
 			const whileMove = (e) => {
 				e.stopPropagation();
@@ -140,15 +143,15 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 		// transform ticks
 		this.data_ticks = Array(parseInt(this.data_ticks)).fill(this.data_ticks).map((x, i)=> i);
 		// get fhem device
-		this.fhem.getDevice(this.ID, this.data_device, (device)=>{
+		this.fhem.getDevice(this.ID, this.data_device, (device: FhemDevice)=>{
 			this.getState(device, false);
-		}).then(device=>{
+		}).then((device: FhemDevice)=>{
 			this.initSliderValues();
 			this.getState(device, true);
 		});
 	}
 	
-	private getState(device, init: boolean){
+	private getState(device: FhemDevice|null, init: boolean){
 		this.fhemDevice = device;
 		if(device && this.fhemDevice.readings[this.data_reading]){
 			const oldValue = this.checkForTime(this.value || ( Math.min(this.data_min, this.data_max) ), init);
@@ -253,7 +256,7 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	}
 
 	// move slider
-	private moveSlider(mouse:{x: number, y: number}, baseElem: ClientRect){
+	private moveSlider(mouse:{x: number, y: number}, baseElem: DOMRect){
 		let value = this.arr_data_orientation[0] === 'horizontal' ?
 			this.toValueNumber( (mouse.x - baseElem.left) / baseElem.width ) : 
 			this.toValueNumber( (mouse.y - baseElem.top) / baseElem.height );
@@ -321,7 +324,9 @@ export class FhemSliderComponent implements OnInit, OnDestroy {
 	}
 
 	private toValueNumber(factor: number) {
-		let value = Math.round(factor * (parseInt(this.data_max) - parseInt(this.data_min)) / parseInt(this.data_steps)) * parseInt(this.data_steps) + parseInt(this.data_min);
+		let value: number = Math.round(factor * (parseInt(this.data_max) - parseInt(this.data_min)) /  parseFloat(this.data_steps)) * parseFloat(this.data_steps) + parseInt(this.data_min);
+		// value to one decimal
+		value = Math.round(value * 10) / 10;
 		// check for min and max
 		if(parseInt(this.data_min) <= parseInt(this.data_max)){
 			if(this.arr_data_orientation[0] === 'vertical'){
