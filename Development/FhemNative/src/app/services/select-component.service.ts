@@ -40,6 +40,10 @@ export class SelectComponentService {
 		// create renderer in service
 		this.renderer = rendererFactory.createRenderer(null, null);
 		// subscription to Handles
+		// possible Handles: 
+			// whileResize (while resizing object)
+			// move (after move ended)
+			// resize (after resize made)
 		this.handles.subscribe((handleUpdate: HandleUpdate)=>{
 			this[handleUpdate.forHandle + 'Handles'].forEach((handle: Handle)=>{
 				if(handle.ID === handleUpdate.ID){
