@@ -1,4 +1,15 @@
 :host{
+	.not-found-container{
+		width: inherit;
+		height: inherit;
+		overflow-y: auto;
+		pointer-events: all;
+		border: 1px solid var(--dark-border);
+		border-radius: 5px;
+		p{
+			margin: 8px;
+		}
+	}
 	.button{
 		width: inherit;
 		height: inherit;
