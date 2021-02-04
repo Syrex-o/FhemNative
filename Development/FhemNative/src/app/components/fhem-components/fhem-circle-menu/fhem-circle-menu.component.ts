@@ -1,4 +1,4 @@
-import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, NgModule, ElementRef, OnInit, OnDestroy } from '@angular/core';
 
 // Components
 import { ComponentsModule } from '../../components.module';
@@ -30,6 +30,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	@Input() data_borderRadiusBottomRight: string;
 
 	@Input() bool_data_customBorder: boolean;
+	@Input() bool_data_useIcons: boolean;
 
 	@Input() arr_data_style: string[];
 	@Input() arr_data_expandStyle: string|string[];
@@ -44,6 +45,10 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 
 	@Input() icon_icon: string;
 
+	// Icons
+	@Input() arr_icon_icons: string|string[];
+	@Input() arr_style_iconColors: string|string[];
+
 	// Styling
 	@Input() style_iconColorOn: string;
 	@Input() style_iconColorOff: string;
@@ -57,6 +62,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	@Input() top: string;
 	@Input() left: string;
 	@Input() zIndex: string;
+	@Input() rotation: string;
 
 	fhemDevice: FhemDevice|null;
 	// state of fhem device
@@ -65,6 +71,8 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	items: Array<any> = [];
 	// current item value
 	currentValue: string;
+	// reference to size
+	hostEl: {width: number, height: number} = {width: 0, height: 0};
 
 	ngOnInit() {
 		this.fhem.getDevice(this.ID, this.data_device, (device: FhemDevice)=>{
@@ -89,6 +97,11 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 
 	toggleMenu(): void{
 		this.buttonState = !this.buttonState;
+		if(this.buttonState){
+			const el: HTMLElement = this.ref.nativeElement.querySelector('.circle-menu');
+			this.hostEl.width = el.offsetWidth;
+			this.hostEl.height = el.offsetHeight;
+		}
 	}
 
 	closeMenu(): void{
@@ -96,19 +109,19 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 	}
 
 	translator(style: string, index: number): string {
-		const max: number = Math.max(parseInt(this.width), parseInt(this.height));
+		const max: number = Math.max(this.hostEl.width, this.hostEl.height);
 		let translate: string;
 		if (style === 'top') {
-			translate = 'translate3d(0px,' + ((parseInt(this.height) * (index + 1)) * -1) + 'px, 0px)';
+			translate = 'translate3d(0px,' + ((this.hostEl.height * (index + 1)) * -1) + 'px, 0px)';
 		}
 		if (style === 'left') {
-			translate = 'translate3d(' + ((parseInt(this.width) * (index + 1)) * -1) + 'px,0px, 0px)';
+			translate = 'translate3d(' + ((this.hostEl.width * (index + 1)) * -1) + 'px,0px, 0px)';
 		}
 		if (style === 'bottom') {
-			translate = 'translate3d(0px,' + (parseInt(this.height) * (index + 1)) + 'px, 0px)';
+			translate = 'translate3d(0px,' + (this.hostEl.height * (index + 1)) + 'px, 0px)';
 		}
 		if (style === 'right') {
-			translate = 'translate3d(' + (parseInt(this.width) * (index + 1)) + 'px,0px, 0px)';
+			translate = 'translate3d(' + (this.hostEl.width * (index + 1)) + 'px,0px, 0px)';
 		}
 		if (style === 'circle') {
 			translate = 'rotate(' + (360 / this.items.length) * index + 'deg) translate3d('+max+'px,'+max+'px,0px) rotate(' + (-360 / this.items.length) * index + 'deg)';
@@ -131,7 +144,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 		this.fhem.removeDevice(this.ID);
 	}
 
-	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService){}
+	constructor(private fhem: FhemService, public settings: SettingsService, private native: NativeFunctionsService, private ref: ElementRef){}
 
 	static getSettings(): ComponentSettings {
 		return {
@@ -153,6 +166,7 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 				{variable: 'data_borderRadiusBottomLeft', default: '5'},
 				{variable: 'data_borderRadiusBottomRight', default: '5'},
 				{variable: 'bool_data_customBorder', default: false},
+				{variable: 'bool_data_useIcons', default: false},
 				{variable: 'arr_data_expandStyle', default: 'top,left,bottom,right,circle'},
 				{variable: 'arr_data_style', default: 'standard,NM-IN-standard,NM-OUT-standard'},
 				{variable: 'icon_icon', default: 'add-circle'},
@@ -160,7 +174,9 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 				{variable: 'style_iconColorOff', default: '#86d993'},
 				{variable: 'style_buttonColor', default: '#86d993'},
 				{variable: 'style_labelColor', default: '#fff'},
-				{variable: 'style_activeColor', default: '#02adea'}
+				{variable: 'style_activeColor', default: '#02adea'},
+				{variable: 'arr_icon_icons', default: 'add-circle,close-circle'},
+				{variable: 'arr_style_iconColors', default: '#2ec6ff,#272727'}
 			],
 			dependencies: {
 				data_borderRadius: { dependOn: 'bool_data_customBorder', value: false },
@@ -168,6 +184,9 @@ export class FhemCircleMenuComponent implements OnInit, OnDestroy {
 				data_borderRadiusTopRight: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomLeft: { dependOn: 'bool_data_customBorder', value: true },
 				data_borderRadiusBottomRight: { dependOn: 'bool_data_customBorder', value: true },
+				// icon usage
+				arr_icon_icons: {dependOn: 'bool_data_useIcons', value: true},
+				arr_style_iconColors: {dependOn: 'bool_data_useIcons', value: true},
 				// neumorph dependencies
 				style_buttonColor: { dependOn: 'arr_data_style', value: 'standard' },
 				style_activeColor: { dependOn: 'arr_data_style', value: 'standard' }
