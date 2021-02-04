@@ -257,6 +257,19 @@ export class VariablesComponent implements OnInit {
 		this.selectedVariable = index;
 		// open menu
 		this.menus.configureVariable = true;
+		// get variable inputs on open
+		this.getAvailableInputs(this.variable.storageVariables[this.selectedVariable].attributes.type);
+		// check if input is defined to show all options
+		const relInput: string = this.variable.storageVariables[this.selectedVariable].attributes.inputOption.name;
+		if(relInput !== ''){
+			this.getAvailableUpdaters(relInput, false);
+			this.getAvailableRegex(relInput, false);
+			// check if regex is defined
+			const attr = this.variable.storageVariables[this.selectedVariable].attributes
+			if(attr.regexOption && attr.regexOption.name !== ''){
+				this.updateRegex(attr.regexOption.name, false)
+			}
+		}
 	}
 
 	// show content of popup after animation, to reduce lags
@@ -415,16 +428,79 @@ export class VariablesComponent implements OnInit {
 		}else{
 			// regex
 			if(selected.attributes.regexOption.name !== '' && selected.attributes.regexOption.value !== ''){
-				let regex = new RegExp(selected.attributes.regexOption.value, '');
-				try{
-					let res = this.previews.inputValue.toString().match(regex);
-					if(res){
-						this.previews.regexValue = res[0];
-					}else{
-						this.previews.regexValue = 'No match'
+				// get base config of regex option
+				const baseRegex = this.regexOptions.find(x=> x.name === selected.attributes.regexOption.name);
+				// regex for match
+				let regExp: RegExp = new RegExp(selected.attributes.regexOption.value, '');
+				// match number to consider
+				let regExIndex: number|string = 0;
+				// predefined regex
+				if(baseRegex.options){
+					const relValue: string = selected.attributes.regexOption.value;
+					if(relValue === 'first digit'){
+						regExp = new RegExp(/\d/, '');
 					}
-				} catch(e){
-					this.previews.regexValue = e;
+					if(relValue === 'all digits'){
+						regExp = new RegExp(/\d+/, 'g');
+						regExIndex = 'all';
+					}
+				}
+				// test regex
+				try {
+					if(baseRegex.name === 'regex replace (comma seperated)'){
+						const rel: string = selected.attributes.regexOption.value;
+						// check for double comma
+						let splitted: string[] = rel.split(',');
+						if(splitted.length > 2){
+							const relIndex: any = rel.match(/(,)(?!.*,)/);
+							if(relIndex){
+								// split by index --> needed for double comma (,,)
+								splitted = [
+									rel.substring(0, relIndex.index),
+									rel.substr(relIndex.index + 1)
+								]
+							}
+						}
+						if(splitted.length === 2){
+							try{
+								let res = this.previews.inputValue.toString().split(splitted[0]).join(splitted[1]);
+								// check for num
+								if(isNaN(res)){
+									this.previews.regexValue = res;
+								}else{
+									this.previews.regexValue  = parseFloat(res);
+								}
+							} catch(e){
+								this.previews.regexValue = 'No match';
+							}
+						}else{
+							this.previews.regexValue = 'No match';
+						}
+					}else{
+						let res = this.previews.inputValue.toString().match(regExp);
+						if(res){
+							if(typeof regExIndex === 'string'){
+								let mod = res.join('');
+								// check for num
+								if(isNaN(mod)){
+									this.previews.regexValue = mod;
+								}else{
+									this.previews.regexValue = parseFloat(mod);
+								}
+							}else{
+								// check for num
+								if(isNaN(res[regExIndex])){
+									this.previews.regexValue = res[regExIndex];
+								}else{
+									this.previews.regexValue = parseFloat(res[regExIndex]);
+								}
+							}
+						}else{
+							this.previews.regexValue = 'No match';
+						}
+					}
+				}catch(e){
+					this.previews.regexValue = 'No match';
 				}
 			}else{
 				this.previews.regexValue = this.previews.inputValue;

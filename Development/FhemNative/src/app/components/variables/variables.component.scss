@@ -201,6 +201,9 @@
 				margin-bottom: 10px;
 				border-top: 2px dotted #ddd;
 				margin-top: 10px;
+				.btn-round{
+					z-index: 0;
+				}
 				.label{
 					position: absolute;
 					left: 0;
