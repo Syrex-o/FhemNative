@@ -133,9 +133,19 @@
 						text-transform: uppercase;
 						color: #fff;
 						font-size: 1.1em;
+						&.green{
+							background: var(--btn-green);
+						}
+					}
+					&.center{
+						button{
+							left: 50%;
+							transform: translateX(-50%);
+						}
 					}
 					.input{
 						margin-bottom: 10px;
+						position: relative;
 						input{
 							position: relative;
 							font-size:18px;
@@ -162,7 +172,7 @@
 							left: 0%;
 							&::before, 
 							&::after{
-							  	content: '';
+								content: '';
 								height: 2px;
 								width: 0;
 								bottom: 0px; 
@@ -175,6 +185,23 @@
 							}
 							&:after{
 								right:50%; 
+							}
+						}
+						&.reduced{
+							input, .bar{
+								width: calc(100% - 50px);
+							}
+							ion-icon{
+								position: absolute;
+								right: 0;
+								top: 50%;
+								width: 35px;
+								height: 35px;
+								transform: translateY(-50%);
+								color: var(--btn-red) !important;
+								&.check{
+									color: var(--btn-green) !important;
+								}
 							}
 						}
 					}

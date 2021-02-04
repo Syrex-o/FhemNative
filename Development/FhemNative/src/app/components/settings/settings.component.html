@@ -53,19 +53,6 @@
 					</button>
 				</div>
 			</div>
-			<!-- Connection loader -->
-			<div class="category btn-category">
-				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.TITLE' | translate }}</p>
-				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.INFO' | translate }}</p>
-				<ion-select 
-					[interfaceOptions]="{cssClass: 'wider-btns'}"
-					colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
-					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
-					[(ngModel)]="settings.app.fhemDeviceLoader" (ionChange)="changeAppSetting('fhemDeviceLoader', $event.detail.value)">
-					<ion-select-option value="All">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.OPTIONS.ALL' | translate }}</ion-select-option>
-					<ion-select-option value="Component">{{ 'GENERAL.SETTINGS.FHEM.LOAD_WHICH_DEVICES.OPTIONS.Component' | translate }}</ion-select-option>
-				</ion-select>
-			</div>
 		</div>
 		<!-- App settings -->
 		<div class="settings-block">
@@ -522,6 +509,12 @@
 					(onToggle)="changeAppSetting('keepConnected', $event)">
 				</switch>
 			</div>
+			<!-- FhemNative Config in FHEM -->
+			<div class="category btn-full-category">
+				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.TITLE' | translate }}</p>
+				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.INFO' | translate }}</p>
+				<button (click)="toggleSharedConfig()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.BUTTON' | translate }}</button>
+			</div>
 			<!-- Generate Rooms -->
 			<div class="category btn-full-category">
 				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.FHEM.AUTO_ROOMS.TITLE' | translate }}</p>
@@ -566,6 +559,7 @@
 					colorizer [theme]="settings.app.theme" [style]="['color', 'text']"
 					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
 					[(ngModel)]="settings.app.grid.gridSize" (ionChange)="changeAppSettingJSON('grid', 'gridSize', $event.detail.value)">
+					<ion-select-option [value]="5">5</ion-select-option>
 					<ion-select-option [value]="10">10</ion-select-option>
 					<ion-select-option [value]="20">20</ion-select-option>
 					<ion-select-option [value]="30">30</ion-select-option>
@@ -646,6 +640,69 @@
 				<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.RESET.REVERT.TITLE' | translate }}</p>
 				<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.RESET.REVERT.INFO' | translate }}</p>
 				<button (click)="resetSettings()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.RESET.REVERT.BUTTON' | translate }}</button>
+			</div>
+		</div>
+	</div>
+</picker>
+
+<!-- Shared FhemNative Config picker menu -->
+<picker
+	[(ngModel)]="menus.sharedConfig"
+	[height]="100"
+	[showConfirmBtn]="false"
+	[cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate"
+	(onClose)="revertSharedConfigSettings()"
+	[zIndex]="1001">
+	<div header>
+		<h1 colorizer [theme]="settings.app.theme" [style]="['color', 'text']">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.HEADER' | translate }}</h1>
+	</div>
+	<div body class="page content full-height">
+		<div class="settings-block">
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.sharedConfig.enable"
+					[label]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.SWITCH.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.SWITCH.INFO' | translate"
+					(onToggle)="changeAppSettingJSON('sharedConfig', 'enable', $event)">
+				</switch>
+			</div>
+			<ng-container *ngIf="settings.app.sharedConfig.enable">
+				<div class="category btn-full-category">
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.DEVICE.TITLE' | translate }}</p>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.DEVICE.INFO' | translate }}</p>
+					<div class="input reduced">
+						<input type="text" [(ngModel)]="settings.app.sharedConfig.device">
+						<span class="bar"></span>
+						<ion-icon 
+							[class.check]="fhem.sharedConfigPresence.devicePresent"  
+							[name]="fhem.sharedConfigPresence.devicePresent ? 'checkmark-circle-outline' : 'close-circle-outline' ">	
+						</ion-icon>
+					</div>
+				</div>
+				<div class="category btn-full-category">
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.READING.TITLE' | translate }}</p>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.READING.INFO' | translate }}</p>
+					<div class="input reduced">
+						<input type="text" [(ngModel)]="settings.app.sharedConfig.reading">
+						<span class="bar"></span>
+						<ion-icon 
+							[class.check]="fhem.sharedConfigPresence.readingPresent"  
+							[name]="fhem.sharedConfigPresence.readingPresent ? 'checkmark-circle-outline' : 'close-circle-outline' ">	
+						</ion-icon>
+					</div>
+				</div>
+				<div class="category btn-full-category" *ngIf="fhem.sharedConfigPresence.devicePresent && fhem.sharedConfigPresence.readingPresent">
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'text']" class="label">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.TITLE' | translate }}</p>
+					<p colorizer [theme]="settings.app.theme" [style]="['color', 'des']" class="des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.INFO' | translate }}</p>
+					<button (click)="transferSharedConfig()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.BUTTON' | translate }}</button>
+				</div>
+				<div class="category btn-full-category center">
+					<button (click)="testSharedConfig()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.BUTTON' | translate }}</button>
+				</div>
+			</ng-container>
+			<div class="category btn-full-category center">
+				<button class="green" (click)="saveSharedConfig()" matRipple [matRippleColor]="'#d4d4d480'">{{ 'GENERAL.BUTTONS.SAVE' | translate }}</button>
 			</div>
 		</div>
 	</div>

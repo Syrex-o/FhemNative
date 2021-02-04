@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 
 // interfaces
-import { FhemDevice, DynamicComponent, DynamicComponentDefinition } from '../../interfaces/interfaces.type';
+import { FhemDevice, Room, DynamicComponent, DynamicComponentDefinition } from '../../interfaces/interfaces.type';
 
 // Components
 import { IonicModule } from '@ionic/angular';
@@ -34,7 +34,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 @Component({
 	selector: 'settings',
 	templateUrl: './settings.component.html',
-  	styleUrls: ['./settings.component.scss']
+	styleUrls: ['./settings.component.scss']
 })
 
 export class SettingsComponent implements OnInit {
@@ -46,7 +46,8 @@ export class SettingsComponent implements OnInit {
 		customAppTheme: false,
 		changeLog: false,
 		thirdParty: false,
-		advanced: false
+		advanced: false,
+		sharedConfig: false
 	};
 
 	// is desktop
@@ -63,7 +64,7 @@ export class SettingsComponent implements OnInit {
 		public native: NativeFunctionsService,
 		public version: VersionService,
 		private modalCtrl: ModalController,
-		private fhem: FhemService,
+		public fhem: FhemService,
 		private structure: StructureService,
 		private backBtn: BackButtonService,
 		private fileManager: FileManagerService,
@@ -113,7 +114,7 @@ export class SettingsComponent implements OnInit {
 						const mail = 'mailto:?subject=' +
 							this.translate.instant('GENERAL.SETTINGS.FHEM.EXPORT.MESSAGES.SHARE.TITLE') + '&body=' +
 							this.translate.instant('GENERAL.SETTINGS.FHEM.EXPORT.MESSAGES.SHARE.INFO') + '. ' + data.dir;
-    					window.location.href = mail;
+						window.location.href = mail;
 					}
 				}
 			}).catch((err) => {
@@ -142,7 +143,7 @@ export class SettingsComponent implements OnInit {
 					const mail = 'mailto:?subject=' +
 						'Log exported' + '&body=' +
 						'Log file exported ' + '. ' + data.dir;
-    				window.location.href = mail;
+					window.location.href = mail;
 				}
 			}
 		}).catch((err) => {
@@ -300,6 +301,7 @@ export class SettingsComponent implements OnInit {
 			this.settings.modes.showLoader = false;
 		}, (error)=>{
 			this.settings.modes.showLoader = false;
+			this.menus.changeLog = false;
 		});
 	}
 
@@ -320,6 +322,128 @@ export class SettingsComponent implements OnInit {
 	// toggle URL links
 	support(url){
 		window.open(url, '_system', 'location=yes');
+	}
+
+	// share fhemnative config in fhem device reading
+	// toggle menu
+	// settings before
+	private initialSettingsSharedConfig = JSON.parse(JSON.stringify(this.settings.app.sharedConfig));
+
+	toggleSharedConfig(): void{
+		this.initialSettingsSharedConfig = JSON.parse(JSON.stringify(this.settings.app.sharedConfig));
+		this.menus.sharedConfig = true;
+		this.testSharedConfig();
+	}
+
+	// test configuration
+	testSharedConfig(): Promise<boolean>{
+		return new Promise((resolve)=>{
+			this.fhem.sharedConfigPresence.devicePresent = false;
+			this.fhem.sharedConfigPresence.readingPresent = false;
+			this.settings.modes.showLoader = true;
+			let close = (head: string, message: string, hideToast?: boolean): void =>{
+				this.settings.modes.showLoader = false;
+				if(!hideToast){
+					this.toast.addToast(head, message, 'info');
+				}
+			}
+			// test
+			if(this.settings.app.sharedConfig.device !== ''){
+				this.fhem.handleSimpleDeviceRequest(this.settings.app.sharedConfig.device, 1000).then((foundDevice: FhemDevice|null)=>{
+					if(foundDevice){
+						this.fhem.sharedConfigPresence.devicePresent = true;
+						if(this.settings.app.sharedConfig.reading !== '' && this.settings.app.sharedConfig.reading in foundDevice.readings){
+							this.fhem.sharedConfigPresence.readingPresent = true;
+							close('', '', true);
+							resolve(true);
+						}else{
+							close(this.translate.instant('GENERAL.ERRORS.NOT_FOUND.READING_NOT_FOUND'), '');
+							resolve(false);
+						}
+					}else{
+						close(this.translate.instant('GENERAL.ERRORS.NOT_FOUND.DEVICE_NOT_FOUND'), '');
+						resolve(false);
+					}
+				});
+			}else{
+				close(this.translate.instant('GENERAL.ERRORS.NOT_FOUND.DEVICE_NOT_DEFINED'), '');
+				resolve(false);
+			}
+		});
+	}
+
+	// transfer shared config
+	transferSharedConfig(): void{
+		this.toast.showAlert(
+			this.translate.instant('GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.WARNING.HEADER'),
+			this.translate.instant('GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.WARNING.MESSAGE'),
+			{
+				buttons: [
+					{
+						text: this.translate.instant('GENERAL.DICTIONARY.NO'),
+						role: 'cancel'
+					},
+					{
+						text: this.translate.instant('GENERAL.DICTIONARY.YES'),
+						handler: () => {
+							// test and transfer shared config
+							this.testSharedConfig().then((res: boolean)=>{
+								if(res){
+									this.componentLoader.getMinifiedConfig().then((miniConf: Room[])=>{
+										// send initial command to reading
+										this.fhem.setAttr(
+											this.settings.app.sharedConfig.device,
+											this.settings.app.sharedConfig.reading,
+											JSON.stringify(miniConf)
+										);
+									});
+								}
+							});
+						}
+					}
+				]
+			}
+		);
+	}
+
+	// save shared config
+	saveSharedConfig(): void{
+		this.storage.changeSetting({
+			name: 'sharedConfig',
+			change: JSON.stringify(this.settings.app.sharedConfig)
+		}).then((res: any)=>{
+			this.settings.app.sharedConfig = res;
+			this.initialSettingsSharedConfig = JSON.parse(JSON.stringify(this.settings.app.sharedConfig));
+			this.menus.sharedConfig = false;
+			// test config
+			this.testSharedConfig().then((res: boolean)=>{
+				if(res){
+					if(this.settings.app.sharedConfig.enable){
+						// add shared config device to listen devices
+						if(this.settings.app.sharedConfig.device !== ''){
+							if(!this.fhem.listenDevices.find(x=> x.id === 'SHARED_CONFIG_DEVICE')){
+								this.fhem.listenDevices.push({id: 'SHARED_CONFIG_DEVICE', device: this.settings.app.sharedConfig.device, handler: null});
+							}
+							// initially send request
+							this.fhem.getDevice('SHARED_CONFIG_DEVICE', this.settings.app.sharedConfig.device, false, true).then((device)=>{
+								this.fhem.deviceUpdateSub.next(device);
+							});
+						}
+					}
+				}
+			});
+		});
+	}
+
+	// revert settings if they are not saved
+	revertSharedConfigSettings(): void{
+		this.settings.app.sharedConfig = this.initialSettingsSharedConfig
+		this.storage.changeSetting({
+			name: 'sharedConfig',
+			change: JSON.stringify(this.settings.app.sharedConfig)
+		}).then((res: any)=>{
+			this.settings.app.sharedConfig = res;
+		});
 	}
 
 	// generate rooms
@@ -586,10 +710,10 @@ export class SettingsComponent implements OnInit {
 					el.room
 				).join("<br /> <br />"),
 				[{
-	    			text: this.translate.instant('GENERAL.BUTTONS.OKAY'),
-	    			role: 'cancel',
-	    			handler: data => this.rejectedDevices(generatedDevices)
-	    		}]
+					text: this.translate.instant('GENERAL.BUTTONS.OKAY'),
+					role: 'cancel',
+					handler: data => this.rejectedDevices(generatedDevices)
+				}]
 			);
 		}else{
 			this.rejectedDevices(generatedDevices);
@@ -599,17 +723,17 @@ export class SettingsComponent implements OnInit {
 	private rejectedDevices(generatedDevices){
 		if(generatedDevices.filter(dev => !dev.generated).length > 0){
 			this.toast.showAlert(
-		    	this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_REASON_TITLE'),
-		    	generatedDevices.filter(dev => !dev.generated).map(
-		    		el=> el.device +' '+
-		    		this.translate.instant('GENERAL.DICTIONARY.AS')+' '+
-		    		el.as +' '+
-		    		(el.room ? ' '+this.translate.instant('GENERAL.DICTIONARY.TO')+' '+
-		    			el.room+': ' : ': ') +
-		    		this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_REASONS.'+el.reason)
-		    	).join("<br /> <br />"),
-		    	false
-		    );
+				this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_REASON_TITLE'),
+				generatedDevices.filter(dev => !dev.generated).map(
+					el=> el.device +' '+
+					this.translate.instant('GENERAL.DICTIONARY.AS')+' '+
+					el.as +' '+
+					(el.room ? ' '+this.translate.instant('GENERAL.DICTIONARY.TO')+' '+
+						el.room+': ' : ': ') +
+					this.translate.instant('GENERAL.DICTIONARY.NO_COMPONENTS_ADDED_REASONS.'+el.reason)
+				).join("<br /> <br />"),
+				false
+			);
 		}
 	}
 
@@ -621,23 +745,23 @@ export class SettingsComponent implements OnInit {
 			{
 				buttons: [
 					{
-	    				text: this.translate.instant('GENERAL.DICTIONARY.NO'),
-	    				role: 'cancel'
-	    			},
-	    			{
-	                    text: this.translate.instant('GENERAL.DICTIONARY.YES'),
-	                    handler: () => {
-	                    	// reset the settings
-	                    	this.resetAllSettings().then(()=>{
-	                    		// reset done
-	                    		this.toast.showAlert(
+						text: this.translate.instant('GENERAL.DICTIONARY.NO'),
+						role: 'cancel'
+					},
+					{
+						text: this.translate.instant('GENERAL.DICTIONARY.YES'),
+						handler: () => {
+							// reset the settings
+							this.resetAllSettings().then(()=>{
+								// reset done
+								this.toast.showAlert(
 									this.translate.instant('GENERAL.RESET.DONE.TITLE'),
 									this.translate.instant('GENERAL.RESET.DONE.INFO'),
 									false
 								);
-	                    	});
-	                    }
-	                }
+							});
+						}
+					}
 				]
 			}
 		);
@@ -668,6 +792,6 @@ export class SettingsComponent implements OnInit {
 }
 @NgModule({
 	imports: [ComponentsModule, IonicModule, TranslateModule],
-  	declarations: [SettingsComponent]
+	declarations: [SettingsComponent]
 })
 class SettingsComponentModule {}
