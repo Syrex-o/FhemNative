@@ -1,7 +1,8 @@
 <fhem-component-container 
 	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}" 
 	[fhemDevice]="fhemDevice"
-	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
 	[minimumWidth]="30"
 	[minimumHeight]="30"
 	outside-click (onOutsideClick)="closeMenu()">
@@ -40,11 +41,17 @@
 					'opacity': buttonState ? 1 : 0,
 					'transition-delay': buttonState ? (i * 0.04)+'s' : '0s'
 				}">
-				<p [ngStyle]="{
+				<p *ngIf="!bool_data_useIcons"
+					[ngStyle]="{
 					'color': style_labelColor,
-					'line-height': height
+					'line-height': hostEl.height + 'px'
 					}"
 				>{{item}}</p>
+				<icon *ngIf="bool_data_useIcons"
+					[style.color]="arr_style_iconColors[i] || arr_style_iconColors[0]"
+					[icon]="arr_icon_icons[i] || arr_icon_icons[0]">
+					
+				</icon>
 			</div>
 		</div>
 	</div>
