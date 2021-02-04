@@ -13,7 +13,7 @@
 			'border-bottom-right-radius.px': data_borderRadius,
 			'border-top-left-radius.px' : data_borderRadius,
 			'border-top-right-radius.px' : data_borderRadius,
-			'overflow-y': (this.arr_data_orientation[0] === 'vertical' ? 'hidden' : 'auto')
+			'overflow-y': (arr_data_orientation[0] === 'vertical' ? 'hidden' : 'auto')
 		}">
 		<p 
 			*ngIf="data_headline && data_headline !== ''" [ngStyle]="{'background-color': style_headerColor}"
@@ -28,6 +28,7 @@
 		<ion-slides 
 			#slides
 			[pager]="bool_data_showPager"
+			[options]="{ 'direction': arr_data_orientation[0] }"
 			(ionSlideDidChange)="changeSliderContainer()"
 			(ionSlideWillChange)="dynamicSwiperStyle()"
 			[ngStyle]="{'background-color': style_backgroundColor, 'height': (data_headline && data_headline !== '') ? 'calc(100% - 35px)' : '100%'}">
