@@ -2,7 +2,15 @@ import { Injectable, Injector, ComponentFactoryResolver, NgModuleFactory, Type }
 import { Subject } from 'rxjs';
 
 // interfaces
-import { DynamicComponentDefinition, ComponentSettings, CustomComponentInputs, DynamicComponent } from '../interfaces/interfaces.type';
+import { 
+	DynamicComponentDefinition,
+	ComponentAttributes,
+	ComponentSettings, 
+	CustomComponentInputs, 
+	DynamicComponent,
+	ComponentInStructure,
+	Room
+} from '../interfaces/interfaces.type';
 
 // Services
 import { LoggerService } from './logger/logger.service';
@@ -37,6 +45,7 @@ export class ComponentLoaderService {
 	public fhemComponents: DynamicComponent[] = [
 		{name: 'Box', path: 'fhem-box/fhem-box'},
 		{name: 'Button', path: 'fhem-button/fhem-button'},
+		{name: 'Button Menu', path: 'fhem-button-menu/fhem-button-menu'},
 		{name: 'Button Multistate', path: 'fhem-button-multistate/fhem-button-multistate'},
 		{name: 'Chart', path: 'fhem-chart/fhem-chart'},
 		{name: 'Circle Menu', path: 'fhem-circle-menu/fhem-circle-menu'},
@@ -206,73 +215,45 @@ export class ComponentLoaderService {
 	public getFormattedComponent(ID: string, componentInput?: any): Promise<DynamicComponentDefinition>{
 		return new Promise((resolve)=>{
 			// get the component
-			let component: DynamicComponentDefinition = componentInput ? componentInput : this.structure.getComponent(ID);
+			const component: DynamicComponentDefinition = componentInput ? componentInput : this.structure.getComponent(ID);
+			// cache component attributes
+			const cacheAttributes: ComponentAttributes = JSON.parse(JSON.stringify(component.attributes));
 			// get component defaults
 			this.getFhemComponentData(component.name).then((compData: DynamicComponentDefinition)=>{
 				const componentDefaults = compData;
+				// remove all attributes
+				// used to create sorting and to reduce number of loops --> no attr delete loop needed
+				component.attributes = {};
 				// look for new props in component
 				for(const key of Object.keys(componentDefaults.attributes)){
-					// check for new attribute
-					if( !(key in component.attributes) ){
-						component.attributes[key] = componentDefaults.attributes[key];
-					}
-					// assign default to new attribute
-					componentDefaults.attributes[key].forEach((value)=>{
-						if( !component.attributes[key].find(x=> x.attr === value.attr) ){
-							component.attributes[key].push(value);
-						}
-					});
-				}
-				// modify the already saved component to new standard --> based on current version
-				// remove old attributes
-				let attrRemoveList = [];
-				for(const key of Object.keys(component.attributes)){
-					// dont´t remove containers --> components in attributes
-					if(key !== 'components'){
-						// check if full obj was removed
-						if(!(key in componentDefaults.attributes) ){
-							attrRemoveList.push({key: key});
-						}
-						// check if single attribute was removed
-						component.attributes[key].forEach((value)=>{
-							if( componentDefaults.attributes[key] && !componentDefaults.attributes[key].find(x=> x.attr === value.attr) ){
-								// remove attr --> is old
-								attrRemoveList.push({key: key, attr: value.attr});
+					// append default values
+					component.attributes[key] = componentDefaults.attributes[key];
+					// append modiefied values (differing from default)
+					if(cacheAttributes[key]){
+						// loop key
+						cacheAttributes[key].forEach(cacheAttr=>{
+							let foundIndex: number = component.attributes[key].findIndex(x=> x.attr === cacheAttr.attr);
+							if(foundIndex > -1){
+								// create empty obj first --> prevent overwrite
+								let obj = {};
+								// check for default array values
+								// default values are only present in attr_arr_data
+								if(key === 'attr_arr_data'){
+									obj['defaults'] = component.attributes[key][foundIndex].value;
+								}
+								// append values
+								obj['attr'] = cacheAttr.attr;
+								obj['value'] = cacheAttr.value;
+								// component.attributes[key][foundIndex] = cacheAttr;
+								component.attributes[key][foundIndex] = obj;
 							}
 						});
 					}
 				}
-
-				// remove the old attributes
-				if(attrRemoveList.length > 0){
-					attrRemoveList.forEach((attrRemove)=>{
-						if(!('attr' in attrRemove)){
-							// remove whole container
-							delete component.attributes[attrRemove.key];
-						}else{
-							// remove part of sub attributes
-							if(component.attributes[attrRemove.key]){
-								let index = component.attributes[attrRemove.key].findIndex(x=> x.attr === attrRemove.attr);
-								if(index > -1){
-									component.attributes[attrRemove.key].splice(index, 1);
-								}
-							}
-						}
-					});
+				// append nested components if needed
+				if('components' in cacheAttributes){
+					component.attributes.components = cacheAttributes.components;
 				}
-
-				// fix for arr_data function calling --> getting defaults
-				// get default array values
-				if (component.attributes.attr_arr_data && component.attributes.attr_arr_data.length > 0) {
-					component.attributes.attr_arr_data.forEach((arr_data: any, index: number)=>{
-						// get the array data from default 
-						const defaultArr = componentDefaults.attributes.attr_arr_data.find(x=> x.attr === arr_data.attr);
-						if(defaultArr){
-							component.attributes.attr_arr_data[index].defaults = defaultArr.value;
-						}
-					});
-				}
-
 				// assign tyle and dimensions
 				component['type'] = componentDefaults.type;
 				component['dimensions'] = componentDefaults.dimensions;
@@ -398,16 +379,28 @@ export class ComponentLoaderService {
 							}
 							// assign other values
 							ref.instance.ID = component.ID;
+
+							// Miniconf loader
+							// loaded from miniConf --> no real position is present
+							if(!component.position){
+								component.position = this.structure.getComponentPositionPixel(component);
+								// assign position to room component
+								const roomComponent: DynamicComponentDefinition = this.structure.getComponent(component.ID);
+								roomComponent.position = component.position;
+							}
+
 							// positioning
 							const width: number = parseInt(component.position.width || component.dimensions.minX);
 							const height: number = parseInt(component.position.height || component.dimensions.minY);
 							const top: number = parseInt(component.position.top || 0);
 							const left: number = parseInt(component.position.left || 0);
+							const rotation: number = parseInt(component.position.rotation || 0);
 							// assign
 							ref.instance.width = width + 'px';
 							ref.instance.height = height + 'px';
 							ref.instance.top = top + 'px';
 							ref.instance.left = left + 'px';
+							ref.instance.rotation = rotation + 'deg';
 							ref.instance.zIndex = component.position.zIndex;
 							// push comp to containerComponents
 							this.containerComponents.push({ID: component.ID, REF: ref, container: container});
@@ -560,5 +553,81 @@ export class ComponentLoaderService {
 				}
 			}
 		}
+	}
+
+	// get minified config
+	public getMinifiedConfig(keepPos?: boolean): Promise<Room[]> {
+		return new Promise((resolve)=>{
+			let transformer = (val: any)=>{
+				return Array.isArray(val) ? JSON.stringify(val) : val;
+			}
+			// store miniConf as duplicate of current config
+			let miniConf: Room[] = JSON.parse(JSON.stringify(this.structure.rooms));
+			const allComponents: ComponentInStructure[] = this.structure.getAllComponents();
+			if(allComponents.length === 0){
+				resolve(miniConf);
+			}
+			// loop all components
+			allComponents.forEach((componentStructure: ComponentInStructure, i: number)=>{
+				let relevantComponent: DynamicComponentDefinition|null = this.structure.searchForComp(miniConf, componentStructure.component.ID);
+				if(relevantComponent){
+					// loop component attributes to remove default values
+					// get component defaults
+					this.getFhemComponentData(relevantComponent.name).then((compData: DynamicComponentDefinition)=>{
+						const componentDefaults = compData;
+						// look for duplicates
+						for(const key of Object.keys(componentDefaults.attributes)){
+							componentDefaults.attributes[key].forEach((value)=>{
+								// look for identical values
+								// check for new attributes
+								// new attribute in App can cause crash from shared config
+								if(Object.keys(relevantComponent.attributes).length > 0 && relevantComponent.attributes[key]){
+									// get relevant
+									let ind = relevantComponent.attributes[key].findIndex(x=> x.attr === value.attr && transformer(x.value) === transformer(value.value));
+									if(ind > -1){
+										relevantComponent.attributes[key].splice(ind, 1);
+									}
+									if(Object.keys(relevantComponent.attributes[key]).length === 0){
+										delete relevantComponent.attributes[key];
+									}
+								}
+							});
+						}
+						// nested components may never receive position attributes due to: Exp. not opening popup when using shared config
+						// ignore those cases and just take already generated percentage positions
+						if('position' in relevantComponent){
+							// get percentage position
+							relevantComponent['position_P'] = this.structure.getComponentPositionPercentage(relevantComponent);
+						}
+						// remove not needed parts
+						if('type' in relevantComponent){
+							delete relevantComponent.type;
+						}
+						if('dependencies' in relevantComponent){
+							delete relevantComponent.dependencies;
+						}
+						if('container' in relevantComponent){
+							delete relevantComponent.container;
+						}
+						if('dimensions' in relevantComponent){
+							delete relevantComponent.dimensions;
+						}
+						if(!keepPos){
+							if('createScaler' in relevantComponent){
+								delete relevantComponent.createScaler;
+							}
+							if('position' in relevantComponent){
+								delete relevantComponent.position;
+							}
+						}
+						// end after all components are modified
+						// end when no component is present --> no loop
+						if(allComponents.length -1 === i){
+							resolve(miniConf);
+						}
+					});
+				}
+			});
+		});
 	}
 }
