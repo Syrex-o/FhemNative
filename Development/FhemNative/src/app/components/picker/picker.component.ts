@@ -87,17 +87,21 @@ export class PickerComponent {
 		// only when backdrop or close is enabled
 		if(this.backdropDismiss || this.cancelButtonDismiss){
 			this.backBtn.handle(this.handleID, ()=>{
-				this.closePicker(true);
+				this.closePicker(true, true);
 			});
 		}
 	}
 
-	closePicker(allowed: boolean): void{
+	closePicker(allowed: boolean, cancel?: boolean): void{
 		if(allowed){
 			this.showPicker = false;
 			this.updateChanges();
 			this.onClose.emit();
 			this.backBtn.removeHandle(this.handleID);
+			// cancel called from button
+			if(cancel){
+				this.onCancel.emit();
+			}
 		}
 	}
 
@@ -108,14 +112,10 @@ export class PickerComponent {
 
 	cancel(from: string): void{
 		if(from === 'backdrop'){
-			if(this.backdropDismiss){
-				this.onCancel.emit();
-			}
-			this.closePicker(this.backdropDismiss);
+			this.closePicker(this.backdropDismiss, true);
 		}else{
 			if(this.cancelButtonDismiss){
-				this.onCancel.emit();
-				this.closePicker(this.cancelButtonDismiss);
+				this.closePicker(this.cancelButtonDismiss, true);
 			}
 		}
 	}
