@@ -385,9 +385,15 @@ export class ContextMenuComponent implements OnInit {
 
 	// change component attribute
 	private changeAttr(ID: string, attr: string, value: any): void {
+		// change attr in view
 		const elem = this.componentLoader.findFhemComponent(ID);
 		if (elem) {
 			elem.REF.instance[attr] = value;
+		}
+		// change attr in component definition
+		const component: DynamicComponentDefinition = this.structure.getComponent(ID);
+		if(component){
+			component.position[attr] = value;
 		}
 	}
 
