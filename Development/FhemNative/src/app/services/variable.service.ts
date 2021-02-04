@@ -135,7 +135,20 @@ export class VariableService {
 	// regex options
 	public regexOptions: Array<{name: string, input?: string, options?: Array<any>, dependOn: string[]}> = [
 		{
+			name: 'regex shortcodes',
+			options: [
+				'first digit',
+				'all digits'
+			],
+			dependOn: ['Fhem Value', 'Fhem Internal', 'Fhem Attribute', 'Fhem Get']
+		},
+		{
 			name: 'regex custom',
+			input: '',
+			dependOn: ['Fhem Value', 'Fhem Internal', 'Fhem Attribute', 'Fhem Get']
+		},
+		{
+			name: 'regex replace (comma seperated)',
 			input: '',
 			dependOn: ['Fhem Value', 'Fhem Internal', 'Fhem Attribute', 'Fhem Get']
 		}
@@ -324,20 +337,78 @@ export class VariableService {
 
 	private analyseRegex(variable: Variable): void{
 		const prevValue: any = variable.modValue;
-
 		if(variable.attributes.regexOption.name !== '' && variable.attributes.regexOption.value && variable.attributes.regexOption.value !== ''){
-			let regex: RegExp = new RegExp(variable.attributes.regexOption.value, '');
-			try{
-				let res = variable.rawValue.toString().match(regex);
-				if(res){
-					// check for num
-					if(isNaN(res[0])){
-						variable.modValue = res[0];
+			// get base config of regex option
+			const baseRegex = this.regexOptions.find(x=> x.name === variable.attributes.regexOption.name);
+			// regex for match
+			let regExp: RegExp = new RegExp(variable.attributes.regexOption.value, '');
+			// match number to consider
+			let regExIndex: number|string = 0;
+
+			// predefined regex
+			if(baseRegex.options){
+				const relValue: string = variable.attributes.regexOption.value;
+				if(relValue === 'first digit'){
+					regExp = new RegExp(/\d/, '');
+				}
+				if(relValue === 'all digits'){
+					regExp = new RegExp(/\d+/, 'g');
+					regExIndex = 'all';
+				}
+			}
+			// test regex
+			try {
+				if(baseRegex.name === 'regex replace (comma seperated)'){
+					const rel: string = variable.attributes.regexOption.value;
+					// check for double comma
+					let splitted: string[] = rel.split(',');
+					if(splitted.length > 2){
+						const relIndex: any = rel.match(/(,)(?!.*,)/);
+						if(relIndex){
+							// split by index --> needed for double comma (,,)
+							splitted = [
+								rel.substring(0, relIndex.index),
+								rel.substr(relIndex.index + 1)
+							]
+						}
+					}
+					if(splitted.length === 2){
+						try{
+							let res = variable.rawValue.toString().split(splitted[0]).join(splitted[1]);
+							// check for num
+							if(isNaN(res)){
+								variable.modValue = res;
+							}else{
+								variable.modValue = parseFloat(res);
+							}
+						} catch(e){
+							this.logger.error('Variable Regex error for Variable: ' + variable.defSyntax + ` (${e})`);
+						}
 					}else{
-						variable.modValue = parseFloat(res[0]);
+						variable.modValue = variable.rawValue;
 					}
 				}else{
-					variable.modValue = variable.rawValue;
+					let res = variable.rawValue.toString().match(regExp);
+					if(res){
+						if(typeof regExIndex === 'string'){
+							let mod = res.join('');
+							// check for num
+							if(isNaN(mod)){
+								variable.modValue = mod;
+							}else{
+								variable.modValue = parseFloat(mod);
+							}
+						}else{
+							// check for num
+							if(isNaN(res[regExIndex])){
+								variable.modValue = res[regExIndex];
+							}else{
+								variable.modValue = parseFloat(res[regExIndex]);
+							}
+						}
+					}else{
+						variable.modValue = variable.rawValue;
+					}
 				}
 			} catch(e){
 				this.logger.error('Variable Regex error for Variable: ' + variable.defSyntax + ` (${e})`);
