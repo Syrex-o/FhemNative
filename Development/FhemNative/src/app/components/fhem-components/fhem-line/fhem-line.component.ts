@@ -1,4 +1,4 @@
-import { Component, Input, NgModule } from '@angular/core';
+import { Component, Input, NgModule, ElementRef, OnInit } from '@angular/core';
 
 // Components
 import { ComponentsModule } from '../../components.module';
@@ -11,7 +11,7 @@ import { SettingsService } from '../../../services/settings.service';
 	templateUrl: './fhem-line.component.html',
   	styleUrls: ['./fhem-line.component.scss']
 })
-export class FhemLineComponent {
+export class FhemLineComponent implements OnInit {
 	// Component ID
 	@Input() ID: string;
 
@@ -30,8 +30,15 @@ export class FhemLineComponent {
 	@Input() top: string;
 	@Input() left: string;
 	@Input() zIndex: string;
+	@Input() rotation: string;
 
-	constructor(public settings: SettingsService){}
+	heightT: number = 0;
+
+	ngOnInit(){
+		this.heightT = parseInt(this.data_height);
+	}
+
+	constructor(public settings: SettingsService, private ref: ElementRef){}
 
 	static getSettings() {
 		return {

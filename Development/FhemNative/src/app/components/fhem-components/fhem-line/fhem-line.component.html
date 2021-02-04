@@ -1,28 +1,31 @@
 <fhem-component-container 
 	[specs]="{ID: ID, device: null, reading: null, offline: true}" 
-	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
 	[minimumWidth]="30"
 	[minimumHeight]="30">
 	<div class="line {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
 		<div 
-			*ngIf="arr_data_orientation[0] === 'horizontal'" 
+			*ngIf="arr_data_orientation[0] === 'horizontal'"
 			class="line-item horizontal"
 			[ngStyle]="{
+				'top': data_curve_percentage === '0' ? '0' : '50%',
 				'height': data_curve_percentage === '0' ? data_height+'px' : '100%', 
-				'background': data_curve_percentage === '0' ? style_color : 'transparent', 
-				'transform': 'translate3d(0, -50%, 0) rotate('+data_rotation+'deg)',
+				'background': data_curve_percentage === '0' ? style_color : 'transparent',
+				'transform': data_curve_percentage === '0' ? '' : 'translate3d(0, -50%, 0)' + 'rotate('+data_rotation+'deg)',
 				'border-left': data_curve_percentage !== '0' ? data_height+'px solid '+style_color : '0px',
 				'border-top': data_curve_percentage !== '0' ? data_height+'px solid '+style_color : '0px',
 				'border-top-left-radius': data_curve_percentage+'%'
 			}">
 		</div>
 		<div 
-			*ngIf="arr_data_orientation[0] === 'vertical'" 
+			*ngIf="arr_data_orientation[0] === 'vertical'"
 			class="line-item vertical"
 			[ngStyle]="{
-				'width': data_curve_percentage === '0' ? data_height+'px' : '100%', 
+				'left': data_curve_percentage === '0' ? '0' : '50%',
+				'width': data_curve_percentage === '0' ? data_height+'px' : '100%',
 				'background': data_curve_percentage === '0' ? style_color : 'transparent', 
-				'transform': 'translate3d(-50%, 0, 0) rotate('+data_rotation+'deg)',
+				'transform': data_curve_percentage === '0' ? '' : 'translate3d(-50%, 0, 0)' + 'rotate('+data_rotation+'deg)',
 				'border-right': data_curve_percentage !== '0' ? data_height+'px solid '+style_color : '0px',
 				'border-bottom': data_curve_percentage !== '0' ? data_height+'px solid '+style_color : '0px',
 				'border-bottom-right-radius': data_curve_percentage+'%'
