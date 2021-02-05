@@ -6,6 +6,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 
 // Services
+import { ToastService } from './toast.service';
 import { ElectronService } from './electron.service';
 
 @Injectable({
@@ -18,6 +19,7 @@ export class FileManagerService {
 		private file: File,
 		private chooser: Chooser,
 		private platform: Platform,
+		private toast: ToastService,
 		private electron: ElectronService){}
 
 	// get relevant OS path
@@ -60,8 +62,9 @@ export class FileManagerService {
 	}
 
 	// write local file
-	public writeFile(name: string, data: any): Promise<any>{
-		return new Promise((resolve, reject)=>{
+	public async writeFile(name: string, data: any): Promise<any>{
+		return new Promise( async (resolve, reject)=>{
+			// get home directory
 			const dir = this.getDirectory();
 			if (dir) {
 				if (this.platform.is('mobile')) {
@@ -78,7 +81,38 @@ export class FileManagerService {
 					});
 				}
 			}else{
-				reject();
+				// fallback to path selection for electron
+				if(!this.platform.is('mobile')){
+					const remote = this.electron.remote;
+					const dialog: any = remote.dialog;
+					// select path
+					const files = await dialog.showSaveDialog({defaultPath: name});
+					if(files && files.filePath){
+						const fs = (window as any).require('fs');
+						const path: string = files.filePath;
+						fs.writeFile(path, data, (err) => {
+							if (err) {reject(files.filePath); }
+							resolve({dir: path.match(/.*(?=\/)/g)[0] || path, name: name});
+						});
+					}else{
+						// total fallback to display data in textarea
+						this.toast.showAlert('Fallback', 'Can not save file. Displaying instead. Please save File as: ' + name, {
+							buttons: [
+							{
+								text: 'Close',
+								role: 'cancel'
+							}],
+							inputs: [{
+								type: 'textarea',
+								name: 'dataDisplay',
+								value: data
+							}]
+						});
+						reject();
+					}
+				}else{
+					reject();
+				}
 			}
 		});
 	}
