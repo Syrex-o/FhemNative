@@ -1,9 +1,9 @@
-const electron = require('electron')
-const { ipcMain } = require('electron')
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
-const path = require('path')
-const url = require('url')
+const electron = require('electron');
+const { ipcMain, screen } = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const path = require('path');
+const url = require('url');
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
 
@@ -12,27 +12,35 @@ const args = process.argv.slice(1)
 serve = args.some(val => val === '--serve')
 
 function createWindow() {
+	const size = screen.getPrimaryDisplay().workAreaSize;
+
+
 	win = new BrowserWindow({
-		width: 1800,
-		height: 1200,
-		center: true,
+		x: 0,
+		y: 0,
+		width: size.width,
+		height: size.height,
 		useContentSize: true,
-		icon: path.join(__dirname, './resources/electron/icons/64x64.png'),
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			enableRemoteModule: true
 		}
 	})
 	if (serve) {
+		win.webContents.openDevTools();
+
 		require('electron-reload')(__dirname, {
 			electron: require(`${__dirname}/node_modules/electron`)
 		})
 		win.loadURL('http://localhost:4200')
 	} else {
-		win.loadURL(url.format({
-			pathname: path.join(__dirname, 'www/index.html'),
-			protocol: 'file:',
-			slashes: true
-		}))
+		win.loadURL(
+			url.format({
+				pathname: path.join(__dirname, 'www/index.html'),
+				protocol: 'file:',
+				slashes: true
+			})
+		);
 	}
 	// Emitted when the window is closed.
 	win.on('closed', () => {
@@ -53,7 +61,8 @@ try {
 	// This method will be called when Electron has finished
 	// initialization and is ready to create browser windows.
 	// Some APIs can only be used after this event occurs.
-	app.on('ready', createWindow)
+	app.on('ready', () => setTimeout(createWindow, 400));
+
 	// Quit when all windows are closed.
 	app.on('window-all-closed', () => {
 		// On OS X it is common for applications and their menu bar
