@@ -62,7 +62,7 @@ import { environment } from '../environments/environment';
 		TranslateModule,
 		// FhemNative Logger
 		LoggerModule,
-			ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
 	],
 	providers: [
 		StatusBar,
