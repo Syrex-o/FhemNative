@@ -1,0 +1,350 @@
+:host{
+	.header{
+		width: 100%;
+		overflow: hidden;
+		position: absolute;
+		height: 100%;
+		top: 0;
+		h2{
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			margin: 0;
+		}
+	}
+	.body{
+		position: relative;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		.preview-container{
+			.change-component{
+				height: 45px;
+				position: relative;
+				z-index: 1;
+				p{
+					font-size: 18px;
+					margin-top: 3px;
+					margin-bottom: 3px;
+					margin-left: 8px;
+					width: calc(100% - 150px);
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					&.des{
+						font-size: 13px;
+						line-height: 15px;
+					}
+				}
+				selector{
+					position: absolute;
+					right: 2px;
+					top: 0;
+					width: 140px;
+				}
+			}
+		}
+		// for mobile
+		ion-slides{
+			height: calc(100% - 40px);
+			position: absolute;
+			top: 40px;
+			width: 100%;
+			z-index: 0;
+			&.reduce-size{
+				height: calc(100% - 90px);
+				top: 90px;
+			}
+		}
+		// for desktop
+		.desktop-container{
+			position: absolute;
+			width: 100%;
+			height: calc(100% - 40px);
+			top: 40px;
+			left: 0;
+			&.reduce-size{
+				height: calc(100% - 90px);
+				top: 90px;
+			}
+			ion-slides{
+				height: 100%;
+				top: 0px;
+			}
+			.desktop-content{
+				position: absolute;
+				width: 100%;
+				height: calc(100% - 80px);
+				top: 0;
+				left: 0;
+				overflow: hidden;
+			}
+			.desktop-buttons-container{
+				position: absolute;
+				width: 100%;
+				height: 80px;
+				bottom: 0;
+				left: 0;
+				text-align: center;
+				box-shadow: 0 -15px 20px -15px rgb(0 0 0 / 30%), 0 -55px 50px -35px rgb(0 0 0 / 30%);
+				user-select: none;
+				.page-change-btn{
+					min-width: 130px;
+					width: 25%;
+					height: 45px;
+					margin: 0;
+					font-size: 18px;
+					border-radius: 20px;
+					top: 50%;
+					position: relative;
+					transform: translateY(-50%);
+					background-color: var(--btn-blue);
+					color: #fff;
+					box-shadow: 0 15px 20px -15px rgb(0 0 0 / 30%), 0 55px 50px -35px rgb(0 0 0 / 30%);
+					overflow: hidden;
+					transition: all .2s ease;
+					&.disabled{
+						opacity: 0.4;
+    					pointer-events: none;
+					}
+					p{
+						margin: 0;
+						ion-icon{
+							position: absolute;
+							top: 50%;
+							transform: translateY(-50%);
+							font-size: 30px;
+						}
+					}
+					&.prev{
+						margin-right: 10px;
+						p > ion-icon{
+							left: 5px;
+						}
+					}
+					&.next{
+						margin-left: 10px;
+						p > ion-icon{
+							right: 5px;
+						}
+					}
+				}
+			}
+		}
+		.page{
+			width: 100%;
+			height: 100%;
+			overflow-y: auto;
+			padding-top: 20px;
+			margin-bottom: 20px;
+			h2{
+				margin-top: 5px;
+			}
+			.custom-inputs{
+				text-align: left;
+				margin-left: 8px;
+				color: var(--btn-red);
+				.head{
+					margin: 0;
+				}
+				.des{
+					font-size: .8em;
+				}
+			}
+			.component-select{
+				position: relative;
+				display: block;
+				width: 100%;
+				height: 50px;
+				background: none;
+				border-bottom: 1px solid var(--des-op);
+				.component-des-container{
+					position: relative;
+					height: 20px;
+					overflow: hidden;
+					.component-des{
+						white-space: nowrap;
+						margin: 0px;
+						font-size: 1.2em;
+					}
+				}
+				p{
+					text-align: left;
+					&.component-name{
+						font-size: 18px;
+						margin-top: 3px;
+						margin-bottom: 3px;
+					}
+				}
+			}
+			.config-container{
+				position: relative;
+				padding-bottom: 40px;
+				.config-data{
+					padding-left: 8px;
+					padding-right: 8px;
+					margin-bottom: 12px;
+					&.hide{
+						display: none;
+					}
+					p{
+						text-align: left;
+						margin-bottom: 10px;
+						margin-top: 0px;
+						&.des{
+							font-size: .8em;
+							margin-top: -10px;
+							margin-bottom: 5px;
+						}
+					}
+					input{
+						position: relative;
+						font-size:18px;
+						padding:10px 10px 10px 5px;
+						display:block;
+						width:100%;
+						border:none;
+						border-bottom:1px solid #757575;
+						color: #757575;
+						border-bottom: 1px solid #757575;
+						background: transparent;
+						&:focus{ 
+							outline: none; 
+						}
+						&:focus ~ .bar:before, 
+						&:focus ~ .bar:after {
+							width:50%;
+						}
+					}
+					.bar{ 
+						position:relative; 
+						display:block; 
+						width:100%; 
+						left: 0%;
+						&::before, 
+						&::after{
+							content: '';
+							height: 2px;
+							width: 0;
+							bottom: 0px; 
+							position: absolute;
+							background: var(--btn-blue); 
+							transition: 0.2s ease all;
+						}
+						&:before {
+							left:50%;
+						}
+						&:after{
+							right:50%; 
+						}
+					}
+					&.toggle{
+						text-align: left;
+						margin-left: 8px;
+						margin-right: 8px;
+						padding: 0;
+						border-bottom: 1px solid var(--dark-border);
+					}
+					icon{
+						width: 1.2em;
+						height: 1.2em;
+						margin-left: 10px;
+						margin-right: 10px;
+						float: left;
+					}
+					.select{
+						.color{
+							display: inline-block;
+							width: 20px;
+							height: 20px;
+							border-radius: 50%;
+						}
+						.color-label{
+							display: inline-block;
+							margin-left: 10px;
+						}
+					}
+				}
+				.test-container{
+					position: relative;
+					height: 40px;
+					border-bottom: 1px solid var(--dark-border);
+					text-align: left;
+					p{
+						line-height: 40px;
+						margin: 0;
+					}
+					ion-icon{
+						font-size: 40px;
+						position: absolute;
+						right: 0;
+						top: 50%;
+						transform: translateY(-50%);
+						color: var(--btn-red) !important;
+						&.check{
+							color: var(--btn-green) !important;
+						}
+					}
+				}
+			}
+			.lds-ellipsis {
+				display: block;
+				position: absolute;
+				width: 64px;
+				height: 11px;
+				top: 50%;
+				left: 50%;
+				transform: translate3d(-50%,-50%,0);
+			}
+			.lds-ellipsis div {
+				position: absolute;
+				top: 0px;
+				width: 11px;
+				height: 11px;
+				border-radius: 50%;
+				background: var(--btn-blue);
+				animation-timing-function: cubic-bezier(0, 1, 1, 0);
+			}
+			.lds-ellipsis div:nth-child(1) {
+				left: 6px;
+				animation: lds-ellipsis1 0.6s infinite;
+			}
+			.lds-ellipsis div:nth-child(2) {
+				left: 6px;
+				animation: lds-ellipsis2 0.6s infinite;
+			}
+			.lds-ellipsis div:nth-child(3) {
+				left: 26px;
+				animation: lds-ellipsis2 0.6s infinite;
+			}
+			.lds-ellipsis div:nth-child(4) {
+				left: 45px;
+				animation: lds-ellipsis3 0.6s infinite;
+			}
+			@keyframes lds-ellipsis1 {
+				0% {
+					transform: scale3d(0,0,0);
+				}
+				100% {
+					transform: scale3d(1,1,1);
+				}
+			}
+			@keyframes lds-ellipsis3 {
+				0% {
+					transform: scale3d(1,1,1);
+				}
+				100% {
+					transform: scale3d(0,0,0);
+				}
+			}
+			@keyframes lds-ellipsis2 {
+				0% {
+					transform: translate3d(0, 0, 0);
+				}
+				100% {
+				transform: translate3d(19px, 0, 0);
+				}
+			}
+		}
+	}
+}

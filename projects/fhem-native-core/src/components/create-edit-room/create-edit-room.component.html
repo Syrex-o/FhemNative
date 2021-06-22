@@ -1,0 +1,102 @@
+<popover 
+	[(ngModel)]="popupState"
+	[width]="90"
+	[height]="90"
+	[zIndex]="100003"
+	(onClose)="close()">
+	<div header>
+		<h1 newsSlide class="theme-text">
+			{{ (type === 'edit') ? ('GENERAL.CHANGE_ROOM.TITLE' | translate) : ('GENERAL.CREATE_ROOM.TITLE' | translate) }}
+		</h1>
+	</div>
+	<div body class="page">
+		<div class="settings-block">
+			<!-- Name -->
+			<div class="category">
+				<p class="label theme-text">{{ 'GENERAL.CREATE_ROOM.ROOM_NAME' | translate }}</p>
+				<input [(ngModel)]="roomName">
+				<span class="bar"></span>
+			</div>
+			<!-- Icon -->
+			<div class="category">
+				<p class="label theme-text">{{ 'GENERAL.CREATE_ROOM.ROOM_ICON' | translate }}</p>
+				<selector
+					class="select"
+					[items]="settings.icons"
+					[(ngModel)]="roomIcon"
+					[bindLabel]="'icon'"
+					[bindValue]="'icon'"
+					[searchable]="false">
+					<ng-template let-item="item" let-index="index">
+						<icon class="theme-text" [icon]="item.icon"></icon>
+						<span class="label">{{ item.icon }}</span>
+					</ng-template>
+				</selector>
+			</div>
+			<!-- Style (color/background) -->
+			<div class="category">
+				<p class="label theme-text">{{ 'GENERAL.CREATE_ROOM.ROOM_COLOR' | translate }}</p>
+				<selector
+					class="select"
+					[items]="selectableRoomColors"
+					[(ngModel)]="roomColor"
+					[addNewItems]="true"
+					[searchable]="true">
+					<ng-template let-item="item" let-index="index">
+						<span class="color" [style.background-color]="item"></span>
+						<span class="color-label">{{ item }}</span>
+					</ng-template>
+				</selector>
+			</div>
+			<!-- Use As Group -->
+			<div class="category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="useRoomAsGroup"
+					[label]="'GENERAL.CREATE_ROOM.USE_AS_GROUP.TITLE' | translate"
+					[subTitle]="'GENERAL.CREATE_ROOM.USE_AS_GROUP.INFO' | translate"
+					(onToggle)="grouper('useAsGroup', $event)">
+				</switch>
+			</div>
+			<!-- Group to: -->
+			<div class="category">
+				<switch 
+					*ngIf="groupRooms.length > 0"
+					[padding]="false"
+					[(ngModel)]="roomToGroup"
+					[label]="'GENERAL.CREATE_ROOM.GROUP_TO.TITLE' | translate"
+					[subTitle]="'GENERAL.CREATE_ROOM.GROUP_TO.INFO' | translate"
+					(onToggle)="grouper('roomToGroup', $event)">
+				</switch>
+			</div>
+			<!-- Group to room: -->
+			<div class="category" *ngIf="roomToGroup && groupRooms.length > 0">
+				<p class="label theme-text">{{ 'GENERAL.CREATE_ROOM.GROUP_TO.TITLE_SELECT' | translate }}</p>
+				<selector
+					class="select"
+					[items]="groupRooms"
+					[(ngModel)]="selectedGroup"
+					[bindLabel]="'name'"
+					[bindValue]="'name'"
+					[searchable]="false">
+					<ng-template let-item="item" let-index="index">
+						<span class="label">{{ item.name }}</span>
+					</ng-template>
+				</selector>
+			</div>
+		</div>
+		<!-- Save/Cancel -->
+		<div class="settings-block no-border">
+			<div class="category btn-full-category">
+				<button class="save ion-activatable" (click)="save()">
+					{{ 'GENERAL.BUTTONS.SAVE' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<button class="cancel ion-activatable" (click)="close()">
+					{{ 'GENERAL.BUTTONS.CANCEL' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+	</div>
+</popover>

@@ -1,0 +1,310 @@
+<picker
+	[confirmBtn]="'GENERAL.BUTTONS.SAVE' | translate"
+	[(ngModel)]="show.picker"
+	[height]="85"
+	[showCancelBtn]="false"
+	[zIndex]="100002"
+	(onConfirm)="saveComponent()"
+	(onCancel)="cancel()">
+	<div header class="header">
+		<h2 *ngIf="component" newsSlide class="theme-text">{{ 'GENERAL.COMPONENT.GENERAL.CONFIG' | translate }} {{'COMPONENTS.'+[component.name]+'.NAME' | translate}}</h2>
+		<h2 newsSlide class="theme-text" *ngIf="!component">{{ 'GENERAL.COMPONENT.GENERAL.SELECT' | translate }}</h2>
+	</div>
+	<div body class="body">
+		<div class="preview-container theme-background theme-shadow-one">
+			<switch
+				*ngIf="component"
+				[(ngModel)]="show.componentPreview"
+				[label]="'GENERAL.COMPONENT.EDIT.PREVIEW.TITLE' | translate"
+				[subTitle]="'GENERAL.COMPONENT.EDIT.PREVIEW.INFO' | translate"
+				(onToggle)="toggleTestContainer($event)">
+			</switch>
+			<div class="change-component" *ngIf="type === 'edit' && componentList.components.length > 0">
+				<p class="theme-text"> {{ 'GENERAL.EDIT_COMPONENT.MENU.SWITCH.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.EDIT_COMPONENT.MENU.SWITCH.INFO' | translate }}</p>
+				<selector
+					[items]="componentList.components"
+					[searchable]="false"
+					bindLabel="name"
+					bindValue="ID"
+					[bindValueLabel]="true"
+					[(ngModel)]="componentList.selected"
+					(onValueChange)="changeSelectedComponent($event)">
+				</selector>
+			</div>
+		</div>
+		<!-- use slides on mobile and pages on desktop -->
+		<ng-container *ngIf="settings.operatingPlatform === 'mobile';else DESKTOP">
+			<ng-container *ngTemplateOutlet="MOBILE"></ng-container>
+		</ng-container>
+	</div>
+</picker>
+
+<!-- desktop view -->
+<ng-template #DESKTOP>
+	<div class="desktop-container" [class.reduce-size]="type === 'edit' && componentList.components.length > 0">
+		<div class="desktop-content">
+			<ion-slides #Slides (ionSlideDidChange)="changedSlide()" [pager]="false">
+				<ion-slide *ngIf="type === 'create'">
+					<ng-container *ngTemplateOutlet="PAGE_0"></ng-container>
+				</ion-slide>
+				<ion-slide>
+					<ng-container *ngTemplateOutlet="PAGE_1"></ng-container>
+				</ion-slide>
+				<ion-slide *ngIf="component?.attributes?.attr_icon || component?.attributes?.attr_arr_icon">
+					<ng-container *ngTemplateOutlet="PAGE_2"></ng-container>
+				</ion-slide>
+				<ion-slide *ngIf="component?.attributes?.attr_style || component?.attributes?.attr_arr_style">
+					<ng-container *ngTemplateOutlet="PAGE_3"></ng-container>
+				</ion-slide>
+				<ion-slide *ngIf="component?.type === 'fhem'">
+					<ng-container *ngTemplateOutlet="PAGE_4"></ng-container>
+				</ion-slide>
+			</ion-slides>
+		</div>
+		<div class="desktop-buttons-container">
+			<button class="page-change-btn ion-activatable prev"
+				[class.disabled]="currentSlide === 0"
+				(click)="changeSlide(-1)">
+				<p>
+					<ion-icon name="chevron-back"></ion-icon>
+					{{ 'GENERAL.BUTTONS.BACK' | translate }}
+				</p>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+			<button class="page-change-btn ion-activatable next"
+				[class.disabled]="currentSlide !== 0 && !component"
+				(click)="(currentSlide === (totalSlides -1) && component) ? saveComponentFromDesktop() : changeSlide(1)">
+				<p>
+					{{ (currentSlide === (totalSlides -1) && component ? 'GENERAL.BUTTONS.SAVE' : 'GENERAL.BUTTONS.NEXT') | translate }}
+					<ion-icon name="chevron-forward"></ion-icon>
+				</p>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+	</div>
+</ng-template>
+<!-- mobile view -->
+<ng-template #MOBILE>
+	<ion-slides [class.reduce-size]="type === 'edit' && componentList.components.length > 0"
+		class="custom-pagination" #Slides (ionSlideDidChange)="changedSlide()" [pager]="true">
+		<ion-slide *ngIf="type === 'create'">
+			<ng-container *ngTemplateOutlet="PAGE_0"></ng-container>
+		</ion-slide>
+		<ion-slide>
+			<ng-container *ngTemplateOutlet="PAGE_1"></ng-container>
+		</ion-slide>
+		<ion-slide *ngIf="component?.attributes?.attr_icon || component?.attributes?.attr_arr_icon">
+			<ng-container *ngTemplateOutlet="PAGE_2"></ng-container>
+		</ion-slide>
+		<ion-slide *ngIf="component?.attributes?.attr_style || component?.attributes?.attr_arr_style">
+			<ng-container *ngTemplateOutlet="PAGE_3"></ng-container>
+		</ion-slide>
+		<ion-slide *ngIf="component?.type === 'fhem'">
+			<ng-container *ngTemplateOutlet="PAGE_4"></ng-container>
+		</ion-slide>
+	</ion-slides>
+</ng-template>
+
+
+<!-- different page content (for desktop/mobile difference) -->
+<!-- component selection -->
+<ng-template #PAGE_0>
+	<div class="page">
+		<h2 class="theme-text">{{ 'GENERAL.COMPONENT.CREATE.SELECT' | translate }}</h2>
+		<ng-container *ngFor="let comp of componentLoader.fhemComponents">
+			<button class="component-select ion-activatable" (click)="selectComponent(comp.name)">
+				<p class="component-name theme-text">{{ 'COMPONENTS.'+[comp.name]+'.NAME' | translate }}</p>
+				<div class="component-des-container">
+					<p newsSlide class="component-des des theme-des">{{ 'COMPONENTS.'+[comp.name]+'.DES' | translate }}</p>
+				</div>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</ng-container>
+	</div>
+</ng-template>
+
+<!-- component attributes -->
+<ng-template #PAGE_1>
+	<div class="page">
+		<h2 class="theme-text">{{ 'GENERAL.COMPONENT.EDIT.CONFIG_DATA' | translate }}</h2>
+		<!-- inform about custom component config -->
+		<div class="custom-inputs" *ngIf="component?.customInputs">
+			<p class="head">{{ 'GENERAL.COMPONENT.CUSTOM_INPUTS.INFO' | translate }}</p>
+			<p class="des">{{ 'GENERAL.COMPONENT.CUSTOM_INPUTS.DES' | translate }}</p>
+		</div>
+		<ng-template [ngIf]="component" [ngIfElse]="NO_COMP">
+			<div class="config-container">
+				<ng-container *ngIf="{ $implicit: component.name, inputs: component.attributes.attr_data, dependencies: component.dependencies } as input">
+					<ng-container *ngTemplateOutlet="COMP_INPUT; context: input"></ng-container>
+				</ng-container>
+				<ng-container *ngFor="let data of component.attributes.attr_bool_data">
+					<div class="config-data toggle" [class.hide]="hideConfig(data.attr)">
+						<switch
+							[padding]="false"
+							[(ngModel)]="data.value"
+							[label]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate"
+							[subTitle]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate">
+						</switch>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="{ $implicit: component.name, inputs: component.attributes.attr_arr_data } as input">
+					<ng-container *ngTemplateOutlet="COMP_INPUT_SELECT; context: input"></ng-container>
+				</ng-container>
+			</div>
+		</ng-template>
+	</div>
+</ng-template>
+
+<!-- component icons -->
+<ng-template #PAGE_2>
+	<div class="page">
+		<h2 class="theme-text">{{ 'GENERAL.COMPONENT.EDIT.CONFIG_ICON' | translate }}</h2>
+		<div class="config-container">
+			<ng-container *ngIf="{ 
+					$implicit: component.name, 
+					inputs: component.attributes.attr_icon, 
+					selection: settings.icons, 
+					bind: 'icon' 
+				} as input">
+				<ng-container *ngTemplateOutlet="COMP_INPUT_SELECT; context: input"></ng-container>
+			</ng-container>
+			<ng-container *ngIf="{ 
+					$implicit: component.name, 
+					inputs: component.attributes.attr_arr_icon, 
+					selection: settings.icons, 
+					bind: 'icon',
+					multiple: true
+				} as input">
+				<ng-container *ngTemplateOutlet="COMP_INPUT_SELECT; context: input"></ng-container>
+			</ng-container>
+		</div>
+	</div>
+</ng-template>
+
+<!-- component style -->
+<ng-template #PAGE_3>
+	<div class="page">
+		<h2 class="theme-text">{{ 'GENERAL.COMPONENT.EDIT.CONFIG_STYLE' | translate }}</h2>
+		<div class="config-container">
+			<ng-container *ngIf="{ 
+					$implicit: component.name, 
+					inputs: component.attributes.attr_style, 
+					selection: settings.componentColors, 
+					tag: true,
+					search: true,
+					color: true
+				} as input">
+				<ng-container *ngTemplateOutlet="COMP_INPUT_SELECT; context: input"></ng-container>
+			</ng-container>
+			<ng-container *ngIf="{ 
+					$implicit: component.name, 
+					inputs: component.attributes.attr_arr_style, 
+					selection: settings.componentColors, 
+					tag: true,
+					search: true,
+					color: true,
+					multiple: true
+				} as input">
+				<ng-container *ngTemplateOutlet="COMP_INPUT_SELECT; context: input"></ng-container>
+			</ng-container>
+		</div>
+	</div>
+</ng-template>
+
+<!-- component test for fhem -->
+<ng-template #PAGE_4>
+	<div class="page">
+		<h2 class="theme-text">{{ 'GENERAL.COMPONENT.EDIT.CONFIG_TEST' | translate }}</h2>
+		<ng-template [ngIf]="componentTest.testDone" [ngIfElse]="LOADING">
+			<div class="config-container">
+				<!-- Device / Reading Test -->
+				<ng-container *ngFor="let test of ['Device', 'Reading']">
+					<h3 class="theme-text">{{test}}:</h3>
+					<ng-container *ngFor="let testDetail of componentTest[test] | keyvalue">
+						<!-- Only Display, when relevant value is defined -->
+						<div *ngIf="testDetail.key === 'available' || componentTest[test].available" class="test-container">
+							<p class="theme-text">{{test}} {{testDetail.key}}:</p>
+							<ion-icon class="theme-text" [class.check]="testDetail.value" [name]="testDetail.value ? 'checkmark-circle-outline' : 'close-circle-outline' "></ion-icon>
+						</div>
+					</ng-container>
+				</ng-container>
+			</div>
+		</ng-template>
+	</div>
+</ng-template>
+
+<picker [height]="'85'"
+	[zIndex]="100003"
+	[confirmBtn]="'GENERAL.BUTTONS.CLOSE' | translate"
+	[showCancelBtn]="false"
+	[(ngModel)]="show.componentPreview"
+	(onClose)="toggleTestContainer($event)">
+	<div body class="page">
+		<ng-container #TESTCONTAINER></ng-container>
+		<ng-container *ngIf="!componentTest.testDone">
+			<ng-container *ngTemplateOutlet="LOADING"></ng-container>
+		</ng-container>
+	</div>
+</picker>
+
+<ng-template #NAMING let-attr="attr" let-name>
+	<p class="theme-text">{{ 'COMPONENTS.'+[name]+'.INPUTS.'+[attr]+'.name' | translate }}</p>
+	<p class="des theme-des">{{ 'COMPONENTS.'+[name]+'.INPUTS.'+[attr]+'.info' | translate }}</p>
+</ng-template>
+
+<ng-template #COMP_INPUT let-inputs="inputs" let-dependencies="dependencies" let-name>
+	<ng-container *ngIf="inputs">
+		<ng-container *ngFor="let data of inputs">
+			<div class="config-data" [class.hide]="hideConfig(data.attr)">
+				<ng-container *ngTemplateOutlet="NAMING; context: {attr: data.attr, $implicit: name}"></ng-container>
+				<input [(ngModel)]="data.value" placeholder="{{data.value}}">
+				<span class="bar"></span>
+			</div>
+		</ng-container>
+	</ng-container>
+</ng-template>
+
+<ng-template #COMP_INPUT_SELECT 
+	let-inputs="inputs" 
+	let-selection="selection" 
+	let-bind="bind" 
+	let-multiple="multiple" 
+	let-search="search" 
+	let-tag="tag" 
+	let-color="color"
+	let-name>
+	<ng-container *ngIf="inputs">
+		<ng-container *ngFor="let data of inputs">
+			<div class="config-data" [class.hide]="hideConfig(data.attr)">
+				<ng-container *ngTemplateOutlet="NAMING; context: {attr: data.attr, $implicit: name}"></ng-container>
+				<selector class="select"
+					[items]="selection ? selection : (data.defaults || data.value)"
+					[multiple]="multiple ? true : false"
+					[searchable]="search ? true : false"
+					[addNewItems]="tag ? true : false"
+					[bindLabel]="bind ? bind : null"
+					[bindValue]="bind ? bind : null"
+					[placeholder]="bind ? data.value : null"
+					[ngModel]="selection ? data.value : data.value[0]"
+					(ngModelChange)="selection ? data.value = $event : data.value[0] = $event">
+					<ng-template let-item="item" let-index="index">
+						<icon class="theme-text" *ngIf="bind === 'icon'" [icon]="item.icon"></icon>
+						<span *ngIf="color" class="color" [style.background]="item"></span>
+						<span class="label" [class.color-label]="color">{{ ( bind === 'icon' ? item.icon : item ) }}</span>
+					</ng-template>
+				</selector>
+			</div>
+		</ng-container>
+	</ng-container>
+</ng-template>
+
+<ng-template #NO_COMP>
+	<div class="config-container">
+		<p class="theme-text">{{ 'GENERAL.COMPONENT.EDIT.NO_COMPONENT' | translate }}</p>
+	</div>
+</ng-template>
+
+<ng-template #LOADING>
+	<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+</ng-template>
