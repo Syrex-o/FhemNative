@@ -1,0 +1,52 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: null, reading: null, offline: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="60"
+	[minimumHeight]="60"
+	outside-click (onOutsideClick)="outsideClick($event)">
+	<div 
+		class="swiper {{settings.app.theme}}"
+		[ngClass]="arr_data_style[0]"
+		[ngStyle]="{
+			'border': bool_data_showBorder ? '1px solid #ddd' : '0px',
+			'border-bottom-left-radius.px': data_borderRadius,
+			'border-bottom-right-radius.px': data_borderRadius,
+			'border-top-left-radius.px' : data_borderRadius,
+			'border-top-right-radius.px' : data_borderRadius,
+			'overflow-y': (arr_data_orientation[0] === 'vertical' ? 'hidden' : 'auto')
+		}">
+		<p *ngIf="data_headline && data_headline !== ''" [ngStyle]="{'background-color': style_headerColor}"
+			class="theme-text">{{data_headline}}
+		</p>
+		<button class="btn-round inner blue ion-activatable theme-background" 
+			*ngIf="showEditButton && settings.app.enableEditing && settings.modes.roomEdit" (click)="editSwiper()">
+			<ion-icon name="create"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<ion-slides 
+			#slides
+			[pager]="bool_data_showPager"
+			[options]="{ 'direction': arr_data_orientation[0] }"
+			(ionSlideDidChange)="changeSliderContainer()"
+			(ionSlideWillChange)="dynamicSwiperStyle()"
+			[ngStyle]="{'background-color': style_backgroundColor, 'height': (data_headline && data_headline !== '') ? 'calc(100% - 35px)' : '100%'}">
+			<ion-slide *ngFor="let page of pages; let i = index">
+				<div 
+					class="custom-header" *ngIf="bool_data_customHeaders" [class.lower-text]="bool_data_showPager"
+					[style.background]="( arr_style_customHeaderBackgrounds[i] ? arr_style_customHeaderBackgrounds[i] : arr_style_customHeaderBackgrounds[0] )">
+					<p [ngStyle]="{
+						'color': (arr_style_customHeaderColors[i] ? arr_style_customHeaderColors[i] : arr_style_customHeaderColors[0])
+						}">{{ (customHeaders[i] ? customHeaders[i] : customHeaders[0]) }}
+					</p>
+				</div>
+				<div class="content"
+					grouper [editingEnabled]="settings.modes.roomEdit" [containerID]="ID"
+					[attr.id]="'container@' + page + '_swiper_@' + ID" 
+					[class.custom-header-enabled]="bool_data_customHeaders" 
+					[class.show-pager-enabled]="bool_data_showPager">
+					<ng-container class="container" #container></ng-container>
+				</div>
+			</ion-slide>
+		</ion-slides>
+	</div>
+</fhem-component-container>
