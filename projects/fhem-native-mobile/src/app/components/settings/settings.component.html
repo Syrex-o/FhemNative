@@ -1,0 +1,20 @@
+<core-settings
+	(onWebsiteClick)="openWebsite()"
+	(onPrivacyClick)="openPrivacy()">
+	<!-- Display Screen Size Info of device -->
+	<div class="category btn-category" ElectronWindowResizePlaceholder>
+		<p class="label theme-text">{{ 'GENERAL.SETTINGS.COMPONENTS.DEVICE_INFO.TITLE' | translate }}</p>
+		<p class="des theme-des">{{ 'GENERAL.SETTINGS.COMPONENTS.DEVICE_INFO.INFO' | translate }}</p>
+		<p class="device-size theme-text">{{deviceSize.width}} x {{deviceSize.height}}</p>
+	</div>
+
+	<div class="category switch-category" StatusBar>
+		<switch
+			[padding]="false"
+			[(ngModel)]="settings.app.showStatusBar"
+			[label]="'GENERAL.SETTINGS.APP.STATUS_BAR.TITLE' | translate"
+			[subTitle]="'GENERAL.SETTINGS.APP.STATUS_BAR.INFO' | translate"
+			(onToggle)="changeStatusBar($event)">
+		</switch>
+	</div>
+</core-settings>

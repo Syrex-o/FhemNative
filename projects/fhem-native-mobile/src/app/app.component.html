@@ -1,0 +1,10 @@
+<ion-app class="scanner-hide">
+	<ion-split-pane contentId="main-content" [disabled]="true">
+		<!-- core side menu -->
+		<fhemnative-side-menu (onSettingsClick)="openSettings()"></fhemnative-side-menu>
+		<!-- router -->
+		<ion-router-outlet id="main-content"></ion-router-outlet>
+	</ion-split-pane>
+	<!-- Fhem Menu -->
+	<fhem-menu [mode]="settings.modes.fhemMenuMode"></fhem-menu>
+</ion-app>

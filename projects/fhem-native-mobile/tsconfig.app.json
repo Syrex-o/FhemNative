@@ -1,0 +1,23 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"outDir": "../../out-tsc/app",
+		"types": []
+	},
+	"files": [
+		"src/main.ts",
+		"src/polyfills.ts"
+	],
+	"include": [
+		"src/**/*.d.ts",
+		"src/app/components/settings/settings.component.ts",
+		"../fhem-native-core/src/components/grid/grid.component.ts",
+		"../fhem-native-core/src/components/tasks/tasks.component.ts",
+		"../fhem-native-core/src/components/variables/variables.component.ts",
+		"../fhem-native-core/src/components/context-menu/context-menu.component.ts",
+		"../fhem-native-core/src/components/create-edit-room/create-edit-room.component.ts",
+		"../fhem-native-core/src/components/create-edit-component/create-edit-component.component.ts",
+		"../fhem-native-core/src/components/fhem-components/**/*.component.ts"
+	]
+}
