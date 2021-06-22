@@ -1,0 +1,202 @@
+:host{
+	display: block;
+	width: 100%;
+	height: 100%;
+	ion-content{
+		width: 100%;
+		height: 100%;
+		--background: var(--theme-background);
+		.header-container,
+		.room-menu-container,
+		.settings-container{
+			position: absolute;
+			width: 100%;
+			left: 0;
+		}
+		.header-container{
+			top: 0;
+			height: 56px;
+			overflow-y: auto;
+			overflow-x: hidden;
+			position: relative;
+			.placeholder{
+				position: absolute;
+				width: calc(100% - 70px);
+				height: 90%;
+				top: 5%;
+				left: 5px;
+			}
+			.btn-round{
+				top: 5.5px;
+			}
+		}
+		.room-menu-container{
+			top: 56px;
+			height: calc(100% - 126px);
+			user-select: none;
+		}
+		.settings-container{
+			bottom: 0;
+			height: 70px;
+			box-shadow: 0px -2px 5px 5px rgb(0 0 0 / 40%);
+			overflow: hidden;
+		}
+		&.bigSettings{
+			.room-menu-container{
+				height: calc(100% - 196px);
+			}
+			.settings-container{
+				height: 140px;
+			}
+		}
+		&.biggerSettings{
+			.room-menu-container{
+				height: calc(100% - 366px);
+			}
+			.settings-container{
+				height: 210px;
+			}
+		}
+	}
+}
+.room-box{
+	padding: 10px 10px;
+	border-bottom: solid 1px #ccc;
+	display: block;
+	align-items: center;
+	justify-content: space-between;
+	box-sizing: border-box;
+	font-size: 14px;
+	ion-item {
+		width: 100%;
+		border-radius: 10px;
+		overflow: hidden;
+		--padding-start: 8px;
+		padding-right: 0px;
+		--box-shadow: 0px;
+		--inner-border-width: 0px;
+		ion-label {
+			line-height: 30px;
+			margin-left: 8px;
+			font-size: 1.2em;
+		}
+		&.active-route{
+			background-color: rgba(255,255,255,.08);
+		}
+	}
+	.list .submenu {
+		max-height: 0;
+		overflow: hidden;
+		border-bottom: none;
+		padding: 0px 10px;
+		padding-right: 0px;
+		transition: all .2s ease;
+	}
+	.list .submenu ion-item {
+		--padding-end: 0px;
+		--inner-padding-end: 0px;
+	}
+	.show-submenu~.list .submenu {
+		max-height: 60px;
+		padding: 5px 10px;
+		padding-right: 0px;
+	}
+	.room-button{
+		width: 100%;
+		height: 100%;
+		display: inline-flex;
+		padding-left: 0;
+		line-height: 24px;
+		background: none;
+		font-size: 16px;
+		position: relative;
+		.room-info{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			icon{
+				position: absolute;
+				top: 50%;
+				left: 0;
+				transform: translateY(-50%);
+			}
+			ion-label{
+				position: absolute;
+				left: 30px;
+			}
+		}
+		icon,
+		ion-icon{
+			height: 45px;
+			font-size: 30px;
+		}
+		ion-label{
+			line-height: 48px;
+		}
+		&.resize {
+			.room-info{
+				width: calc(100% - 90px);
+				left: 35px;
+			}
+		}
+		.reorder{
+			height: 48px;
+		}
+	}
+	.room-change-btn {
+		position: absolute;
+		width: 35px;
+		height: 35px;
+		margin: 0px !important;
+		padding: 0;
+		border-radius: 50%;
+		box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+		overflow: hidden;
+		&.first {
+			right: 37px;
+		}
+		&.last {
+			right: 2px;
+		}
+		ion-icon {
+			font-size: 25px;
+			&.pen {
+				color: var(--btn-blue);
+			}
+			&.trash {
+				color: var(--btn-red);
+			}
+		}
+		&.sub {
+			box-shadow: none;
+			right: 5px;
+			&.move {
+				right: 72px;
+			}
+		}
+	}
+	.show-submenu~.list .submenu {
+		max-height: 60px;
+		padding: 5px 10px;
+		padding-right: 0px;
+	}
+}
+.cdk-drag-preview {
+	box-sizing: border-box;
+	border-radius: 4px;
+	box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+	background: rgb(221 221 221 / 40%);
+	border: 2px dashed #fff;
+}
+.list.cdk-drop-list-dragging .room-box:not(.cdk-drag-placeholder) {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.cdk-drag-animating {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.custom-placeholder {
+	border: 2px dashed #fff;
+	min-height: 70px;
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

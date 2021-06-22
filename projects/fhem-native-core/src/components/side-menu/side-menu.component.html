@@ -1,0 +1,124 @@
+<ion-menu contentId="main-content" type="overlay" [disabled]="settings.disableSwipeMenu"
+	(ionDidOpen)="menuState = true" 
+	(ionDidClose)="menuState = false">
+	<ion-content class="theme-background"
+		[class.bigSettings]="settings.app.showTasks || settings.app.enableVariables"
+		[class.biggerSettings]="settings.app.showTasks && settings.app.enableVariables">
+		<div class="header-container theme-shadow-two">
+			<div class="placeholder">
+				<!-- logo Placeholder -->
+				<ng-content select="[LogoPlaceholder]"></ng-content>
+			</div>
+			<button *ngIf="!settings.modes.roomEdit && settings.app.enableEditing"
+				class="btn-round blue fixed-top-right right-pad ion-activatable theme-background theme-shadow-one"
+				(click)="edit()">
+				<ion-icon class="edit" name="create"></ion-icon>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+		<!-- Rooms -->
+		<div class="room-menu-container" *ngIf="structure.rooms.length > 0">
+			<div *ngIf="menuState" [@MenuStagger]="structure.structuredRooms.length" cdkDropList class="list" (cdkDropListDropped)="drop($event, false)">
+				<div *ngFor="let room of structure.structuredRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
+					<div class="room-box" *ngIf="(task.hideList.rooms.indexOf(room.UID)) === -1">
+						<!-- Drag And Drop Placeholder -->
+						<div class="custom-placeholder" *cdkDragPlaceholder></div>
+						<!-- Group Room -->
+						<ng-container *ngIf="room.useRoomAsGroup && { $implicit: room.name, ID: room.ID, UID: room.UID, icon: room.icon, asGroup: room.groupRooms } as ctx">
+							<!-- ROOM Call -->
+							<ng-container *ngTemplateOutlet="ROOM; context: ctx"></ng-container>
+							<!-- SUB Items -->
+							<div cdkDropList class="list" (cdkDropListDropped)="drop($event, room)">
+								<div *ngFor="let groupRoom of room.groupRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
+									<div class="room-box submenu" *ngIf="(task.hideList.rooms.indexOf(structure.rooms[groupRoom.ID].UID)) === -1">
+										<div class="custom-placeholder" *cdkDragPlaceholder></div>
+										<!-- ROOM Call -->
+										<ng-container *ngIf="room.useRoomAsGroup && { $implicit: groupRoom.name, ID: groupRoom.ID, icon: structure.rooms[groupRoom.ID].icon } as subCtx">
+											<ng-container *ngTemplateOutlet="ROOM; context: subCtx"></ng-container>
+										</ng-container>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+						<!-- Standard Room -->
+						<ng-container *ngIf="!room.useRoomAsGroup && { $implicit: room.name, ID: room.ID, UID: room.UID, icon: room.icon } as ctx">
+							<ng-container *ngTemplateOutlet="ROOM; context: ctx"></ng-container>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Settings and other menus -->
+		<div class="settings-container">
+			<!-- Settings -->
+			<div class="room-box">
+				<ion-item>
+					<button class="room-button ion-activatable" (click)="openSettings()">
+						<ion-icon class="theme-text" slot="start" name="cog"></ion-icon>
+						<ion-label class="theme-text">{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-label>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</ion-item>
+			</div>
+			<!-- Tasks -->
+			<div class="room-box" *ngIf="settings.app.showTasks">
+				<ion-item>
+					<button class="room-button ion-activatable" (click)="openPage('tasks')">
+						<ion-icon class="theme-text" slot="start" name="flash"></ion-icon>
+						<ion-label class="theme-text">{{ 'GENERAL.TASKS.TITLE' | translate }}</ion-label>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</ion-item>
+			</div>
+			<!-- Variables -->
+			<div class="room-box" *ngIf="settings.app.enableVariables">
+				<ion-item>
+					<button class="room-button ion-activatable" (click)="openPage('variables')">
+						<ion-icon class="theme-text" slot="start" name="code-slash"></ion-icon>
+						<ion-label class="theme-text">{{ 'GENERAL.VARIABLES.TITLE' | translate }}</ion-label>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</ion-item>
+			</div>
+		</div>
+	</ion-content>
+</ion-menu>
+
+<ng-template #ROOM let-name let-ID="ID" let-UID="UID" let-icon="icon" let-asGroup="asGroup">
+	<ion-item [class.active-route]="structure.currentRoom?.ID === ID"
+		[class.show-submenu]="checkGroup(asGroup)">
+		<button 
+			[class.resize]="settings.modes.roomEdit"
+			class="room-button ion-activatable" 
+			(click)="switchRoom(name, ID)">
+			<!-- Reoder -->
+			<ion-icon *ngIf="settings.modes.roomEdit" class="less-margin reorder theme-text" 
+				slot="start" name="reorder-three">
+			</ion-icon>
+			<!-- Room Name/Icon -->
+			<div class="room-info" roomColor [UID]="structure.rooms[ID].UID" [theme]="settings.app.theme">
+				<icon [icon]="icon"></icon>
+				<ion-label>{{name}}</ion-label>
+			</div>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+
+		<button [class.move]="settings.modes.roomEdit" *ngIf="asGroup"
+			class="room-change-btn sub ion-activatable theme-background" (click)="toggleSubMenu($event)">
+			<ion-icon class="theme-text" slot="end" name="ellipsis-vertical"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<button *ngIf="settings.modes.roomEdit"
+			class="room-change-btn first ion-activatable theme-background"
+			(click)="editRoom(ID)">
+			<ion-icon class="pen" name="create"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<button *ngIf="settings.modes.roomEdit && structure.rooms.length > 1"
+			class="room-change-btn last ion-activatable theme-background"
+			(click)="removeRoom(ID)">
+			<ion-icon class="trash" name="trash"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+	</ion-item>
+</ng-template>
