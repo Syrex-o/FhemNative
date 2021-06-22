@@ -1,0 +1,28 @@
+:host{
+	.room-container{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+		.content{
+			position: absolute;
+			height: calc(100% - 56px);
+			top: 56px;
+			width: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+			.container{
+				width: inherit;
+				height: inherit;
+			}
+			.add-btn{
+				position: fixed;
+				bottom: 8px;
+				right: 0;
+				z-index: 102;
+			}
+		}
+	}
+}

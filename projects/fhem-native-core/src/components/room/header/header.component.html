@@ -1,0 +1,18 @@
+<ion-header class="theme-background header">
+	<!-- Room Name and Icon -->
+	<ng-container *ngIf="settings.allowRoomCreation">
+		<ion-menu-button class="theme-text"></ion-menu-button>
+		<!-- Room Name/Icon -->
+		<div class="room-info" *ngIf="structure.currentRoom"
+			roomColor [UID]="structure.currentRoom?.UID" [roomColor]="structure.currentRoom?.color" [theme]="settings.app.theme">
+			<icon [icon]="structure.currentRoom.icon"></icon>
+			<ion-title>{{structure.currentRoom.name}}</ion-title>
+		</div>
+	</ng-container>
+	<!-- Edit Button -->
+	<button *ngIf="!settings.modes.roomEdit && settings.app.enableEditing"
+		class="btn-round blue ion-activatable theme-background theme-shadow-one right-pad" (click)="onEditClick.emit(true)">
+		<ion-icon class="edit" name="create"></ion-icon>
+		<ion-ripple-effect></ion-ripple-effect>
+	</button>
+</ion-header>
