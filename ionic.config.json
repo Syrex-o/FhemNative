@@ -1,0 +1,21 @@
+{
+	"projects": {
+		"FhemNativeMobile": {
+			"name": "FhemNativeMobile",
+			"integrations": {
+				"capacitor": {}
+			},
+			"type": "angular",
+			"root": "projects/fhem-native-mobile"
+		},
+		"SmartSprinkler": {
+			"name": "SmartSprinkler",
+			"integrations": {
+				"capacitor": {}
+			},
+			"type": "angular",
+			"root": "projects/smart-sprinkler"
+		}
+	},
+	"defaultProject": "FhemNativeMobile"
+}
