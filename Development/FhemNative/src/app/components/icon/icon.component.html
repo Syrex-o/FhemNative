@@ -1,8 +1,0 @@
-<ng-container *ngIf="ripple">
-	<ion-icon matRipple [matRippleColor]="'#d4d4d480'" *ngIf="_icon?.type === 'ion'" [name]="_icon.icon"></ion-icon>
-	<fa-icon matRipple [matRippleColor]="'#d4d4d480'" *ngIf="_icon?.type !== 'ion'"  [icon]="_icon.icon"></fa-icon>
-</ng-container>
-<ng-container *ngIf="!ripple">
-	<ion-icon *ngIf="_icon?.type === 'ion'" [name]="_icon.icon"></ion-icon>
-	<fa-icon *ngIf="_icon?.type !== 'ion'"  [icon]="_icon.icon"></fa-icon>
-</ng-container>

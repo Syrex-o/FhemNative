@@ -1,7 +1,0 @@
-{
-  "name": "FhemNative",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
