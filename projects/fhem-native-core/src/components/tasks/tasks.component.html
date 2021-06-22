@@ -1,0 +1,339 @@
+<div class="settings-container">
+	<ion-header class="theme-background">
+		<ion-toolbar>
+			<button class="back-btn ion-activatable" (click)="closeTasks()">
+				<ion-icon class="theme-text" name="arrow-back-outline"></ion-icon>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+			<ion-icon icon="flash" class="flash theme-text"></ion-icon>
+			<ion-title class="theme-text">{{ 'GENERAL.TASKS.TITLE' | translate }}</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<div class="content theme-background">
+		<div class="select-box">
+			<div class="select-box">
+				<div class="category btn">
+					<p class="label theme-text">{{ 'GENERAL.TASKS.CREATE_TASK.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.TASKS.CREATE_TASK.INFO' | translate }}</p>
+					<button class="add-btn btn-round ion-activatable theme-background" (click)="openMenu('createTask')">
+						<span class="line top"></span>
+						<span class="line bottom"></span>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+			<!-- Tasks List -->
+			<ng-container *ngIf="tasks.length > 0">
+				<div class="category multi-btn" *ngFor="let task of tasks; let i = index;">
+					<p class="label theme-text">{{ task.name }}</p>
+					<p class="des theme-des">{{ task.description }}</p>
+					<div class="button-container">
+						<button class="btn-round trash ion-activatable theme-background" (click)="removeTask(i)">
+							<ion-icon name="trash"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+						<button class="btn-round edit ion-activatable theme-background" (click)="configTask(i)">
+							<ion-icon name="build"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+						<button class="btn-round edit ion-activatable theme-background" (click)="editTask(i)">
+							<ion-icon name="create"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>
+
+<!-- Task creation Menu -->
+<popover [(ngModel)]="menus.createTask"
+	[width]="90"
+	[height]="90"
+	(onClose)="close()">
+	<div header>
+		<h1 class="theme-text">
+			{{taskStructure.selectedTask !== null ? ( 'GENERAL.TASKS.EDIT_TASK.TITLE' | translate ) : ( 'GENERAL.TASKS.CREATE_TASK.TITLE' | translate )}}
+		</h1>
+	</div>
+	<div body class="content full-height">
+		<div class="settings-block no-border">
+			<!-- task name -->
+			<div class="category">
+				<p class="label theme-text">{{ 'GENERAL.TASKS.CREATE_TASK.NAME.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.TASKS.CREATE_TASK.NAME.INFO' | translate }}</p>
+				<input class="inp" [(ngModel)]="taskInfo.name" placeholder="{{taskInfo.name}}">
+				<span class="bar"></span>
+			</div>
+			<!-- Task Des -->
+			<div class="category">
+				<p class="label theme-text">{{ 'GENERAL.TASKS.CREATE_TASK.DES.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.TASKS.CREATE_TASK.DES.INFO' | translate }}</p>
+				<input class="inp" [(ngModel)]="taskInfo.description" placeholder="{{taskInfo.description}}">
+			    <span class="bar"></span>
+			</div>
+		</div>
+		<div class="settings-block no-border">
+			<div class="category btn-full-category">
+				<button class="save ion-activatable" (click)="save()">
+					{{ 'GENERAL.BUTTONS.SAVE' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<button class="cancel ion-activatable" (click)="close()">
+					{{ 'GENERAL.BUTTONS.CANCEL' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+	</div>
+</popover>
+
+<!-- Task Config Popup -->
+<popover [(ngModel)]="menus.taskConfigurator"
+	[width]="100"
+	[height]="100"
+	(onClose)="close()">
+	<div header *ngIf="menus.taskConfigurator">
+		<h1 class="theme-text">
+			{{ ('GENERAL.TASKS.CONFIG_TASK.TITLE' | translate) +': '+ (tasks[taskStructure.selectedTask].device ? tasks[taskStructure.selectedTask].device : tasks[taskStructure.selectedTask].name) }}
+		</h1>
+	</div>
+	<div body class="content full-height" *ngIf="menus.taskConfigurator">
+		<div class="task-config-container">
+			<ng-container *ngTemplateOutlet="BLOCK; context: {items: tasks[taskStructure.selectedTask].attributes}"></ng-container>
+		</div>
+		<div class="settings-block no-border">
+			<div class="category btn-full-category">
+				<button class="save ion-activatable" (click)="changeTaskAttributes()">
+					{{ 'GENERAL.BUTTONS.SAVE' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<button class="cancel no-margin ion-activatable"(click)="close()">
+					{{ 'GENERAL.BUTTONS.CANCEL' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+	</div>
+</popover>
+
+<!-- Templates -->
+<!-- Task Block -->
+<ng-template #BLOCK let-items="items">
+	<ng-container *ngFor="let attr of items | keyvalue: orderItems">
+		<div class="code-block {{attr.key}}">
+			<ng-container *ngTemplateOutlet="BLOCK_CONDITION; context: {block: attr.key}"></ng-container>
+		</div>
+	</ng-container>
+</ng-template>
+
+<!-- Task Condition -->
+<ng-template #BLOCK_CONDITION let-block="block">
+	<div class="block-container theme-background-two {{block}}">
+		<div class="block-definition">
+			<p class="block-condition theme-text">{{block}}</p>
+			<selector 
+				*ngIf="block === 'IF'"
+				class="select"
+				[items]="task.taskOptions"
+				[searchable]="false"
+				bindLabel="name"
+				bindValue="name"
+				[(ngModel)]="tasks[taskStructure.selectedTask].attributes[block].name"
+				(onValueChange)="updateAttributes($event, block)">
+			</selector>
+		</div>
+		<!-- Inputs -->
+		<ng-container *ngIf="{ inputs: tasks[taskStructure.selectedTask].attributes[block].inputs } as input">
+			<ng-container *ngTemplateOutlet="BLOCK_INPUTS; context: input"></ng-container>
+		</ng-container>
+		<!-- Operators -->
+		<ng-container *ngIf="{ $implicit: block, operators: task.getOperators(tasks[taskStructure.selectedTask].attributes[block].name, 'operators') } as operator">
+			<ng-container *ngTemplateOutlet="BLOCK_OPERATORS; context: operator"></ng-container>
+		</ng-container>
+		<!-- Outputs -->
+		<ng-container *ngIf="{ $implicit: block, outputs: tasks[taskStructure.selectedTask].attributes[block].output } as output">
+			<ng-container *ngTemplateOutlet="BLOCK_OUTPUTS; context: output"></ng-container>
+		</ng-container>
+	</div>
+	<!-- Add Buttons -->
+	<div class="add-output-container" *ngIf="tasks[taskStructure.selectedTask]?.attributes[block.key]?.output[0]?.value !== ''">
+		<!-- Add output -->
+		<div class="category btn">
+			<p class="label theme-text">{{ 'GENERAL.TASKS.ADD_OUTPUT.TITLE' | translate }}</p>
+			<p class="des theme-des">{{ 'GENERAL.TASKS.ADD_OUTPUT.INFO' | translate }}</p>
+			<button class="add-btn btn-round ion-activatable theme-background" (click)="addOutput(block)">
+				<span class="line top"></span>
+				<span class="line bottom"></span>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+		<!-- Else -->
+		<ng-container *ngIf="block === 'IF'">
+			<div class="category btn">
+				<p class="label theme-text">
+					{{ (tasks[taskStructure.selectedTask]?.attributes.ELSE ?  ('GENERAL.TASKS.REMOVE_ELSE.TITLE' | translate) : ('GENERAL.TASKS.ADD_ELSE.TITLE' | translate) ) }}
+				</p>
+				<p class="des theme-des">
+					{{ (tasks[taskStructure.selectedTask]?.attributes.ELSE ?  ('GENERAL.TASKS.REMOVE_ELSE.INFO' | translate) : ('GENERAL.TASKS.ADD_ELSE.INFO' | translate) ) }}
+				</p>
+				<button *ngIf="!tasks[taskStructure.selectedTask]?.attributes.ELSE"
+					class="add-btn btn-round ion-activatable theme-background" (click)="addElse()">
+					<span class="line top"></span>
+					<span class="line bottom"></span>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<button *ngIf="tasks[taskStructure.selectedTask]?.attributes.ELSE"
+					class="add-btn btn-round ion-activatable theme-background" (click)="removeElse()">
+					<ion-icon class="trash" name="trash"></ion-icon>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</ng-container>
+	</div>
+</ng-template>
+
+<!-- Task Inputs -->
+<ng-template #BLOCK_INPUTS let-inputs="inputs">
+	<ng-container *ngIf="inputs">
+		<div class="block-inputs">
+			<div class="input-text">
+				<p class="theme-text">Input:</p>
+			</div>
+			<div class="input-param" *ngFor="let input of inputs">
+				<p class="input-key theme-text">{{input.variable}}</p>
+				<div class="input-container">
+					<input class="input-value" [(ngModel)]="input.value" placeholder="{{input.value}}">
+			    	<span class="bar"></span>
+				</div>
+			</div>
+		</div>
+	</ng-container>
+</ng-template>
+
+<!-- Task Operators -->
+<ng-template #BLOCK_OPERATORS let-operators="operators" let-key>
+	<ng-container *ngIf="operators">
+		<div class="block-operators">
+			<div class="input-text">
+				<p class="theme-text">Operator:</p>
+			</div>
+			<div class="input-param">
+				<!-- Select Operator -->
+				<selector
+					class="input-key"
+					[items]="operators"
+					[searchable]="false"
+					[(ngModel)]="tasks[taskStructure.selectedTask].attributes[key].compare.operator">
+				</selector>
+				<!-- Select Value -->
+				<!-- Text Input -->
+				<ng-container *ngIf="!task.getOperators(tasks[taskStructure.selectedTask].attributes[key].name, 'operatorParam')">
+					<div class="input-container" *ngIf="task.operatorOptions[tasks[taskStructure.selectedTask].attributes[key].compare.operator].type === 'input'">
+						<input 
+							class="input-value" 
+							[(ngModel)]="tasks[taskStructure.selectedTask].attributes[key].compare.to" 
+							placeholder="{{tasks[taskStructure.selectedTask].attributes[key].compare.to}}">
+			    		<span class="bar"></span>
+			    	</div>
+				</ng-container>
+				<ng-container *ngIf="task.getOperators(tasks[taskStructure.selectedTask].attributes[key].name, 'operatorParam')">
+					<!-- Select Time -->
+					<div class="input-container" *ngIf="task.getOperators(tasks[taskStructure.selectedTask].attributes[key].name, 'operatorParam') === 'timepicker'">
+						<timepicker 
+							[(ngModel)]="tasks[taskStructure.selectedTask].attributes[key].compare.to"
+							(onTimeChange)="tasks[taskStructure.selectedTask].attributes[key].compare.to = $event">
+						</timepicker>
+					</div>
+					<!-- Select Menu -->
+					<div class="input-container" *ngIf="task.getOperators(tasks[taskStructure.selectedTask].attributes[key].name, 'operatorParam') === 'select'">
+						<selector
+							class="input-value"
+							[items]="task.getOperators(tasks[taskStructure.selectedTask].attributes[key].name, 'operatorValues')"
+							[searchable]="true"
+							[(ngModel)]="tasks[taskStructure.selectedTask].attributes[key].compare.to">
+						</selector>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+	</ng-container>
+</ng-template>
+
+<!-- Task Optputs -->
+<ng-template #BLOCK_OUTPUTS let-outputs="outputs" let-key>
+	<ng-container *ngIf="outputs">
+		<div class="block-outputs no-border">
+			<div class="input-text">
+				<p class="theme-text">Output:</p>
+			</div>
+			<ng-container *ngFor="let output of outputs; let first = first; let last = last; let i = index;">
+				<div class="output-container" [class.border]="!last">
+					<button class="remove-output" *ngIf="!first" (click)="removeOutput(i, key)">
+						<ion-icon class="trash" name="trash"></ion-icon>
+					</button>
+					<div class="input-param" [style.zIndex]="100 - i">
+						<!-- Select Output -->
+						<p class="input-key theme-text">Select Output:</p>
+						<div class="input-container">
+							<selector
+								[items]="task.outputOptions"
+								[searchable]="false"
+								bindLabel="variable"
+								bindValue="variable"
+								[(ngModel)]="output.variable">
+							</selector>
+						</div>
+					</div>
+					<!-- Select Value -->
+					<div class="input-param" *ngIf="output.variable" [style.zIndex]="100 - (i + 1)">
+						<p class="input-key theme-text">Select Param:</p>
+						<div class="input-container">
+							<!-- Hide Room -->
+							<!-- Change Room -->
+							<selector
+								*ngIf="output.variable === 'hide_room' || output.variable === 'change_room'"
+								[items]="structure.rooms"
+								[searchable]="false"
+								bindLabel="name"
+								bindValue="UID"
+								[(ngModel)]="output.value">
+							</selector>
+							<!-- Hide Component -->
+							<selector
+								*ngIf="output.variable === 'hide_component'"
+								[items]="components"
+								[searchable]="false"
+								bindLabel="text"
+								bindValue="ID"
+								[(ngModel)]="output.value">
+							</selector>
+							<!-- Play Sound -->
+							<selector
+								*ngIf="output.variable === 'play_sound'"
+								[items]="[1,2,3,4]"
+								[searchable]="false"
+								[(ngModel)]="output.value"
+								(onValueChange)="nativeDemo(output.variable, $event)">
+							</selector>
+							<!-- Vibration -->
+							<selector
+								*ngIf="output.variable === 'vibration'"
+								[items]="[0.2, 0.5, 1, 2]"
+								[searchable]="false"
+								[(ngModel)]="output.value"
+								(onValueChange)="nativeDemo(output.variable, $event)">
+							</selector>
+							<!-- Show Alert -->
+							<div *ngIf="output.variable === 'show_alert'">
+								<input class="input-value" [(ngModel)]="output.value" placeholder="{{output.value}}">
+								<span class="bar"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</ng-container>
+</ng-template>

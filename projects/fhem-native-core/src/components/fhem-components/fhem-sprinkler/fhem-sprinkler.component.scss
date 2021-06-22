@@ -1,0 +1,89 @@
+:host{
+	.sprinkler{
+		width: inherit;
+		height: inherit;
+		pointer-events: all;
+		.sprinkler-page-container{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			.btn-box{
+				width: 100%;
+				height: 100px;
+				margin-bottom: 10px;
+				box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
+				.row{
+					width: 100%;
+					height: 50px;
+					.btn-icon{
+						position: relative;
+						height: 100%;
+						width: 20%;
+						background: transparent;
+						ion-icon{
+							font-size: 35px;
+							&.snow.on{
+								color: #14a9d5 !important;
+							}
+							&.sun.on{
+								color: #efe70d !important;
+							}
+							&.weather.on{
+								animation: blink 3s ease-in-out infinite;
+								color: #14a9d5 !important;
+							}
+						}
+					}
+					.timeline{
+						position: relative;
+						text-transform: uppercase;
+						margin-top: 5px;
+						outline: 0;
+						width: 50%;
+						left: 25%;
+						border: 0;
+						padding: 12px;
+						color: #FFFFFF;
+						font-size: 14px;
+						cursor: pointer;
+						background: var(--btn-blue);
+						box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
+					}
+				}
+			}
+			.sprinkler-switch-container{
+				.sprinkler-switch{
+					margin-bottom: 10px;
+					margin-left: 8px;
+					margin-right: 8px;
+					border-bottom: 1px solid #565656;
+				}
+			}
+		}
+	}
+	h1{
+		margin: 0;
+	}
+	// settings pages
+	.page{
+		position: relative;
+		width: 100%;
+		height: 100%;
+		padding: 8px;
+	}
+
+	@keyframes blink{
+		0%{
+			opacity: 1;
+		}
+		50%{
+			opacity: 0.3;
+		}
+		100%{
+			opacity: 1;
+		}
+	}
+}

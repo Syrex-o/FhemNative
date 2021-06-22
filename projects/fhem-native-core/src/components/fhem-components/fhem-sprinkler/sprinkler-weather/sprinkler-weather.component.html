@@ -1,0 +1,59 @@
+<p class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.FORECAST' | translate}}</p>
+<!-- Temp Info -->
+<div class="category" *ngIf="weather && weather.readings && smartSprinkler">
+	<div class="weather-container theme-text">
+		<p class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.MAX_TEMP_TODAY' | translate}}</p>
+		<span class="des right">{{weather?.readings.maxTemp.Value}}&#8451;</span>
+	</div>
+	<br>
+	<div class="weather-container theme-text">
+		<p class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.MIN_TEMP_TODAY' | translate}}</p>
+		<span class="des right">{{weather?.readings.minTemp.Value}}&#8451;</span>
+	</div>
+	<br>
+	<ng-container *ngIf="(
+		smartSprinkler.readings.enabled.Value && 
+		((weather.readings.maxTemp.Value >= smartSprinkler.readings.highTemp.Value) || (weather.readings.minTemp.Value <= smartSprinkler.readings.lowTemp.Value))); 
+		else STANDARD_RUNTIME">
+		<ng-container *ngTemplateOutlet="INFORMER; context: {$implicit: ('COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.ADJUSTED_RUNTIME' | translate)}"></ng-container>
+	</ng-container>
+</div>
+<ng-container *ngIf="weather && weather.readings && smartSprinkler">
+	<!-- Wind Info -->
+	<div class="category">
+		<div class="weather-container theme-text">
+			<p class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.WIND_TODAY' | translate}}</p>
+			<span class="des right">{{weather?.readings.wind.Value}} km/h</span>
+		</div>
+		<ng-container *ngIf="smartSprinkler.readings.enabled.Value && weather.readings.tooWindy.Value">
+			<br>
+			<ng-container *ngTemplateOutlet="INFORMER; context: {$implicit: ('COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.WIND_TODAY_OFF' | translate)}"></ng-container>
+		</ng-container>
+	</div>
+	<!-- Rain Info -->
+	<div class="category">
+		<div class="weather-container theme-text">
+			<p class="des">{{'COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.RAIN_TODAY' | translate}}</p>
+			<span class="des right">{{weather?.readings.rain.Value}} l/m2</span>
+		</div>
+		<ng-container *ngIf="smartSprinkler.readings.enabled.Value && weather.readings.tooRainy.Value">
+			<br>
+			<ng-container *ngTemplateOutlet="INFORMER; context: {$implicit: ('COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.RAIN_TODAY_OFF' | translate)}"></ng-container>
+		</ng-container>
+	</div>
+</ng-container>
+
+<!-- Message to display infos about changed sprinklers -->
+<ng-template #INFORMER let-message>
+	<div class="informer-container">
+		<div class="informer-icon-container">
+			<ion-icon class="informer-icon theme-text" name="information-circle-outline"></ion-icon>
+		</div>
+		<p class="informer-message des theme-text">{{message}}</p>
+	</div>
+</ng-template>
+
+<!-- Standard Runtime -->
+<ng-template #STANDARD_RUNTIME>
+	<ng-container *ngTemplateOutlet="INFORMER; context: {$implicit: ('COMPONENTS.Sprinkler.TRANSLATOR.WEATHER.STANDARD_RUNTIME' | translate) }"></ng-container>
+</ng-template>

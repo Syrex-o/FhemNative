@@ -1,0 +1,23 @@
+<div class="timepicker-container" 
+	[class.full-height]="fullHeight" 
+	[class.border]="showBorder"
+	[ngStyle]="{'min-height.px': staticHeight > 0 ? staticHeight : 45}">
+	<button class="btn ion-activatable theme-text">
+		<div class="label-container" (click)="openPicker()">
+			<p class="label theme-text">{{label}}</p>
+		</div>
+		<ion-datetime mode="md"
+			#datetime class="time"
+			[displayFormat]="timeFormat"
+			[pickerFormat]="timeFormat"
+			[(ngModel)]="value"
+			[cancelText]="cancelBtn"
+			[doneText]="confirmBtn"
+			[hourValues]="timeVals.hours"
+			[minuteValues]="timeVals.mins"
+			(ionChange)="updateTime($event)"
+			(ionCancel)="closePicker()">
+		</ion-datetime>
+		<ion-ripple-effect></ion-ripple-effect>
+	</button>
+</div>

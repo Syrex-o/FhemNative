@@ -1,0 +1,31 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, offline: true}"
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
+	[minimumWidth]="30"
+	[minimumHeight]="30">
+	<div class="icon" 
+		[class.show-indicator]="bool_data_showIndicator && fhemDevice && fhemDevice.readings[data_indicatorReading]"
+		[class.hide-indicator]="hideIndicator"
+		[ngClass]="arr_data_indicatorPosition[0]">
+		<!-- Indicator -->
+		<div class="indicator"
+			*ngIf="bool_data_showIndicator && fhemDevice && fhemDevice.readings[data_indicatorReading]"
+			[ngStyle]="{
+				'color': style_indicatorColor, 
+				'background-color': style_indicatorBackgroundColor,
+				'animation': (iconBlinker && bool_data_blinkIndicator) ? ('blink ' + data_blinkTime + 's linear infinite') : '0s'
+			}">
+			{{indicatorValue}}
+		</div>
+		<!-- Icon -->
+		<icon [icon]="iconState ? icon_iconOn : icon_iconOff"
+			[ngStyle]="{
+				'animation': iconBlinker ? ('blink ' + data_blinkTime + 's linear infinite') : '0s',
+				'transform': shouldRotate ? ('rotate(' + data_rotateDeg +'deg)') : 'rotate(0deg)'
+			}"
+			[style.color]="fhemDevice ? getValueColor() : ( iconState ? style_iconColorOn : style_iconColorOff )">
+		</icon>
+	</div>
+</fhem-component-container>

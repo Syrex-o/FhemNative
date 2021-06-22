@@ -1,0 +1,83 @@
+<div class="sprinkler-settings">
+	<ion-slides>
+		<ion-slide *ngFor="let j of [1,2]">
+			<div class="sprinkler-interval" [ngClass]="'interval'+j">
+				<h2 class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.TITLE' | translate}} {{j}}</h2>
+				<!-- Disable second Interval overlay -->
+				<div *ngIf="j === 2 && smartSprinkler?.readings.enableInterval2" 
+					class="overlay-interval2" [ngStyle]="{'transform': (!smartSprinkler?.readings.enableInterval2.Value ? 'translate3d(0,0,0)' : 'translate3d(100%, 0, 0)')}">
+				</div>
+				<!-- Overall overview -->
+				<div class="category">
+					<!-- Standard Runtime -->
+					<h4 class="des theme-text">
+						Standard {{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.TOTAL_RUNTIME' | translate}}
+					</h4>
+					<p class="des_small theme-des">
+						{{ sprinklers.times['interval' + j][0].startTime }} - {{ sprinklers.times['interval' + j][ sprinklers.times['interval' + j].length -1 ].endTime }}
+					</p>
+					<!-- Smart Runtime -->
+					<ng-container *ngIf="smartSprinkler?.readings.enabled.Value">
+						<h4 class="des theme-text">
+							Smart {{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.TOTAL_RUNTIME' | translate}}
+						</h4>
+						<p class="des_small theme-des">
+							{{ sprinklers.times['interval' + j][0].smartStart }} - {{ sprinklers.times['interval' + j][ sprinklers.times['interval' + j].length -1 ].smartEnd }}
+						</p>
+					</ng-container>
+				</div>
+				<!-- Disable second Interval button -->
+				<div class="disable-interval">
+					<button *ngIf="j === 2 && smartSprinkler?.readings.enableInterval2" class="btn ion-activatable"
+						(click)="triggerInterval2()">
+						{{smartSprinkler?.readings.enableInterval2.Value ? ('COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL_2.DISABLE' | translate) : ('COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL_2.ENABLE' | translate)}}
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+				<!-- Loop Sprinklers -->
+				<div class="sprinkler-container">
+					<ng-container *ngIf="sprinklers?.names.length > 0">
+						<div class="category" *ngFor="let sprinklerName of sprinklers.names; let i = index">
+							<h4 class="theme-text">
+								{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.CYCLE' | translate}}
+							</h4>
+							<!-- Naming + Edit -->
+							<div class="naming ion-activatable" (click)="onSprinklerEdit.emit({interval: j, index: i})">
+								<span *ngIf="sprinklerColors?.color" class="sprinkler-color" [style.background]="sprinklerColors.color[i].val"></span>
+								<p class="sprinkler-name theme-text">{{sprinklerName}}</p>
+								<ion-icon name="create"></ion-icon>
+								<ion-ripple-effect></ion-ripple-effect>
+							</div>
+							<!-- Infos -->
+							<div class="summary theme-text">
+								<h4 class="theme-text">
+									{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.SUMMARY' | translate}}
+								</h4>
+								<!-- Standard Runtime -->
+								<div class="runtime-container">
+									<p class="runtime">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.RUNTIME' | translate}}</p>
+									<p class="runtime-detail">
+										{{sprinklers.times['interval'+j][i].startTime}} - {{sprinklers.times['interval'+j][i].endTime}}
+										({{sprinklers.times['interval'+j][i].duration}})
+									</p>
+								</div>
+								<!-- Weekdays -->
+								<div class="runtime-container">
+									<p class="runtime">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}}</p>
+									<!-- Daily -->
+									<p class="runtime-detail" *ngIf="sprinklers.times['interval'+j][i].days.allDays === true">
+										{{'GENERAL.DICTIONARY.WEEKDAYS.DAILY' | translate}}
+									</p>
+									<!-- Not Daily -->
+									<p class="runtime-detail" *ngIf="sprinklers.times['interval'+j][i].days.allDays === false">
+										<span *ngFor="let day of sprinklers.times['interval'+j][i].days.textDays; let j = index">{{ day }}</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+				</div>
+			</div>
+		</ion-slide>
+	</ion-slides>
+</div>

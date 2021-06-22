@@ -1,0 +1,231 @@
+<div class="settings-container">
+ 	<ion-header class="theme-background">
+		<ion-toolbar>
+			<button class="back-btn ion-activatable" (click)="closeVariables()">
+			    <ion-icon class="theme-text" name="arrow-back-outline"></ion-icon>
+			    <ion-ripple-effect></ion-ripple-effect>
+			</button>
+			<ion-icon icon="code-slash" class="code theme-text"></ion-icon>
+			<ion-title class="theme-text">{{ 'GENERAL.VARIABLES.TITLE' | translate }}</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<div class="content theme-background">
+		<!-- create variable -->
+		<div class="select-box">
+			<div class="select-box border">
+				<div class="category btn">
+					<p class="label theme-text">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.TITLE' | translate }}</p>
+					<p class="des limit-size theme-des">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.INFO' | translate }}</p>
+					<button class="add-btn btn-round ion-activatable theme-background" (click)="openMenu('createVariable')">
+						<span class="line top"></span>
+						<span class="line bottom"></span>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+			<!-- Variable List -->
+			<ng-container *ngIf="variable.variables">
+				<div class="category multi-btn border" *ngFor="let variable of variable.variables; let i = index;">
+					<div class="row">
+						<div class="label-container">
+							<p class="label theme-text">{{ variable.name }}</p>
+							<p class="des theme-des">{{ variable.description }}</p>
+						</div>
+					</div>
+					<div class="row">
+						<p class="label-def-syntax theme-text">{{ variable.defSyntax }}</p>
+						<p *ngIf="variable.hasOwnProperty('modValue')" class="label-value-preview theme-text">{{variable.modValue}}</p>
+					</div>
+					<div class="button-container">
+						<button class="btn-round trash ion-activatable theme-background" (click)="removeVariable(i)">
+							<ion-icon name="trash"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+						<button class="btn-round edit ion-activatable theme-background" (click)="configVariable(i)">
+						    <ion-icon name="build"></ion-icon>
+						    <ion-ripple-effect></ion-ripple-effect>
+						</button>
+						<button class="btn-round edit ion-activatable theme-background" (click)="editVariable(i)">
+							<ion-icon name="create"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+		<!-- Variable creation Menu -->
+		<popover [(ngModel)]="menus.createVariable"
+			[width]="90"
+			[height]="90"
+			(onClose)="closeMenu()">
+			<div header>
+				<h1 class="theme-text">
+					{{selectedVariable !== null ? ( 'GENERAL.VARIABLES.EDIT_VARIABLE.TITLE' | translate ) : ( 'GENERAL.VARIABLES.CREATE_VARIABLE.TITLE' | translate )}}
+				</h1>
+			</div>
+			<div body class="content full-height">
+				<div class="settings-block no-border">
+					<!-- variable name -->
+					<div class="category">
+						<p class="label theme-text">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.NAME.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.NAME.INFO' | translate }}</p>
+						<input class="inp" [(ngModel)]="variableInfo.name" placeholder="{{variableInfo.name}}">
+				   		<span class="bar"></span>
+					</div>
+					<!-- variable description -->
+					<div class="category">
+						<p class="label theme-text">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.DES.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.DES.INFO' | translate }}</p>
+						<input class="inp" [(ngModel)]="variableInfo.description" placeholder="{{variableInfo.description}}">
+			    		<span class="bar"></span>
+					</div>
+				</div>
+				<!-- preview container -->
+				<div class="settings-block no-border" *ngIf="variableInfo.name">
+					<div class="category">
+						<p class="label theme-text">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.PREVIEW.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.PREVIEW.INFO' | translate }}</p>
+						<p class="def-preview theme-text">{{getVariableSyntax(variableInfo.name)}}</p>
+					</div>
+				</div>
+				<!-- save/cancel -->
+				<div class="settings-block no-border">
+					<div class="category btn-full-category">
+						<button class="save ion-activatable" (click)="save()">
+							{{ 'GENERAL.BUTTONS.SAVE' | translate }}
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+						<button class="cancel ion-activatable" (click)="menus.createVariable = false">
+							{{ 'GENERAL.BUTTONS.CANCEL' | translate }}
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+			</div>
+		</popover>
+		<!-- Task Config Popup -->
+		<popover [(ngModel)]="menus.configureVariable"
+			[width]="100"
+			[height]="100"
+			(onClose)="closeMenu()">
+			<div header *ngIf="menus.configureVariable && selectedVariable !== null">
+				<h1 class="theme-text">
+					{{ ('GENERAL.VARIABLES.CONFIG_VARIABLE.TITLE' | translate) +': '+ variable.storageVariables[selectedVariable].defSyntax }}
+				</h1>
+			</div>
+			<div body class="content full-height" *ngIf="menus.configureVariable && selectedVariable !== null">
+				<!-- variable type selection -->
+				<div class="category border-round">
+					<p class="label theme-text">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.TYPE.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.VARIABLES.CREATE_VARIABLE.TYPE.INFO' | translate }}</p>
+					<selector
+						[items]="['static', 'dynamic']"
+						[searchable]="false"
+						[(ngModel)]="variable.storageVariables[selectedVariable].attributes.type"
+						(onValueChange)="getAvailableInputs($event, true)">
+					</selector>
+				</div>
+				<!-- select input -->
+				<div class="category border-round" *ngIf="inputOptions.length > 0">
+					<p class="label theme-text">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.SELECT_INPUT.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.SELECT_INPUT.INFO' | translate }}</p>
+					<selector
+						[items]="inputOptions"
+						[searchable]="false"
+						bindLabel="name"
+						bindValue="name"
+						[(ngModel)]="variable.storageVariables[selectedVariable].attributes.inputOption.name"
+						(onValueChange)="updateInput($event)">
+					</selector>
+					<!-- select input parameters -->
+					<ng-container *ngIf="variable.storageVariables[selectedVariable].attributes.inputOption.inputs">
+						<div class="category" *ngFor="let input of variable.storageVariables[selectedVariable].attributes.inputOption.inputs">
+							<p class="label theme-text">{{ input.variable }}</p>
+							<div class="inp">
+								<input class="inp" [(ngModel)]="input.value" placeholder="{{input.value}}">
+			    				<span class="bar"></span>
+							</div>
+						</div>
+					</ng-container>
+					<!-- input result preview -->
+					<div class="preview-container">
+						<p class="label theme-text">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.PREVIEW' | translate }}</p>
+						<p *ngIf="previews.inputValue" class="preview-label theme-text">{{previews.inputValue}}</p>
+						<button (click)="previewValue('input')" class="btn-round edit ion-activatable theme-background">
+							<ion-icon name="refresh"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+				<!-- update options -->
+				<div class="category border-round" *ngIf="updateOptions.length > 0">
+					<p class="label theme-text">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.SELECT_UPDATER.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.SELECT_UPDATER.INFO' | translate }}</p>
+					<selector
+						[items]="updateOptions"
+						[searchable]="false"
+						bindLabel="name"
+						bindValue="name"
+						[(ngModel)]="variable.storageVariables[selectedVariable].attributes.updateOption.name"
+						(onValueChange)="updateUpdater($event, true)">
+					</selector>
+					<selector 
+						*ngIf="updateSelectionOptions.length > 0"
+						[items]="updateSelectionOptions"
+						[searchable]="false"
+						[(ngModel)]="variable.storageVariables[selectedVariable].attributes.updateOption.value">
+					</selector>
+				</div>
+				<!-- regex -->
+				<div class="category border-round" *ngIf="regexOptions.length > 0">
+					<p class="label theme-text">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.SELECT_REGEX.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.SELECT_REGEX.INFO' | translate }}</p>
+					<selector
+						[items]="regexOptions"
+						[searchable]="false"
+						bindLabel="name"
+						bindValue="name"
+						[(ngModel)]="variable.storageVariables[selectedVariable].attributes.regexOption.name"
+						(onValueChange)="updateRegex($event, true)">
+					</selector>
+					<!-- regex parmans -->
+					<selector
+						*ngIf="updateRegexOptions.length > 0 && updateRegexOptions[0] !== 'input'"
+						[items]="updateRegexOptions"
+						[searchable]="false"
+						[(ngModel)]="variable.storageVariables[selectedVariable].attributes.regexOption.value">
+					</selector>
+					<!-- manual regex -->
+					<div class="inp" *ngIf="updateRegexOptions[0] === 'input'">
+						<input class="inp" 
+						[(ngModel)]="variable.storageVariables[selectedVariable].attributes.regexOption.value" 
+						placeholder="{{variable.storageVariables[selectedVariable].attributes.regexOption.value}}">
+			    		<span class="bar"></span>
+					</div>
+					<!-- regex result preview -->
+					<div class="preview-container">
+						<p class="label theme-text">{{ 'GENERAL.VARIABLES.CONFIG_VARIABLE.PREVIEW' | translate }}</p>
+						<p *ngIf="previews.regexValue" class="preview-label theme-text">{{previews.regexValue}}</p>
+						<button (click)="previewValue('regex')" class="btn-round edit ion-activatable theme-background">
+							<ion-icon name="refresh"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+				<!-- save/cancel -->
+				<div class="settings-block no-border">
+					<div class="category btn-full-category">
+						<button class="save ion-activatable" (click)="saveVariableConfig()">
+							{{ 'GENERAL.BUTTONS.SAVE' | translate }}
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+						<button class="cancel no-margin ion-activatable" (click)="menus.configureVariable = false">
+							{{ 'GENERAL.BUTTONS.CANCEL' | translate }}
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+			</div>
+		</popover>
+	</div>
+</div>

@@ -1,0 +1,135 @@
+:host{
+	.calendar{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		.calendar-header{
+			position: relative;
+			width: 100%;
+			height: 40px;
+			box-shadow: 0px 10px 5px -5px rgb(0 0 0 / 30%);
+			z-index: 1;
+			.weekday{
+				position: relative;
+				width: 12.5%;
+				height: 40px;
+				display: inline-block;
+				p{
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					margin: 0;
+					text-align: center;
+					line-height: 40px;
+				}
+			}
+		}
+		.calendar-body{
+			position: relative;
+			width: 100%;
+			height: calc(100% - 40px);
+			overflow-x: hidden;
+			overflow-y: auto;
+			&::-webkit-scrollbar {
+			    display: none;
+			}
+			.calendar-content{
+				position: absolute;
+				width: 100%;
+				height: 1440px;
+				top: 0;
+				left: 0;
+				.local-percentage{
+					position: absolute;
+					width: 100%;
+					height: 1px;
+					background: var(--btn-green);
+					opacity: 0.5;
+					margin-top: -10px;
+				}
+				.time-container{
+					width: 12.5%;
+					height: 100%;
+					border-right: 1px solid #565656;
+					.day-time{
+						height: 60px;
+						line-height: 100px;
+						margin: 0px;
+						position: relative;
+						&:after{
+							content: "";
+							position: absolute;
+							width: 100vw;
+							height: 1px;
+							background-color: #565656;
+							bottom: 9.5px;
+						}
+					}
+				}
+				.calendar-day{
+					position: absolute;
+					width: 12.5%;
+					height: 100%;
+					border-right: 1px solid #565656;
+					top: 0;
+					.times-calendar{
+						position: absolute;
+						width: 100%;
+						height: 100%;
+						.time-elem{
+							position: absolute;
+							width: 100%;
+							margin-top: -10px;
+							overflow: hidden;
+							z-index: 1;
+							border-top-left-radius: 10px;
+							border-top-right-radius: 10px;
+							border-bottom-left-radius: 10px;
+							border-bottom-right-radius: 10px;
+							transition: all .2s ease;
+							will-change: opacity;
+							&.disabled{
+								animation: blink 3s ease-in-out infinite;
+							}
+						}
+					}
+				}
+				// Weekday Highlighting
+				&.Montag > .calendar-day:nth-child(3){
+					background: rgb(140 140 140 / 10%);;
+				}
+				&.Dienstag > .calendar-day:nth-child(4){
+					background: rgb(140 140 140 / 10%);;
+				}
+				&.Mittwoch > .calendar-day:nth-child(5){
+					background: rgb(140 140 140 / 10%);;
+				}
+				&.Donnerstag > .calendar-day:nth-child(6){
+					background: rgb(140 140 140 / 10%);;
+				}
+				&.Freitag > .calendar-day:nth-child(7){
+					background: rgb(140 140 140 / 10%);;
+				}
+				&.Samstag > .calendar-day:nth-child(8){
+					background: rgb(140 140 140 / 10%);;
+				}
+				&.Sonntag > .calendar-day:nth-child(9){
+					background: rgb(140 140 140 / 10%);;
+				}
+			}
+		}
+	}
+	@keyframes blink{
+		0%{
+			opacity: 1;
+		}
+		50%{
+			opacity: 0.3;
+		}
+		100%{
+			opacity: 1;
+		}
+	}
+}

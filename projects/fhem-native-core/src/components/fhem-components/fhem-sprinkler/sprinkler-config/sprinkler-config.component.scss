@@ -1,0 +1,122 @@
+:host{
+	.page{
+		position: relative;
+		width: 100%;
+		height: 100%;
+		h2, h3{
+			text-align: center;
+		}
+		h2{
+			margin-bottom: 0;
+		}
+		h3{
+			margin-bottom: 5px;
+		}
+		.naming{
+			position: relative;
+			width: 100%;
+			height: 45px;
+			border-bottom: 1px solid #565656;
+			margin-bottom: 8px;
+			.sprinkler-name{
+				left: 50%;
+				transform: translate(-50%, -50%);
+				margin: 0;
+			}
+			.sprinkler-name,
+			.sprinkler-color,
+			ion-icon{
+				position: absolute;
+				top: 50%;
+			}
+			.sprinkler-color,
+			ion-icon{
+				width: 30px;
+				height: 30px;
+				transform: translateY(-50%);
+			}
+			.sprinkler-color{
+				border-radius: 50%;
+				left: 10px;
+			}
+			ion-icon{
+				right: 10px;
+				color: var(--btn-blue);
+				font-size: 30px;
+			}
+		}
+		.category{
+			margin-bottom: 8px;
+			border-bottom: 1px solid #565656;
+			&.no-border{
+				border-bottom: none;
+			}
+			h4{
+				font-size: 1.1em;
+				margin-bottom: 0;
+			}
+		}
+		.des{
+			margin-bottom: 2px;
+			font-size: 1.1em;
+			margin-left: 8px;
+			margin-top:0px;
+			font-weight: 500;
+		}
+		.des_small{
+			font-size: 13px;
+			margin: 0;
+			margin-left: 8px;
+			font-weight: 400;
+		}
+		.select-btn{
+			position: relative;
+			width: 100%;
+			height: 45px;
+			background: transparent;
+			display: inline-flex;
+			.des{
+				font-size: 16px;
+				margin-left: 0px;
+				line-height: 35px;
+				width: calc(100% - 150px);
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				text-align: left;
+				height: 100%;
+				margin-bottom: 0;
+				line-height: 45px
+			}
+			ion-select{
+				width: 150px;
+				position: absolute;
+				right: 0;
+				height: 35px;
+				font-size: 16px;
+				height: 100%;
+				padding: 0;
+				line-height: 25px;
+			}
+		}
+		.summary{
+			h4{
+				text-align: center;
+			}
+			.runtime,
+			.runtime-detail{
+				display: inline-block;
+				margin-left: 8px;
+			}
+			.runtime{
+				width: 150px;
+			}
+		}
+	}
+	// bigger text properties
+	.bigger{
+		font-size: 18px !important;
+		font-weight: 500;
+		margin-top: 15px;
+	}
+}

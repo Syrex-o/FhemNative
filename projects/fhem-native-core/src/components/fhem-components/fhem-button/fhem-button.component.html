@@ -1,0 +1,35 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, connected: true}"
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
+	[minimumWidth]="30"
+	[minimumHeight]="30">
+	<button (click)="sendCmd()"
+		class="button ion-activatable {{settings.app.theme}}"
+		[ngClass]="arr_data_style[0]"
+		[ngStyle]="{
+			'background': style_buttonColor,
+			'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
+			'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
+			'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,
+			'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius
+		}">
+		<p 
+			*ngIf="!bool_data_iconOnly" 
+			class="label" [ngStyle]="{
+				'color': style_labelColor,
+				'width': 'calc(100% - '+ data_iconSize +'px - 16px)'
+			}">{{data_label}}</p>
+		<icon 
+			[class.icon-only]="bool_data_iconOnly"
+			[icon]="buttonState ? icon_iconOn : icon_iconOff"
+			[style.color]="buttonState ? style_iconColorOn : style_iconColorOff"
+			[ngStyle]="{
+				'width.px': data_iconSize,
+				'height.px': data_iconSize
+			}">
+		</icon>
+		<ion-ripple-effect></ion-ripple-effect>
+	</button>
+</fhem-component-container>

@@ -1,0 +1,125 @@
+<popover
+	[(ngModel)]="popupState"
+	[width]="90"
+	[height]="90"
+	[zIndex]="21000"
+	(onClose)="closeFromTemplate()">
+	<div header class="header">
+		<!-- IP Settings Header -->
+		<ng-container *ngIf="mode === 'ip-config'">
+			<h1 class="theme-text">{{'GENERAL.FHEM_MENU.CONNECTION.TITLE' | translate }}</h1>
+		</ng-container>
+	</div>
+	<div body class="page">
+		<!-- IP Settings Page -->
+		<ng-container *ngIf="mode === 'ip-config'">
+			<div class="connection-block" *ngFor="let connection of settings.connectionProfiles; let i = index">
+				<div class="settings-block no-border">
+					<!-- IP Adress -->
+					<p class="block-label theme-text">
+						{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.HEADER'  | translate }}: {{i + 1}}
+					</p>
+					<div class="category">
+						<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.IP.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.IP.INFO' | translate }}</p>
+						<input trim [(ngModel)]="connection.IP" placeholder="{{connection.IP}}">
+						<span class="bar"></span>
+					</div>
+					<!-- Port -->
+					<div class="category">
+						<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.PORT.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.PORT.INFO' | translate }}</p>
+						<input trim [(ngModel)]="connection.PORT" placeholder="{{connection.PORT}}">
+						<span class="bar"></span>
+					</div>
+					<!-- Type selection -->
+					<div class="category btn-category">
+						<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.TYPE.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.TYPE.INFO' | translate }}</p>
+						<ion-select class="theme-text"
+							[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+							[(ngModel)]="connection.type">
+							<ion-select-option value="Websocket">Websocket</ion-select-option>
+							<ion-select-option value="Fhemweb">Fhemweb</ion-select-option>
+						</ion-select>
+					</div>
+					<!-- Basic Auth -->
+					<div class="category">
+						<switch
+							[(ngModel)]="connection.WSS"
+							[padding]="false"
+							[label]="'GENERAL.FHEM_MENU.CONNECTION.SECURE.TITLE' | translate"
+							[subTitle]="'GENERAL.FHEM_MENU.CONNECTION.SECURE.INFO' | translate">
+						</switch>
+					</div>
+					<!-- WSS -->
+					<div class="category">
+						<switch
+							[(ngModel)]="connection.basicAuth"
+							[padding]="false"
+							[label]="'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.TITLE' | translate"
+							[subTitle]="'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.INFO' | translate">
+						</switch>
+					</div>
+					<!-- Password/USER -->
+					<ng-container *ngIf="connection.basicAuth">
+						<form>
+							<!-- USER -->
+							<div class="category">
+								<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.USER.TITLE' | translate }}</p>
+								<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.USER.INFO' | translate }}</p>
+								<input type="text" [(ngModel)]="connection.USER" [ngModelOptions]="{standalone: true}" placeholder="{{connection.USER}}">
+								<span class="bar"></span>
+							</div>
+							<!-- PASSW -->
+							<div class="category">
+								<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.PASSW.TITLE' | translate }}</p>
+								<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.PASSW.INFO' | translate }}</p>
+								<input type="password" [(ngModel)]="connection.PASSW" [ngModelOptions]="{standalone: true}" placeholder="{{connection.PASSW}}" autocomplete="off">
+								<span class="bar"></span>
+							</div>
+						</form>
+					</ng-container>
+				</div>
+
+				<!-- Remove profile -->
+				<div class="settings-block no-border" *ngIf="i !== 0">
+					<div class="category btn-category-round">
+						<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.DELETE.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.DELETE.INFO' | translate }}</p>
+						<button class="btn-round ion-activatable theme-background" (click)="deleteProfile(i)">
+							<ion-icon class="trash" name="trash"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+
+				<!-- Add Profile -->
+				<div class="settings-block no-border">
+					<div class="category btn-category-round">
+						<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.TITLE' | translate }}</p>
+						<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.INFO' | translate }}</p>
+						<button class="add-btn btn-round ion-activatable theme-background" (click)="addProfile()">
+							<span class="line top"></span>
+							<span class="line bottom"></span>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- Save/Cancel -->
+			<div class="settings-block">
+				<div class="category btn-full-category">
+					<button class="save ion-activatable" (click)="saveIPSettings()">
+						{{ 'GENERAL.BUTTONS.SAVE' | translate }}
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<button class="cancel ion-activatable" (click)="cancelIPSettings()">
+						{{ 'GENERAL.BUTTONS.CANCEL' | translate }}
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</popover>

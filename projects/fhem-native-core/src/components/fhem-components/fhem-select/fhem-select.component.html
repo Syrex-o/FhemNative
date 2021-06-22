@@ -1,0 +1,45 @@
+<!-- Fhem Selector -->
+<fhem-component-container 
+	*ngIf="!bool_data_useForVariables"
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}" 
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
+	[minimumWidth]="100"
+	[minimumHeight]="40">
+	<ng-container *ngTemplateOutlet="SELECTOR"></ng-container>
+</fhem-component-container>
+<!-- Variable Selector -->
+<fhem-component-container 
+	*ngIf="bool_data_useForVariables"
+	[specs]="{ID: ID, device: null, reading: null, offline: true}"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="100"
+	[minimumHeight]="40">
+	<ng-container *ngIf="selected !== undefined">
+		<ng-container *ngTemplateOutlet="SELECTOR"></ng-container>
+	</ng-container>
+	<ng-container *ngIf="selected === undefined">
+		<p class="no-variable theme-text">{{ 'COMPONENTS.Select.TRANSLATOR.NO_VARIABLE' | translate }}</p>
+	</ng-container>
+</fhem-component-container>
+
+
+<ng-template #SELECTOR>
+	<div class="select">
+		<selector
+			*ngIf="items.length > 0 || alias.length > 0"
+			[fullHeight]="true"
+			[items]="alias.length > 0 ? alias : items"
+			[searchable]="false"
+			[singleSelection]="true"
+			[(ngModel)]="selected"
+			[borderRadius]="bool_data_customBorder ? 
+				{top_left: data_borderRadiusTopLeft, top_right: data_borderRadiusTopRight, bottom_left: data_borderRadiusBottomLeft, bottom_right: data_borderRadiusBottomRight} : 
+				{top_left: data_borderRadius, top_right: data_borderRadius, bottom_left: data_borderRadius, bottom_right: data_borderRadius}
+			"
+			[borderColor]="style_borderColor"
+			(onValueChange)="changeSelection($event)">
+		</selector>
+	</div>
+</ng-template>

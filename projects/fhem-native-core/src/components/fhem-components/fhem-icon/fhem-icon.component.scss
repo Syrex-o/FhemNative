@@ -1,0 +1,98 @@
+:host{
+	.icon{
+		width: inherit;
+		height: inherit;
+		icon{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			transition: all .3s ease;
+		}
+		&.show-indicator{
+			icon{
+				width: 82%;
+				height: 82%;
+			}
+			// indicator position
+			&.top-right{
+				icon{
+					left: 0;
+					bottom: 0;
+				}
+				.indicator{
+					right: 0;
+					top: 0;
+				}
+			}
+			&.top-left{
+				icon{
+					right: 0;
+					bottom: 0;
+				}
+				.indicator{
+					left: 0;
+					top: 0;
+				}
+			}
+			&.bottom-left{
+				icon{
+					right: 0;
+					top: 0;
+				}
+				.indicator{
+					left: 0;
+					bottom: 0;
+				}
+			}
+			&.bottom-right{
+				icon{
+					left: 0;
+					top: 0;
+				}
+				.indicator{
+					right: 0;
+					bottom: 0;
+				}
+			}
+		}
+		.indicator{
+			position: absolute;
+			border-radius: 10px;
+			text-align: center;
+			line-height: 20px;
+			padding: 8px;
+			font-size: 15px;
+			transition: all .3s ease;
+			opacity: 1;
+		}
+		// indicator is actiaved, but should be hidden based on value ref
+		&.hide-indicator{
+			.indicator{
+				opacity: 0;
+			}
+			icon{
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+			}
+		}
+		// icon should blink based on indicator value
+		&.blink-icon{
+			icon{
+				animation: blink 1s ease-in-out infinite;
+			}
+		}
+	}
+	@keyframes blink{
+		0%{
+			opacity: 1;
+		}
+		50%{
+			opacity: 0;
+		}
+		100%{
+			opacity: 1;
+		}
+	}
+}

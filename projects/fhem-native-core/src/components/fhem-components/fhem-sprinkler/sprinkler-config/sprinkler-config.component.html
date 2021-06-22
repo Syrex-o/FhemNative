@@ -1,0 +1,103 @@
+<picker *ngIf="sprinklers.states?.length > 0"
+	[(ngModel)]="showMenu" [height]="85" 
+	[showConfirmBtn]="false" [cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate" [zIndex]="1001"
+	(onClose)="removeConfig()">
+	<div header>
+	</div>
+	<div body class="page">
+		<h2 class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.TITLE' | translate}} {{config.interval}}</h2>
+		<div class="category">
+			<!-- Start time -->
+			<timepicker
+				[actOnCallback]="true"
+				[label]="'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.START_TIME' | translate"
+				[(ngModel)]="sprinklers.times['interval'+config.interval][0].startTime"
+				(onTimeChange)="changeSprinklerTime(
+					sprinklers.times['interval' + config.interval][0].device, 
+					config.index, 
+					$event, 
+					sprinklers.times['interval'+config.interval][0].duration, 
+					config.interval
+				)">
+			</timepicker>
+		</div>
+		<h2 class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.CYCLE' | translate}}</h2>
+		<div class="naming ion-activatable" (click)="editName()">
+			<span *ngIf="sprinklerColor" class="sprinkler-color" [style.background]="sprinklerColor"></span>
+			<h3 class="sprinkler-name theme-text">{{sprinklers.names[config.index]}}</h3>
+			<ion-icon name="create"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</div>
+		<!-- Duration -->
+		<div class="category">
+			<timepicker 
+				[actOnCallback]="true"
+				[staticHeight]="45"
+				[label]="'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.RUNTIME' | translate"
+				[maxHours]="'4'"
+				[(ngModel)]="sprinklers.times['interval'+config.interval][config.index].duration"
+				(onTimeChange)="changeSprinklerTime(
+					sprinklers.times['interval' + config.interval][config.index].device,
+					config.index, 
+					sprinklers.times['interval'+config.interval][config.index].startTime, 
+					$event,
+					config.interval
+				)">
+			</timepicker>
+		</div>
+		<!-- Weekdays -->
+		<div class="category">
+			<button class="select-btn ion-activatable">
+				<p class="des bigger theme-text" (click)="select.open()">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}}</p>
+				<ion-select class="theme-text"
+					#select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+					multiple="true" [(ngModel)]="sprinklers.times['interval'+config.interval][config.index].days.days"
+					(ionChange)="changeWeekdays($event, config.index, config.interval)">
+					<ion-select-option value="1">{{'GENERAL.DICTIONARY.WEEKDAYS.MONDAY' | translate}}</ion-select-option>
+					<ion-select-option value="2">{{'GENERAL.DICTIONARY.WEEKDAYS.TUESDAY' | translate}}</ion-select-option>
+					<ion-select-option value="3">{{'GENERAL.DICTIONARY.WEEKDAYS.WEDNESDAY' | translate}}</ion-select-option>
+					<ion-select-option value="4">{{'GENERAL.DICTIONARY.WEEKDAYS.THURSDAY' | translate}}</ion-select-option>
+					<ion-select-option value="5">{{'GENERAL.DICTIONARY.WEEKDAYS.FRIDAY' | translate}}</ion-select-option>
+					<ion-select-option value="6">{{'GENERAL.DICTIONARY.WEEKDAYS.SATURDAY' | translate}}</ion-select-option>
+					<ion-select-option value="0">{{'GENERAL.DICTIONARY.WEEKDAYS.SUNDAY' | translate}}</ion-select-option>
+				</ion-select>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+		<div class="summary theme-text">
+			<h4 >
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.SUMMARY' | translate}}
+			</h4>
+			<div class="category">
+				<!-- Standard Runtime -->
+				<div class="runtime-container">
+					<p class="runtime">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.RUNTIME' | translate}}</p>
+					<p class="runtime-detail">
+						{{sprinklers.times['interval'+config.interval][config.index].startTime}} - {{sprinklers.times['interval'+config.interval][config.index].endTime}}
+						({{sprinklers.times['interval'+config.interval][config.index].duration}})
+					</p>
+				</div>
+				<!-- Smart Runtime -->
+				<div class="runtime-container" *ngIf="smartSprinkler && smartSprinkler.readings.enabled.Value">
+					<p class="runtime">Smart {{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.RUNTIME' | translate}}</p>
+					<p class="runtime-detail">
+						{{sprinklers.times['interval'+config.interval][config.index].smartStart}} - {{sprinklers.times['interval'+config.interval][config.index].smartEnd}}
+						({{sprinklers.times['interval'+config.interval][config.index].smartDuration}})
+					</p>
+				</div>
+				<!-- Weekdays -->
+				<div class="runtime-container">
+					<p class="runtime">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}}</p>
+					<!-- Daily -->
+					<p class="runtime-detail" *ngIf="sprinklers.times['interval'+config.interval][config.index].days.allDays === true">
+						{{'GENERAL.DICTIONARY.WEEKDAYS.DAILY' | translate}}
+					</p>
+					<!-- Not Daily -->
+					<p class="runtime-detail" *ngIf="sprinklers.times['interval'+config.interval][config.index].days.allDays === false">
+						<span *ngFor="let day of sprinklers.times['interval'+config.interval][config.index].days.textDays; let j = index">{{ day }}</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</picker>

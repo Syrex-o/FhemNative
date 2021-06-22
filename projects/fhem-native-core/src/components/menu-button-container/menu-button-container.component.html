@@ -1,0 +1,37 @@
+<div *ngIf="settings.modes.roomEdit" class="container" [class.active]="settings.modes.roomEdit" [class.show-create]="create">
+	<div class="btn-container">
+		<button *ngIf="create && settings.allowRoomCreation"
+			class="add-btn btn-round ion-activatable theme-background" (click)="createRoom()">
+			<span class="line top"></span>
+			<span class="line bottom"></span>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<button class="btn-round ion-activatable theme-background" (click)="cancelChanges()">
+			<ion-icon class="close-icon bigger" name="close-circle-outline"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<button class="btn-round ion-activatable theme-background" (click)="saveChanges()">
+			<ion-icon class="save-icon bigger" name="checkmark-circle-outline"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<button class="btn-round ion-activatable theme-background" *ngIf="settings.app.enableUndoRedo" (click)="showUndo = !showUndo">
+			<ion-icon class="change" name="ellipsis-vertical"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+	</div>
+	<div class="undo-manager" *ngIf="showUndo">
+		<span class="arrow"></span>
+		<button class="btn-round ion-activatable theme-background"
+			[disabled]="!undoManager.dataRedoArray.length" (click)="undoManager.redoChange()"
+			[class.disabled]="!undoManager.dataRedoArray.length">
+			<ion-icon class="bigger change" name="arrow-redo"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<button class="btn-round ion-activatable theme-background" 
+			[disabled]="!undoManager.dataUndoArray.length" (click)="undoManager.undoChange()"
+			[class.disabled]="!undoManager.dataUndoArray.length">
+			<ion-icon class="bigger change" name="arrow-undo"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+	</div>
+</div>
