@@ -1,0 +1,46 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}"
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="200"
+	[minimumHeight]="200">
+	<div class="circle-slider" *ngIf="fhemDevice">
+		<svg #Slider xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" [attr.viewBox]="styles.viewBox" preserveAspectRatio="xMinYMin meet">
+			<defs>
+				<filter [attr.id]="'blurFilter' + UID" x="0" y="0" width="100%" height="100%">
+					<feGaussianBlur in="SourceGraphic" [attr.stdDeviation]="styles.blurRadius" />
+					<feComponentTransfer>
+						<feFuncA type="discrete" tableValues="1 1"/>
+					</feComponentTransfer>
+				</filter>
+				<clipPath [attr.id]="'sliderClip' + UID">
+					<path [attr.d]="styles.clipPathStr" stroke="black"></path>
+				</clipPath>
+			</defs>
+			<g [attr.transform]="styles.arcTranslateStr" class="container">
+				<g>
+					<circle cx="0" cy="0" [attr.r]="radius - (data_arcThickness / 2)" [attr.fill]="style_circleBackgroundColor" class="circle-bg" [attr.transform]="styles.translateBg"/>
+				</g>
+				<g class="toClip" [attr.clip-path]="'url(#sliderClip' + UID +')'">
+					<g class="toFilter" [attr.filter]="'url(#blurFilter' + UID +')'">
+						<path [attr.d]="arc.d" [attr.fill]="arc.color" *ngFor="let arc of styles.gradArcs"></path>
+					</g>
+					<!-- ngFor is a quirk fix for webkit rendering issues -->
+					<path [attr.d]="styles.nonSelectedArc.d" [attr.fill]="styles.nonSelectedArc.color" *ngFor="let number of [0,1,2,3,4,5]"></path>
+				</g>
+				<circle [style.opacity]="pinVisible ? 1 : 0"
+					[attr.cx]="styles.thumbPosition.x" [attr.cy]="styles.thumbPosition.y" [attr.r]="pinRadius" 
+					[attr.fill]="style_thumbColor" [attr.stroke-width]="data_thumbBorder / scaleFactor" class="circle">
+				</circle>
+			</g>
+		</svg>
+		<div class="labels" [class.custom-position]="bool_data_customLabelPosition"
+			[ngStyle]="{
+				'top': bool_data_customLabelPosition ? data_labelTopPos : '60%',
+				'left': bool_data_customLabelPosition ? data_labelLeftPos : '50%'
+			}">
+			<p class="text" [ngStyle]="{'font-size.px': data_textSize, 'color': style_thumbColor}">{{value + data_labelExtension}}</p>
+			<p class="subline" [ngStyle]="{'color': style_thumbColor}">{{data_label}}</p>
+		</div>
+	</div>
+</fhem-component-container>
