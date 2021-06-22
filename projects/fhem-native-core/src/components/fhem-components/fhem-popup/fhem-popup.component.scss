@@ -1,0 +1,74 @@
+:host{
+	.popup{
+		width: inherit;
+		height: inherit;
+		cursor: pointer;
+		pointer-events: all;
+		icon{
+			width: 90%;
+			height: 90%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+	.btn-round{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		&.inner{
+			left: 25px;
+		}
+		// neumorph
+		&.NM-IN-standard,
+		&.NM-OUT-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				background: var(--primary) !important;
+				border: var(--neumorph-border);
+			}
+		}
+		// neumorph in
+		&.NM-IN-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				box-shadow: var(--neumorph-in) !important;
+			}
+		}
+		// neumorph out
+		&.NM-OUT-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				box-shadow: var(--neumorph-out) !important;
+			}
+		}
+	}
+	.header-container{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+		&.reduced{
+			width: calc(100% - 50px);
+			left: 50px;
+		}
+	}
+	.content{
+		position: relative;
+		height: 100%;
+		width: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		.container{
+			width: inherit;
+			height: inherit;
+		}
+	}
+}
