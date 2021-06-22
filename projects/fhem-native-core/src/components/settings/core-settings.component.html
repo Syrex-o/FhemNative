@@ -1,0 +1,507 @@
+ <div class="settings-container">
+	 <ion-header class="theme-background">
+		<ion-toolbar>
+			<button class="back-btn ion-activatable" (click)="closeSettings()">
+				<ion-icon class="theme-text" name="arrow-back-outline"></ion-icon>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+			<ion-icon icon="cog" class="cog theme-text"></ion-icon>
+			<ion-title class="theme-text">{{ 'GENERAL.SETTINGS.TITLE' | translate }}</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<div class="content theme-background">
+		<!-- FHEM settings -->
+		<div class="settings-block">
+			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.FHEM.TITLE' | translate }}</p>
+			<!-- Websocket settings -->
+			<div class="category btn-category single">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.WEBSOCKET.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.WEBSOCKET.INFO' | translate }}</p>
+				<div class="btn-container">
+					<button class="btn-round ion-activatable" (click)="toggleConnectionSettings()">
+						<ion-icon name="create"></ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+			<ng-container *ngIf="showExportImportMenu">
+				<!-- Settings Export -->
+				<div class="category btn-category">
+					<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.EXPORT.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.EXPORT.INFO' | translate }}</p>
+					<div class="btn-container">
+						<button class="btn-round ion-activatable" (click)="share()">
+							<ion-icon name="eye-outline"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+				<!-- Settings Import -->
+				<div class="category btn-category single">
+					<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.IMPORT.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.IMPORT.INFO' | translate }}</p>
+					<div class="btn-container">
+						<!-- upload via selection -->
+						<input type="file" class="file-input" (change)="importSettings($event)" #fileUpload>
+						<button class="btn-round ion-activatable" (click)="fileUpload.click()">
+							<ion-icon name="document-outline"></ion-icon>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+		<!-- App settings -->
+		<div class="settings-block">
+			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.APP.TITLE' | translate }}</p>
+			<!-- App Theme -->
+			<div class="category btn-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.APP.THEME.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.APP.THEME.INFO' | translate }}</p>
+				<ion-select class="theme-text"
+					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+					[(ngModel)]="settings.app.theme" (ionChange)="changeAppTheme($event)">
+					<ion-select-option value="dark">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.DARK' | translate }}</ion-select-option>
+					<ion-select-option value="dark-alternative">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.DARK_ALTERNATIVE' | translate }}</ion-select-option>
+					<ion-select-option value="bright">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.BRIGHT' | translate }}</ion-select-option>
+					<ion-select-option *ngIf="showCustomThemeOption" value="custom">{{ 'GENERAL.SETTINGS.APP.THEME.OPTIONS.CUSTOM' | translate }}</ion-select-option>
+				</ion-select>
+			</div>
+			<!-- Color Theme -->
+			<div class="category btn-category single" *ngIf="showCustomThemeOption && settings.app.theme === 'custom'">
+				<p class="label theme-text">Custom {{ 'GENERAL.SETTINGS.APP.THEME.TITLE' | translate }}</p>
+				<p class="des theme-des">Custom {{ 'GENERAL.SETTINGS.APP.THEME.INFO' | translate }}</p>
+				<div class="btn-container">
+					<button class="btn-round ion-activatable" (click)="changeMenuMode('customAppTheme')">
+						<ion-icon name="create"></ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+			<!-- Language -->
+			<div class="category btn-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.APP.LANGUAGE.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.APP.LANGUAGE.INFO' | translate }}</p>
+				<ion-select class="theme-text"
+					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+					[(ngModel)]="settings.app.language" (ionChange)="changeAppSettingFromIon('language', $event); translate.use(settings.app.language);">
+					<ion-select-option value="en">{{ 'GENERAL.SETTINGS.APP.LANGUAGE.OPTIONS.EN' | translate }}</ion-select-option>
+					<ion-select-option value="de">{{ 'GENERAL.SETTINGS.APP.LANGUAGE.OPTIONS.DE' | translate }}</ion-select-option>
+				</ion-select>
+			</div>
+			<!-- Hide StatusBar container -->
+			<ng-content select="[StatusBar]"></ng-content>
+			<!-- Edit Rooms -->
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.enableEditing"
+					[label]="'GENERAL.SETTINGS.APP.EDITING.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.APP.EDITING.INFO' | translate"
+					(onToggle)="changeAppSetting('enableEditing', $event)">
+				</switch>
+			</div>
+			<!-- Undo/Redo -->
+			<div class="category switch-category" *ngIf="showUndoRedoOption">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.enableUndoRedo"
+					[label]="'GENERAL.SETTINGS.APP.UNDO_REDO.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.APP.UNDO_REDO.INFO' | translate"
+					(onToggle)="changeAppSetting('enableUndoRedo', $event)">
+				</switch>
+			</div>
+			<!-- Toast Messages -->
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.showToastMessages"
+					[label]="'GENERAL.SETTINGS.APP.TOAST.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.APP.TOAST.INFO' | translate"
+					(onToggle)="changeAppSetting('showToastMessages', $event)">
+				</switch>
+			</div>
+			<!-- Log Export -->
+			<div class="category btn-category" *ngIf="showLoggerOption">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.APP.LOG.EXPORT.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.APP.LOG.EXPORT.INFO' | translate }}</p>
+				<div class="btn-container">
+					<button class="btn-round ion-activatable" (click)="showLog()">
+						<ion-icon name="eye-outline"></ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- Component settings -->
+		<!-- Inserted as placeholder for mobile devices only -->
+		<ng-content select="[NativeActionsPlaceholder]"></ng-content>
+		<!-- Changelog -->
+		<div class="settings-block" *ngIf="showChangelogOption">
+			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.CHANGELOG.TITLE' | translate }}</p>
+			<div class="category btn-full-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.CHANGELOG.LOG.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.CHANGELOG.LOG.INFO'| translate }}</p>
+				<button (click)="toggleChangelog()" class="ion-activatable">
+					{{ 'GENERAL.SETTINGS.CHANGELOG.LOG.BUTTON' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+		<!-- Support -->
+		<div class="settings-block" *ngIf="showSupportOptions">
+			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.SUPPORT.TITLE' | translate }}</p>
+			<div class="category btn-full-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.SUPPORT.DONATE.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.SUPPORT.DONATE.INFO'| translate }}</p>
+				<button (click)="support('https://paypal.me/pools/c/8gwg2amXDT')" class="ion-activatable">
+					{{ 'GENERAL.SETTINGS.SUPPORT.BUTTON' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+			<div class="category btn-full-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.SUPPORT.HELP.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.SUPPORT.HELP.INFO'| translate }}</p>
+				<button (click)="support('https://forum.fhem.de/index.php/board,102.0.html')" class="ion-activatable">
+					{{ 'GENERAL.SETTINGS.SUPPORT.BUTTON' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+		<!-- Info and Advanced Options -->
+		<div class="settings-block" *ngIf="showAdvancedOptions">
+			<div class="category btn-full-size">
+				<button class="no-height ion-activatable" (click)="changeMenuMode('advanced')">
+					<p class="label theme-text">{{ 'GENERAL.SETTINGS.ADVANCED.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.SETTINGS.ADVANCED.INFO'| translate }}</p>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+		<!-- Privacy etc -->
+		<div class="settings-block no-border" *ngIf="showAdvancedOptions">
+			<!-- Website -->
+			<div class="category no-btn ion-activatable" (click)="onWebsiteClick.emit(true)">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.INFO.WEBSITE' | translate }}</p>
+				<ion-icon class="theme-text" name="chevron-forward-outline"></ion-icon>
+				<ion-ripple-effect></ion-ripple-effect>
+			</div>
+			<!-- Privacy -->
+			<div class="category no-btn ion-activatable" (click)="onPrivacyClick.emit(true)">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.INFO.PRIVACY' | translate }}</p>
+				<ion-icon class="theme-text" name="chevron-forward-outline"></ion-icon>
+				<ion-ripple-effect></ion-ripple-effect>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Custom Color Theme -->
+<picker
+	[(ngModel)]="menus.customAppTheme"
+	[height]="100"
+	[showConfirmBtn]="false"
+	[cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate"
+	[zIndex]="1001">
+	<div header>
+		<h1 class="theme-text">Custom Theme</h1>
+	</div>
+	<div body class="page">
+		<div class="background">
+			<div class="block" [style.background]="settings.app.customTheme.primary">
+				<div class="change-color-container">
+					<span class="selected-color" [style.background]="settings.app.customTheme.primary"></span>
+					<p class="label">Primary:</p>
+					<selector
+						class="select"
+						[items]="settings.componentColors"
+						[addNewItems]="true"
+						[(ngModel)]="settings.app.customTheme.primary"
+						(onValueChange)="changeCustomColor('primary', $event)">
+						<ng-template let-item="item" let-index="index">
+							<span class="color" [style.background]="item"></span>
+							<span class="label color-label">{{ item }}</span>
+						</ng-template>
+					</selector>
+				</div>
+				<div class="block" [style.background]="settings.app.customTheme.secondary">
+					<div class="change-color-container">
+						<span class="selected-color" [style.background]="settings.app.customTheme.secondary"></span>
+						<p class="label">Secondary:</p>
+						<selector
+							class="select"
+							[items]="settings.componentColors"
+							[addNewItems]="true"
+							[(ngModel)]="settings.app.customTheme.secondary"
+							(onValueChange)="changeCustomColor('secondary', $event)">
+							<ng-template let-item="item" let-index="index">
+								<span class="color" [style.background]="item"></span>
+								<span class="label color-label">{{ item }}</span>
+							</ng-template>
+						</selector>
+					</div>
+					<div class="block transparent">
+						<div class="change-color-container">
+							<span class="selected-color" [style.background]="settings.app.customTheme.text"></span>
+							<p [style.color]="settings.app.customTheme.text" class="label">Text:</p>
+							<selector
+								class="select"
+								[items]="settings.componentColors"
+								[addNewItems]="true"
+								[(ngModel)]="settings.app.customTheme.text"
+								(onValueChange)="changeCustomColor('text', $event)">
+								<ng-template let-item="item" let-index="index">
+									<span class="color" [style.background]="item"></span>
+									<span class="label color-label">{{ item }}</span>
+								</ng-template>
+							</selector>
+						</div>
+						<div class="block transparent">
+							<div class="change-color-container">
+								<span class="selected-color" [style.background]="settings.app.customTheme.des"></span>
+								<p [style.color]="settings.app.customTheme.des" class="label">Description:</p>
+								<selector
+									class="select"
+									[items]="settings.componentColors"
+									[addNewItems]="true"
+									[(ngModel)]="settings.app.customTheme.des"
+									(onValueChange)="changeCustomColor('text', $event)">
+									<ng-template let-item="item" let-index="index">
+										<span class="color" [style.background]="item"></span>
+										<span class="label color-label">{{ item }}</span>
+									</ng-template>
+								</selector>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</picker>
+
+<!-- Changelog -->
+<picker
+	[(ngModel)]="menus.changeLog"
+	[height]="100"
+	[showConfirmBtn]="false"
+	[cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate"
+	[zIndex]="1000001">
+	<div header *ngIf="menus.changeLog">
+		<h1 newsSlide class="theme-text">{{ 'GENERAL.SETTINGS.CHANGELOG.PICKER.TITLE' | translate }}</h1>
+	</div>
+	<div body class="page content full-height changelog" *ngIf="changelog">
+		<div class="settings-block">
+			<div class="category btn-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.CHANGELOG.SELECTOR.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.CHANGELOG.SELECTOR.INFO' | translate }}</p>
+				<ion-select class="theme-text"
+					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+					[(ngModel)]="changelog.selectedVersion">
+					<ion-select-option *ngFor="let item of changelog.VERSIONS; let i = index;" [value]="i">{{item.VERSION}}</ion-select-option>
+				</ion-select>
+			</div>
+		</div>
+		<div class="settings-block">
+			<p class="block-label theme-text">
+				{{changelog.VERSIONS[changelog.selectedVersion].DATE}} App Version: {{changelog.VERSIONS[changelog.selectedVersion].VERSION}}
+			</p>
+			<div class="category" *ngFor="let change of changelog.VERSIONS[changelog.selectedVersion].CHANGES">
+				<p class="label theme-text">{{change.TYPE}}:</p>
+				<p class="des theme-des" [ngClass]="change.TYPE">{{change.CHANGE}}</p>
+			</div>
+		</div>
+	</div>
+</picker>
+
+<!-- Advanced Options -->
+<picker
+	[(ngModel)]="menus.advanced"
+	[height]="100"
+	[showConfirmBtn]="false"
+	[cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate"
+	[zIndex]="1000001">
+	<div header *ngIf="menus.advanced">
+		<h1 newsSlide class="theme-text">{{ 'GENERAL.SETTINGS.ADVANCED.TITLE' | translate }}</h1>
+	</div>
+	<div body class="page content full-height">
+		<!-- FHEM settings -->
+		<div class="settings-block" *ngIf="showKeepConnectionOption">
+			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.FHEM.TITLE' | translate }}</p>
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.keepConnected"
+					[label]="'GENERAL.SETTINGS.FHEM.ALWAYS_ON.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.FHEM.ALWAYS_ON.INFO' | translate"
+					(onToggle)="changeAppSetting('keepConnected', $event)">
+				</switch>
+			</div>
+			<!-- FhemNative Config in FHEM -->
+			<div class="category btn-full-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.INFO' | translate }}</p>
+				<button (click)="toggleSharedConfig()" class="ion-activatable">
+					{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.BUTTON' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+			<!-- Generate Rooms -->
+			<div class="category btn-full-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.AUTO_ROOMS.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_ROOMS.INFO' | translate }}</p>
+				<button (click)="generateRooms()" class="ion-activatable">
+					{{ 'GENERAL.SETTINGS.FHEM.AUTO_ROOMS.BUTTON' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+			<!-- Generate Devices -->
+			<div class="category btn-full-category">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.INFO' | translate }}</p>
+				<button (click)="generateDevices()" class="ion-activatable">
+					{{ 'GENERAL.SETTINGS.FHEM.AUTO_DEVICES.BUTTON' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+		<!-- App settings -->
+		<div class="settings-block">
+			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.APP.TITLE' | translate }}</p>
+			<!-- FhemNative variables -->
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.enableVariables"
+					[label]="'GENERAL.SETTINGS.FHEM.VARIABLES.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.FHEM.VARIABLES.INFO' | translate"
+					(onToggle)="changeAppSetting('enableVariables', $event)">
+				</switch>
+			</div>
+			<!-- Task Page -->
+			<div class="category switch-category" *ngIf="showTasksOption">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.showTasks"
+					[label]="'GENERAL.SETTINGS.APP.TASKS.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.APP.TASKS.INFO' | translate"
+					(onToggle)="changeAppSetting('showTasks', $event); toggleTasks($event);">
+				</switch>
+			</div>
+			<!-- Grid Enablement -->
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.grid.enabled"
+					[label]="'GENERAL.SETTINGS.COMPONENTS.GRID.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.COMPONENTS.GRID.INFO' | translate"
+					(onToggle)="changeAppSettingJSON('grid', 'enabled', $event)">
+				</switch>
+			</div>
+			<!-- Grid Size -->
+			<div class="category btn-category" *ngIf="settings.app.grid.enabled">
+				<p class="label theme-text">{{ 'GENERAL.SETTINGS.COMPONENTS.GRID_SIZE.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.SETTINGS.COMPONENTS.GRID_SIZE.INFO' | translate }}</p>
+				<ion-select class="theme-text"
+					[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+					[(ngModel)]="settings.app.grid.gridSize" (ionChange)="changeAppSettingJSONFromIon('grid', 'gridSize', $event)">
+					<ion-select-option [value]="5">5</ion-select-option>
+					<ion-select-option [value]="10">10</ion-select-option>
+					<ion-select-option [value]="20">20</ion-select-option>
+					<ion-select-option [value]="30">30</ion-select-option>
+					<ion-select-option [value]="40">40</ion-select-option>
+				</ion-select>
+			</div>
+			<!-- Window Resize -->
+			<!-- Inserted as placeholder for mobile devices only -->
+			<ng-content select="[ElectronWindowResizePlaceholder]"></ng-content>
+		</div>
+		<!-- Reset all settings -->
+		<div class="settings-block">
+			<p class="block-label theme-text">{{ 'GENERAL.RESET.TITLE' | translate }}</p>
+			<!-- Reset btn -->
+			<div class="category btn-full-category">
+				<p class="label theme-text">{{ 'GENERAL.RESET.REVERT.TITLE' | translate }}</p>
+				<p class="des theme-des">{{ 'GENERAL.RESET.REVERT.INFO' | translate }}</p>
+				<button (click)="resetSettings()" class="ion-activatable">
+					{{ 'GENERAL.RESET.REVERT.BUTTON' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+	</div>
+</picker>
+
+<!-- Shared FhemNative Config picker menu -->
+<picker
+	*ngIf="settings.app.sharedConfig"
+	[(ngModel)]="menus.sharedConfig"
+	[height]="100"
+	[showConfirmBtn]="false"
+	[showCancelBtn]="false"
+	[backdropDismiss]="false"
+	(onClose)="revertSharedConfigSettings()"
+	[zIndex]="1000001">
+	<div header>
+		<h1 class="theme-text">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.HEADER' | translate }}</h1>
+	</div>
+	<div body class="page content full-height">
+		<div class="settings-block">
+			<div class="category switch-category">
+				<switch
+					[padding]="false"
+					[(ngModel)]="settings.app.sharedConfig.enable"
+					[label]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.SWITCH.TITLE' | translate"
+					[subTitle]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.SWITCH.INFO' | translate"
+					(onToggle)="changeAppSettingJSON('sharedConfig', 'enable', $event)">
+				</switch>
+			</div>
+			<ng-container *ngIf="settings.app.sharedConfig.enable">
+				<div class="category btn-full-category">
+					<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.DEVICE.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.DEVICE.INFO' | translate }}</p>
+					<div class="input reduced">
+						<input type="text" [(ngModel)]="settings.app.sharedConfig.device">
+						<span class="bar"></span>
+						<ion-icon 
+							[class.check]="fhem.sharedConfigPresence.devicePresent"  
+							[name]="fhem.sharedConfigPresence.devicePresent ? 'checkmark-circle-outline' : 'close-circle-outline' ">	
+						</ion-icon>
+					</div>
+				</div>
+				<div class="category btn-full-category">
+					<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.READING.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.READING.INFO' | translate }}</p>
+					<div class="input reduced">
+						<input type="text" [(ngModel)]="settings.app.sharedConfig.reading">
+						<span class="bar"></span>
+						<ion-icon 
+							[class.check]="fhem.sharedConfigPresence.readingPresent"  
+							[name]="fhem.sharedConfigPresence.readingPresent ? 'checkmark-circle-outline' : 'close-circle-outline' ">	
+						</ion-icon>
+					</div>
+				</div>
+				<div class="category btn-full-category" *ngIf="fhem.sharedConfigPresence.devicePresent && fhem.sharedConfigPresence.readingPresent">
+					<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.TITLE' | translate }}</p>
+					<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.INFO' | translate }}</p>
+					<button (click)="transferSharedConfig()" class="ion-activatable">
+						{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.TRANSFER.BUTTON' | translate }}
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+				<div class="category btn-full-category center">
+					<button (click)="testSharedConfig()" class="ion-activatable">
+						{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.BUTTON' | translate }}
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</ng-container>
+			<div class="category btn-full-category center">
+				<button class="green ion-activatable" (click)="saveSharedConfig()">
+					{{ 'GENERAL.BUTTONS.SAVE' | translate }}
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+	</div>
+</picker>
