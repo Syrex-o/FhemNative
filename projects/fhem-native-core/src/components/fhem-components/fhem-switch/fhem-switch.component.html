@@ -1,0 +1,25 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}"
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
+	[minimumWidth]="100"
+	[minimumHeight]="45">
+	<div class="switch">
+		<switch
+			[(ngModel)]="toggleState"
+			(onToggle)="toggle($event)"
+			[actOnCallback]="true"
+			[fullHeight]="true"
+			[switchStyle]="arr_data_buttonStyle[0]"
+			[label]="bool_data_customLabels && data_label && data_label !== '' ? data_label : data_device"
+			[subTitle]="bool_data_customLabels && data_subLabel && data_subLabel !== '' ? data_subLabel : ''"
+			[showBorder]="bool_data_showBorder"
+			[borderColor]="style_borderColor"
+			[colorOn]="style_colorOn"
+			[colorOff]="style_colorOff"
+			[thumbColorOn]="style_thumbColorOn"
+			[thumbColorOff]="style_thumbColorOff">
+		</switch>
+	</div>
+</fhem-component-container>
