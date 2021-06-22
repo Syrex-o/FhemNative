@@ -1,0 +1,207 @@
+:host{
+	.color-picker{
+		width: inherit;
+		height: inherit;
+		cursor: pointer;
+		pointer-events: all;
+		// neumorph
+		&.NM{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				box-shadow: var(--neumorph-out) !important;
+				border: var(--neumorph-border);
+			}
+		}
+	}
+	.content{
+		position: relative;
+		height: 100%;
+		width: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		.color-selector{
+			overflow: hidden;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0%;
+			left: 0%;
+			&.show-fav-menu{
+				width: 95%;
+				height: 90%;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			.wheel-container{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 50%;
+				.outer-circle{
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					width: 100%;
+					height: 100%;
+					border-radius: 50%;
+					cursor: pointer;
+					.overlay{
+						width: 90%;
+						height: 90%;
+						top: 5%;
+						left: 5%;
+					}
+					.rotator{
+						width: 100%;
+						height: 100%;
+						position: absolute;
+						pointer-events: none;
+						&.rotator-outer{
+							&.animate{
+								transition: all .2s ease;
+							}
+						}
+					}
+				}
+				.knob-outer,
+				.knob-inner-move{
+					border-radius: 50%;
+					position: absolute;
+					width: 7%;
+					height: 7%;
+					top: -1.2%;
+					left: 46.5%;
+					background: #fff;
+					border: 1px solid #ddd;
+					cursor: pointer;
+				}
+				.overlay{
+					display: block;
+					position: absolute;
+					border-radius: 50%;
+				}
+				.inner-circle{
+					position: absolute;
+					width: 82%;
+					height: 82%;
+					border-radius: 50%;
+					top: 50%;
+					left: 50%;
+					border-radius: 50%;
+					transform: translate3d(-50%,-50%,0);
+					.knob{
+						position: absolute;
+						// width: 35px;
+						// height: 35px;
+						width: 15%;
+						height: 15%;
+						top: 50%;
+						left: 50%;
+						transform: translate3d(-50%,-50%,0);
+						.knob-inner-move{
+							width: 100%;
+							height: 100%;
+							left: 0;
+							top: 0;
+							&.animate{
+								transition: all .2s ease;
+							}
+						}
+					}
+					.canvas{
+						position: absolute;
+						pointer-events: none;
+						left: 50%;
+						top: 50%;
+						width: 100%;
+						height: 100%;
+						transform: translate(-50%, -50%);
+					}
+				}
+			}
+		}
+		.favs{
+			position: absolute;
+			width: 100%;
+			height: 45px;
+			pointer-events: none;
+			top: 0;
+			.btn-round{
+				position: absolute;
+				pointer-events: all;
+				ion-icon{
+					color: var(--btn-blue);
+				}
+				&.left-btn{
+					left: 0;
+				}
+				&.right-btn{
+					right: 0;
+				}
+			}
+		}
+		&.fav-content{
+			padding: 8px;
+			.list-item{
+				position: relative;
+				width: 100%;
+				height: 45px;
+				border-bottom: 1px solid #565656;
+				.list-btn{
+					position: absolute;
+					height: 100%;
+					background: transparent;
+					&.first{
+						width: calc(100% - 80px);
+						left: 0;
+						text-align: left;
+						span{
+							position: absolute;
+							top: 50%;
+							transform: translateY(-50%);
+							&.color-item{
+								left: 0;
+								width: 35px;
+								height: 35px;
+								border-radius: 50%;
+							}
+							&.color-label{
+								left: 50px;
+								font-size: 14px;
+							}
+						}
+					}
+					&.second{
+						width: 80px;
+						right: 0;
+						ion-icon{
+							color: var(--btn-red);
+							font-size: 30px;
+						}
+					}
+				}
+			}
+		}
+		// neumorph
+		&.NM{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				.btn-round{
+					box-shadow: var(--neumorph-in) !important;
+					border: var(--neumorph-border);
+				}
+				.wheel-container,
+				.inner-circle{
+					box-shadow: var(--neumorph-out) !important;
+					border: var(--neumorph-border);
+				}
+			}
+		}
+	}
+}
