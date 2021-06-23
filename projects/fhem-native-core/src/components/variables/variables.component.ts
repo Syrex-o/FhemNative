@@ -102,7 +102,7 @@ export class VariablesComponent implements OnInit {
 	// save variable creation/config
 	save(): void{
 		if(this.valueChecker()){
-			if(this.selectedVariable !== null){
+			if(this.selectedVariable !== -1){
 				this.variable.changeVariable(this.selectedVariable, this.variableInfo).then(()=>{
 					this.menus.createVariable = false;
 				});

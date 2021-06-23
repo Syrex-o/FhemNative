@@ -60,7 +60,7 @@
 			(onClose)="closeMenu()">
 			<div header>
 				<h1 class="theme-text">
-					{{selectedVariable !== null ? ( 'GENERAL.VARIABLES.EDIT_VARIABLE.TITLE' | translate ) : ( 'GENERAL.VARIABLES.CREATE_VARIABLE.TITLE' | translate )}}
+					{{selectedVariable != -1 ? ( 'GENERAL.VARIABLES.EDIT_VARIABLE.TITLE' | translate ) : ( 'GENERAL.VARIABLES.CREATE_VARIABLE.TITLE' | translate )}}
 				</h1>
 			</div>
 			<div body class="content full-height">
