@@ -142,6 +142,7 @@
 					<div class="config-data toggle" [class.hide]="hideConfig(data.attr)">
 						<switch
 							[padding]="false"
+							[showBorder]="true"
 							[(ngModel)]="data.value"
 							[label]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.name' | translate"
 							[subTitle]="'COMPONENTS.'+[component.name]+'.INPUTS.'+[data.attr]+'.info' | translate">
@@ -165,7 +166,8 @@
 					$implicit: component.name, 
 					inputs: component.attributes.attr_icon, 
 					selection: settings.icons, 
-					bind: 'icon' 
+					bind: 'icon',
+					search: true
 				} as input">
 				<ng-container *ngTemplateOutlet="COMP_INPUT_SELECT; context: input"></ng-container>
 			</ng-container>
@@ -174,6 +176,7 @@
 					inputs: component.attributes.attr_arr_icon, 
 					selection: settings.icons, 
 					bind: 'icon',
+					search: true,
 					multiple: true
 				} as input">
 				<ng-container *ngTemplateOutlet="COMP_INPUT_SELECT; context: input"></ng-container>
