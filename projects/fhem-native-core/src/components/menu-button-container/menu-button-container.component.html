@@ -19,8 +19,8 @@
 			<ion-ripple-effect></ion-ripple-effect>
 		</button>
 	</div>
-	<div class="undo-manager" *ngIf="showUndo">
-		<span class="arrow"></span>
+	<div class="undo-manager theme-background" *ngIf="showUndo" @ShowHide>
+		<span class="arrow theme-background"></span>
 		<button class="btn-round ion-activatable theme-background"
 			[disabled]="!undoManager.dataRedoArray.length" (click)="undoManager.redoChange()"
 			[class.disabled]="!undoManager.dataRedoArray.length">

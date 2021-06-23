@@ -7,10 +7,14 @@ import { SettingsService } from '../../services/settings.service';
 import { UndoRedoService } from '../../services/undo-redo.service';
 import { ComponentLoaderService } from '../../services/component-loader.service';
 
+// Animations
+import { ShowHide } from '../../animations/animations';
+
 @Component({
 	selector: 'menu-button-container',
 	templateUrl: './menu-button-container.component.html',
 	styleUrls: ['./menu-button-container.component.scss'],
+	animations: [ ShowHide ]
 })
 export class MenuButtonContainerComponent {
 	// Input for creation Menu
