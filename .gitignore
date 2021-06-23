@@ -1,20 +1,70 @@
-node_modules
-release
-dist
-www
-.idea
-.temp
-.sass-cache
-<%= appPath %>/bower_components
-coverage
-platforms
-platforms/android
-platforms/ios
-plugins
-*.swp
-*.swo
-*.log
-*.DS_Store
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-app/scripts/configuration.js
-fhemnative-key.keystore
+# compiled output
+/dist
+/tmp
+/out-tsc
+/android
+/release
+/.gradle
+# Only exists if Bazel was run
+/bazel-out
+package-lock.json
+
+# dependencies
+/node_modules
+/resources
+/projects/fhem-native-mobile/node_modules
+/projects/fhem-native-mobile/.gradle
+/projects/fhem-native-mobile/android
+/projects/fhem-native-mobile/ios
+/projects/fhem-native-mobile/e2e
+
+/projects/smart-sprinkler
+/projects/fhem-native-website
+/projects/smart-sprinkler-website
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.editconfig
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+/.firebase
+
+# Firebase
+.firebaserc
+firebase.json
+
+# Electron
+electron-main.js
+electron-main.js.map
