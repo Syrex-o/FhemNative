@@ -2,7 +2,7 @@
 	"name": "FhemNative",
 	"version": "3.0.0",
 	"author": "Syrex-o",
-	"homepage": "https://fhemnative.de",
+	"homepage": "./",
 	"description": "Cross Platform FHEM-HomeAutomation Frontend",
 	"main": "electron-main.js",
 	"scripts": {
@@ -21,6 +21,11 @@
 
 		"build:app:prod:android:fhem-native": "ionic cap build android --project='FhemNativeMobile' --configuration production",
 		"build:app:prod:android:smart-sprinkler": "ionic cap build android --project='SmartSprinkler' --configuration production",
+
+		"build:electron:prod": "ng build --project='FhemNativeDesktop' --configuration production && npm run electron:serve-tsc",
+		"build:electron:prod:windows": "npm run build:electron:prod && electron-builder build --windows",
+		"build:electron:prod:linux": "npm run build:electron:prod && electron-builder build --linux",
+		"build:electron:prod:mac": "npm run build:electron:prod && electron-builder build --mac",
 
 		"serve:web:fhem-native-website": "ng run FhemNativeWebsite:serve --host=localhost --port=8100 --configuration development",
 		"serve:web:smart-sprinkler-website": "ng run SmartSprinklerWebsite:serve --host=localhost --port=8100 --configuration development",
