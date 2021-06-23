@@ -40,6 +40,17 @@ function createWindow(): BrowserWindow {
 			protocol: 'file:',
 			slashes: true
 		}));
+
+		// fix reload
+		win.webContents.on('did-fail-load', () => {
+			if(win){
+				win.loadURL(url.format({
+					pathname: path.join(__dirname, 'dist/FhemNativeDesktop/index.html'),
+					protocol: 'file:',
+					slashes: true
+				}));
+			}
+		});
 	}
 
 	// Emitted when the window is closed.
