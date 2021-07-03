@@ -226,6 +226,10 @@ export class FhemService {
 				if(!this.listenDevices.find(x=> x.id === 'SHARED_CONFIG_DEVICE')){
 					this.listenDevices.push({id: 'SHARED_CONFIG_DEVICE', device: this.settings.app.sharedConfig.device, handler: null});
 				}
+				// initially send request to get shared config
+				this.getDevice('SHARED_CONFIG_DEVICE', this.settings.app.sharedConfig.device, false, true).then((device: FhemDevice|null)=>{
+					this.deviceUpdateSub.next(device);
+				});
 			}
 			this.toast.addToast(
 				this.translate.instant('GENERAL.CONFIG.TITLE'),
@@ -255,7 +259,11 @@ export class FhemService {
 	private connectionErrorHandler(e: any): void {
 		// inform logger
 		this.logger.error('An error occured during the connection process');
-		this.logger.error(e);
+		if(e.target.url){
+			this.logger.error('Connection for URL: ' + e.target.url + ' could not be established. Please check the URL carefully.');
+		}else{
+			this.logger.error('Unknown error ' + e + ' Please check the Dev-Tools, to get more information.');		
+		}
 	}
 
 	// disconnect
@@ -416,29 +424,34 @@ export class FhemService {
 	// dirty allows to send fhem device list command even, if device is already present
 	public getDevice(id: string, deviceName: string, callback?: any, dirty?: boolean): Promise<FhemDevice|null>{
 		return new Promise((resolve) => {
-			if(!this.connected){
-				let gotReply: boolean = false;
-				// wait for connection
-				const sub = this.connectedSub.subscribe((state: boolean)=>{
-					gotReply = true;
-					if(state){
-						sub.unsubscribe();
-						this.listen(id, deviceName, callback, dirty).then((device: FhemDevice|null)=> resolve(device));
-					}else{
-						if(this.noReconnect){
+			// check device presence
+			if(deviceName && deviceName !== ''){
+				if(!this.connected){
+					let gotReply: boolean = false;
+					// wait for connection
+					const sub = this.connectedSub.subscribe((state: boolean)=>{
+						gotReply = true;
+						if(state){
+							sub.unsubscribe();
+							this.listen(id, deviceName, callback, dirty).then((device: FhemDevice|null)=> resolve(device));
+						}else{
+							if(this.noReconnect){
+								sub.unsubscribe();
+								resolve(null);
+							}
+						}
+					});
+					setTimeout(()=>{
+						if(!gotReply){
 							sub.unsubscribe();
 							resolve(null);
 						}
-					}
-				});
-				setTimeout(()=>{
-					if(!gotReply){
-						sub.unsubscribe();
-						resolve(null);
-					}
-				}, 5000);
+					}, 5000);
+				}else{
+					this.listen(id, deviceName, callback, dirty).then((device: FhemDevice|null)=> resolve(device));
+				}
 			}else{
-				this.listen(id, deviceName, callback, dirty).then((device: FhemDevice|null)=> resolve(device));
+				resolve(null);
 			}
 		});
 	}
