@@ -145,16 +145,6 @@ export class RoomComponent implements OnDestroy {
 		}
 	}
 
-	// edit room
-	edit(): void{
-		// tell the indicator, that editing was triggered from room with ID
-		this.settings.modeSub.next({ roomEdit: true, roomEditFrom: this.structure.currentRoom.ID });
-		// trigger grouper
-		setTimeout(()=>{
-			this.selectComponent.groupHandler.next(true);
-		});
-	}
-
 	createComponentMenu(): void{
 		this.componentLoader.createSingleComponent('CreateEditComponent', this.container, {
 			container: this.componentLoader.currentContainer,
@@ -190,7 +180,10 @@ export class RoomComponent implements OnDestroy {
 
 		// detect switch room while editing
 		if(this.settings.modes.roomEdit){
-			this.edit();
+			// tell the indicator, that editing was triggered from room with ID
+			this.settings.modeSub.next({ roomEdit: true, roomEditFrom: this.structure.currentRoom.ID });
+			// trigger grouper
+			setTimeout(()=>{ this.selectComponent.groupHandler.next(true); });
 		}
 		// run change detection, after everything should be positioned
 		this.cdr.detectChanges();
