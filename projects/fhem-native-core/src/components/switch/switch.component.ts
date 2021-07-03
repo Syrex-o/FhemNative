@@ -21,6 +21,8 @@ export class SwitchComponent {
 	@Input() subTitle!: string;
 	// Show/hide border
 	@Input() showBorder: boolean = false;
+	// Allow multi line/no line break...
+	@Input() allowLinebreak: boolean = false;
 	// enable/disable padding
 	@Input() padding: boolean = true;
 	// full height enabling

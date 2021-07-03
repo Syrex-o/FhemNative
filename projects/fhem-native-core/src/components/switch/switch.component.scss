@@ -1,4 +1,5 @@
 :host {
+	display: block;
 	.switch-container {
 		position: relative;
 		width: 100%;
@@ -246,6 +247,27 @@
 			&.bright{
 				.toggle{
 					box-shadow: var(--neumorph-small-out-bright) !important;
+				}
+			}
+		}
+		// allow line breakes
+		&.allow-break{
+			button,
+			.label-container{
+				display: inline;
+			}
+			.label-container{
+				position: relative;
+				p{
+					top: 0;
+					position: relative;
+					transform: translateY(0px);
+					width: calc(100% - 70px);
+				}
+				.subtitle{
+					white-space: initial;
+					line-height: 15px;
+					margin-top: 2px;
 				}
 			}
 		}

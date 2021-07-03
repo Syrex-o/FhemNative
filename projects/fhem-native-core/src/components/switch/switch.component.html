@@ -1,5 +1,6 @@
 <div class="switch-container {{settings.app.theme}}" 
 	[ngClass]="switchStyle" 
+	[class.allow-break]="allowLinebreak"
 	[ngStyle]="{'border-bottom': showBorder ? ('1px solid ' + borderColor) : '0px'}" 
 	[class.padding]="padding" 
 	[class.full-height]="fullHeight">
