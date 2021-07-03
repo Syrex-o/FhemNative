@@ -17,10 +17,14 @@ import { SettingsService } from '../../../../services/settings.service';
 // Interfaces
 import { FhemDevice } from '../../../../interfaces/interfaces.type';
 
+// Animations
+import { ShowHide } from '../../../../animations/animations';
+
 @Component({
 	selector: 'sprinkler-smart',
 	templateUrl: './sprinkler-smart.component.html',
-	styleUrls: ['./sprinkler-smart.component.scss']
+	styleUrls: ['./sprinkler-smart.component.scss'],
+	animations: [ ShowHide ]
 })
 
 export class SprinklerSmartComponent {

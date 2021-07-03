@@ -86,7 +86,7 @@
 	<div header *ngIf="smartSprinklerMenu">
 		<h1 newsSlide class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.TITLE' | translate}}</h1>
 	</div>
-	<div body class="page">
+	<div body class="page" *ngIf="smartSprinklerMenu">
 		<sprinkler-smart [smartSprinkler]="smartSprinkler" [sprinklers]="sprinklers"></sprinkler-smart>
 	</div>
 </popover>

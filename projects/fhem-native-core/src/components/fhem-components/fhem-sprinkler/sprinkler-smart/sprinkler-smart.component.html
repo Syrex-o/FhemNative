@@ -2,23 +2,25 @@
 <div class="category" *ngIf="smartSprinkler">
 	<switch
 		[actOnCallback]="true"
+		[allowLinebreak]="true"
 		[(ngModel)]="smartSprinkler?.readings.enabled.Value"
 		[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.ENABLE.TITLE' | translate"
 		[subTitle]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.ENABLE.INFO' | translate"
 		(onToggle)="changeSmartSetting('enabled', !$event)">
 	</switch>
 </div>
-<ng-container *ngIf="smartSprinkler && smartSprinkler.readings.enabled.Value">
+<div *ngIf="smartSprinkler && smartSprinkler.readings.enabled.Value" @ShowHide>
 	<!-- Rain Menu -->
 	<div class="category">
 		<switch
 			[actOnCallback]="true"
+			[allowLinebreak]="true"
 			[(ngModel)]="smartSprinkler?.readings.rain.Value"
 			[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.RAIN.TITLE' | translate"
 			[subTitle]="('COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.RAIN.INFO' | translate) + smartSprinkler?.readings.rainOff.Value+' l/m2.'"
 			(onToggle)="changeSmartSetting('rain', !$event)">
 		</switch>
-		<div class="options" *ngIf="smartSprinkler?.readings.rain.Value">
+		<div class="options" *ngIf="smartSprinkler?.readings.rain.Value" @ShowHide>
 			<p class="des theme-text">
 				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.RAIN_VALUE.TITLE' | translate}}
 			</p>
@@ -36,12 +38,13 @@
 	<div class="category">
 		<switch
 			[actOnCallback]="true"
+			[allowLinebreak]="true"
 			[(ngModel)]="smartSprinkler?.readings.wind.Value"
 			[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND.TITLE' | translate"
 			[subTitle]="('COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND.INFO' | translate)+smartSprinkler?.readings.windOff.Value+' km/h.'"
 			(onToggle)="changeSmartSetting('wind', !$event)">
 		</switch>
-		<div class="options" *ngIf="smartSprinkler?.readings.wind.Value">
+		<div class="options" *ngIf="smartSprinkler?.readings.wind.Value" @ShowHide>
 			<p class="des theme-text">
 				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND_VALUE.TITLE' | translate}}
 			</p>
@@ -121,12 +124,13 @@
 	<div class="category">
 		<switch
 			[actOnCallback]="true"
+			[allowLinebreak]="true"
 			[(ngModel)]="smartSprinkler?.readings.winterProtect.Value"
 			[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAIL.TITLE' | translate"
 			[subTitle]="('COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAIL.INFO' | translate)+'5&#8451;'"
 			(onToggle)="changeSmartSetting('winterProtect', !$event)">
 		</switch>
-		<div class="options mail" *ngIf="smartSprinkler?.readings.winterProtect.Value">
+		<div class="options mail" *ngIf="smartSprinkler?.readings.winterProtect.Value" @ShowHide>
 			<p class="des theme-text">
 				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAIL_VALUE.TITLE' | translate}}
 			</p>
@@ -138,22 +142,4 @@
 			</button>
 		</div>
 	</div>
-</ng-container>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>

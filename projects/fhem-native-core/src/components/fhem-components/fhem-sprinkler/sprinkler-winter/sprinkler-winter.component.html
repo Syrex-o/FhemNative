@@ -3,6 +3,7 @@
 	<switch
 		[(ngModel)]="smartSprinkler?.readings?.winterMode.Value"
 		[actOnCallback]="true"
+		[allowLinebreak]="true"
 		(onToggle)="changeWinterMode(!$event)"
 		[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WINTER.BUTTONS.TITLE' | translate"
 		[subTitle]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WINTER.BUTTONS.INFO' | translate">

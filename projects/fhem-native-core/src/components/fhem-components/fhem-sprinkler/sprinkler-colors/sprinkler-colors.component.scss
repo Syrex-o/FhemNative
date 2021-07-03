@@ -11,9 +11,6 @@
 			transform: translateY(-50%);
 			left: 50px;
 			width: calc(100% - 150px);
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
 			margin: 0;
 		}
 	}
@@ -39,10 +36,7 @@
 			margin: 0;
 			top: 50%;
 			transform: translateY(-50%);
-			width: calc(100% - 170px);
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
+			width: calc(100% - 190px) !important;
 		}
 		.color-palette-value{
 			position: absolute;

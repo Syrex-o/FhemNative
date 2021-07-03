@@ -5,6 +5,7 @@
 		border-bottom: 1px solid #565656;
 		.options{
 			position: relative;
+			margin-top: 10px;
 			ion-select,
 			button{
 				max-width: 100px;
@@ -12,7 +13,8 @@
 				position: absolute;
 				right: 0;
 				height: 45px;
-				top: 0;
+				top: 50%;
+				transform: translateY(-50%);
 			}
 			button{
 				background: var(--btn-blue);
@@ -32,9 +34,6 @@
 			.des,
 			.des_small{
 				width: calc(100% - 100px);
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
 			}
 			.sprinkler-color{
 				position: absolute;

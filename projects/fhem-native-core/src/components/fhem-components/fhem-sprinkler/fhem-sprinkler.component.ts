@@ -34,7 +34,6 @@ import { ComponentLoaderService } from '../../../services/component-loader.servi
 // Interfaces
 import { FhemDevice, ComponentSettings } from '../../../interfaces/interfaces.type';
 
-
 @Component({
 	selector: 'fhem-sprinkler',
 	templateUrl: './fhem-sprinkler.component.html',
@@ -75,7 +74,7 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 	smartSprinkler!: FhemDevice|null;
 
 	// possbile manual times
-	private manualTimes: number[] = [10, 20, 30];
+	private manualTimes: number[] = [10, 20, 30, 40, 50];
 
 	// menus
 	winterMenu: boolean = false;
