@@ -364,6 +364,10 @@ export class ComponentLoaderService {
 					});
 				});
 			});
+			// room is empty --> resolve anyway
+			if(modifiedComponents.length === 0){
+				resolve(true);
+			}
 		});
 	}
 
