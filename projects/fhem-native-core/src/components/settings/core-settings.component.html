@@ -43,7 +43,7 @@
 					<div class="btn-container">
 						<!-- upload via selection -->
 						<input type="file" class="file-input" (change)="importSettings($event)" #fileUpload>
-						<button class="btn-round ion-activatable" (click)="fileUpload.click()">
+						<button class="btn-round ion-activatable" (click)="settings.blockRoomReload = true; fileUpload.click()">
 							<ion-icon name="document-outline"></ion-icon>
 							<ion-ripple-effect></ion-ripple-effect>
 						</button>
@@ -68,7 +68,7 @@
 				</ion-select>
 			</div>
 			<!-- Color Theme -->
-			<div class="category btn-category single" *ngIf="showCustomThemeOption && settings.app.theme === 'custom'">
+			<div class="category btn-category single" *ngIf="showCustomThemeOption && settings.app.theme === 'custom'" @ShowHide>
 				<p class="label theme-text">Custom {{ 'GENERAL.SETTINGS.APP.THEME.TITLE' | translate }}</p>
 				<p class="des theme-des">Custom {{ 'GENERAL.SETTINGS.APP.THEME.INFO' | translate }}</p>
 				<div class="btn-container">
@@ -95,6 +95,7 @@
 			<div class="category switch-category">
 				<switch
 					[padding]="false"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.enableEditing"
 					[label]="'GENERAL.SETTINGS.APP.EDITING.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.APP.EDITING.INFO' | translate"
@@ -105,6 +106,7 @@
 			<div class="category switch-category" *ngIf="showUndoRedoOption">
 				<switch
 					[padding]="false"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.enableUndoRedo"
 					[label]="'GENERAL.SETTINGS.APP.UNDO_REDO.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.APP.UNDO_REDO.INFO' | translate"
@@ -115,6 +117,7 @@
 			<div class="category switch-category">
 				<switch
 					[padding]="false"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.showToastMessages"
 					[label]="'GENERAL.SETTINGS.APP.TOAST.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.APP.TOAST.INFO' | translate"
@@ -138,7 +141,7 @@
 		<ng-content select="[NativeActionsPlaceholder]"></ng-content>
 		<!-- Changelog -->
 		<div class="settings-block" *ngIf="showChangelogOption">
-			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.CHANGELOG.TITLE' | translate }}</p>
+			<p class="block-label theme-text ">{{ 'GENERAL.SETTINGS.CHANGELOG.TITLE' | translate }}</p>
 			<div class="category btn-full-category">
 				<p class="label theme-text">{{ 'GENERAL.SETTINGS.CHANGELOG.LOG.TITLE' | translate }}</p>
 				<p class="des theme-des">{{ 'GENERAL.SETTINGS.CHANGELOG.LOG.INFO'| translate }}</p>
@@ -151,14 +154,16 @@
 		<!-- Support -->
 		<div class="settings-block" *ngIf="showSupportOptions">
 			<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.SUPPORT.TITLE' | translate }}</p>
-			<div class="category btn-full-category">
+			<!-- reserved space for future -->
+			
+			<!-- <div class="category btn-full-category">
 				<p class="label theme-text">{{ 'GENERAL.SETTINGS.SUPPORT.DONATE.TITLE' | translate }}</p>
 				<p class="des theme-des">{{ 'GENERAL.SETTINGS.SUPPORT.DONATE.INFO'| translate }}</p>
 				<button (click)="support('https://paypal.me/pools/c/8gwg2amXDT')" class="ion-activatable">
 					{{ 'GENERAL.SETTINGS.SUPPORT.BUTTON' | translate }}
 					<ion-ripple-effect></ion-ripple-effect>
 				</button>
-			</div>
+			</div> -->
 			<div class="category btn-full-category">
 				<p class="label theme-text">{{ 'GENERAL.SETTINGS.SUPPORT.HELP.TITLE' | translate }}</p>
 				<p class="des theme-des">{{ 'GENERAL.SETTINGS.SUPPORT.HELP.INFO'| translate }}</p>
@@ -179,7 +184,7 @@
 			</div>
 		</div>
 		<!-- Privacy etc -->
-		<div class="settings-block no-border" *ngIf="showAdvancedOptions">
+		<div class="settings-block no-border">
 			<!-- Website -->
 			<div class="category no-btn ion-activatable" (click)="onWebsiteClick.emit(true)">
 				<p class="label theme-text">{{ 'GENERAL.SETTINGS.INFO.WEBSITE' | translate }}</p>
@@ -191,6 +196,12 @@
 				<p class="label theme-text">{{ 'GENERAL.SETTINGS.INFO.PRIVACY' | translate }}</p>
 				<ion-icon class="theme-text" name="chevron-forward-outline"></ion-icon>
 				<ion-ripple-effect></ion-ripple-effect>
+			</div>
+		</div>
+		<!-- App version -->
+		<div class="settings-block no-border">
+			<div class="category no-btn">
+				<p class="label theme-text">Version: {{ settings.version }}</p>
 			</div>
 		</div>
 	</div>
@@ -308,7 +319,7 @@
 			</p>
 			<div class="category" *ngFor="let change of changelog.VERSIONS[changelog.selectedVersion].CHANGES">
 				<p class="label theme-text">{{change.TYPE}}:</p>
-				<p class="des theme-des" [ngClass]="change.TYPE">{{change.CHANGE}}</p>
+				<p class="des" [ngClass]="change.TYPE">{{change.CHANGE}}</p>
 			</div>
 		</div>
 	</div>
@@ -331,6 +342,7 @@
 			<div class="category switch-category">
 				<switch
 					[padding]="false"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.keepConnected"
 					[label]="'GENERAL.SETTINGS.FHEM.ALWAYS_ON.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.FHEM.ALWAYS_ON.INFO' | translate"
@@ -372,6 +384,7 @@
 			<div class="category switch-category">
 				<switch
 					[padding]="false"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.enableVariables"
 					[label]="'GENERAL.SETTINGS.FHEM.VARIABLES.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.FHEM.VARIABLES.INFO' | translate"
@@ -382,6 +395,7 @@
 			<div class="category switch-category" *ngIf="showTasksOption">
 				<switch
 					[padding]="false"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.showTasks"
 					[label]="'GENERAL.SETTINGS.APP.TASKS.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.APP.TASKS.INFO' | translate"
@@ -392,6 +406,7 @@
 			<div class="category switch-category">
 				<switch
 					[padding]="false"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.grid.enabled"
 					[label]="'GENERAL.SETTINGS.COMPONENTS.GRID.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.COMPONENTS.GRID.INFO' | translate"
@@ -399,7 +414,7 @@
 				</switch>
 			</div>
 			<!-- Grid Size -->
-			<div class="category btn-category" *ngIf="settings.app.grid.enabled">
+			<div class="category btn-category" *ngIf="settings.app.grid.enabled" @ShowHide>
 				<p class="label theme-text">{{ 'GENERAL.SETTINGS.COMPONENTS.GRID_SIZE.TITLE' | translate }}</p>
 				<p class="des theme-des">{{ 'GENERAL.SETTINGS.COMPONENTS.GRID_SIZE.INFO' | translate }}</p>
 				<ion-select class="theme-text"
@@ -450,13 +465,28 @@
 			<div class="category switch-category">
 				<switch
 					[padding]="false"
+					[showBorder]="true"
+					[allowLinebreak]="true"
 					[(ngModel)]="settings.app.sharedConfig.enable"
 					[label]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.SWITCH.TITLE' | translate"
 					[subTitle]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.SWITCH.INFO' | translate"
 					(onToggle)="changeAppSettingJSON('sharedConfig', 'enable', $event)">
 				</switch>
 			</div>
-			<ng-container *ngIf="settings.app.sharedConfig.enable">
+			<div *ngIf="settings.app.sharedConfig.enable" @ShowHide>
+				<!-- passive device -->
+				<div class="category switch-category">
+					<switch
+						[padding]="false"
+						[showBorder]="true"
+						[allowLinebreak]="true"
+						[(ngModel)]="settings.app.sharedConfig.passive"
+						[label]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.PASSIVE.TITLE' | translate"
+						[subTitle]="'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.PASSIVE.INFO' | translate"
+						(onToggle)="changeAppSettingJSON('sharedConfig', 'passive', $event)">
+					</switch>
+				</div>
+				<!-- device/reading config -->
 				<div class="category btn-full-category">
 					<p class="label theme-text">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.DEVICE.TITLE' | translate }}</p>
 					<p class="des theme-des">{{ 'GENERAL.SETTINGS.FHEM.SHARED_CONFIG.PICKER.DEVICE.INFO' | translate }}</p>
@@ -495,7 +525,7 @@
 						<ion-ripple-effect></ion-ripple-effect>
 					</button>
 				</div>
-			</ng-container>
+			</div>
 			<div class="category btn-full-category center">
 				<button class="green ion-activatable" (click)="saveSharedConfig()">
 					{{ 'GENERAL.BUTTONS.SAVE' | translate }}

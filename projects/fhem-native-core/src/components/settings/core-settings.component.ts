@@ -1,7 +1,6 @@
 import { Component, OnInit, NgModule, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { DOCUMENT, CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
@@ -9,7 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 // Components
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { NewsSlideModule } from '@FhemNative/directives/news-slide.directive';
 import { SelectComponentModule } from '@FhemNative/components/select/select.component';
 import { PickerComponentModule } from '@FhemNative/components/picker/picker.component';
 import { SwitchComponentModule } from '@FhemNative/components/switch/switch.component';
@@ -29,10 +29,14 @@ import { ComponentLoaderService } from '../../services/component-loader.service'
 // Interfaces
 import { FhemDevice, Room, DynamicComponent, DynamicComponentDefinition } from '../../interfaces/interfaces.type';
 
+// animations
+import { ShowHide } from '../../animations/animations';
+
 @Component({
 	selector: 'core-settings',
 	templateUrl: './core-settings.component.html',
-	styleUrls: ['./core-settings.component.scss']
+	styleUrls: ['./core-settings.component.scss'],
+	animations: [ ShowHide ]
 })
 
 export class CoreSettingsComponent implements OnInit{
@@ -191,6 +195,61 @@ export class CoreSettingsComponent implements OnInit{
 		});
 	}
 
+	// import settings handler 
+	// after data read to prevent double messages
+	private loadSettings(rawData: string): void{
+		let isValid: boolean = false;
+		try{
+			const data: any = JSON.parse(rawData);
+			if(data && data.connectionProfiles){
+				isValid = true;
+				// disconnect from fhem
+				this.fhem.noReconnect = true;
+				if(this.fhem.connected) this.fhem.disconnect();
+				// start import
+				const len = Object.keys(data).length;
+				let i = 0;
+				for (const [key, value] of Object.entries(data)){
+					const val: any = value;
+					if (key !== undefined) {
+						this.storage.changeSetting({name: key, change: JSON.parse(val) }).then(()=>{
+							i++;
+							if (i === len) {
+								// reconnect to fhem with new IP
+								this.settings.loadDefaults().then(()=>{
+									setTimeout(()=>{
+										this.fhem.noReconnect = false;
+										this.fhem.connectFhem();
+										this.structure.loadRooms(false, false, false).then(()=>{
+											const room: Room = this.structure.rooms[0];
+											this.structure.navigateToRoom(room.name, room.ID, { 
+												name: room.name, ID: room.ID, 
+												UID: room.UID, reload: true,
+												reloadID: this.settings.getUID()
+											});
+											this.closeSettings();
+										});
+									}, 100);
+								});
+							}
+						});
+					}
+				}
+			}
+		}catch(e){
+
+		}
+		// message prexix
+		const prefix: string = 'GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.';
+		if(isValid){
+			this.toast.showAlert( this.translate.instant(prefix + 'SUCCESS.TITLE'), this.translate.instant(prefix + 'SUCCESS.INFO'), false);
+			this.logger.info('Settings import was successful');
+		}else{
+			this.toast.showAlert(this.translate.instant(prefix + 'ERROR.TITLE'), this.translate.instant(prefix + 'ERROR.INFO'), false);
+			this.logger.info('Settings not imported (not valid)');
+		}
+	}
+
 	// import FhemNative settings
 	async importSettings(event: any): Promise<void>{
 		let isValid: boolean = false;
@@ -200,66 +259,18 @@ export class CoreSettingsComponent implements OnInit{
 				const fileReader = new FileReader();
 
 				fileReader.onload = (e: any) => {
-					try{
-						const data: any = JSON.parse(fileReader.result as string);
-						if(data && data.connectionProfiles){
-							isValid = true;
-							// disconnect from fhem
-							this.fhem.noReconnect = true;
-							if(this.fhem.connected){
-								this.fhem.disconnect();
-							}
-							// start import
-							const len = Object.keys(data).length;
-							let i = 0;
-							for (const [key, value] of Object.entries(data)){
-								const val: any = value;
-								if (key !== undefined) {
-									this.storage.changeSetting({name: key, change: JSON.parse(val) }).then(()=>{
-										i++;
-										if (i === len) {
-											// reconnect to fhem with new IP
-											this.settings.loadDefaults().then(()=>{
-												setTimeout(()=>{
-													this.fhem.noReconnect = false;
-													this.fhem.connectFhem();
-													this.structure.loadRooms(false, false, false).then(()=>{
-														const room: Room = this.structure.rooms[0];
-														this.structure.navigateToRoom(room.name, room.ID, { 
-															name: room.name, ID: room.ID, 
-															UID: room.UID, reload: true,
-															reloadID: this.settings.getUID()
-														});
-														this.closeSettings();
-														this.toast.showAlert(
-															this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.TITLE'),
-															this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.SUCCESS.INFO'),
-															false
-														);
-													});
-													this.logger.info('Settings import was successful');
-												}, 100);
-											});
-										}
-									});
-								}
-							}
-						}
-					}catch(e){
-						isValid = false;
-					}
+					this.loadSettings(fileReader.result as string);
 				}
 				fileReader.readAsText(file);
+			}else{
+				this.loadSettings('');
 			}
+		}else{
+			// create blank importer to show error
+			this.loadSettings('');
 		}
-		if(!isValid){
-			this.toast.showAlert(
-				this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.ERROR.TITLE'),
-				this.translate.instant('GENERAL.SETTINGS.FHEM.IMPORT.MESSAGES.ERROR.INFO'),
-				false
-			);
-			this.logger.info('Settings not imported (not valid)');
-		}
+		// allow room reloading again
+		this.settings.blockRoomReload = false;
 	}
 
 	// custom theme edit
@@ -391,10 +402,7 @@ export class CoreSettingsComponent implements OnInit{
 
 	// save shared config
 	saveSharedConfig(): void{
-		this.storage.changeSetting({
-			name: 'sharedConfig',
-			change: JSON.stringify(this.settings.app.sharedConfig)
-		}).then((res: any)=>{
+		this.storage.changeSetting({ name: 'sharedConfig', change: JSON.stringify(this.settings.app.sharedConfig) }).then((res: any)=>{
 			this.settings.app.sharedConfig = res;
 			this.initialSettingsSharedConfig = JSON.parse(JSON.stringify(this.settings.app.sharedConfig));
 			this.menus.sharedConfig = false;
@@ -564,7 +572,6 @@ export class CoreSettingsComponent implements OnInit{
 										// no room for component
 										generatedDevices.push({device: device.device, generated: false, reason: 'NO_ROOM', as: component});
 									}
-									
 									if(generatedDevices.length > 0){
 										this.devicesAdded(generatedDevices);
 									}else{
@@ -780,15 +787,16 @@ export class CoreSettingsComponent implements OnInit{
 
 	// toggle URL links
 	support(url: string): void{
-		this.document.location.href = url;
+		window.open(url);
 	}
 
 }
 @NgModule({
 	imports: [ 
-		IonicModule, 
+		IonicModule,
 		FormsModule, 
 		CommonModule,
+		NewsSlideModule,
 		TranslateModule, 
 		SelectComponentModule,
 		SwitchComponentModule,
