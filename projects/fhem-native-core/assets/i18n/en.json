@@ -1014,8 +1014,8 @@
 					"info": "External URL (otherwise it tries to find the URL in the reading)"
 				},
 				"data_imageUrl":{
-					"name": "Device File Url",
-					"info": "Url of an image on the device (Exp. file:///storage/emulated/0/DCIM/Camera/IMG_20191213_134704.jpg)"
+					"name": "Device Image",
+					"info": "After saving the component, selection of local image is possible (leave blank on creation)"
 				},
 				"data_updateInterval":{
 					"name": "Update interval",
@@ -2222,6 +2222,10 @@
 							"TITLE": "Share config",
 							"INFO": "Activate/deactivate shared configuration"
 						},
+						"PASSIVE": {
+							"TITLE": "Passive-Mode",
+							"INFO": "This device is NOT allowd to change the shared config, when Passive-Mode is activated"
+						},
 						"DEVICE":{
 							"TITLE": "FHEM Device",
 							"INFO": "FHEM Device for Config"
@@ -2240,6 +2244,10 @@
 								"MESSAGE": "A Transfer is only needed for initial config sharing or when the config-sharing reading is exchanged. Are you sure you want to overwrite the reading? All Devices will use the current configuration of THIS device."
 							}
 						}
+					},
+					"WARNING": {
+						"HEADER": "Passive-Mode is active",
+						"INFO": "The shared FhemNative configuration is in 'Passive-Mode'. Changes on this device are not possible."
 					}
 				},
 				"AUTO_ROOMS":{
@@ -2371,10 +2379,6 @@
 			"SUPPORT":{
 				"TITLE": "Support",
 				"BUTTON": "Support",
-				"DONATE":{
-					"TITLE": "Support Development",
-					"INFO": "Support the Development of FhemNative by donating a little amount of money."
-				},
 				"HELP":{
 					"TITLE": "Help others/Report bugs/Feature requests",
 					"INFO": "Help in the FhemNative community. Reporte your known bugs and place requests in the FHEM forum."

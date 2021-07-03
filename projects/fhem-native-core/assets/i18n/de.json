@@ -1006,8 +1006,8 @@
 					"info": "Externe URL (anderenfalls wird versucht eine URL im Reading zu finden)"
 				},
 				"data_imageUrl":{
-					"name": "Geräte Bild Url",
-					"info": "Url des Bildes auf dem Gerät (Bsp. file:///storage/emulated/0/DCIM/Camera/IMG_20191213_134704.jpg)"
+					"name": "Geräte Bild",
+					"info": "Nach dem speichern, kann ein lokales Bild ausgewählt werden (Input beim Erstellen frei lassen)"
 				},
 				"data_updateInterval":{
 					"name": "Updateinterval",
@@ -2212,7 +2212,7 @@
 					}
 				},
 				"SHARED_CONFIG":{
-					"TITLE": "Geteilte FhemNative Config in FHEM Reading",
+					"TITLE": "Geteilte FhemNative Konfiguration in FHEM Reading",
 					"INFO": "FhemNative Konfiguration in FHEM Reading hinterlegen",
 					"BUTTON": "Konfigurieren",
 					"PICKER": {
@@ -2221,6 +2221,10 @@
 						"SWITCH":{
 							"TITLE": "Konfiguration teilen",
 							"INFO": "Geteilte Konfiguration in FHEM Reading aktivieren/deaktivieren"
+						},
+						"PASSIVE": {
+							"TITLE": "Passiv-Modus",
+							"INFO": "Dieses Gerät darf KEINE Änderungen an der Shared Config vornehmen, wenn der Passiv-Modus aktiv ist"
 						},
 						"DEVICE":{
 							"TITLE": "FHEM Device",
@@ -2240,6 +2244,10 @@
 								"MESSAGE": "Ein Transfer wird nur für den iniitialen Transfer oder beim Wechsel des Konfigurations-Readings benötigt. Wollen Sie das Reading wirklich überschreiben? Alle Geräte verwenden dann die aktuelle Konfiguration DIESES Geräts."
 							}
 						}
+					},
+					"WARNING": {
+						"HEADER": "Passiv-Modus ist aktiv",
+						"INFO": "Die geteilte FhemNative Konfiguration ist im 'Passiv-Modus'. Änderungen auf diesem Gerät können nicht vorgenommen werden."
 					}
 				},
 				"AUTO_ROOMS":{
@@ -2371,10 +2379,6 @@
 			"SUPPORT":{
 				"TITLE": "Unterstützung",
 				"BUTTON": "Support",
-				"DONATE":{
-					"TITLE": "Unterstütze die Weiterentwicklung",
-					"INFO": "Unterstütze die Entwicklung von FhemNative mit einer kleinen Spende."
-				},
 				"HELP":{
 					"TITLE": "Hilf anderen/Reporte Bugs/Feature Requests",
 					"INFO": "Hilf im Forum aus, reporte deine gefunden Fehler und plaziere Wünsche im FHEM Forum."
