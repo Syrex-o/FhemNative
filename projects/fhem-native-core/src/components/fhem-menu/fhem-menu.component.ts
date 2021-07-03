@@ -20,10 +20,14 @@ import { StructureService } from '../../services/structure.service';
 // Interfaces
 import { Room } from '../../interfaces/interfaces.type';
 
+// animations
+import { ShowHide } from '../../animations/animations';
+
 @Component({
 	selector: 'fhem-menu',
 	templateUrl: './fhem-menu.component.html',
   	styleUrls: ['./fhem-menu.component.scss'],
+  	animations: [ ShowHide ],
   	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FhemMenuComponent implements OnChanges {

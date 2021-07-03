@@ -48,6 +48,7 @@
 						<switch
 							[(ngModel)]="connection.WSS"
 							[padding]="false"
+							[allowLinebreak]="true"
 							[label]="'GENERAL.FHEM_MENU.CONNECTION.SECURE.TITLE' | translate"
 							[subTitle]="'GENERAL.FHEM_MENU.CONNECTION.SECURE.INFO' | translate">
 						</switch>
@@ -57,12 +58,13 @@
 						<switch
 							[(ngModel)]="connection.basicAuth"
 							[padding]="false"
+							[allowLinebreak]="true"
 							[label]="'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.TITLE' | translate"
 							[subTitle]="'GENERAL.FHEM_MENU.CONNECTION.BASIC_AUTH.INFO' | translate">
 						</switch>
 					</div>
 					<!-- Password/USER -->
-					<ng-container *ngIf="connection.basicAuth">
+					<div *ngIf="connection.basicAuth" @ShowHide>
 						<form>
 							<!-- USER -->
 							<div class="category">
@@ -79,7 +81,7 @@
 								<span class="bar"></span>
 							</div>
 						</form>
-					</ng-container>
+					</div>
 				</div>
 
 				<!-- Remove profile -->
@@ -87,7 +89,7 @@
 					<div class="category btn-category-round">
 						<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.DELETE.TITLE' | translate }}</p>
 						<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.DELETE.INFO' | translate }}</p>
-						<button class="btn-round ion-activatable theme-background" (click)="deleteProfile(i)">
+						<button class="btn-round ion-activatable theme-background theme-shadow-one" (click)="deleteProfile(i)">
 							<ion-icon class="trash" name="trash"></ion-icon>
 							<ion-ripple-effect></ion-ripple-effect>
 						</button>
@@ -99,7 +101,7 @@
 					<div class="category btn-category-round">
 						<p class="label theme-text">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.TITLE' | translate }}</p>
 						<p class="des theme-des">{{ 'GENERAL.FHEM_MENU.CONNECTION.PROFILE.INFO' | translate }}</p>
-						<button class="add-btn btn-round ion-activatable theme-background" (click)="addProfile()">
+						<button class="add-btn btn-round ion-activatable theme-background theme-shadow-one" (click)="addProfile()">
 							<span class="line top"></span>
 							<span class="line bottom"></span>
 							<ion-ripple-effect></ion-ripple-effect>
@@ -110,11 +112,11 @@
 			<!-- Save/Cancel -->
 			<div class="settings-block">
 				<div class="category btn-full-category">
-					<button class="save ion-activatable" (click)="saveIPSettings()">
+					<button class="save ion-activatable theme-shadow-one" (click)="saveIPSettings()">
 						{{ 'GENERAL.BUTTONS.SAVE' | translate }}
 						<ion-ripple-effect></ion-ripple-effect>
 					</button>
-					<button class="cancel ion-activatable" (click)="cancelIPSettings()">
+					<button class="cancel ion-activatable theme-shadow-one" (click)="cancelIPSettings()">
 						{{ 'GENERAL.BUTTONS.CANCEL' | translate }}
 						<ion-ripple-effect></ion-ripple-effect>
 					</button>
