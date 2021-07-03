@@ -1,6 +1,6 @@
-<div class="popup-container" @PopupPicker (@PopupPicker.done)="animationEnd($event)" *ngIf="showPopup" [ngClass]="settings.operatingPlatform">
+<div class="popup-container" @ShowHide (@ShowHide.done)="animationEnd($event)" *ngIf="showPopup" [ngClass]="settings.operatingPlatform">
 	<!-- Backdrop -->
-	<div class="backdrop" @ShowHide (click)="closePopup(backdropDismiss)"></div>
+	<div class="backdrop" (click)="closePopup(backdropDismiss)"></div>
 	<!-- Popup Container -->
 	<div [@PopupContent]="toggleAnimation" [ngStyle]="{'width.%': width,'height.%': height}" class="popup-content theme-background">
 		<!-- Header -->
