@@ -39,11 +39,6 @@
 								"output": "./assets"
 							},
 							{
-								"glob": "**/*.mp3",
-								"input": "projects/fhem-native-core/assets",
-								"output": "./assets"
-							},
-							{
 								"glob": "**/*.png",
 								"input": "projects/fhem-native-core/assets/img",
 								"output": "./assets/img"
@@ -220,11 +215,6 @@
 								"output": "./assets"
 							},
 							{
-								"glob": "**/*.mp3",
-								"input": "projects/fhem-native-core/assets",
-								"output": "./assets"
-							},
-							{
 								"glob": "**/*.png",
 								"input": "projects/fhem-native-core/assets/img",
 								"output": "./assets/img"
@@ -397,11 +387,6 @@
 							},
 							{
 								"glob": "**/*.json",
-								"input": "projects/fhem-native-core/assets",
-								"output": "./assets"
-							},
-							{
-								"glob": "**/*.mp3",
 								"input": "projects/fhem-native-core/assets",
 								"output": "./assets"
 							},
@@ -594,11 +579,6 @@
 								"output": "./assets"
 							},
 							{
-								"glob": "**/*.mp3",
-								"input": "projects/fhem-native-core/assets",
-								"output": "./assets"
-							},
-							{
 								"glob": "**/*.png",
 								"input": "projects/fhem-native-core/assets/img",
 								"output": "./assets/img"
@@ -771,11 +751,6 @@
 							},
 							{
 								"glob": "**/*.json",
-								"input": "projects/fhem-native-core/assets",
-								"output": "./assets"
-							},
-							{
-								"glob": "**/*.mp3",
 								"input": "projects/fhem-native-core/assets",
 								"output": "./assets"
 							},

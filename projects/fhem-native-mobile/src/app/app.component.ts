@@ -14,6 +14,7 @@ import { ThemeService } from '@FhemNative/services/theme/theme.service';
 import { StructureService } from '@FhemNative/services/structure.service';
 import { LoggerService } from '@FhemNative/services/logger/logger.service';
 import { ComponentLoaderService } from '@FhemNative/services/component-loader.service';
+import { NativeFunctionsChildService } from './services/native-functions.service';
 
 // Interfaces
 import { AppSetting, Room } from '@FhemNative/interfaces';
@@ -42,7 +43,8 @@ export class AppComponent {
 		private variable: VariableService,
 		private structure: StructureService,
 		private modalController: ModalController,
-		private componentLoader: ComponentLoaderService){
+		private componentLoader: ComponentLoaderService,
+		private nativeChild: NativeFunctionsChildService){
 		// initialize
 		this.initialzeApp();
 
@@ -72,6 +74,9 @@ export class AppComponent {
 		// Load App Defaults
 		await this.settings.loadDefaults();
 		this.logger.info('App Settings loaded');
+
+		// init native-functions
+		this.nativeChild.preloadAudio();
 
 		// init theme --> dark is default
 		if(this.settings.app.theme !== 'dark'){
@@ -115,7 +120,7 @@ export class AppComponent {
 			// acustic feedback on events
 			{name: 'acusticFeedback', default: JSON.stringify({enable: false, audio: '1'}), toStorage: true},
 			// share FhemNative config in FHEM Reading
-			{name: 'sharedConfig', default: JSON.stringify({enable: false, device: '', reading: ''}), toStorage: true},
+			{name: 'sharedConfig', default: JSON.stringify({enable: false, passive: false, device: '', reading: ''}), toStorage: true},
 			// full screen
 			{name: 'showStatusBar', default: true, toStorage: true}
 		];
@@ -125,7 +130,6 @@ export class AppComponent {
 	// App events
 	private handleAppResume(): void{
 		this.fhem.tries = 0;
-		this.fhem.listenDevices = [];
 		this.fhem.noReconnect = false;
 
 		// initialize fhem
@@ -141,24 +145,26 @@ export class AppComponent {
 		this.variable.listen();
 
 		// reenter the route
-		let room: Room;
-		if(this.structure.currentRoom){
-			room = this.structure.currentRoom;
-		}else{
-			room = this.structure.rooms[0];
-		}
-		// clear container before rerender
-		if(this.componentLoader.currentContainer){
-			this.componentLoader.clearContainer(this.componentLoader.currentContainer, true);
-		}
+		if(!this.settings.blockRoomReload){
+			let room: Room;
+			if(this.structure.currentRoom){
+				room = this.structure.currentRoom;
+			}else{
+				room = this.structure.rooms[0];
+			}
+			// clear container before rerender
+			if(this.componentLoader.currentContainer){
+				this.componentLoader.clearContainer(this.componentLoader.currentContainer, true);
+			}
 
-		this.zone.run(()=>{
-			this.structure.navigateToRoom(room.name, room.ID, { 
-				name: room.name, ID: room.ID, 
-				UID: room.UID, reload: true,
-				reloadID: this.settings.getUID()
+			this.zone.run(()=>{
+				this.structure.navigateToRoom(room.name, room.ID, { 
+					name: room.name, ID: room.ID, 
+					UID: room.UID, reload: true,
+					reloadID: this.settings.getUID()
+				});
 			});
-		});
+		}
 	}
 
 	private handleAppPause(): void{

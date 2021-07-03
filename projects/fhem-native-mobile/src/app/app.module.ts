@@ -9,9 +9,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 // Http Requests
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
-// Ionic Plugins
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
-
 // Toastr
 import { ToastrModule } from 'ngx-toastr';
 // Hotkeys
@@ -123,9 +120,7 @@ export class DefaultMissingTransLationHandler  implements MissingTranslationHand
 		ComponentLoaderService,
 		NativeFunctionsService,
 		// App
-		NativeFunctionsChildService,
-		// Plugins
-		NativeAudio
+		NativeFunctionsChildService
 	],
 	bootstrap: [AppComponent]
 })
