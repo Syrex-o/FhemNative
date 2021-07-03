@@ -26,6 +26,9 @@ import { AppSetting } from '../interfaces/interfaces.type';
 })
 
 export class SettingsService {
+	// version
+	public version: string = '3.0.0';
+
 	// tell FhemNative-Core which platform is accessing
 	// this helps to not invoke useless functions for certain platforms
 	public operatingPlatform: 'mobile'|'desktop' = 'mobile';
@@ -33,6 +36,9 @@ export class SettingsService {
 	public disableSwipeMenu: boolean = false;
 	// block component menus
 	public blockMenus: boolean = false;
+	// block loaders
+		// used, when exiting the app is intended and data should be available on resume (select image)
+	public blockRoomReload: boolean = false;
 
 	// building default storage
 	public app: any = {};
