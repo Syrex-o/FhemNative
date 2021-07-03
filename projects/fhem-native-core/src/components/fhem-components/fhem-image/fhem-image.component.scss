@@ -15,6 +15,28 @@
 				left: 0;
 			    top: 0;
 			}
+			.uploader{
+				pointer-events: all;
+				.file-input{
+					display: none;
+				}
+				button{
+					position: absolute;
+					width: 90%;
+					height: 90%;
+					left: 5%;
+					top: 5%;
+					border-radius: 20px;
+					overflow: hidden;
+					ion-icon{
+						font-size: 30px;
+					}
+					p{
+						font-size: 16px;
+						margin: 5px;
+					}
+				}
+			}
 		}
 	}
 }

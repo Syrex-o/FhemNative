@@ -1,14 +1,16 @@
 import { Component, Input, NgModule, OnInit, OnDestroy } from '@angular/core';
 
 // Components
+import { IonicModule } from '@ionic/angular';
 import { FhemComponentModule } from '../fhem-component.module';
 
 // Services
 import { FhemService } from '../../../services/fhem.service';
 import { SettingsService } from '../../../services/settings.service';
+import { StructureService } from '../../../services/structure.service';
 
 // Interfaces
-import { ComponentSettings, FhemDevice } from '../../../interfaces/interfaces.type';
+import { ComponentSettings, FhemDevice, DynamicComponentDefinition } from '../../../interfaces/interfaces.type';
 
 @Component({
 	selector: 'fhem-image',
@@ -39,10 +41,12 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 	@Input() rotation!: string;
 
 	fhemDevice!: FhemDevice|null;
-	src!: string;
+	src!: any;
 
 	// update interval --> if needed
 	private interval: any;
+	// allow local image selection
+	allowSelection: boolean = false;
 
 	ngOnInit(){
 		if(!this.bool_data_useLocalImage){
@@ -53,14 +57,42 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 			});
 		}else{
 			// load local image
-			if(this.data_imageUrl != ''){
-				try{
-					this.src = (<any>window).Ionic.WebView.convertFileSrc(this.data_imageUrl);
-				}catch (e){
-					this.src = '';
-				}
+			if(this.data_imageUrl !== ''){
+				// image already selected
+				this.src = this.data_imageUrl;
+			}else{
+				// allow selection
+				this.allowSelection = true;
 			}
 		}
+	}
+
+	// upload file from local storage
+	async uploadFile(event: any): Promise<void>{
+		if(event && event.target && event.target.files){
+			const file: File = event.target.files[0];
+			if(file && file.type.match(/image\/*/) !== null){
+				const fileReader = new FileReader();
+				fileReader.onload = () => {
+					this.src = fileReader.result;
+					// save data in component
+					const comp: DynamicComponentDefinition|null = this.structure.getComponent(this.ID);
+					if(comp && comp.attributes.attr_data){
+						// change component attribute
+						let setting = comp.attributes.attr_data.find(x=> x.attr === "data_imageUrl");
+						if(setting){
+							setting.value = this.src;
+							// save structure
+							this.structure.saveRooms();
+							this.allowSelection = false;
+						}
+					}
+				}
+				fileReader.readAsDataURL(file);
+			}
+		}
+		// allow room reloading again
+		this.settings.blockRoomReload = false;
 	}
 
 	private getState(device: FhemDevice|null): void {
@@ -99,7 +131,7 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	constructor(private fhem: FhemService, public settings: SettingsService) {}
+	constructor(private fhem: FhemService, private structure: StructureService, public settings: SettingsService) {}
 
 	static getSettings(): ComponentSettings {
 		return {
@@ -131,7 +163,7 @@ export class FhemImageComponent implements OnInit, OnDestroy {
 	}
 }
 @NgModule({
-	imports: [FhemComponentModule],
+	imports: [FhemComponentModule, IonicModule],
 	declarations: [FhemImageComponent]
 })
 class FhemImageComponentModule {}
