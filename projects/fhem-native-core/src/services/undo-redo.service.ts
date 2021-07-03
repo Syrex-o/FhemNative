@@ -113,6 +113,8 @@ export class UndoRedoService {
 			this.evaluateStack(-1);
 			// load relevant components
 			this.loadRoomStructure(true);
+			// grouper update
+			this.selectComponent.groupHandler.next(true);
 		}
 	}
 
@@ -127,6 +129,8 @@ export class UndoRedoService {
 			this.evaluateStack(1);
 			// load relevant components
 			this.loadRoomStructure(true);
+			// grouper update
+			this.selectComponent.groupHandler.next(true);
 		}
 	}
 
