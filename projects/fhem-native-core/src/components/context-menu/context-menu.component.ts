@@ -28,7 +28,7 @@ import { SelectComponentService } from '../../services/select-component.service'
 import { DynamicComponentDefinition, ComponentPosition } from '../../interfaces/interfaces.type';
 
 // Animation
-import { PopupPicker } from '../../animations/animations';
+import { ShowHide } from '../../animations/animations';
 
 // Capacitor
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
@@ -37,7 +37,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 	selector: 'context-menu',
 	templateUrl: './context-menu.component.html',
 	styleUrls: ['./context-menu.component.scss'],
-	animations: [ PopupPicker ]
+	animations: [ ShowHide ]
 })
 export class ContextMenuComponent implements AfterViewInit, OnDestroy {
 	// context-menu ref
@@ -347,7 +347,12 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
 				}
 				fileReader.readAsText(file);
 			}
+		}else{
+			// create blank import to show error message
+			this.importComponentData('');
 		}
+		// allow room reloading again
+		this.settings.blockRoomReload = false;
 	}
 
 	// import from qr

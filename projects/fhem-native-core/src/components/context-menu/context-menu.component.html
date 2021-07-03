@@ -1,6 +1,6 @@
 <div class="context-menu-container" outside-click (onOutsideClick)="removeContextMenu(true, $event)" [ngClass]="dropDownPosition">
-	<div #CONTEXT_MENU [ngClass]="settings.operatingPlatform"
-		class="context-menu theme-background" @PopupPicker
+	<div #CONTEXT_MENU [ngClass]="settings.operatingPlatform" @ShowHide
+		class="context-menu theme-background"
 		[ngStyle]="{'left.px': x, 'top.px': y}">
 		<!-- component specific -->
 		<ng-container *ngIf="source === 'component'">
@@ -66,7 +66,7 @@
 					<!-- File Import -->
 					<!-- upload via selection -->
 					<input type="file" class="file-input" (change)="importFromFile($event)" #fileUpload>
-					<button class="inner ion-activatable theme-text" (click)="fileUpload.click(); toggleSubMenu('import')">
+					<button class="inner ion-activatable theme-text" (click)="settings.blockRoomReload = true; fileUpload.click(); toggleSubMenu('import')">
 						<ion-icon name="document-outline"></ion-icon>
 						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.IMPORT.AS_FILE' | translate }}</p>
 						<ion-ripple-effect></ion-ripple-effect>
