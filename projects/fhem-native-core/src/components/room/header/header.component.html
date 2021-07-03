@@ -10,9 +10,5 @@
 		</div>
 	</ng-container>
 	<!-- Edit Button -->
-	<button *ngIf="!settings.modes.roomEdit && settings.app.enableEditing"
-		class="btn-round blue ion-activatable theme-background theme-shadow-one right-pad" (click)="onEditClick.emit(true)">
-		<ion-icon class="edit" name="create"></ion-icon>
-		<ion-ripple-effect></ion-ripple-effect>
-	</button>
+	<edit-btn></edit-btn>
 </ion-header>
