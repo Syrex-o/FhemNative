@@ -1,4 +1,14 @@
 :host{
+	.settings-block {
+		position: relative;
+		width: 100%;
+		margin-bottom: 10px;
+		border-bottom: 1px solid #565656;
+		.block-label {
+			font-weight: 600;
+			font-size: 1.1em;
+		}
+	}
 	.category {
 		position: relative;
 		width: 100%;
@@ -28,6 +38,13 @@
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
+			}
+			.btn-container, ion-select {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				right: 8px;
+				width: 90px;
 			}
 		}
 	}

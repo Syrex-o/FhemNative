@@ -1,6 +1,63 @@
 <core-settings
 	(onWebsiteClick)="openWebsite()"
 	(onPrivacyClick)="openPrivacy()">
+	<!-- Native Actions -->
+	<div class="settings-block" NativeActionsPlaceholder>
+		<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.COMPONENTS.TITLE' | translate }}</p>
+		<!-- Haptic Feedback -->
+		<div class="category switch-category">
+			<switch
+				[padding]="false"
+				[allowLinebreak]="true"
+				[(ngModel)]="settings.app.hapticFeedback.enable"
+				[label]="'GENERAL.SETTINGS.COMPONENTS.VIBRATION.ENABLE.TITLE' | translate"
+				[subTitle]="'GENERAL.SETTINGS.COMPONENTS.VIBRATION.ENABLE.INFO' | translate"
+				(onToggle)="changeAppSettingJSON('hapticFeedback', 'enable', $event)">
+			</switch>
+		</div>
+		<!-- Haptic Feedback Duration -->
+		<div class="category btn-category" *ngIf="settings.app.hapticFeedback.enable" @ShowHide>
+			<p class="label theme-text">{{ 'GENERAL.SETTINGS.COMPONENTS.VIBRATION.DURATION.TITLE' | translate }}</p>
+			<p class="des theme-des">{{ 'GENERAL.SETTINGS.COMPONENTS.VIBRATION.DURATION.INFO'| translate }}</p>
+			<ion-select class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" 
+				[cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[(ngModel)]="settings.app.hapticFeedback.duration" 
+				(ionChange)="changeVibrationDuration($event)">
+				<ion-select-option [value]="0.05">50ms</ion-select-option>
+				<ion-select-option [value]="0.1">100ms</ion-select-option>
+				<ion-select-option [value]="0.2">200ms</ion-select-option>
+				<ion-select-option [value]="0.5">500ms</ion-select-option>
+				<ion-select-option [value]="1">1s</ion-select-option>
+				<ion-select-option [value]="2">2s</ion-select-option>
+			</ion-select>
+		</div>
+		<!-- Acustic Feedback -->
+		<div class="category switch-category">
+			<switch
+				[padding]="false"
+				[allowLinebreak]="true"
+				[(ngModel)]="settings.app.acusticFeedback.enable"
+				[label]="'GENERAL.SETTINGS.COMPONENTS.SOUND.ENABLE.TITLE' | translate"
+				[subTitle]="'GENERAL.SETTINGS.COMPONENTS.SOUND.ENABLE.INFO' | translate"
+				(onToggle)="changeAudioEnable($event)">
+			</switch>
+		</div>
+		<!-- Acustic Feedback Sound -->
+		<div class="category btn-category" *ngIf="settings.app.acusticFeedback.enable" @ShowHide>
+			<p class="label theme-text">{{ 'GENERAL.SETTINGS.COMPONENTS.SOUND.PATH.TITLE' | translate }}</p>
+			<p class="des theme-des">{{ 'GENERAL.SETTINGS.COMPONENTS.SOUND.PATH.INFO'| translate }}</p>
+			<ion-select class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[(ngModel)]="settings.app.acusticFeedback.audio" (ionChange)="changeAudio($event)">
+				<ion-select-option [value]="'1'">1</ion-select-option>
+				<ion-select-option [value]="'2'">2</ion-select-option>
+				<ion-select-option [value]="'3'">3</ion-select-option>
+				<ion-select-option [value]="'4'">4</ion-select-option>
+			</ion-select>
+		</div>
+	</div>
+
 	<!-- Display Screen Size Info of device -->
 	<div class="category btn-category" ElectronWindowResizePlaceholder>
 		<p class="label theme-text">{{ 'GENERAL.SETTINGS.COMPONENTS.DEVICE_INFO.TITLE' | translate }}</p>
@@ -11,6 +68,7 @@
 	<div class="category switch-category" StatusBar>
 		<switch
 			[padding]="false"
+			[allowLinebreak]="true"
 			[(ngModel)]="settings.app.showStatusBar"
 			[label]="'GENERAL.SETTINGS.APP.STATUS_BAR.TITLE' | translate"
 			[subTitle]="'GENERAL.SETTINGS.APP.STATUS_BAR.INFO' | translate"
