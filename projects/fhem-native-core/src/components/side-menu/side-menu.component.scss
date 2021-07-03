@@ -26,41 +26,40 @@
 				top: 5%;
 				left: 5px;
 			}
-			.btn-round{
-				top: 5.5px;
-			}
 		}
 		.room-menu-container{
 			top: 56px;
-			height: calc(100% - 126px);
+			height: calc(100% - 120px);
 			user-select: none;
+			overflow-y: auto;
+			overflow-x: hidden;
 		}
 		.settings-container{
 			bottom: 0;
-			height: 70px;
+			height: 61px;
 			box-shadow: 0px -2px 5px 5px rgb(0 0 0 / 40%);
 			overflow: hidden;
 		}
 		&.bigSettings{
 			.room-menu-container{
-				height: calc(100% - 196px);
+				height: calc(100% - 180px);
 			}
 			.settings-container{
-				height: 140px;
+				height: 122px;
 			}
 		}
 		&.biggerSettings{
 			.room-menu-container{
-				height: calc(100% - 366px);
+				height: calc(100% - 240px);
 			}
 			.settings-container{
-				height: 210px;
+				height: 183px;
 			}
 		}
 	}
 }
 .room-box{
-	padding: 10px 10px;
+	padding: 5px 10px;
 	border-bottom: solid 1px #ccc;
 	display: block;
 	align-items: center;
@@ -78,7 +77,7 @@
 		ion-label {
 			line-height: 30px;
 			margin-left: 8px;
-			font-size: 1.2em;
+			font-size: 1.1em;
 		}
 		&.active-route{
 			background-color: rgba(255,255,255,.08);

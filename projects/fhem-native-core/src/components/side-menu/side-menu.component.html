@@ -4,17 +4,13 @@
 	<ion-content class="theme-background"
 		[class.bigSettings]="settings.app.showTasks || settings.app.enableVariables"
 		[class.biggerSettings]="settings.app.showTasks && settings.app.enableVariables">
-		<div class="header-container theme-shadow-two">
+		<div class="header-container theme-shadow-two theme-background">
 			<div class="placeholder">
 				<!-- logo Placeholder -->
 				<ng-content select="[LogoPlaceholder]"></ng-content>
 			</div>
-			<button *ngIf="!settings.modes.roomEdit && settings.app.enableEditing"
-				class="btn-round blue fixed-top-right right-pad ion-activatable theme-background theme-shadow-one"
-				(click)="edit()">
-				<ion-icon class="edit" name="create"></ion-icon>
-				<ion-ripple-effect></ion-ripple-effect>
-			</button>
+			<!-- Edit Button -->
+			<edit-btn></edit-btn>
 		</div>
 		<!-- Rooms -->
 		<div class="room-menu-container" *ngIf="structure.rooms.length > 0">

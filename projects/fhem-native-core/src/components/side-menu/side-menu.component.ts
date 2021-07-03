@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 // Components
 import { IconModule } from '@FhemNative/components/icon/icon.component';
 import { RoomColorModule } from '@FhemNative/directives/room-color.directive';
+import { EditButtonComponentModule } from '@FhemNative/components/edit-button/edit-button.component';
 
 // Drag And Drop
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -81,12 +82,6 @@ export class SideMenuComponent {
 	// show submenu items
 	toggleSubMenu(event: any): void{
 		event.target.parentNode.parentNode.classList.toggle('show-submenu');
-	}
-
-	// edit button
-	edit(): void{
-		// tell the indicator, that editing was triggered from room with ID
-		this.settings.modeSub.next({ roomEdit: true, roomEditFrom: this.structure.currentRoom.ID });
 	}
 
 	// Edit specific room
@@ -174,7 +169,8 @@ export class SideMenuComponent {
 		CommonModule, 
 		DragDropModule, 
 		RoomColorModule, 
-		TranslateModule 
+		TranslateModule,
+		EditButtonComponentModule
 	],
 	exports: [ SideMenuComponent ]
 })
