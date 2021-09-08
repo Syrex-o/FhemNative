@@ -130,6 +130,7 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 	}
 
 	// get and update sprinkler devices
+	private updateTimer: any;
 	private getSprinklerDevice(device: FhemDevice|null, index: number): void{
 		if(device){
 			const readings: any = device.readings;
@@ -184,9 +185,13 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 			// check if device is smart sprinkler
 			if(device.device === this.data_smartSprinkler){
 				this.smartSprinkler = device;
-				// trigger updater
-				this.updater.next(true);
 			}
+			// trigger updater
+			// reduce update trigger on multiple calls
+			if(this.updateTimer) clearTimeout(this.updateTimer);
+			this.updateTimer = setTimeout(()=>{
+				this.updater.next(true);
+			}, 200);
 		}
 	}
 
@@ -232,18 +237,26 @@ export class FhemSprinklerComponent implements OnInit, OnDestroy {
 			const end2: number = this.time.times(this.sprinklers.times.interval2[i].smartEnd).toMin;
 			if (this.smartSprinkler && !this.smartSprinkler.readings.enableInterval2.Value) {
 				this.sprinklers.times.next[i].startTime = this.checkForDay(i, 1, this.sprinklers.times.interval1[i].smartStart);
-					this.sprinklers.times.next[i].endTime = this.sprinklers.times.interval1[i].smartEnd;
-					this.sprinklers.times.next[i].duration = this.sprinklers.times.interval1[i].smartDuration;
+				this.sprinklers.times.next[i].endTime = this.sprinklers.times.interval1[i].smartEnd;
+				this.sprinklers.times.next[i].duration = this.sprinklers.times.interval1[i].smartDuration;
 			} else {
+				// standard interval 2 detection
 				if (local >= end1) {
 					this.sprinklers.times.next[i].startTime = this.checkForDay(i, 2, this.sprinklers.times.interval2[i].smartStart);
 					this.sprinklers.times.next[i].endTime = this.sprinklers.times.interval2[i].smartEnd;
 					this.sprinklers.times.next[i].duration = this.sprinklers.times.interval2[i].smartDuration;
 				}
+				// interval1 detection
 				if (local >= end2 || local <= start1 || local >= start1 && local <= end1) {
 					this.sprinklers.times.next[i].startTime = this.checkForDay(i, 1, this.sprinklers.times.interval1[i].smartStart);
 					this.sprinklers.times.next[i].endTime = this.sprinklers.times.interval1[i].smartEnd;
 					this.sprinklers.times.next[i].duration = this.sprinklers.times.interval1[i].smartDuration;
+				}
+				// day overlap and partial day overlay
+				if( local > end1 && (start2 < end1 || ( start2 > end2 ) ) ){
+					this.sprinklers.times.next[i].startTime = this.checkForDay(i, 2, this.sprinklers.times.interval2[i].smartStart);
+					this.sprinklers.times.next[i].endTime = this.sprinklers.times.interval2[i].smartEnd;
+					this.sprinklers.times.next[i].duration = this.sprinklers.times.interval2[i].smartDuration;
 				}
 			}
 		}

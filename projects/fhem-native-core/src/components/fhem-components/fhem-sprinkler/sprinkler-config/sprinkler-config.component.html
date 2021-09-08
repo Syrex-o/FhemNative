@@ -49,7 +49,12 @@
 		<div class="category">
 			<button class="select-btn ion-activatable">
 				<p class="des bigger theme-text" (click)="select.open()">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate}}</p>
-				<ion-select class="theme-text"
+				<ion-select class="theme-text sprinkler-weekday-select"
+					[interfaceOptions]="{
+						cssClass: 'sprinkler-weekday-select', 
+						'header': 'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.WEEKDAYS' | translate,
+						'subHeader': sprinklers.names[config.index]
+					}"
 					#select [okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
 					multiple="true" [(ngModel)]="sprinklers.times['interval'+config.interval][config.index].days.days"
 					(ionChange)="changeWeekdays($event, config.index, config.interval)">
