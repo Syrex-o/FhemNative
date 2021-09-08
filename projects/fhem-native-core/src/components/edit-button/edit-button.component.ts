@@ -30,7 +30,7 @@ export class EditButtonComponent {
 	// edit button
 	edit(): void{
 		// check if shared config disabled changes
-		if('sharedConfig' in this.settings.app && this.settings.app.sharedConfig.passive){
+		if('sharedConfig' in this.settings.app && this.settings.app.sharedConfig.enable && this.settings.app.sharedConfig.passive){
 			// show toast for blocked changes
 			this.toast.showAlert(
 				this.translate.instant('GENERAL.SETTINGS.FHEM.SHARED_CONFIG.WARNING.HEADER'),
