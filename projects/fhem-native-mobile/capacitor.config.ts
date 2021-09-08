@@ -13,6 +13,9 @@ const config: CapacitorConfig = {
 			backgroundColor: '#383d44',
 			androidScaleType: 'CENTER_CROP'
 		}
+	},
+	android: {
+		allowMixedContent: true
 	}
 };
 
