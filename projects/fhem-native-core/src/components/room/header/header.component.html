@@ -1,7 +1,6 @@
 <ion-header class="theme-background header">
 	<!-- Room Name and Icon -->
 	<ng-container *ngIf="settings.allowRoomCreation">
-		<ion-menu-button class="theme-text"></ion-menu-button>
 		<!-- Room Name/Icon -->
 		<div class="room-info" *ngIf="structure.currentRoom"
 			roomColor [UID]="structure.currentRoom?.UID" [roomColor]="structure.currentRoom?.color" [theme]="settings.app.theme">

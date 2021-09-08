@@ -8,11 +8,6 @@
 		width: 100%;
 		height: 100%;
 	}
-	ion-menu-button{
-		position: absolute;
-		left: 15px;
-		font-size: 35px;
-	}
 	ion-title{
 		position: absolute;
 		left: 110px;
@@ -21,8 +16,7 @@
 	}
 	icon,
 	button,
-	ion-title,
-	ion-menu-button{
+	ion-title{
 		top: 50%;
 		transform: translateY(-50%);
 	}

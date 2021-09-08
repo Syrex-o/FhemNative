@@ -17,8 +17,11 @@ import { StructureService } from '@FhemNative/services/structure.service';
 	styleUrls: ['./header.component.scss']
 })
 export class RoomHeaderComponent {
-
 	constructor(public settings: SettingsService, public structure: StructureService){}
+
+	toggleMenu(): void{
+		this.settings.menuState = !this.settings.menuState;
+	}
 }
 
 @NgModule({
