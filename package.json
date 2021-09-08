@@ -11,28 +11,27 @@
 		"build": "ng build",
 		"watch": "ng build --watch --configuration development",
 		"test": "ng test",
+		"android:resources": "cordova-res android --skip-config --copy",
+		"ios:resources": "cordova-res ios --skip-config --copy",
 		"electron:serve-tsc": "tsc -p tsconfig.serve.json",
 		"electron:serve": "wait-on http-get://localhost:4200/ && npm run electron:serve-tsc && run-electron . --serve",
 		"serve:electron:fhem-native": "npm-run-all -p serve:web:fhem-native-desktop electron:serve",
-
 		"serve:web:fhem-native": "ng run FhemNativeMobile:serve --host=localhost --port=8100 --configuration development",
 		"serve:web:smart-sprinkler": "ng run SmartSprinkler:serve --host=localhost --port=8100 --configuration development",
 		"serve:web:fhem-native-desktop": "ng run FhemNativeDesktop:serve --host=localhost --port=4200 --configuration development",
-
 		"build:app:prod:android:fhem-native": "ionic cap build android --project='FhemNativeMobile' --configuration production",
+		"build:app:prod:android:ios": "ionic cap build ios --project='FhemNativeMobile' --configuration production",
 		"build:app:prod:android:smart-sprinkler": "ionic cap build android --project='SmartSprinkler' --configuration production",
-
 		"build:electron:prod": "ng build --project='FhemNativeDesktop' --configuration production && npm run electron:serve-tsc",
 		"build:electron:prod:windows": "npm run build:electron:prod && electron-builder build --windows",
 		"build:electron:prod:linux": "npm run build:electron:prod && electron-builder build --linux",
 		"build:electron:prod:mac": "npm run build:electron:prod && electron-builder build --mac",
-
 		"serve:web:fhem-native-website": "ng run FhemNativeWebsite:serve --host=localhost --port=8100 --configuration development",
 		"serve:web:smart-sprinkler-website": "ng run SmartSprinklerWebsite:serve --host=localhost --port=8100 --configuration development",
-
 		"build:web:fhem-native-website": "ng run FhemNativeWebsite:build --configuration production",
-		
-		"deploy:site:smart-sprinkler": "firebase deploy --only hosting:smartsprinkler-b3e1e"
+		"build:web:smart-sprinkler-website": "ng run SmartSprinklerWebsite:build --configuration production",
+		"deploy:site:smart-sprinkler": "firebase use smart-sprinkler-website && firebase deploy --only hosting:smartsprinkler-b3e1e",
+		"deploy:site:fhem-native": "firebase use fhem-native-website && firebase deploy --only hosting:fhemnative-10b33"
 	},
 	"private": true,
 	"dependencies": {
@@ -47,6 +46,8 @@
 		"@angular/platform-browser-dynamic": "~12.0.4",
 		"@angular/router": "~12.0.4",
 		"@capacitor-community/barcode-scanner": "^2.0.1",
+		"@capacitor/cli": "^3.1.1",
+		"@capacitor/core": "^3.1.1",
 		"@fortawesome/angular-fontawesome": "^0.9.0",
 		"@fortawesome/fontawesome-svg-core": "^1.2.35",
 		"@fortawesome/free-solid-svg-icons": "^5.15.3",
@@ -58,6 +59,7 @@
 		"angular2-hotkeys": "^2.3.1",
 		"angularx-qrcode": "^11.0.0",
 		"d3": "^6.7.0",
+		"ng-recaptcha": "^8.0.1",
 		"ngx-cookie-service": "^12.0.0",
 		"ngx-toastr": "^14.0.0",
 		"rxjs": "~6.6.0",

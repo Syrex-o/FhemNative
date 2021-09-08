@@ -763,12 +763,23 @@
 								"glob": "**/*.png",
 								"input": "projects/smart-sprinkler-website/src/assets/images",
 								"output": "./assets/images"
+							},
+							{
+								"glob": "**/*.jpeg",
+								"input": "projects/smart-sprinkler-website/src/assets/images",
+								"output": "./assets/images"
+							},
+							{
+								"glob": "**/*.svg",
+								"input": "projects/smart-sprinkler-website/src/assets/images",
+								"output": "./assets/images"
 							}
 						],
 						"styles": [
 							"projects/fhem-native-core/src/styles.scss",
 							"projects/smart-sprinkler-website/src/styles.scss",
 							{ "input": "projects/fhem-native-core/src/variables.scss" },
+							{ "input": "projects/smart-sprinkler-website/src/variables.scss" },
 							{
 								"input": "node_modules/@ionic/angular/css/core.css"
 							},
@@ -808,12 +819,12 @@
 								{
 									"type": "initial",
 									"maximumWarning": "500kb",
-									"maximumError": "2mb"
+									"maximumError": "3mb"
 								},
 								{
 									"type": "anyComponentStyle",
 									"maximumWarning": "2kb",
-									"maximumError": "10kb"
+									"maximumError": "50kb"
 								}
 							],
 							"fileReplacements": [
