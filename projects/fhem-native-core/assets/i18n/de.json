@@ -1581,7 +1581,7 @@
 			"TRANSLATOR":{
 				"RUN_INTERVAL": {
 					"TITLE": "Sofort Programm",
-					"INFO": "Alle Regner-Kreise laufen lassen",
+					"INFO": "Alle Kreise nacheinander starten für:",
 					"SELECT_MANUAL": "Manuelle Laufzeit auswählen:"
 				},
 				"RUNTIMES":{
@@ -1689,10 +1689,10 @@
 				"WINTER_MODE":{
 					"STATES":{
 						"ACTIVE":{
-							"TITLE": "Der Winter Modus is aktiv. ",
+							"TITLE": "Winter Modus aktiv. ",
 							"INFO": "Die Bewässerung ist deaktiviert.",
 							"CAN_NOT_START":{
-								"INFO": "Bewässerungs-Kreise können nicht gestartet werden."
+								"INFO": "Kreise können nicht gestartet werden."
 							}
 						},
 						"NOT_SET": {
@@ -2714,9 +2714,10 @@
 		"FHEM":{
 			"TITLE": "Fhem",
 			"CONNECTED":"Verbindung zu Fhem hergestellt.",
-			"DISCONNECT": "Verdindung zu Fhem getrennt.",
-			"ERROR": "Fehler bei der Verdindung zu Fhem.",
-			"TIMEOUT": "Verdindungs-Timeout zu Fhem.",
+			"DISCONNECT": "Verbindung zu Fhem getrennt.",
+			"ERROR": "Fehler bei der Verbindung zu Fhem.",
+			"TIMEOUT": "Verbindung-Timeout zu Fhem.",
+			"RETRY": "Timeout-Limit erreicht. Neuer Versuch in 5sek.",
 			"FETCHED_ALL_DEVICES": "Alle Geräte abgeholt.",
 			"DEVICE_UPDATE": "Werte aktuallisiert für: "
 		},

@@ -1585,7 +1585,7 @@
 			"TRANSLATOR":{
 				"RUN_INTERVAL": {
 					"TITLE": "Run interval",
-					"INFO": "Run all sprinklers cycles",
+					"INFO": "Run all cycles after another for:",
 					"SELECT_MANUAL": "Select manual runtime:"
 				},
 				"RUNTIMES":{
@@ -1693,10 +1693,10 @@
 				"WINTER_MODE":{
 					"STATES":{
 						"ACTIVE":{
-							"TITLE": "The winter mode is active",
+							"TITLE": "Winter mode is active",
 							"INFO": "The watering is disabled.",
 							"CAN_NOT_START":{
-								"INFO": "Single sprinkler cycles can not be started"
+								"INFO": "Single cycles can not be started"
 							}
 						},
 						"NOT_SET": {
@@ -2717,6 +2717,7 @@
 			"DISCONNECT": "Disconnected from Fhem",
 			"ERROR": "Connection error to Fhem.",
 			"TIMEOUT": "Connection timeout to Fhem.",
+			"RETRY": "Timeout limit reached. retry in 5sek.",
 			"FETCHED_ALL_DEVICES": "Fetched all devices.",
 			"DEVICE_UPDATE": "Updated values of: "
 		},
