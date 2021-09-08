@@ -34,6 +34,7 @@ export class SettingsService {
 	public operatingPlatform: 'mobile'|'desktop' = 'mobile';
 	public allowRoomCreation: boolean = true;
 	public disableSwipeMenu: boolean = false;
+	public menuState: boolean = false;
 	// block component menus
 	public blockMenus: boolean = false;
 	// block loaders
