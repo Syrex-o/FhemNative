@@ -11,7 +11,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // Ionic
-import { MenuController, ModalController, IonicModule } from '@ionic/angular';
+import { ModalController, IonicModule } from '@ionic/angular';
 // Translate
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -24,6 +24,7 @@ import { StructureService } from '@FhemNative/services/structure.service';
 import { ComponentLoaderService } from '@FhemNative/services/component-loader.service';
 
 // Animation
+import { ShowHide, SlideMenu } from './animations';
 import { MenuStagger } from '../../animations/animations';
 // Interfaces
 import { Room, RoomParams } from '../../interfaces/interfaces.type';
@@ -32,23 +33,24 @@ import { Room, RoomParams } from '../../interfaces/interfaces.type';
 	selector: 'fhemnative-side-menu',
 	templateUrl: './side-menu.component.html',
 	styleUrls: ['./side-menu.component.scss'],
-	animations: [MenuStagger]
+	animations: [MenuStagger, ShowHide, SlideMenu]
 })
 export class SideMenuComponent {
-	// Ionic menu state
-	menuState: boolean = false;
 	// menu button press for settings
 	@Output() onSettingsClick: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(
 		public task: TaskService,
-		private menu: MenuController,
 		private logger: LoggerService,
 		public settings: SettingsService,
 		public structure: StructureService,
 		private undoManager: UndoRedoService,
 		private modalController: ModalController,
 		private componentLoader: ComponentLoaderService){
+	}
+
+	toggleMenu(): void{
+		this.settings.menuState = !this.settings.menuState;
 	}
 
 	// switch room
@@ -66,7 +68,7 @@ export class SideMenuComponent {
 				reloadID: this.settings.getUID()
 			}
 			this.structure.navigateToRoom(name, ID, params);
-			this.menu.close();
+			this.settings.menuState = false;
 		}
 	}
 
@@ -90,7 +92,7 @@ export class SideMenuComponent {
 		this.componentLoader.createSingleComponent('CreateEditRoomComponent', this.componentLoader.containerStack[0].container, {
 			type: 'edit', ID: ID
 		});
-		this.menu.close();
+		this.settings.menuState = false;
 	}
 
 	// remove room
@@ -141,14 +143,14 @@ export class SideMenuComponent {
 	// settings
 	openSettings(): void{
 		this.logger.info('Switch room to: Settings');
-		this.menu.close();
+		this.settings.menuState = false;
 		this.onSettingsClick.emit(true);
 	}
 
 	// open page
 	async openPage(page: string): Promise<any>{
 		this.logger.info('Switch room to: ' + page);
-		this.menu.close();
+		this.settings.menuState = false;
 		// load page comp
 		const comp: any = await this.componentLoader.loadDynamicComponent(page+'/'+page, false);
 		// create modal

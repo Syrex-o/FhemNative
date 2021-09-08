@@ -1,28 +1,25 @@
-<ion-menu contentId="main-content" type="overlay" [disabled]="settings.disableSwipeMenu"
-	(ionDidOpen)="menuState = true" 
-	(ionDidClose)="menuState = false">
-	<ion-content class="theme-background"
-		[class.bigSettings]="settings.app.showTasks || settings.app.enableVariables"
-		[class.biggerSettings]="settings.app.showTasks && settings.app.enableVariables">
-		<div class="header-container theme-shadow-two theme-background">
-			<div class="placeholder">
-				<!-- logo Placeholder -->
-				<ng-content select="[LogoPlaceholder]"></ng-content>
-			</div>
+<div class="side-menu-container" *ngIf="settings.menuState" @ShowHide>
+	<span class="backdrop theme-background" (click)="toggleMenu()"></span>
+	<div class="side-menu theme-background" @SlideMenu>
+		<div class="menu-header">
+			<p class="theme-text">MENU</p>
 			<!-- Edit Button -->
-			<edit-btn></edit-btn>
+			<edit-btn class="non-fixed"></edit-btn>
 		</div>
-		<!-- Rooms -->
-		<div class="room-menu-container" *ngIf="structure.rooms.length > 0">
-			<div *ngIf="menuState" [@MenuStagger]="structure.structuredRooms.length" cdkDropList class="list" (cdkDropListDropped)="drop($event, false)">
-				<div *ngFor="let room of structure.structuredRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
-					<div class="room-box" *ngIf="(task.hideList.rooms.indexOf(room.UID)) === -1">
-						<!-- Drag And Drop Placeholder -->
-						<div class="custom-placeholder" *cdkDragPlaceholder></div>
-						<!-- Group Room -->
-						<ng-container *ngIf="room.useRoomAsGroup && { $implicit: room.name, ID: room.ID, UID: room.UID, icon: room.icon, asGroup: room.groupRooms } as ctx">
-							<!-- ROOM Call -->
-							<ng-container *ngTemplateOutlet="ROOM; context: ctx"></ng-container>
+		<div class="menu-content-container" 
+			[class.bigSettings]="settings.app.showTasks || settings.app.enableVariables"
+			[class.biggerSettings]="settings.app.showTasks && settings.app.enableVariables">
+			<div class="menu-content" *ngIf="structure.structuredRooms.length > 0">
+				<div [@MenuStagger]="structure.structuredRooms.length" cdkDropList class="list" (cdkDropListDropped)="drop($event, false)">
+					<div *ngFor="let room of structure.structuredRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
+						<div class="room-box" *ngIf="(task.hideList.rooms.indexOf(room.UID)) === -1">
+							<!-- Drag And Drop Placeholder -->
+							<div class="custom-placeholder" *cdkDragPlaceholder></div>
+							<!-- Group Room -->
+							<ng-container *ngIf="room.useRoomAsGroup && { $implicit: room.name, ID: room.ID, UID: room.UID, icon: room.icon, asGroup: room.groupRooms } as ctx">
+								<!-- ROOM Call -->
+								<ng-container *ngTemplateOutlet="ROOM; context: ctx"></ng-container>
+							</ng-container>
 							<!-- SUB Items -->
 							<div cdkDropList class="list" (cdkDropListDropped)="drop($event, room)">
 								<div *ngFor="let groupRoom of room.groupRooms" cdkDrag [cdkDragDisabled]="!settings.modes.roomEdit">
@@ -35,16 +32,15 @@
 									</div>
 								</div>
 							</div>
-						</ng-container>
-						<!-- Standard Room -->
-						<ng-container *ngIf="!room.useRoomAsGroup && { $implicit: room.name, ID: room.ID, UID: room.UID, icon: room.icon } as ctx">
-							<ng-container *ngTemplateOutlet="ROOM; context: ctx"></ng-container>
-						</ng-container>
+							<!-- Standard Room -->
+							<ng-container *ngIf="!room.useRoomAsGroup && { $implicit: room.name, ID: room.ID, UID: room.UID, icon: room.icon } as ctx">
+								<ng-container *ngTemplateOutlet="ROOM; context: ctx"></ng-container>
+							</ng-container>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Settings and other menus -->
 		<div class="settings-container">
 			<!-- Settings -->
 			<div class="room-box">
@@ -77,9 +73,21 @@
 				</ion-item>
 			</div>
 		</div>
-	</ion-content>
-</ion-menu>
+	</div>
+</div>
 
+<button *ngIf="settings.allowRoomCreation" 
+	class="menu-btn ion-activatable"
+	[ngClass]="settings.operatingPlatform"
+	[class.active]="settings.menuState" 
+	(click)="toggleMenu()">
+	<span class="line one theme-text-background"></span>
+	<span class="line two theme-text-background"></span>
+	<span class="line three theme-text-background"></span>
+	<ion-ripple-effect></ion-ripple-effect>
+</button>
+
+<!-- Room button template -->
 <ng-template #ROOM let-name let-ID="ID" let-UID="UID" let-icon="icon" let-asGroup="asGroup">
 	<ion-item [class.active-route]="structure.currentRoom?.ID === ID"
 		[class.show-submenu]="checkGroup(asGroup)">
