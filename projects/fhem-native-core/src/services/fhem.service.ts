@@ -1,10 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
+
+// websocket 
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Subject, Subscription } from 'rxjs';
+
 // Services
 import { ToastService } from './toast.service';
 import { SettingsService } from './settings.service';
 import { StructureService } from './structure.service';
 import { LoggerService } from './logger/logger.service';
+
 // Translator
 import { TranslateService } from '@ngx-translate/core';
 
@@ -38,8 +43,8 @@ export class FhemService {
 	// list of devices to listen for changes
 	public listenDevices: Array<ListenDevice> = [];
 
-	// connection 
-	private socket!: WebSocket;
+	// connection
+	private socket$!: WebSocketSubject<any>;
 	private awaitConnectionTimeout: any;
 	private reconnectTimeout: any;
 	// current connection profile
@@ -147,15 +152,11 @@ export class FhemService {
 	}
 
 	// connect to FHEM
-	public connectFhem(): void {
+	public connectFhem(): void{
 		if(!this.noReconnect && !this.connected && !this.connectionInProgress){
 			this.connectionInProgress = true;
-			// check profile
-			if(this.settings.connectionProfiles[this.currentProfile + 1]){
-				this.currentProfile++;
-			}else{
-				this.currentProfile = 0;
-			}
+			// get profile
+			this.currentProfile = this.settings.connectionProfiles[this.currentProfile + 1] ? this.currentProfile + 1 : 0;
 			// build connection
 			this.logger.info('Start connecting to Fhem');
 			this.tries ++;
@@ -165,11 +166,28 @@ export class FhemService {
 			this.devices = [];
 			// get url
 			const url: string = this.getConnectionURL();
-			// get the desired url for fhem connection
 			const type: string = this.connectionType();
-
 			if(['websocket', 'fhemweb'].includes(type)){
-				this.socket = type === 'websocket' ? new WebSocket(url, ['json']) : new WebSocket(url);
+				// build socket
+				this.socket$ = webSocket({
+					url: url,
+					protocol: type === 'websocket' ? 'json' : '',
+					serializer: v => v as ArrayBuffer,
+					deserializer: v=> v,
+					openObserver: {
+						next: () => { this.connectionOpenHandler(); }
+					}
+				});
+				// build handler
+				this.socket$.asObservable().subscribe(
+					// message
+					data => this.handleWebsocketEvents(data),
+					// error
+					error => this.connectionErrorHandler(error),
+					// closed
+					() => this.connectionCloseHandler()
+				);
+
 				// timeout
 				if(this.awaitConnectionTimeout) clearTimeout(this.awaitConnectionTimeout);
 				this.awaitConnectionTimeout = setTimeout(()=>{
@@ -181,21 +199,18 @@ export class FhemService {
 							'Profile: ' + this.currentProfile + ' ' + this.translate.instant('GENERAL.FHEM.TIMEOUT'), 
 							'error'
 						);
-						this.socket.close();
+						this.socket$.complete();
+						this.connectionCloseHandler();
 					}
 				}, 1000);
-				// open
-				this.socket.onopen = (e: any) => this.connectionOpenHandler();
-				// close
-				this.socket.onclose = (e: any) => this.connectionCloseHandler();
-				// error
-				this.socket.onerror = (e: any) => this.connectionErrorHandler(e);
 			}
 		}
 	}
 
 	// handle connection open
 	private connectionOpenHandler(): void{
+		// open event handling
+		this.connectedSub.next(true);
 		// inform logger
 		this.logger.info('Connected to Fhem');
 		// reset blockers
@@ -207,12 +222,8 @@ export class FhemService {
 				if(device) this.deviceUpdateSub.next(device);
 			});
 		});
-		// open event handling
-		this.connectedSub.next(true);
 		// get relevant devices
 		this.listDevices(this.getRelevantDevices());
-		// init websocket events
-		this.websocketEvents();
 		// show success connection message
 		this.toast.addToast(
 			this.translate.instant('GENERAL.FHEM.TITLE'),
@@ -247,29 +258,42 @@ export class FhemService {
 		this.connectedSub.next(false);
 		// reconnect try
 		if(this.reconnectTimeout) clearTimeout(this.reconnectTimeout);
-		this.reconnectTimeout = setTimeout(()=>{
-			if(this.tries <= this.maxTries && !this.noReconnect){
-				this.connectionInProgress = false;
-				this.connectFhem();
+		if(!this.noReconnect){
+			this.connectionInProgress = false;
+			// profile tries
+			if(this.tries <= this.maxTries){
+				// short timeouts in tries
+				this.reconnectTimeout = setTimeout(()=>{
+					this.connectFhem();
+				}, 500);
+			}else{
+				this.tries = 0;
+				this.toast.addToast(
+					this.translate.instant('GENERAL.FHEM.TITLE'),
+					this.translate.instant('GENERAL.FHEM.RETRY'),
+					'info',
+					5000
+				);
+				// longer timeout
+				this.reconnectTimeout = setTimeout(()=>{
+					this.connectFhem();
+				}, 5000);
 			}
-		}, 500);
+		}
 	}
 
 	// handle connection error
 	private connectionErrorHandler(e: any): void {
 		// inform logger
 		this.logger.error('An error occured during the connection process');
-		if(e.target.url){
-			this.logger.error('Connection for URL: ' + e.target.url + ' could not be established. Please check the URL carefully.');
-		}else{
-			this.logger.error('Unknown error ' + e + ' Please check the Dev-Tools, to get more information.');		
-		}
+		this.logger.error('Connection could not be established. Please check the URL carefully.');
+		this.logger.error(e);
 	}
 
 	// disconnect
 	public disconnect(): void {
 		if(this.connected){
-			this.socket.close();
+			this.socket$.complete();
 			this.devices = [];
 			this.listenDevices = [];
 			this.currentProfile = -1;
@@ -304,66 +328,63 @@ export class FhemService {
 		return list.length > 0 ? '('+list.join('|')+')' : '';
 	}
 
-	// websocket event handler
-	// handle fhemweb and external websocket
-	private websocketEvents(): void{
+	// webSocket event handler
+	private handleWebsocketEvents(e: MessageEvent): void{
 		const type: string = this.connectionType();
 		// list of catched devices
 		let listDevices: Array<FhemDevice> = [];
-		const message: any = this.socket.onmessage = (e: any)=>{
-			// initial message
-			let msg = e.data;
-			// handle external websocket
-			if (type === 'websocket') {
-				msg = JSON.parse(msg);
-				if (msg.type === 'listentry') {
-					if(msg.payload.attributes){
-						listDevices.push(this.deviceTransformer(msg.payload, false));
-						if(msg.payload.num === listDevices.length){
-							this.deviceListSub.next(listDevices);
-							listDevices = [];
-						}
-					}
-				}
-				if (msg.type === 'event') {
-					// device update
-					if(this.listenDevices.find(x=> x.device === msg.payload.name)){
-						// device is in listen list
-						this.updateListenDevice(msg.payload.name, msg.payload.changed);
+		// get message
+		let msg = e.data;
+		// handle external websocket
+		if (type === 'websocket') {
+			msg = JSON.parse(msg);
+			if (msg.type === 'listentry') {
+				if(msg.payload.attributes){
+					listDevices.push(this.deviceTransformer(msg.payload, false));
+					if(msg.payload.num === listDevices.length){
+						this.deviceListSub.next(listDevices);
+						listDevices = [];
 					}
 				}
 			}
-			// handle fhemweb
-			if (type === 'fhemweb') {
-				let lines: string[] = msg.split(/\n/).filter((s: string) => s !== '' && s !== '[""]');
-				if (lines.length > 0) {
-					// evaluation for: get all devices
-					if (lines.length === 1) {
+			if (msg.type === 'event') {
+				// device update
+				if(this.listenDevices.find(x=> x.device === msg.payload.name)){
+					// device is in listen list
+					this.updateListenDevice(msg.payload.name, msg.payload.changed);
+				}
+			}
+		}
+		// handle fhemweb
+		if (type === 'fhemweb') {
+			const lines: string[] = msg.split(/\n/).filter((s: string) => s !== '' && s !== '[""]');
+			if (lines.length > 0) {
+				// evaluation for: get all devices
+				if (lines.length === 1) {
+					msg = JSON.parse(msg);
+					if (this.IsJsonString(msg)) {
+						// normal reply
 						msg = JSON.parse(msg);
-						if (this.IsJsonString(msg)) {
-							// normal reply
-							msg = JSON.parse(msg);
-							// keep track of new devices
-							listDevices = [];
-							msg.Results.forEach((result:any)=>{
-								listDevices.push(this.deviceTransformer(result, true));
-							});
-							this.deviceListSub.next(listDevices);
+						// keep track of new devices
+						listDevices = [];
+						msg.Results.forEach((result:any)=>{
+							listDevices.push(this.deviceTransformer(result, true));
+						});
+						this.deviceListSub.next(listDevices);
+					}
+				}else{
+					// evaluation of changes
+					// device got an update
+					const device: string = JSON.parse(lines[0])[0];
+					const change: any = {};
+					if(this.listenDevices.find(x=> x.device === device)){
+						// listen to device
+						for (let i = 1; i < lines.length; i += 2) {
+							const prop = JSON.parse(lines[i])[0].match(/([^-]+(?=))$/)[0];
+							const value = JSON.parse(lines[i])[1];
+							change[prop] = value;
 						}
-					}else{
-						// evaluation of changes
-						// device got an update
-						const device: string = JSON.parse(lines[0])[0];
-						const change: any = {};
-						if(this.listenDevices.find(x=> x.device === device)){
-							// listen to device
-							for (let i = 1; i < lines.length; i += 2) {
-								const prop = JSON.parse(lines[i])[0].match(/([^-]+(?=))$/)[0];
-								const value = JSON.parse(lines[i])[1];
-								change[prop] = value;
-							}
-							this.updateListenDevice(device, change);
-						}
+						this.updateListenDevice(device, change);
 					}
 				}
 			}
@@ -522,7 +543,7 @@ export class FhemService {
 
 						// send list command, to get device
 						if (type === 'fhemweb') {
-							this.socket.send('jsonlist2 ' + deviceList );
+							this.sendCommand({command: 'jsonlist2 ' + deviceList});
 						}
 						if(type === 'websocket'){
 							this.sendCommand({command: 'list', arg: deviceList});
@@ -669,13 +690,13 @@ export class FhemService {
 	public sendCommand(cmd: any): void{
 		const type = this.connectionType();
 		if (type === 'websocket') {
-			this.socket.send(JSON.stringify({
+			this.socket$.next(JSON.stringify({
 				type: 'command',
 				payload: cmd
 			}));
 		}
 		if (type === 'fhemweb') {
-			this.socket.send(cmd.command);
+			this.socket$.next(cmd.command);
 		}
 	}
 
@@ -703,23 +724,18 @@ export class FhemService {
 	// send list command to fhem for relevant connection type
 	private listTrials: number = 0;
 	public listDevices(value: string): void{
-		if(this.socket.readyState === 1) {
+		if(this.socket$['_socket'].readyState === 1) {
 			this.listTrials = 0;
 			const type: string = this.connectionType();
-			if (type === 'websocket') {
-				this.socket.send(JSON.stringify(
-					{type: 'command', payload: {command: 'list', arg: value}}
-				));
-			}
-			if (type === 'fhemweb') {
-				this.socket.send('jsonlist2 '+ value);
-			}
+			this.socket$.next( 
+				type === 'websocket' ? 
+					JSON.stringify({type: 'command', payload: {command: 'list', arg: value}}) :
+					'jsonlist2 '+ value
+			);
 		}else{
 			if(this.listTrials <= 2){
 				this.listTrials ++;
-				setTimeout(()=>{
-					this.listDevices(value);
-				}, 100);
+				setTimeout(()=>{ this.listDevices(value); }, 100);
 			}
 		}
 	}
