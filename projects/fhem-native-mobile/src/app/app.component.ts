@@ -170,8 +170,6 @@ export class AppComponent {
 	private handleAppPause(): void{
 		if(!this.settings.app.keepConnected){
 			this.fhem.noReconnect = true;
-			if(this.fhem.connected) this.fhem.disconnect();
-			this.fhem.listenDevices = [];
  		}
  		this.variable.unlisten();
 	}
