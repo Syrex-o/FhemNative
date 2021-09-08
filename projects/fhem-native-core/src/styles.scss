@@ -69,6 +69,11 @@ ion-alert.wider-btns{
 		white-space: normal !important;
 	}
 }
+ion-alert.sprinkler-weekday-select{
+	.alert-checkbox-group{
+		max-height: 340px;
+	}
+}
 
 ion-slides.custom-pagination{
 	.swiper-pagination.swiper-pagination-bullets{
@@ -182,6 +187,12 @@ fa-icon{
 	}
 	&:hover .line.bottom{
 		transform: translate3d(-50%, -50%,0) rotate(180deg);
+	}
+}
+
+.non-fixed{
+	.btn-round.fixed-top-right{
+		position: absolute;
 	}
 }
 
