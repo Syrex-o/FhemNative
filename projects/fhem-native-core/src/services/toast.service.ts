@@ -40,12 +40,16 @@ export class ToastService {
 		// info
 		// error
 		// success
-	public addToast(head: string, message: string, style: string): void {
+	public addToast(head: string, message: string, style: string, stayTime?: number): void {
 		this.zone.run(() => {
 			const styling: string = style.toLowerCase();
 			if (this.settings.app.showToastMessages) {
 				if(styling === 'info' || styling === 'error' || styling === 'success'){
-					this.toast[styling](message, head, this.toastSettings);
+					const settings: NotifyDefaults = JSON.parse(JSON.stringify(this.toastSettings));
+					if(stayTime){
+						settings.timeOut = stayTime;
+					}
+					this.toast[styling](message, head, settings);
 				}
 			}
 		});
