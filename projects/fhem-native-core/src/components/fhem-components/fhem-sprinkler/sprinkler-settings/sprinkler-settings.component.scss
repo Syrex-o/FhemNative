@@ -1,20 +1,31 @@
 :host{
 	.sprinkler-settings{
 		height: 100%;
+		margin-top: 1px;
 		ion-slides{
 			height: inherit;
 			ion-slide{
 				overflow-y: auto;
 				overflow-x: hidden;
+				margin-top: 20px;
 			}
+		}
+		.scroll-overlay{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 30px;
+			box-shadow: 0px 15px 15px -10px rgba(0,0,0,0.3);
 		}
 		.sprinkler-interval{
 			position: absolute;
-			top: 0;
+			top: 20px;
 			left: 0;
 			width: 100%;
 			padding-left: 8px;
 			padding-right: 8px;
+			padding-bottom: 20px;
 			.des{
 				margin-bottom: 2px;
 				font-size: 1.1em;
@@ -104,7 +115,12 @@
 						display: inline-block;
 					}
 					.runtime{
+						font-weight: 600;
 						width: 130px;
+						margin-bottom: 0px;
+					}
+					.runtime-detail{
+						margin-top: 0px;
 					}
 				}
 			}

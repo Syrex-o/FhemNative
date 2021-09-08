@@ -85,13 +85,30 @@ export class SprinklerTimelineComponent implements OnInit, OnChanges, OnDestroy 
 		const intervalIndex: number = (inter === 'inter1') ? 1 : 2;
 		const interval: string = (inter === 'inter1') ? 'interval1' : 'interval2';
 
-		const days = this.sprinklers.times[interval][index].days.days;
-		for (let i: number = 0; i < days.length; i++) {
-			let day: any = days[i];
+		// relevant days of sprinkler
+		const days: string[] = this.sprinklers.times[interval][index].days.days;
+		// loop all days, to reset off days on change from timeline
+		const allDays: string[] = ["1", "2", "3", "4", "5", "6", "0"];
+		allDays.forEach((weekday: string)=>{
+			let day: any = weekday;
 			// sunday = 0 fix
 			if (parseInt(day) === 0)  day = '7';
-			this.calendarPercentage(start, end, duration, intervalIndex, index, day);
-		}
+			if(days.includes(weekday)){
+				// update needed
+				this.calendarPercentage(start, end, duration, intervalIndex, index, day);
+			}else{
+				// crear data --> only if height was already assigned, when day was previously active
+				if(this.percentageArr[index]){
+					this.percentageArr[index]['heightP_' + intervalIndex + '_' + day] = '0%';
+					let nextD: number = parseInt(day) + 1;
+					if (day === '7') nextD = 1;
+					// overlap 00:00 fix
+					if( this.percentageArr[index]['heightFromNullP_' + intervalIndex + '_' + nextD] ){
+						this.percentageArr[index]['heightFromNullP_' + intervalIndex + '_' + nextD] = '0%';
+					}
+				}
+			}
+		});
 	}
 
 	private calendarPercentage(start: number, end: number, duration: number, interval: number, index: number, dayPick: string) {
@@ -101,10 +118,10 @@ export class SprinklerTimelineComponent implements OnInit, OnChanges, OnDestroy 
 		let day = parseInt(dayPick);
 		if (start > end) {
 			// sunday = 0 fix
-			if (day === 0) { day = 7; }
+			if (day === 0) day = 7;
 			// from 00:00 is arranged to next day
 			let nextD = day + 1;
-			if (day === 7) {nextD = 1; }
+			if (day === 7) nextD = 1;
 			this.percentageArr[index]['startFromNullP_' + interval + '_' + nextD] = '0%';
 			this.percentageArr[index]['heightFromNullP_' + interval + '_' + nextD] = ((duration - (1440 - start)) / 1440) * 100 + '%';
 		}

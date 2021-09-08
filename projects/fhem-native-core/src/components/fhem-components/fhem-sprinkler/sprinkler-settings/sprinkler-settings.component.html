@@ -1,6 +1,7 @@
 <div class="sprinkler-settings">
-	<ion-slides>
+	<ion-slides [pager]="true">
 		<ion-slide *ngFor="let j of [1,2]">
+			<div class="scroll-overlay theme-background"></div>
 			<div class="sprinkler-interval" [ngClass]="'interval'+j">
 				<h2 class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.INTERVAL.TITLE' | translate}} {{j}}</h2>
 				<!-- Disable second Interval overlay -->
