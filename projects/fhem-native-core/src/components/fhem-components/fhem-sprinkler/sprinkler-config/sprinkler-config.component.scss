@@ -97,6 +97,20 @@
 				height: 100%;
 				padding: 0;
 				line-height: 25px;
+				&.sprinkler-weekday-select{
+					&::part(text){
+						display: none;
+					}
+					&::part(icon){
+						position: absolute;
+						right: 3px;
+						opacity: 1;
+						width: 25px;
+						height: 25px;
+						top: 50%;
+						transform: translateY(-50%) scale(1.5);
+					}
+				}
 			}
 		}
 		.summary{
@@ -109,7 +123,12 @@
 				margin-left: 8px;
 			}
 			.runtime{
+				font-weight: 600;
 				width: 150px;
+				margin-bottom: 0px;
+			}
+			.runtime-detail{
+				margin-top: 0px;
 			}
 		}
 	}
