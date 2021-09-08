@@ -96,12 +96,13 @@ export class PickerComponent {
 			this.closePicker(true, true);
 			this.cdr.detectChanges();
 		}else{
-			const timeout: number = (elem.clientHeight / (elem.clientHeight - delta)) / 10;
+			const timeout: number = parseFloat(((elem.clientHeight / (elem.clientHeight - delta)) / 10).toFixed(4));
 			elem.style.transition = timeout + 's ease';
 			elem.style.transform = 'translateY(0px)';
 			setTimeout(()=>{ 
 				elem.style.transition = '0s'; 
-			}, timeout);
+				elem.style.transform = '';
+			}, timeout * 1000);
 		}
 	}
 
