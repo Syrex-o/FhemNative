@@ -81,10 +81,7 @@ export const MenuStagger = trigger('MenuStagger', [
 				speed.stagger,
 				animCombiner(speed.fast, timing.easeOut, styleCombiner([styles.show, styles.Y0]))
 			)
-			],{ optional: true}),
-		query(':leave', [
-			animCombiner(speed.light, timing.easeOut, styleCombiner([styles.hide, styles.YLittle_N]))
-		],{ optional: true })
+		],{ optional: true})
 	])
 ]);
 
