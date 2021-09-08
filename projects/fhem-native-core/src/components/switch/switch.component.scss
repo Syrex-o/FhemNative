@@ -1,12 +1,20 @@
 :host {
 	display: block;
+	width: 100%;
+	&.full-height{
+		height: 100%;
+		.switch-container{
+			height: 100%;
+		}
+	}
 	.switch-container {
 		position: relative;
 		width: 100%;
 		min-height: 45px;
 		&.padding {
 			padding-left: 8px;
-		} // toggles
+		} 
+		// toggles
 		button {
 			background-color: transparent;
 			margin-right: 8px;
@@ -167,9 +175,6 @@
 				width: calc(100% - 110px);
 			}
 		}
-		&.full-height {
-			height: 100%;
-		}
 		// neumorph
 		&.NM-IN-toggle,
 		&.NM-IN-toggle-outline,
@@ -268,6 +273,7 @@
 					white-space: initial;
 					line-height: 15px;
 					margin-top: 2px;
+					margin-bottom: 5px;
 				}
 			}
 		}

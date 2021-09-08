@@ -10,6 +10,7 @@ import { SettingsService } from '../../services/settings.service';
 	selector: 'switch',
 	templateUrl: './switch.component.html',
 	styleUrls: ['./switch.component.scss'],
+	host: {'[class.full-height]': 'fullHeight'},
 	providers: [{provide: NG_VALUE_ACCESSOR, useExisting: SwitchComponent, multi: true}]
 })
 export class SwitchComponent {
