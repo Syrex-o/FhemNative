@@ -1,0 +1,27 @@
+{
+  "name": "components",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/components/src",
+  "prefix": "fhem-native",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/components"],
+      "options": {
+        "jestConfig": "libs/components/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/src/**/*.ts",
+          "libs/components/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

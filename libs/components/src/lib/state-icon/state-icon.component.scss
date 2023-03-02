@@ -1,0 +1,38 @@
+:host{
+    position: relative;
+    width: 20px;
+    height: 20px;
+
+    .line{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        height: 2px;
+        opacity: 1;
+        background-color: var(--btn-text-a);
+        transform: translate(-50%, -50%);
+        transition: opacity 200ms ease-in, transform 200ms ease-out;
+        will-change: transform;
+    }
+
+    // plus icon
+    &.plus{
+        .line.two{
+            transform: translate(-50%, -50%) rotate(-90deg);
+        }
+    }
+
+    // active animations
+    &.active{
+        // plus icon animation
+        &.plus{
+            .line.one{
+                opacity: 0;
+            }
+            .line.two{
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+        }
+    }
+}

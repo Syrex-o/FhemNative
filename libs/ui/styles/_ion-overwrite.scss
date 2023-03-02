@@ -1,0 +1,91 @@
+// overwrite root variables
+:root{
+    --ion-font-family: var(--font-b);
+}
+
+// overwrite needed ionic items
+ion-select{
+    --padding-start: 10px;
+    font-size: var(--size-6);
+    letter-spacing: var(--sapcing-b);
+}
+
+ion-action-sheet,
+ion-popover,
+ion-alert{
+    --backdrop-opacity: var(--backdrop-op);
+    ion-backdrop,
+    &::part(backdrop){
+        background-color: var(--secondary);
+    }
+}
+
+ion-popover{
+    &::part(content){
+        border: none;
+    }
+}
+
+ion-input{
+    input{
+        height: var(--item-height-a);
+    }
+}
+
+ion-alert{
+    --background: var(--primary) !important;
+    .alert-wrapper{
+        width: 80% !important;
+        max-width: 400px !important;
+        .alert-title{
+            color: var(--text-a);
+            font-family: var(--font-a);
+            letter-spacing: var(--sapcing-a);
+        }
+        .alert-message{
+            color: var(--text-b);
+            letter-spacing: var(--sapcing-b);
+        }
+        .alert-button-group{
+            margin-bottom: var(--item-spacing-a);
+            .alert-button{
+                margin-top: var(--item-spacing-a);
+                font-weight: 600;
+                padding: 8px 22px;
+                border-radius: var(--radius-a);
+                &.alert-button-role-cancel{
+                    color: var(--info-b);
+                    background-color: var(--info);
+                }
+                &.alert-button-role-save{
+                    color: var(--success-b);
+                    background-color: var(--success);
+                }
+            }
+        }
+    }
+}
+
+ion-button{
+    --background-hover-opacity: 0;
+    --box-shadow: none;
+    &.icon-only{
+        --padding-start: 0px;
+        --padding-end: 0px;
+    }
+    &.type-a{
+        --color: var(--btn-text-a);
+        --background: var(--btn-bg-a);
+    }
+    &.type-b{
+        --border-style: solid;
+        --border-width: 2px;
+		--border-color: var(--btn-text-b);
+        --color: var(--btn-text-b);
+		--background: var(--btn-bg-b);
+    }
+    &.type-c{
+        --color: var(--btn-text-b);
+		--background: var(--tertiary);
+    }
+}

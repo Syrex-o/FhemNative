@@ -1,0 +1,36 @@
+// font sizes
+.size-a-app{
+	font-size: var(--size-2);
+	line-height: var(--lHeight-2);
+	letter-spacing: var(--spacing-a);
+}
+
+.size-b-app{
+	font-size: var(--size-3);
+	line-height: var(--lHeight-3);
+	letter-spacing: var(--spacing-a);
+}
+
+.size-c-app{
+	font-size: var(--size-4);
+	line-height: var(--lHeight-4);
+	letter-spacing: var(--spacing-b);
+}
+
+.size-d-app{
+	font-size: var(--size-5);
+	line-height: var(--lHeight-5);
+	letter-spacing: var(--spacing-b);
+}
+
+.size-e-app{
+	font-size: var(--size-6);
+	line-height: var(--lHeight-6);
+	letter-spacing: var(--spacing-b);
+}
+
+.size-f-app{
+	font-size: var(--size-7);
+	line-height: var(--lHeight-7);
+	letter-spacing: var(--spacing-c);
+}

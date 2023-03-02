@@ -1,0 +1,29 @@
+// Fonts
+
+// Poppins
+@font-face{
+	font-family: "Poppins";
+	src: url('/assets/fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+@font-face{
+	font-family: "Poppins-Bold";
+	src: url('/assets/fonts/Poppins-Bold.ttf') format('truetype');
+}
+
+// Montserrat
+@font-face{
+	font-family: "Montserrat";
+	src: url('/assets/fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+@font-face{
+	font-family: "Montserrat-Bold";
+	src: url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
+}
+
+.font-a{ font-family: var(--font-a); }
+.font-b{ font-family: var(--font-b); }
+
+h1,h2,h3,h4,h5,h6{ font-family: var(--font-a); }
+p, a, li, span{ font-family: var(--font-b); }

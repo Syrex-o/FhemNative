@@ -1,0 +1,230 @@
+{
+  "name": "fhem-native",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/fhem-native/src",
+  "prefix": "fhem-native",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/fhem-native",
+        "index": "apps/fhem-native/src/index.html",
+        "main": "apps/fhem-native/src/main.ts",
+        "polyfills": "apps/fhem-native/src/polyfills.ts",
+        "tsConfig": "apps/fhem-native/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/ui/styles"]
+        },
+        "assets": [
+          "apps/fhem-native/src/assets",
+          {
+            "glob": "**/*.svg",
+            "input": "node_modules/ionicons/dist/ionicons/svg",
+            "output": "./svg"
+          },
+          {
+            "glob": "**/*.ttf",
+            "input": "libs/ui/assets/fonts",
+            "output": "assets/fonts"
+          },
+          {
+            "glob": "*.json",
+            "input": "libs/ui/assets/i18n/app",
+            "output": "assets/i18n"
+          },
+          {
+            "glob": "**/*.*",
+            "input": "libs/ui/assets/img/common",
+            "output": "assets/img"
+          },
+          {
+            "glob": "**/*.*",
+            "input": "libs/ui/assets/img/app",
+            "output": "assets/img/app"
+          }
+        ],
+        "styles": [
+          "apps/fhem-native/src/styles.scss",
+          {
+            "input": "apps/fhem-native/src/theme/variables.scss"
+          }
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "15kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/fhem-native/src/environments/environment.ts",
+              "with": "apps/fhem-native/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "fhem-native:build:production"
+        },
+        "development": {
+          "browserTarget": "fhem-native:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "fhem-native:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/fhem-native/src/**/*.ts",
+          "apps/fhem-native/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/fhem-native"],
+      "options": {
+        "jestConfig": "apps/fhem-native/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "cap": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "--help"
+      }
+    },
+    "add": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "add"
+      },
+      "configurations": {
+        "ios": {
+          "cmd": "add ios"
+        },
+        "android": {
+          "cmd": "add android"
+        }
+      }
+    },
+    "copy": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "copy"
+      },
+      "configurations": {
+        "ios": {
+          "cmd": "copy ios"
+        },
+        "android": {
+          "cmd": "copy android"
+        }
+      }
+    },
+    "open": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "open"
+      },
+      "configurations": {
+        "ios": {
+          "cmd": "open ios"
+        },
+        "android": {
+          "cmd": "open android"
+        }
+      }
+    },
+    "run": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "run"
+      },
+      "configurations": {
+        "ios": {
+          "cmd": "run ios"
+        },
+        "android": {
+          "cmd": "run android"
+        }
+      }
+    },
+    "sync": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "sync"
+      },
+      "configurations": {
+        "ios": {
+          "cmd": "sync ios"
+        },
+        "android": {
+          "cmd": "sync android"
+        }
+      }
+    },
+    "update": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "update"
+      },
+      "configurations": {
+        "ios": {
+          "cmd": "update ios"
+        },
+        "android": {
+          "cmd": "update android"
+        }
+      }
+    },
+    "deploy": {
+      "executor": "@angular/fire:deploy",
+      "options": {
+        "prerender": false,
+        "ssr": false,
+        "browserTarget": "fhem-native:build:production",
+        "firebaseProject": "fhemnative-10b33",
+        "firebaseHostingSite": "fhemnative-10b33"
+      }
+    }
+  },
+  "tags": []
+}

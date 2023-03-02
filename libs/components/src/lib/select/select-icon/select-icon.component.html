@@ -1,0 +1,35 @@
+<fhem-native-select
+    [ngModel]="value"
+    (ngModelChange)="ngModelChangeCallback($event)"
+    [items]="icon.icons"
+    [multi]="multi"
+    [selectionType]="selectionType"
+    [selectProp]="selectProp"
+    [displayProp]="displayProp"
+    [label]="label"
+    [info]="info"
+    [searchable]="searchable"
+    [placeholder]="placeholder">
+
+    <!-- current icons -->
+    <ng-template #VALUE_TEMPLATE let-currentValue="currentValue">
+        <div class="select-component-icon-container selected">
+            <ng-template [ngIf]="multi" [ngIfElse]="SINGLE_ICON">
+                <ng-container *ngFor="let icon of currentValue">
+                    <fhem-native-icon class="selected-icon" [icon]="icon"></fhem-native-icon>
+                </ng-container>
+            </ng-template>
+            <ng-template #SINGLE_ICON>
+                <fhem-native-icon class="selected-icon" [icon]="currentValue"></fhem-native-icon>
+            </ng-template>
+        </div>
+    </ng-template>
+
+    <!-- selectable icons -->
+    <ng-template #ITEM_TEMPLATE let-item="item" let-index="index">
+        <div class="select-component-icon-container">
+            <fhem-native-icon class="selectable-icon" [icon]="( displayProp ? item[displayProp] : item )"></fhem-native-icon>
+            <fhem-native-text-line [shorten]="true" [bold]="true" [text]="( displayProp ? item[displayProp] : item )"></fhem-native-text-line>
+        </div>
+    </ng-template>
+</fhem-native-select>

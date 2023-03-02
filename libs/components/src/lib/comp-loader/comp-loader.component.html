@@ -1,0 +1,12 @@
+<div class="comp-loader-container" *ngIf="containerId"
+
+    [fhemNativeTransformationManager]="containerId"
+    [editMode]="(coreEditor$ | async) || undefined"
+
+    (beginTransformationAny)="onBeginTransformationAny($event)"
+    (endTransformationAny)="onEndTransformationAny($event)"
+
+    (scroll)="onScroll()">
+    <ng-container #Container></ng-container>
+    <fhem-native-grid *ngIf="showGrid$ | async"></fhem-native-grid>
+</div>

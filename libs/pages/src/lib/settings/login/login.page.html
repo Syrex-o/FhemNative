@@ -1,0 +1,108 @@
+<fhem-native-close-btn-container #HEADER  pageHeader="Login" (closeButtonClicked)="cancelIPSettings()"></fhem-native-close-btn-container>
+
+<ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
+	<div class="auto-container">
+		<h2 class="page-header size-b-app center color-a-app">Login</h2>
+
+		<img class="logo" src="assets/img/icon_transparent.png">
+		<!-- <div class="center margin-bottom-20">
+			<h3 class="size-c-app color-b-app center">{{'PAGES.LOGIN.LOGIN_INFO' | translate}}</h3>
+		</div> -->
+		<h3 class="size-c-app color-b-app center">{{'PAGES.LOGIN.LOGIN_INFO' | translate}}</h3>
+
+		<!-- Connection Infos -->
+		<div class="connection-block background-b-app padding-10 rounded" *ngFor="let connectionProfile of settings.connectionProfiles; let i = index;">
+			<!-- connection profile data -->
+			<h3 class="center size-d-app color-a-app spacing-a margin-bottom-20">{{'PAGES.LOGIN.CONNECTION_PROFILE' | translate}}: {{ (i + 1) }}</h3>
+
+			<!-- IP -->
+			<fhem-native-input
+				[trimInput]="true"
+				[label]="('PAGES.LOGIN.CONNECTION.IP.TEXT' | translate)"
+				[info]="('PAGES.LOGIN.CONNECTION.IP.INFO' | translate)"
+				[placeholder]="('PAGES.LOGIN.CONNECTION.IP.PLACEHOLDER' | translate)"
+				[(ngModel)]="connectionProfile.IP">
+			</fhem-native-input>
+
+			<!-- PORT -->
+			<fhem-native-input
+				[trimInput]="true"
+				[label]="('PAGES.LOGIN.CONNECTION.PORT.TEXT' | translate)"
+				[info]="('PAGES.LOGIN.CONNECTION.PORT.INFO' | translate)"
+				[placeholder]="('PAGES.LOGIN.CONNECTION.PORT.PLACEHOLDER' | translate)"
+				[(ngModel)]="connectionProfile.PORT">
+			</fhem-native-input>
+
+			<!-- Select Type of connection -->
+			<fhem-native-select
+				[items]="connectionTypes"
+				[(ngModel)]="connectionProfile.type"
+				selectProp="value"
+				displayProp="display"
+				[label]="('PAGES.LOGIN.CONNECTION.TYPE.TEXT' | translate)"
+				[info]="('PAGES.LOGIN.CONNECTION.TYPE.INFO' | translate)"
+				[placeholder]="('PAGES.LOGIN.CONNECTION.TYPE.PLACEHOLDER' | translate)">
+			</fhem-native-select>
+
+			<!-- Select secure/insecure Websocket connection -->
+			<fhem-native-switch
+				[(ngModel)]="connectionProfile.WSS"
+				[label]="('PAGES.LOGIN.CONNECTION.WSS.TEXT' | translate)"
+				[info]="('PAGES.LOGIN.CONNECTION.WSS.INFO' | translate)">
+			</fhem-native-switch>
+
+			<!-- Basic Auth -->
+			<fhem-native-switch
+				[(ngModel)]="connectionProfile.basicAuth"
+				[label]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.TEXT' | translate)"
+				[info]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.INFO' | translate)">
+			</fhem-native-switch>
+
+			<!-- Basic Auth Ubername and Password -->
+			<div class="padding-left-10" *ngIf="connectionProfile.basicAuth">
+				<!-- Basic Auth Username -->
+				<fhem-native-input
+					[label]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.USER.TEXT' | translate)"
+					[info]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.USER.INFO' | translate)"
+					[placeholder]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.USER.PLACEHOLDER' | translate)"
+					[(ngModel)]="connectionProfile.USER">
+				</fhem-native-input>
+
+				<!-- Basic Auth Password -->
+				<fhem-native-input
+					inputType="password"
+					[label]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.PASSW.TEXT' | translate)"
+					[info]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.PASSW.INFO' | translate)"
+					[placeholder]="('PAGES.LOGIN.CONNECTION.BASIC_AUTH.PASSW.PLACEHOLDER' | translate)"
+					[(ngModel)]="connectionProfile.PASSW">
+				</fhem-native-input>
+			</div>
+			<!-- remove connection block -->
+			<div class="btn-block red" *ngIf="i !== 0">
+				<fhem-native-text-block [label]="('PAGES.LOGIN.PROFILE_OPTIONS.REMOVE.TEXT' | translate)" [info]="('PAGES.LOGIN.PROFILE_OPTIONS.REMOVE.INFO' | translate)"></fhem-native-text-block>
+				<ion-button (click)="removeConnectionProfile(i)">
+					<ion-icon name="trash-outline"></ion-icon>
+				</ion-button>
+			</div>
+		</div>
+		<!-- add connection block -->
+		<div class="btn-block">
+			<fhem-native-text-block [label]="('PAGES.LOGIN.PROFILE_OPTIONS.ADD.TEXT' | translate)" [info]="('PAGES.LOGIN.PROFILE_OPTIONS.ADD.INFO' | translate)"></fhem-native-text-block>
+			<ion-button (click)="addConnectionProfile()">
+				<ion-icon name="add-outline"></ion-icon>
+			</ion-button>
+		</div>
+
+		<!-- save/cancel -->
+		<div class="save-container">
+			<button class="app-button save ion-activatable" (click)="testIPSettings()">
+				{{'DICT.SAVE' | translate}}
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+			<button class="app-button cancel ion-activatable" (click)="cancelIPSettings()">
+				{{'DICT.CANCEL' | translate}}
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+	</div>
+</ion-content>

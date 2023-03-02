@@ -1,0 +1,14 @@
+<div #Grid class="grid-wrapper">
+	<div class="grid-height-container" [style.height.px]="gridHeight">
+		<span *ngFor="let w of gridW; let i = index; trackBy: trackByFn;" 
+			class="grid-line w" 
+			[style.left.%]="w"
+			[ngClass]="(i+1) % 7 === 0 ? 'bold' : ''">
+		</span>
+	</div>
+	<span *ngFor="let h of gridH; let i = index;" 
+		class="grid-line h" 
+		[style.top.%]="h"
+		[ngClass]="(i+1) % 7 === 0 ? 'bold' : ''">
+	</span>
+</div>

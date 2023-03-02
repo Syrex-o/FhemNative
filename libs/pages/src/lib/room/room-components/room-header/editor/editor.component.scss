@@ -1,0 +1,89 @@
+:host{
+    display: inherit;
+    align-items: inherit;
+}
+
+.editor-container{
+    display: flex;
+    align-items: center;
+    &.mobile{
+        display: none;
+    }
+    .flex-block-item{
+        margin-right: var(--item-spacing-a);
+    }
+    .after-line{
+        position: relative;
+        margin-right: calc(var(--item-spacing-a) * 3) !important;
+        &::after{
+            content: "";
+            position: absolute;
+            right: calc(var(--item-spacing-a) * -1.5);
+            width: 1px;
+            height: 50%;
+            top: 25%;
+            background-color: var(--text-b);
+        }
+    }
+    .mobile-btn{
+        position: relative;
+		width: 45px;
+		height: 45px;
+		margin: 2.5px 5px;
+		border-radius: 50%;
+		overflow: hidden;
+		background-color: transparent;
+		ion-icon{
+			font-size: 20px;
+			color: var(--tex-a);
+		}
+    }
+    fhem-native-switch{
+        width: 105px;
+    }
+}
+
+.editor-save-btn{
+    padding: 0 16px;
+    font-size: 13px;
+    border-radius: var(--radius-b);
+}
+
+ion-button.editor-trigger-btn{
+    height: 45px;
+    width: 45px;
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: transparent;
+    --border-radius: var(--radius-b);
+    ion-icon{
+        font-size: 20px;
+        color: var(--text-a);
+    }
+}
+
+ion-popover.editor-container-popover{
+	--width: auto;
+    --background: var(--secondary);
+    &::part(content){
+        padding: 10px;
+        align-items: stretch;
+    }
+
+    fhem-native-room-header-undo-redo{
+        text-align: center;
+    }
+    fhem-native-switch{
+        margin-bottom: 10px;
+    }
+}
+
+// for breakpoint --> see room component scss
+@media only screen and (max-width: 900px) {
+	.editor-container.desktop{
+		display: none;
+	}
+	.editor-container.mobile{
+		display: flex;
+	}
+}

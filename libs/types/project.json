@@ -1,0 +1,27 @@
+{
+  "name": "types",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/types/src",
+  "prefix": "fhem-native",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/types"],
+      "options": {
+        "jestConfig": "libs/types/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/types/src/**/*.ts",
+          "libs/types/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

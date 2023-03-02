@@ -1,0 +1,16 @@
+<div class="input-container" [class.has-info]="info !== ''">
+    <fhem-native-text-line *ngIf="label && label !== ''" [bold]="true" [text]="label"></fhem-native-text-line>
+    <div class="input-inner-container">
+        <div class="input-field-container">
+            <ion-input [type]="currentInputType" [placeholder]="placeholder" [value]="value" (ionChange)="updateIonChanges($event)"></ion-input>
+
+            <!-- Password Eye container -->
+            <ion-button *ngIf="inputType === 'password'" class="password-container" (click)="updateInputType()">
+                <ion-icon [name]="currentInputType === 'password' ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </ion-button>
+        </div>
+        
+        <!-- Info btn -->
+        <fhem-native-info-btn  *ngIf="info !== ''" [label]="label" [info]="info"></fhem-native-info-btn>
+    </div>
+</div>

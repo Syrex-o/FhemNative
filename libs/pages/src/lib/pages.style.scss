@@ -1,0 +1,13 @@
+:host{
+    .page-container{
+        padding: var(--padding-b);
+    }
+
+    .auto-container{
+        padding: var(--padding-b);
+        width: 100%;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

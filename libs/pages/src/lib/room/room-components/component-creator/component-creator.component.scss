@@ -1,0 +1,134 @@
+:host{
+	--outer-items: 2;
+	--item-height: 60px;
+	--main-spacing: 5px;
+	.content{
+		position: relative;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		transition: all 0s ease;
+		transition-delay: 0s;
+		user-select: none;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.flex-container,
+	.scroll-container{
+		padding: var(--padding-a);
+	}
+
+	.flex-container{
+		display: flex;
+		&.outer{
+			height: 60px;
+		}
+		&.end{
+			justify-content: flex-end;
+		}
+		&.spaced{
+			justify-content: space-between;
+		}
+		&.centered{
+			align-items: center;
+		}
+	}
+
+	.header-container,
+	.save-container{
+		position: relative;
+	}
+
+	.header-container::after,
+	.save-container::before{
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 1px;
+		left: 0;
+		opacity: var(--backdrop-op);
+        background-color: var(--quaternary);
+	}
+
+	.header-container::after{ bottom: 0px; }
+	.save-container::before{ top: 0; }
+
+	.scroll-container{
+		left: 0;
+		width: 100%;
+		height: calc(100% - ( calc(var(--item-height) * var(--outer-items)) + calc(var(--padding-a) * var(--outer-items)) + calc(var(--main-spacing) * 2) ) );
+		overflow-x: hidden;
+		overflow-y: auto;
+		position: relative;
+		&.select-component{
+			height: calc(100% - ( calc(var(--item-height) * calc(var(--outer-items) - 1)) + calc(var(--padding-a) * calc(var(--outer-items) - 1)) + calc(var(--main-spacing) * 2) ) );
+		}
+		.category-item{
+			position: relative;
+			text-align: left;
+			width: 100%;
+			height: var(--item-height);
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			padding: 0 var(--padding-a);
+			justify-content: flex-start;
+			background-color: var(--primary);
+			border-top-left-radius: var(--radius-c);
+			border-top-right-radius: var(--radius-c);
+			&.content-item{
+				background-color: transparent;
+				border-radius: var(--radius-a);
+			}
+		}
+	}
+
+	.app-button{
+		padding: 0 16px;
+		font-size: 13px;
+		margin-left: var(--item-spacing-a);
+		border-radius: var(--radius-b);
+	}
+
+	// settings
+	.comp-settings-container{
+		position: relative;
+		padding: var(--padding-a) 0;
+		&.comp-info{
+			.comp-type{
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-top: var(--item-spacing-a);
+				ion-icon{
+					font-size: 20px;
+					margin-right: var(--item-spacing-b);
+				}
+			}
+		}
+		.comp-input-check-container{
+			&.hide{
+				display: none;
+			}
+		}
+	}
+
+	&.expanded{
+		.content{
+			transition: opacity 0.2s ease;
+			transition-delay: 0.3s;
+			opacity: 1;
+		}
+	}
+
+
+	// for breakpoint --> see room component scss
+    @media only screen and (max-width: 900px) {
+		.preview-btn{
+			display: none;
+		}
+	}
+}

@@ -1,0 +1,116 @@
+<fhem-native-close-btn-container #HEADER [pageHeader]="('PAGES.SETTINGS.HEAD' | translate)" (closeButtonClicked)="back()"></fhem-native-close-btn-container>
+
+<ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
+    <div class="auto-container">
+        <h2 class="size-b-app color-a-app">{{'PAGES.SETTINGS.HEAD' | translate}}</h2>
+
+        <fhem-native-ui-category>
+            <fhem-native-text-line name [wrap]="false"> {{'PAGES.SETTINGS.FHEM.HEAD' | translate}}</fhem-native-text-line>
+            <div content>
+                <!-- login -->
+                <fhem-native-ui-box [clickable]="true" [routerLink]="['login']">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.SOCKET_SETTINGS.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.SOCKET_SETTINGS.INFO' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app" name="lock-closed-outline"></ion-icon>
+                </fhem-native-ui-box>
+
+                <!-- room export -->
+                <fhem-native-ui-box [clickable]="true" (click)="downloadConfig()">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.EXPORT.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.EXPORT.INFO' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app" name="download-outline"></ion-icon>
+                </fhem-native-ui-box>
+
+                <!-- room import -->
+                <fhem-native-ui-box [clickable]="true" class="mb-1-5" (click)="importConfig()">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.IMPORT.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.IMPORT.INFO' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app rotated" name="download-outline"></ion-icon>
+                </fhem-native-ui-box>
+            </div>
+        </fhem-native-ui-category>
+
+        <fhem-native-ui-category *ngIf="primaryColor$ | async as primaryColor">
+            <fhem-native-text-line name [wrap]="false"> {{'PAGES.SETTINGS.APP.HEAD' | translate}}</fhem-native-text-line>
+            <div content>
+                <!-- theme -->
+                <fhem-native-select 
+                    [label]="'PAGES.SETTINGS.APP.THEME.TEXT' | translate" 
+                    [info]="'PAGES.SETTINGS.APP.THEME.INFO' | translate" 
+                    [items]="themeOptions" selectionType="action-sheet" 
+                    [(ngModel)]="settings.app.theme">
+                </fhem-native-select>
+
+                <!-- lang -->
+                <fhem-native-select 
+                    [label]="'PAGES.SETTINGS.APP.LANG.TEXT' | translate" 
+                    [info]="'PAGES.SETTINGS.APP.LANG.INFO' | translate" 
+                    [items]="langOptions" selectionType="action-sheet" 
+                    [(ngModel)]="settings.app.language">
+                </fhem-native-select>
+
+                <!-- allow editing -->
+                <fhem-native-switch
+                    [boxed]="true"
+                    [showInfoBubble]="false"
+                    [backgroundColorOff]="primaryColor"
+                    [label]="'PAGES.SETTINGS.APP.EDITING.TEXT' | translate" 
+                    [info]="'PAGES.SETTINGS.APP.EDITING.INFO' | translate"
+                    [(ngModel)]="settings.app.allowEditing">
+                </fhem-native-switch>
+
+                <!-- toast messages -->
+                <fhem-native-switch
+                    [boxed]="true"
+                    [showInfoBubble]="false"
+                    [backgroundColorOff]="primaryColor"
+                    [label]="'PAGES.SETTINGS.APP.TOAST.TEXT' | translate" 
+                    [info]="'PAGES.SETTINGS.APP.TOAST.INFO' | translate"
+                    [(ngModel)]="settings.app.allowToasts">
+                </fhem-native-switch>
+
+                <!-- log file -->
+                <fhem-native-ui-box [clickable]="true" class="mb-1-5" (click)="downloadLog()">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.APP.LOG.TEXT' | translate" [info]="'PAGES.SETTINGS.APP.LOG.INFO' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app" name="download-outline"></ion-icon>
+                </fhem-native-ui-box>
+            </div>
+        </fhem-native-ui-category>
+
+        <fhem-native-ui-category>
+            <fhem-native-text-line name [wrap]="false"> {{'PAGES.SETTINGS.SUPPORT.HEAD' | translate}}</fhem-native-text-line>
+            <div content>
+                <!-- documentation -->
+                <fhem-native-ui-box [clickable]="true" (click)="openExternal('https://forum.fhem.de/index.php/board,102.0.html')">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.SUPPORT.DOCS.TEXT' | translate" [info]="'PAGES.SETTINGS.SUPPORT.DOCS.INFO' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app" name="chevron-forward-outline"></ion-icon>
+                </fhem-native-ui-box>
+
+                <!-- developer -->
+                <fhem-native-ui-box [clickable]="true" class="mb-1-5" (click)="openExternal('https://fhemnative.de')">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.SUPPORT.DEV.TEXT' | translate" [info]="'PAGES.SETTINGS.SUPPORT.DEV.INFO' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app" name="chevron-forward-outline"></ion-icon>
+                </fhem-native-ui-box>
+            </div>
+        </fhem-native-ui-category>
+
+        <fhem-native-ui-category>
+            <fhem-native-text-line name [wrap]="false"> {{'PAGES.SETTINGS.INFOS.HEAD' | translate}}</fhem-native-text-line>
+            <div content>
+                <!-- web -->
+                <fhem-native-ui-box [clickable]="true" (click)="openExternal('https://fhemnative.de')">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.WEB' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app" name="globe-outline"></ion-icon>
+                </fhem-native-ui-box>
+
+                <!-- data -->
+                <fhem-native-ui-box [clickable]="true" (click)="openExternal('https://fhemnative.de/rights/privacy')">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.DATA' | translate"></fhem-native-text-block>
+                    <ion-icon class="color-a-app size-b-app" name="globe-outline"></ion-icon>
+                </fhem-native-ui-box>
+
+                <fhem-native-ui-box>
+                    <fhem-native-text-block class="w-100" label="Version: "></fhem-native-text-block>
+                    <fhem-native-text-line>{{currentVersion}}</fhem-native-text-line>
+                </fhem-native-ui-box>
+            </div>
+        </fhem-native-ui-category>
+    </div>
+</ion-content>

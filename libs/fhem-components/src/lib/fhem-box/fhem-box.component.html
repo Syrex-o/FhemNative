@@ -1,0 +1,23 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 60, height: 60}"
+    (initComponent)="onInitComponent()">
+    <div class="fhem-native-box"
+        [ngStyle]="{
+            'box-shadow': showShadow ? '0px 15px 25px 0 rgba(0, 0, 0, 0.3)' : '0px',
+            'border-top-left-radius.px': customBorder ? borderRadiusTopLeft : borderRadius,
+            'border-top-right-radius.px': customBorder ? borderRadiusTopRight : borderRadius,
+            'border-bottom-left-radius.px': customBorder ? borderRadiusBottomLeft : borderRadius,
+            'border-bottom-right-radius.px': customBorder ? borderRadiusBottomRight : borderRadius,
+            'clip-path': customNotch ? 'polygon('+ (notchDefinition !== '' ? notchDefinition : '') +')' : 'none'
+        }">
+        <div class="box-header" *ngIf="showHeader" [ngStyle]="{
+            'font-weight': headerFontWeight, 'font-style': headerFontStyle,
+			'text-align': headerPosition, 'background': headerColor
+        }">
+            <p class="color-a-app">{{headline}}</p>
+        </div>
+        <div class="box-content" [class.reduce-height]="showHeader" [style.background]="backgroundColor"></div>
+    </div>
+</fhem-native-component>

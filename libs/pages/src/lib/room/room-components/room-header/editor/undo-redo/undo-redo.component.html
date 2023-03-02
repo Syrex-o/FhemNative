@@ -1,0 +1,12 @@
+<div class="undo-redo-btn-container">
+    <button class="ion-activatable" [class.disabled]="!undoManager.undoArray.length" (click)="undoManager.undoChange()">
+        <ion-icon name="arrow-undo-outline"></ion-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+    </button>
+</div>
+<div class="undo-redo-btn-container">
+    <button class="ion-activatable" [class.disabled]="!undoManager.redoArray.length" (click)="undoManager.redoChange()">
+        <ion-icon name="arrow-redo-outline"></ion-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+    </button>
+</div>

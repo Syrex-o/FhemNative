@@ -1,0 +1,92 @@
+:host{
+	--toggle-width: 60px;
+
+	display: block;
+	padding: var(--item-spacing-a) 0px;
+	fhem-native-ui-box{ padding: 0; }
+	.switch-container{
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: space-between;
+		.switch-inner-container{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			fhem-native-text-block{
+				width: calc(100% - var(--toggle-width) - var(--item-spacing-a));
+			}
+			.switch-btn-container{
+				position: relative;
+				width: var(--toggle-width);
+			}
+		}
+
+		&.has-info{
+			.switch-inner-container{
+				width: calc(100% - 45px);
+			}
+		}
+		
+		// different switch types
+		&.toggle,
+		&.toggle-outline{
+			.switch-btn-container{
+				height: var(--toggle-height);
+				border-radius: 40px;
+				cursor: pointer;
+				will-change: background-color;
+				transition: background-color 0.3s ease;
+				.knob{
+					position: absolute;
+					width: calc(var(--toggle-height) - var(--knob-shrink));
+					height: calc(var(--toggle-height) - var(--knob-shrink));
+					top: 50%;
+					left: var(--knob-shrink);
+					border-radius: 50%;
+					transform: translate(0, -50%);
+					will-change: transform, background-color;
+					transition: transform 0.3s ease, background-color 0.3s ease;
+					box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+				}
+				&.active{
+					.knob{
+						transform: translate(calc(100% + calc( var(--knob-shrink) / 2 )), -50%);
+					}
+				}
+			}
+		}
+
+		&.toggle-outline{
+			--toggle-height: 30px;
+			--knob-shrink: 4px;
+		}
+
+		&.toggle{
+			--toggle-width: 36px;
+
+			--toggle-height: 14px;
+			--knob-shrink: -6px;
+			.switch-btn-container{
+				.knob{
+					transform: translate(calc( var(--knob-shrink) * -1 ), -50%);
+				}
+				&.active{
+					.knob{
+						transform: translate(calc( var(--toggle-width) - calc( var(--knob-shrink) * -2 ) ), -50%);
+					}
+				}
+			}
+		}
+
+		// special styles
+		&.boxed{
+			.switch-inner-container{
+				fhem-native-text-block{
+					padding-left: var(--item-spacing-a);
+				}
+			}
+		}
+	}
+}

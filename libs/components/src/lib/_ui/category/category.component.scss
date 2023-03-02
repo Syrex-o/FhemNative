@@ -1,0 +1,21 @@
+:host{
+    display: block;
+    .category-container{
+        .category-header{
+            display: flex;
+            align-items: center;
+            position: relative;
+            &::after{
+                content: "";
+                height: 1px;
+                width: 100%;
+                opacity: var(--backdrop-op);
+                margin-left: var(--item-spacing-a);
+                background-color: var(--quaternary);
+            }
+        }
+        .category-content{
+            margin-top: var(--item-spacing-a);
+        }
+    }
+}

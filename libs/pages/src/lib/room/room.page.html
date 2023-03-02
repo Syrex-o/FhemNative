@@ -1,0 +1,11 @@
+<fhem-native-room-header *ngIf="(paramsTracker$ | async) && structure.currentRoom" [room]="structure.currentRoom" (burgerClick)="sidebarMenuState = $event" [expandState]="sidebarMenuState"></fhem-native-room-header>
+<div class="room-container" *ngIf="componentEditor$ | async as componentEditor">
+
+    <fhem-native-room-sidebar (backdropClick)="sidebarMenuState = $event" [expandState]="sidebarMenuState" [mobile]="mobileMenus"></fhem-native-room-sidebar>
+    
+    <div class="content">
+        <ion-router-outlet [animation]="contentTransition"></ion-router-outlet>
+    </div>
+
+    <fhem-native-room-component-creator *ngIf="editComponents$ | async" [expandState]="componentCreatorMenuState"></fhem-native-room-component-creator>
+</div>

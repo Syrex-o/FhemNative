@@ -1,0 +1,64 @@
+:host{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    user-select: none;
+    background-color: var(--secondary);
+    padding: var(--item-spacing-b) var(--item-spacing-a);
+    .flex-block{
+        display: flex;
+        align-items: center;
+        p{
+            font-size: 16px;
+        }
+    }
+
+    ion-button,
+    .burger-menu{
+        width: 50px;
+    }
+
+    .logo-container{
+        padding-left: 5px;
+        img{ width: 50px; }
+    }
+
+    .burger-menu{
+        display: none;
+        position: relative;
+        height: 40px;
+        cursor: pointer;
+        .line{
+            position: absolute;
+            width: 35px;
+            left: 50%;
+            height: 2px;
+            background-color: var(--text-a);
+            transform: translateX(-50%);
+            &.first{
+                top: 10px;
+            }
+            &.second{
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+            }
+            &.third{
+                bottom: 10px;
+            }
+        }
+    }
+
+    // for breakpoint --> see room component scss
+    @media only screen and (max-width: 900px) {
+        padding: var(--item-spacing-b) var(--item-spacing-a);
+        .logo-container{
+            display: none;
+        }
+        .burger-menu{
+            display: block;
+        }
+    }
+}

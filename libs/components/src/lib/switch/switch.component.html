@@ -1,0 +1,35 @@
+<ng-container *ngIf="boxed; else SWITCH">
+    <fhem-native-ui-box> <ng-container *ngTemplateOutlet="SWITCH"/> </fhem-native-ui-box>
+</ng-container>
+
+<ng-template #SWITCH>
+    <div class="switch-container" [ngClass]="switchType" [class.has-info]="info !== '' && showInfoBubble" *ngIf="theme$ | async">
+        <div class="switch-inner-container">
+            <fhem-native-text-block 
+                [label]="label"
+                [info]="!showInfoBubble ? info : ''"
+                [labelColor]="labelColor"
+                [infoColor]="infoColor">
+            </fhem-native-text-block>
+            
+            <!-- Different Toggle styles -->
+            <button class="switch-btn-container"
+                (click)="toggle()"
+                [class.active]="value"
+                [style.backgroundColor]="value ? _backgroundColorOn : _backgroundColorOff">
+                <!-- Standard Toggle -->
+                <ng-container *ngIf="switchType === 'toggle' || switchType === 'toggle-outline'">
+                    <ng-container *ngTemplateOutlet="BASE_KNOB"></ng-container>
+                </ng-container>
+            </button>
+        </div>
+    
+        <!-- Info Brn -->
+        <fhem-native-info-btn  *ngIf="info !== '' && showInfoBubble" [label]="label" [info]="info"></fhem-native-info-btn>
+    </div>
+</ng-template>
+
+<!-- Toggle Style Definitions -->
+<ng-template #BASE_KNOB>
+    <span [style.backgroundColor]="value ? _knobColorOn : _knobColorOff" class="knob"></span>
+</ng-template>

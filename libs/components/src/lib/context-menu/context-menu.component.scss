@@ -1,0 +1,62 @@
+.context-menu-block{
+    width: 100%;
+    position: relative;
+    margin-bottom: 10px;
+    padding: var(--item-spacing-b) var(--item-spacing-a);
+    .block-header{
+        margin: 5px 0px;
+        letter-spacing: var(--spacing-a);
+    }
+    &.border{
+        &::after{
+            content: "";
+            position: absolute;
+            width: calc( 100% - 20px );
+            bottom: 0;
+            left: 10px;
+            height: 1px;
+            opacity: var(--backdrop-op);
+            background-color: var(--quaternary);
+        }
+    }
+    button{
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: 45px;
+        padding: 0px var(--item-spacing-b);
+        margin-bottom: 5px;
+        border-radius: 8px;
+        align-items: center;
+        overflow: hidden;
+        text-align: left;
+        background-color: transparent;
+        .nested{
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        p,
+        fhem-native-icon,
+        ion-icon{
+            color: var(--text-a);
+        }
+
+        fhem-native-icon,
+        ion-icon{
+            font-size: 25px;
+            margin-right: var(--item-spacing-a);
+            &.half-visible{
+                opacity: 0.5;
+            }
+        }
+    }
+}
+    
+ion-popover.context-menu-popover{
+    --width: 260px;
+}
+ion-popover.context-menu-popover,
+ion-popover.nested-context-popover{
+    --background: var(--secondary);
+}

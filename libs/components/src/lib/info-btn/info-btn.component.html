@@ -1,0 +1,13 @@
+<!-- Info Btn -->
+<ion-button [attr.id]="infoTriggerID"  mode="md" class="info-btn icon-only type-c">
+	<ion-icon name="help-outline"></ion-icon>
+</ion-button>
+
+<!-- Info Message -->
+<ion-popover class="info-btn-popover-container" mode="ios" [arrow]="true" [trigger]="infoTriggerID" triggerAction="click" side="left" alignment="start">
+    <ng-template>
+        <ion-content class="info-btn-content-container">
+            <fhem-native-text-block [label]="label" [info]="info"></fhem-native-text-block>
+        </ion-content>
+    </ng-template>
+</ion-popover>

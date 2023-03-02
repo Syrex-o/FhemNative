@@ -1,0 +1,41 @@
+<!-- In Edit Mode -->
+<ng-container *ngIf="coreEditor$ | async as mode">
+    <ng-container *ngIf="mode.edit; else NO_EDIT">
+        <!-- desktop menu -->
+        <div class="editor-container desktop">
+            <ng-container *ngTemplateOutlet="BUTTONS"></ng-container>
+        </div>
+        <!-- mobile menu -->
+        <div class="editor-container mobile">
+            <button id="editor-container-trigger" class="mobile-btn ion-activatable">
+                <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+    
+            <ion-popover #MobilePopover mode="ios" trigger="editor-container-trigger" triggerAction="click" side="bottom" alignment="center" cssClass="editor-container-popover">
+                <ng-template>
+                    <ng-container *ngTemplateOutlet="BUTTONS"></ng-container>
+                </ng-template>
+            </ion-popover>
+        </div>
+    </ng-container>
+
+    <!-- No Edit Mode -->
+    <ng-template #NO_EDIT>
+        <ion-button class="editor-trigger-btn" (click)="switchToEditMode()">
+            <ion-icon name="pencil-outline"></ion-icon>
+        </ion-button>
+    </ng-template>
+
+    <!-- menu buttons -->
+    <ng-template #BUTTONS>
+        <fhem-native-room-header-undo-redo class="after-line"></fhem-native-room-header-undo-redo>
+    
+        <fhem-native-switch class="flex-block-item after-line" label="Grid" [(ngModel)]="mode.editComponents" (clicked)="switchGridMode($event)"></fhem-native-switch>
+    
+        <button class="app-button editor-save-btn save ion-activatable" (click)="saveChanges()">
+            Speichern
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
+    </ng-template>
+</ng-container> 

@@ -1,0 +1,24 @@
+:host{
+    ion-header{
+        --height: 60px;
+        ion-toolbar{
+            --background: var(--primary);
+            --border-color: transparent;
+            .header{
+                padding: 5px var(--padding-b);
+                display: flex;
+                align-items: center;
+                .header-container{
+                    height: 50px;
+                    overflow: hidden;
+                    h2{
+                        line-height: 50px;
+                    }
+                }
+            }
+        }
+        fhem-native-close-btn{
+            margin-right: 20px;
+        }
+    }
+}

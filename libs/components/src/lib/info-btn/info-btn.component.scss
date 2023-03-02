@@ -1,0 +1,33 @@
+:host{
+	.info-btn{
+		position: relative;
+		width: 35px;
+		height: 35px;
+		--border-radius: 50%;
+		font-size: 15px;
+	}
+}
+
+ion-popover.info-btn-popover-container{
+	&::part(arrow) {
+		margin-top: 16px;
+		&::after{
+			background-color: var(--primary);
+		}
+	}
+	&::part(content){
+		background-color: var(--primary);
+	}
+}
+
+ion-content.info-btn-content-container{
+	--background: var(--primary);
+
+	--padding-top: 8px;
+	--padding-start: 8px;
+	--padding-end: 8px;
+	--padding-bottom: 8px;
+	.popover-content{
+		margin-top: -16px;
+	}
+}

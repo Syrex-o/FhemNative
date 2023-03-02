@@ -1,0 +1,74 @@
+<div
+    [fhemNativeTransformationItem]="UID"
+    fhemNativeMoveManager
+    fhemNativeScaleManager
+    fhemNativeResizeManager
+
+    [minDimensions]="minDimensions"
+    [minDimensionsPercentage]="{width: minWidthPercentage, height: minHeightPercentage}"
+
+    (beginTransformation)="onTransformationStart($event)"
+    (endTransformation)="onTransformationEnd($event)"
+    (contextMenuClick)="onContextClick($event)"
+
+    (resized)="calcMinSizes()"
+    [attr.id]="UID"
+    class="fhem-component"
+    [ngStyle]="{
+        'width': position.width, 
+		'height': position.height, 
+		'top': position.top, 
+		'left': position.left,
+		'z-index': position.zIndex,
+        'min-width.%': minWidthPercentage,
+        'min-height.%': minHeightPercentage
+    }">
+    <ng-container *ngIf="fhemDeviceRenderer | async as renderer">
+        <ng-container *ngTemplateOutlet="renderer.render ? RENDER : ( renderer.loading ? LOADER : HANDLER); context: {$implicit: renderer}"></ng-container>
+    </ng-container>
+</div>
+
+<!-- render component content -->
+<ng-template #RENDER> <ng-content></ng-content> </ng-template>
+
+<!-- loader container -->
+<ng-template #LOADER>
+    <ng-container *ngTemplateOutlet="loaderTemplate || DEFAULT_LOADER"></ng-container>
+    <ng-template #DEFAULT_LOADER> <fhem-native-loader [fixed]="false"></fhem-native-loader> </ng-template>
+</ng-template>
+
+<!-- exception handler -->
+<ng-template #HANDLER let-renderer>
+    <div class="unavailable-container">
+        <ng-container *ngTemplateOutlet="errorTemplate || DEFAULT_ERROR_HANDLER; context: {$implicit: renderer}"></ng-container>
+        
+        <ng-template #DEFAULT_ERROR_HANDLER>
+            <!-- connection error -->
+            <ng-container *ngIf="!renderer.deviceNotFound && !renderer.readingNotFound; else LEVEL_2">
+                <ng-container *ngTemplateOutlet="ERR_LEVEL; context: {$implicit: 1}"></ng-container>
+            </ng-container>
+
+            <!-- no valid device -->
+            <ng-template #LEVEL_2>
+                <ng-container *ngIf="renderer.deviceNotFound else LEVEL_3">
+                    <ng-container *ngTemplateOutlet="ERR_LEVEL; context: {$implicit: 2}"></ng-container>
+                </ng-container>
+            </ng-template>
+
+            <!-- no valid reading -->
+            <ng-template #LEVEL_3>
+                <ng-container *ngIf="renderer.readingNotFound">
+                    <ng-container *ngTemplateOutlet="ERR_LEVEL; context: {$implicit: 3}"></ng-container>
+                </ng-container>
+            </ng-template>
+
+            <!-- error type template -->
+            <ng-template #ERR_LEVEL let-level>
+                <fhem-native-text-block 
+                    [label]="('COMPONENTS.GENERAL.ERRORS.TYPE' | translate) + level + ' - ' + ('COMPONENTS.GENERAL.ERRORS.LEVEL_' + level + '.name' | translate)" 
+                    [info]="('COMPONENTS.GENERAL.ERRORS.LEVEL_' + level + '.info' | translate)">
+                </fhem-native-text-block>
+            </ng-template>
+        </ng-template>
+    </div>
+</ng-template>

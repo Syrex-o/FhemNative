@@ -1,0 +1,60 @@
+@import 'swiper/scss';
+@import 'swiper/scss/pagination';
+@import '@ionic/angular/css/ionic-swiper';
+
+.fhem-native-swiper{
+    width: 100%;
+	height: 100%;
+    .swiper-header,
+	.swiper-content{
+		position: absolute;
+		width: 100%;
+		left: 0;
+	}
+    .swiper-header{
+        top: 0;
+        height: 40px;
+        text-align: left;
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+        p{
+            font-size: 1.2em;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 10px;
+            width: calc(100% - 20px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    .swiper-content{
+        height: 100%;
+        top: 0;
+        swiper{
+            pointer-events: all;
+            width: 100%;
+            height: 100%;
+            .swiper-pagination{
+                width: 50%;
+                left: 25%;
+            }
+            .swiper-slide{
+                width: 100%;
+                height: 100%;
+            }
+            &.swiper-vertical{
+                .swiper-pagination{
+                    width: auto;
+                    left: auto;
+                }
+            }
+        }
+        &.reduce-height{
+            height: calc(100% - 40px);
+            top: 40px;
+        }
+    }
+}

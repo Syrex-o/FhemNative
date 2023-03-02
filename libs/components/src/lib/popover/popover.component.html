@@ -1,0 +1,9 @@
+<ion-popover
+    showBackdrop="true"
+    cssClass="fhem-native-popover"
+    [isOpen]="value"
+    (didDismiss)="onDismiss()">
+    <ng-template>
+        <ng-content></ng-content>
+    </ng-template>
+</ion-popover>

@@ -1,0 +1,15 @@
+<p
+    class="no-margin"
+    [class.bold]="bold"
+    [class.font-a]="asHeader"
+    [class.shorten]="shorten"
+    [style.color]="color || ''"
+    [style.white-space]="wrap ? 'normal' : 'nowrap'"
+    [ngClass]="[ 
+        (bold ? 'spacing-a' : 'spacing-b'), 
+        (bold ? 'size-e-app' : 'size-f-app'),
+        color ? '' : (bold ? 'color-a-app' : 'color-b-app')
+    ]">
+    {{text}}
+    <ng-content></ng-content>
+</p>

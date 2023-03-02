@@ -1,0 +1,23 @@
+:host{
+	.undo-redo-btn-container{
+		position: relative;
+		display: inline-block;
+		button{
+			position: relative;
+			width: 45px;
+			height: 45px;
+			margin: 2.5px 5px;
+			border-radius: 50%;
+			overflow: hidden;
+			background-color: transparent;
+			ion-icon{
+				font-size: 20px;
+				color: var(--tex-a);
+			}
+			&.disabled{
+				opacity: 0.5;
+				pointer-events: none;
+			}
+		}
+	}
+}

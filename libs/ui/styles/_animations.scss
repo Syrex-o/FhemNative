@@ -1,0 +1,35 @@
+// animation styles
+[scroll-item]{
+	// animation styles
+	transition: all 0.3s ease;
+	&.fade-out{
+		opacity: 0;
+	}
+	&.fade-in{
+		opacity: 1;
+	}
+	&.from-left{
+		opacity: 1;
+		transform: translateX(0px);
+	}
+	&.to-left{
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	&.to-right{
+		opacity: 0;
+		transform: translateX(30px);
+	}
+	&.from-top{
+		opacity: 1;
+		transform: translateY(0px);
+	}
+	&.to-top{
+		opacity: 0;
+		transform: translateY(-30px);
+	}
+	&.to-bottom{
+		opacity: 0;
+		transform: translateY(30px);
+	}
+}

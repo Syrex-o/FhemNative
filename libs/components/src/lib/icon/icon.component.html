@@ -1,0 +1,13 @@
+<ng-container *ngIf="ripple">
+	<ion-icon class="ion-activatable" *ngIf="_icon?.type === 'ion'" [name]="_icon.icon">
+		<ion-ripple-effect></ion-ripple-effect>
+	</ion-icon>
+	<fa-icon class="ion-activatable" *ngIf="_icon?.type !== 'ion'"  [icon]="_icon.icon">
+		<ion-ripple-effect></ion-ripple-effect>
+	</fa-icon>
+</ng-container>
+
+<ng-container *ngIf="!ripple">
+	<ion-icon *ngIf="_icon?.type === 'ion'" [name]="_icon.icon"></ion-icon>
+	<fa-icon *ngIf="_icon?.type !== 'ion'"  [icon]="_icon.icon"></fa-icon>
+</ng-container>

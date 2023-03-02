@@ -1,0 +1,19 @@
+.select-component-icon-container,
+ion-popover.custom-select-container .select-component-icon-container{
+    --icon-width: 18px;
+
+    display: flex;
+    align-items: center;
+    .selectable-icon{
+        display: block;
+        width: var(--icon-width);
+        height: var(--icon-width);
+        margin-right: var(--item-spacing-a);
+    }
+    .selected-icon{
+        display: block;
+        width: var(--icon-width);
+        height: var(--icon-width);
+        margin-right: var(--item-spacing-b);
+    }
+}

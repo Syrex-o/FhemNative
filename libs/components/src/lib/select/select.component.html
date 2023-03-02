@@ -1,0 +1,84 @@
+<div #selectContainer class="select-container" [class.has-info]="info !== ''" [class.open]="selectState" [ngClass]="selectionType">
+	<div class="select-container-wrapper" *ngIf="theme$ | async">
+		<button class="ion-activatable select-btn" 
+			(click)="selectState = !selectState;"
+			[style.height]="height"
+			[style.backgroundColor]="_backgroundColor"
+			[attr.id]="selectionType === 'accordion' ? '' : selectorTriggerID">
+			<div class="inner-container">
+				<div class="value-container">
+					<fhem-native-text-line *ngIf="label && label !== ''" [bold]="true" [shorten]="true" [text]="label"></fhem-native-text-line>
+					<div class="selected-items-container" [class.no-label]="!label || label === ''">
+						<ng-template *ngIf="valueTemplate" [ngTemplateOutlet]="valueTemplate" [ngTemplateOutletContext]="{currentValue: value}"></ng-template>
+						<ng-template *ngIf="!valueTemplate" [ngTemplateOutlet]="DEFAULT_VALUE" [ngTemplateOutletContext]="{currentValue: value}"></ng-template>
+					</div>
+				</div>
+				
+				<fhem-native-state-icon [(ngModel)]="selectState"></fhem-native-state-icon>
+			</div>
+	
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		
+		<!-- Info btn -->
+		<fhem-native-info-btn  *ngIf="info !== ''" [label]="label" [info]="info"></fhem-native-info-btn>
+	</div>
+	
+	<div *ngIf="selectionType === 'accordion' && selectState" [style.backgroundColor]="_backgroundColor" [style.maxHeight.px]="_containerMaxHeight" class="accordion-container">
+		<ng-container *ngTemplateOutlet="ITEMS_CONTAINER"></ng-container>
+	</div>
+</div>
+
+<ion-popover mode="ios" size="cover" *ngIf="selectionType !== 'accordion'"
+	[isOpen]="selectState" 
+	(willDismiss)="selectState = false" 
+	[keepContentsMounted]="true" 
+	[trigger]="selectorTriggerID"
+	(ionPopoverWillPresent)="presentPopover($event)"
+	cssClass="custom-select-container">
+	<ng-template>
+		<div class="select-items-container" [style.maxHeight.px]="_containerMaxHeight">
+			<ng-container *ngTemplateOutlet="ITEMS_CONTAINER"></ng-container>
+		</div>
+	</ng-template>
+</ion-popover>
+
+<!-- Default Value Item -->
+<ng-template #DEFAULT_VALUE let-currentValue="currentValue">
+	<!-- multi value -->
+	<ng-template [ngIf]="multi" [ngIfElse]="SINGLE_VALUE">
+		<fhem-native-text-line [shorten]="true" [text]="multi && (currentValue && currentValue.length > 0) ? currentValue : placeholder"></fhem-native-text-line>
+	</ng-template>
+	<!-- single value -->
+	<ng-template #SINGLE_VALUE>
+		<fhem-native-text-line [shorten]="true" [text]="currentValue || placeholder"></fhem-native-text-line>
+	</ng-template>
+</ng-template>
+
+<!-- Items Loop -->
+<ng-template #ITEMS_CONTAINER>
+	<div class="search-container" *ngIf="searchable" [style.height]="height">
+		<ion-searchbar (ionChange)="filterItems($any($event))"></ion-searchbar>
+	</div>
+	<div class="scroll-container" [style.height]="searchable ? 'calc(100% - '+ height +')' : '100%'">
+		<ng-container *ngFor="let item of filteredItems; let i = index">
+			<button class="selection-item-btn ion-activatable" [style.height]="height"
+				[class.active]="value === ( selectProp ? item[selectProp] : item ) || checkForMultiActive(item)" 
+				(click)="selectItem(item, i)">
+				<div class="inner-container">
+					<div class="select-value-container">
+						<ng-template *ngIf="itemTemplate" [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+						<ng-template *ngIf="!itemTemplate" [ngTemplateOutlet]="DEFAULT_ITEM" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+					</div>
+					<ion-icon name="checkmark-outline"></ion-icon>
+				</div>
+				<ion-ripple-effect [style.color]="_backgroundColor"></ion-ripple-effect>
+			</button>
+		</ng-container>
+	</div>
+</ng-template>
+
+<!-- Default Loop Item -->
+<ng-template #DEFAULT_ITEM let-item="item" let-index="index">
+	<fhem-native-text-line [shorten]="true" [bold]="true" [text]="( displayProp ? item[displayProp] : item )"></fhem-native-text-line>
+</ng-template>

@@ -1,0 +1,147 @@
+{
+    "WEB":{
+        "CHECK": "VALID",
+        "HEADER": {
+            "LANGUAGES": {
+                "HEADER": "Sprache",
+                "DE": "Deutsch",
+                "EN": "Englisch"
+            },
+            "THEMES": {
+                "HEADER": "Theme",
+                "DARK": "Dunkel",
+                "BRIGHT": "Hell"
+            },
+            "ITEMS": {
+                "DOCS": {
+                    "TITLE": "Docs",
+                    "INFO": "FhemNative Dokumentation",
+                    "ITEMS": {
+                        "INSTALL": "Installation",
+                        "DEVELOPER": "Developer Guide",
+                        "FUNDAMENTALS": "Grundlagen",
+                        "CONTEXT": "Kontext Menü",
+                        "SETTINGS": "Einstellungen",
+                        "SHARED_CONF": "Geteilte Konfiguration"
+                    }
+                },
+                "COMPONENTS": {
+                    "TITLE": "Komponenten",
+                    "INFO": "FhemNative Komponenten",
+                    "ITEMS": {
+                        "BOX": "Box",
+                        "BUTTON": "Button",
+                        "BUTTON_MENU": "Button Menü",
+                        "BUTTON_MULTISTATE": "Button Multistate",
+                        "CHART": "Chart",
+                        "CIRCLE_MENU": "Circle Menü",
+                        "CIRCLE_SLIDER": "Circle Slider",
+                        "CLOCK": "Uhr",
+                        "COLOR_PICKER": "Color Picker",
+                        "HTML": "HTML",
+                        "IFRAME": "I-Frame",
+                        "ICON": "Icon",
+                        "INPUT": "Input",
+                        "IMAGE": "Bild",
+                        "LABEL": "Label",
+                        "LINE": "Linie",
+                        "MEADIALIST": "Media List",
+                        "PICKER": "Picker",
+                        "PINPAD": "PinPad",
+                        "POPUP": "Pop-Up",
+                        "SELECT": "Select",
+                        "SLIDER": "Slider",
+                        "SWIPER": "Swiper",
+                        "SWITCH": "Switch",
+                        "TABS": "Tabs",
+                        "TABLE": "Tabelle",
+                        "THERMOSTAT": "Thermostat",
+                        "TIME_PICKER": "Zeit Picker",
+                        "WEATHER": "Wetter"
+                    }
+                },
+                "COMPONENT_LIB": {
+                    "TITLE": "Bibliothek",
+                    "INFO": "Basis Komponenten Bibliothek",
+                    "ITEMS": {
+                        "SELECT": "Select",
+                        "SWITCH": "Switch"
+                    }
+                },
+                "SANDBOX": "Sandbox",
+                "HELP": "Hilfe"
+            }
+        },
+        "FOOTER": {
+            "COMPONENTS": "Komponenten",
+            "COMPONENT_LIB": "Bibliothek",
+            "DOCS": "Dokumentation",
+            "DEVELOPER": "Developer Guide",
+            "SANDBOX": {
+                "HEADER": "Jetzt starten",
+                "INFO": "FhemNative ganz einfach ohne Einrichtung ausprobieren."
+            }
+        },
+        "DOCS": {
+            "HEADER": "Dokumentaion",
+            "INFO": "FhemNative ist neu für dich? Kein Problem. Die folgenden Punkte helfen dir dabei FhemNative kennenzulernen und bequem bedienen zu können:"
+        },
+        "COMPONENTS": {
+            "HEADER": "Komponenten",
+            "INFO": "FhemNative bietet eine Vielzahl von sogenannten 'Komponenten'. Alle lassen sich ganz bequem konfigurieren."
+        },
+        "COMPONENT_LIB": {
+            "HEADER": "Komponenten Bibliothek",
+            "INFO": "FhemNative hat eine eigene Komponenten Bibliothek, auf der viele FHEM-Komponenten aufbauen. Alle Komponenten sind zu 100% Open-Source.",
+            "GENERAL": {
+                "EXAMPLES": "Beispiele",
+                "PROPERTIES": "Attribute",
+                "REPORT": "Etwas melden",
+                "EXAMPLES_CONTENT": {
+                    "HEADER": "Komponenten-Beispiele",
+                    "INFO": "Unterschiedliche Optionen, wie die Komponente aussehen und funktionieren kann."
+                },
+                "PROPERTIES_CONTENT": {
+                    "HEADER": "Komponenten-Konfiguration",
+                    "INFO": "Alle Optionen/Einstellugen der Komponente:",
+                    "TABLES": {
+                        "TYPES": {
+                            "inputs": "Inputs",
+                            "select": "Selektionen"
+                        },
+                        "HEADERS": {
+                            "ATTRIBUTE": "Attribut",
+                            "INFO": "Beschreibung",
+                            "DEFAULT": "Standard-Wert",
+                            "OPTIONS": "Optionen"
+                        }
+                    }
+                },
+                "REPORT_CONTENT": {
+                    "HEADER": "Ist dir etwas aufgefallen?",
+                    "INFO": "Teile uns gerne mit, was dir zu dieser Komponente einfällt. Sag uns Bescheid, wenn es einen Bug gibt oder hilf direkt dabei das Problem zu beheben:",
+                    "BUTTONS": {
+                        "A": "Fehler melden/fixen",
+                        "B": "Über Komponente austauschen"
+                    }
+                }
+            },
+            "ITEMS": {
+                "SELECT": {
+                    "HEADER": "Select",
+                    "INFO": "Eine Selektions-Komponente...",
+                    "ATTRIBUTES": {
+                        "label": "Informationslabel über die Selektions-Komponente.",
+                        "info": "Erweitertes Informationslabel über die Selektions-Komponente (erscheint als Info Button).",
+                        "placeholder": "Ein Platzhalter-Wert, der angezeigt wird, wenn kein selektierter Wert vorhanden ist.",
+                        "items": "Liste von Elementen für den Selector.",
+                        "selectProp": "Falls die item-Liste aus Objekten besteht, gibt selectProp an, welcher Objekt-Key für die Selektion zu wählen ist.",
+                        "displayProp": "Falls die item-Liste aus Objekten besteht, gibt displayProp an, welcher Objekt-Key für die die Darstellung im Selektor zu wählen ist.",
+                        "multi": "Gibt an, ob die Auswahl mehrerer Werte erlaubt werden soll.",
+                        "selectionType": "Art des der Selektions-Komponente."
+                    }
+                }
+            }
+        }
+    }
+}

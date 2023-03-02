@@ -37,3 +37,19 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+/.firebase
+
+# Firebase
+.firebaserc
+firebase.json
+
+.angular
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
+
+# Website
+apps/website
+apps/website-e2e

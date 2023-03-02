@@ -1,0 +1,26 @@
+<div class="flex-container">
+    <h2 class="center size-b-app color-a-app">{{ 'MENUS.COMPONENT_DETAILS.HEAD' | translate}}</h2>
+
+    <div class="flex-box center" *ngIf="componentSettingsString">
+
+        <h3 class="size-d-app color-a-app no-margin">{{ 'MENUS.COMPONENT_DETAILS.CONTENT.QR.HEAD' | translate}}</h3>
+        <p class="size-e-app color-b-app">{{ 'MENUS.COMPONENT_DETAILS.CONTENT.QR.INFO' | translate}}</p>
+        <qrcode
+            [qrdata]="componentSettingsString"
+            [width]="280"
+            colorDark="#313131"
+            colorLight="#E1F3F5"
+            elementType="canvas"
+            [imageHeight]="75"
+            [imageWidth]="75"
+            [imageSrc]="'/assets/img/icon.png'">
+        </qrcode>
+    </div>
+
+    <div class="flex-box center">
+        <button class="app-button info inverse ion-activatable" (click)="close()">
+            {{ 'DICT.CLOSE' | translate }}
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
+    </div>
+</div>

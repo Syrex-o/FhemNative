@@ -1,0 +1,7 @@
+{
+  "name": "fhem-native",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

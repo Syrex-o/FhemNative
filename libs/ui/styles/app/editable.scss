@@ -1,0 +1,92 @@
+// styles for transformation rect
+.fhemNative-moveable {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 100;
+	pointer-events: all;
+	.rect,
+	.rect::before,
+	.overlay-move{
+		position: absolute;
+		transition: all .2s ease;
+	}
+
+	.rect::before,
+	.overlay-move{
+		top: 0;
+		left: 0;
+	}
+
+	.overlay-move {
+		width: 100%;
+		height: 100%;
+		border: 1px solid #22D1EE;
+		background: rgba(34, 209, 238, 0.2);
+	}
+	.rect {
+		width: 35px;
+		height: 35px;
+		z-index: 1;
+		&:before {
+			content: "";
+			display: block;
+			z-index: 1;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+			width: 5px;
+			height: 5px;
+			border-radius: 50%;
+			background-color: #22D1EE;
+		}
+		&.top-center,
+		&.bottom-center{
+			cursor: ns-resize;
+		}
+		&.top-left,
+		&.bottom-right{
+			cursor: nwse-resize;
+		}
+		&.top-right,
+		&.bottom-left{
+			cursor: nesw-resize;
+		}
+		&.left-center,
+		&.right-center{
+			cursor: ew-resize;
+		}
+		&.top-left, &.top-right, &.top-center {
+			top: -17.5px;
+		}
+		&.top-left, &.bottom-left, &.left-center {
+			left: -17.5px;
+		}
+		&.top-right, &.bottom-right, &.right-center {
+			right: -17.5px;
+		}
+		&.bottom-left, &.bottom-right, &.bottom-center {
+			bottom: -17.5px;
+		}
+		&.top-center, &.bottom-center {
+			left: 50%;
+			transform: translate3d(-50%, 0, 0);
+		}
+		&.right-center, &.left-center {
+			top: 50%;
+			transform: translate3d(0, -50%, 0);
+		}
+	}
+
+	&.selected{
+		.overlay-move{
+			background: rgba(243, 192, 47, 0.2);
+			border: 1px solid #ffbd00;
+		}
+		.rect:before{
+			background-color: #ffbd00;
+		}
+	}
+}

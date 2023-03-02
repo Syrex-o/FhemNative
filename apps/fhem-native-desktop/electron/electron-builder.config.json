@@ -1,0 +1,30 @@
+{
+  "appId": "de.slapapps.fhemnative-desktop",
+  "productName": "FhemNative Desktop",
+  "copyright": "Copyright © 2023 Slap Apps UG (haftungsbeschränkt)",
+  "directories": {
+    "buildResources": "resources",
+    "output": "../../../dist/apps/fhem-native-desktop/"
+  },
+  "files": [
+    "assets/**/*",
+    "build/**/*",
+    "capacitor.config.*",
+    "app/**/*"
+  ],
+  "nsis": {
+    "allowElevation": true,
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  },
+  "win": {
+    "target": "nsis",
+    "icon": "assets/appIcon.ico"
+  },
+  "mac": {
+    "category": "your.app.category.type",
+    "target": "dmg",
+    "icon": "assets/appIcon.png",
+    "identity": "Slap Apps UG (haftungsbeschraenkt) (UF4F5HK846)"
+  }
+}

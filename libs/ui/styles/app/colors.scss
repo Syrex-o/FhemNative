@@ -1,0 +1,18 @@
+// background colors
+.background-a-app{background-color: var(--primary); }
+.background-b-app{background-color: var(--secondary); }
+.background-c-app{background-color: var(--tertiary); }
+.background-d-app{background-color: var(--quaternary); }
+
+.background-a-ion{--background: var(--primary);}
+
+// text colors
+.color-a-app{ color: var(--text-a); }
+.color-b-app{ color: var(--text-b); }
+.color-c-app{ color: var(--text-c); }
+.color-d-app{ color: var(--text-d); }
+
+// button colors
+.btn-color-a-app{color: var(--btn-text-a);}
+.btn-color-b-app{color: var(--btn-text-b);}
+.btn-color-c-app{color: var(--btn-text-c);}

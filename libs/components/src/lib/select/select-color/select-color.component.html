@@ -1,0 +1,35 @@
+<fhem-native-select
+    [ngModel]="value"
+    (ngModelChange)="ngModelChangeCallback($event)"
+    [items]="items"
+    [multi]="multi"
+    [selectionType]="selectionType"
+    [selectProp]="selectProp"
+    [displayProp]="displayProp"
+    [label]="label"
+    [info]="info"
+    [searchable]="searchable"
+    [placeholder]="placeholder">
+
+    <!-- current colors -->
+    <ng-template #VALUE_TEMPLATE let-currentValue="currentValue">
+        <div class="select-component-color-container selected">
+            <ng-template [ngIf]="multi" [ngIfElse]="SINGLE_COLOR">
+                <ng-container *ngFor="let color of currentValue">
+                    <span class="selected-color" [style.backgroundColor]="color"></span>
+                </ng-container>
+            </ng-template>
+            <ng-template #SINGLE_COLOR>
+                <span class="selected-color" [style.backgroundColor]="currentValue"></span>
+            </ng-template>
+        </div>
+    </ng-template>
+
+    <!-- selectable colors -->
+    <ng-template #ITEM_TEMPLATE let-item="item" let-index="index">
+        <div class="select-component-color-container">
+            <span class="selectable-color" [style.backgroundColor]="displayProp && displayProp !== '' ? item[displayProp] : item"></span>
+            <fhem-native-text-line [shorten]="true" [bold]="true" [text]="( displayProp ? item[displayProp] : item )"></fhem-native-text-line>
+        </div>
+    </ng-template>
+</fhem-native-select>

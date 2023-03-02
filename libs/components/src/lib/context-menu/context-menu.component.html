@@ -1,0 +1,156 @@
+<!-- component parts -->
+<ng-container *ngIf="source === 'component'">
+    <!-- Settings -->
+    <div class="context-menu-block border">
+        <h2 class="block-header color-a-app size-e-app spacing-a">{{'MENUS.CONTEXT_MENU.COMPONENT.TEXT' | translate }}</h2>
+
+         <!-- edit component -->
+         <button *ngIf="!editor.currentComponentConfig" class="inner ion-activatable" (click)="editComponentModal()">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'settings-outline', text: 'MENUS.CONTEXT_MENU.COMPONENT.CONTENT.SETTINGS', translate: true}"></ng-container>
+        </button>
+
+        <!-- component details -->
+        <button class="inner ion-activatable" (click)="createComponentDetailsModal()">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'information-circle-outline', text: 'MENUS.CONTEXT_MENU.COMPONENT.CONTENT.DETAILS', translate: true}"></ng-container>
+        </button>
+    </div>
+
+    <!-- arrange -->
+    <div class="context-menu-block border">
+        <h2 class="block-header size-e-app color-a-app">{{'MENUS.CONTEXT_MENU.ARRANGE.TEXT' | translate }}</h2>
+
+        <!-- arrage menu -->
+        <button id="layer-trigger" class="inner ion-activatable">
+            <div class="nested">
+                <fhem-native-icon icon="window-restore"></fhem-native-icon>
+                <p class="spacing-b">{{'MENUS.CONTEXT_MENU.ARRANGE.CONTENT.POSITION' | translate }}</p>
+            </div>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
+
+        <ion-popover trigger="layer-trigger" [dismissOnSelect]="true" side="end" cssClass="nested-context-popover">
+            <ng-template>
+                <div class="context-menu-block">
+
+                    <!-- foreground -->
+                    <button class="inner ion-activatable" (click)="sendTo('front')">
+                        <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'window-restore', text: 'MENUS.CONTEXT_MENU.ARRANGE.CONTENT.FOREGROUND', translate: true}"></ng-container>
+                    </button>
+
+                    <!-- background -->
+                    <button class="inner ion-activatable" (click)="sendTo('back')">
+                        <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'window-restore', text: 'MENUS.CONTEXT_MENU.ARRANGE.CONTENT.BACKGROUND', translate: true, iconClass: 'half-visible'}"></ng-container>
+                    </button>
+                </div>
+            </ng-template>
+        </ion-popover>
+
+        <!-- group -->
+        <button class="inner ion-activatable" (click)="groupComponents()" *ngIf="canBeGrouped">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'object-group', text: 'MENUS.CONTEXT_MENU.ARRANGE.CONTENT.GROUP', translate: true}"></ng-container>
+
+        </button>
+
+        <!-- ungroup -->
+        <button class="inner ion-activatable" (click)="unGroupComponents()" *ngIf="canBeUnGrouped">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'object-ungroup', text: 'MENUS.CONTEXT_MENU.ARRANGE.CONTENT.UNGROUP', translate: true}"></ng-container>
+        </button>
+    </div>
+
+    <!-- import/export -->
+    <div class="context-menu-block border">
+        <h2 class="block-header size-e-app color-a-app">Import/Export</h2>
+
+        <!-- export -->
+        <ng-container *ngTemplateOutlet="EXPORT_CONTAINER"></ng-container>
+    </div>
+
+    <div class="context-menu-block">
+        <h2 class="block-header size-e-app color-a-app">{{'MENUS.CONTEXT_MENU.EDIT.TEXT' | translate }}</h2>
+
+        <!-- select -->
+        <button class="inner ion-activatable" (click)="selectSingleComponent()">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'clipboard-check', text: 'MENUS.CONTEXT_MENU.EDIT.CONTENT.SELECT', translate: true}"></ng-container>
+        </button>
+
+        <!-- copy/paste -->
+        <ng-container *ngTemplateOutlet="COPY_PASTE_CONTAINER"></ng-container>
+    </div>
+</ng-container>
+
+<!-- grid parts -->
+<ng-container *ngIf="source === 'grid'">
+    <!-- New Parts -->
+    <div class="context-menu-block border">
+        <h2 class="block-header size-e-app color-a-app">{{'MENUS.CONTEXT_MENU.NEW.TEXT' | translate }}</h2>
+
+        <!-- add room -->
+        <button class="inner ion-activatable" (click)="createRoomModal()">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'add-outline', text: 'MENUS.CONTEXT_MENU.NEW.CONTENT.ROOM', translate: true}"></ng-container>
+        </button>
+
+        <!-- add component -->
+        <button *ngIf="!editor.currentComponentConfig" class="inner ion-activatable" (click)="createComponentModal()">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'add-outline', text: 'MENUS.CONTEXT_MENU.NEW.CONTENT.COMPONENT', translate: true}"></ng-container>
+        </button>
+    </div>
+
+    <!-- import/export -->
+    <div class="context-menu-block border">
+        <h2 class="block-header size-e-app color-a-app">Import/Export</h2>
+        <!-- import -->
+
+        <button class="inner ion-activatable" (click)="importComponents()">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'cloud-upload-outline', text: 'Import'}"></ng-container>
+        </button>
+
+        <!-- export -->
+        <ng-container *ngTemplateOutlet="EXPORT_CONTAINER"></ng-container>
+    </div>
+
+    <!-- edit container -->
+    <div class="context-menu-block">
+        <h2 class="block-header size-e-app color-a-app">{{'MENUS.CONTEXT_MENU.EDIT.TEXT' | translate }}</h2>
+
+        <!-- select all -->
+        <button class="inner ion-activatable" (click)="selectAllComponents()">
+            <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'clipboard-list', text: 'MENUS.CONTEXT_MENU.EDIT.CONTENT.SELECT_ALL', translate: true}"></ng-container>
+        </button>
+
+        <!-- copy/paste -->
+        <ng-container *ngTemplateOutlet="COPY_PASTE_CONTAINER"></ng-container>
+    </div>
+</ng-container>
+
+<!-- copy/paste template -->
+<ng-template #COPY_PASTE_CONTAINER>
+    <!-- copy -->
+    <button class="inner ion-activatable" *ngIf="selectComponent.selectorList.size" (click)="copyComponents()">
+        <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'copy', text: 'MENUS.CONTEXT_MENU.EDIT.CONTENT.COPY', translate: true}"></ng-container>
+    </button>
+
+    <!-- paste -->
+    <button class="inner ion-activatable" *ngIf="selectComponent.copyList.length" (click)="pasteComponents()">
+        <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'paste', text: 'MENUS.CONTEXT_MENU.EDIT.CONTENT.PASTE', translate: true}"></ng-container>
+    </button>
+
+    <!-- delete -->
+    <button class="inner ion-activatable" *ngIf="selectComponent.selectorList.size" (click)="deleteComponents()">
+        <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'trash', text: 'MENUS.CONTEXT_MENU.EDIT.CONTENT.DELETE', translate: true}"></ng-container>
+    </button>
+</ng-template>
+
+<!-- export template -->
+<ng-template #EXPORT_CONTAINER>
+    <button class="inner ion-activatable" *ngIf="selectComponent.selectorList.size" (click)="exportComponents()">
+        <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'cloud-download-outline', text: 'Export'}"></ng-container>
+    </button>
+</ng-template>
+
+
+<ng-template #BUTTON_TEMPLATE let-icon="icon" let-text="text" let-translate="translate" let-iconClass="iconClass">
+    <fhem-native-icon [ngClass]="iconClass" [icon]="icon" [ionFallback]="true"></fhem-native-icon>
+    <p class="spacing-b">{{ translate ? (text | translate) : text }}</p>
+    <ion-ripple-effect></ion-ripple-effect>
+</ng-template>

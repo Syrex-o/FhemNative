@@ -1,0 +1,56 @@
+:host{
+	display: block;
+	padding: var(--item-spacing-a) 0px;
+	.input-container{
+		position: relative;
+		width: 100%;
+		display: flex;
+    	flex-direction: column;
+		fhem-native-text-line{
+			margin-bottom: var(--item-spacing-a);
+		}
+		.input-inner-container{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.input-field-container{
+				position: relative;
+				width: 100%;
+				overflow: hidden;
+				display: flex;
+				justify-content: space-between;
+				height: var(--item-height-b);
+				background-color: var(--tertiary);
+				ion-input{
+					width: 100%;
+					--padding-top: 5px;
+					letter-spacing: var(--sapcing-c);
+					--padding-start: var(--padding-b);
+					--padding-end: var(--padding-b);
+					--color: var(--text-a);
+					--placeholder-color: var(--text-b);
+					--background: transparent;
+					border-radius: var(--radius-a);
+				}
+				.password-container{
+					margin: 0px;
+					height: 100%;
+					--border-radius: 0px;
+					--background: transparent;
+					ion-icon{
+						font-size: 20px;
+						color: var(--text-a);
+					}
+				}
+			}
+		}
+
+		&.has-info{
+			.input-inner-container{
+				.input-field-container{
+					width: calc(100% - 45px);
+				}
+			}
+		}
+	}
+}

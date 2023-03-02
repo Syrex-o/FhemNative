@@ -1,0 +1,40 @@
+<div class="loader-container" @ShowHide>
+	<div class="inner-container">
+		<ng-template [ngIf]="logoLoader" [ngIfElse]="DEFAULT">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1365.333 1365.333">
+				<defs>
+				  <linearGradient [attr.id]="logoLoaderId + '-c'" x1="0" x2="1" y1="0" y2="0" gradientTransform="scale(603.331) rotate(60 -1.644 .263)" gradientUnits="userSpaceOnUse" spreadMethod="pad">
+					<stop offset="0" style="stop-opacity:1;stop-color:#52c7f4"/>
+					<stop offset="1" style="stop-opacity:1;stop-color:#3d559d"/>
+				  </linearGradient>
+				  <linearGradient [attr.id]="logoLoaderId + '-d'" x1="0" x2="1" y1="0" y2="0" gradientTransform="scale(411.232) rotate(60 -2.923 .88)" gradientUnits="userSpaceOnUse" spreadMethod="pad">
+					<stop offset="0" style="stop-opacity:1;stop-color:#52c7f4"/>
+					<stop offset="1" style="stop-opacity:1;stop-color:#3d559d"/>
+				  </linearGradient>
+				  <linearGradient [attr.id]="logoLoaderId + '-e'" x1="0" x2="1" y1="0" y2="0" gradientTransform="rotate(60 -1354.945 484.425) scale(290.337)" gradientUnits="userSpaceOnUse" spreadMethod="pad">
+					<stop offset="0" style="stop-opacity:1;stop-color:#52c7f4"/>
+					<stop offset="1" style="stop-opacity:1;stop-color:#3d559d"/>
+				  </linearGradient>
+				</defs>
+				<g transform="matrix(1.33333 0 0 -1.33333 0 1365.333)">
+				  <path id="one" d="M0 0v150.816m-634.336-367 449 367L0 0l265.664-216.184s-404 160-900 0z" [style.stroke]="'url(#'+ logoLoaderId +'-c)'" style="fill:none;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-opacity:1" transform="translate(696.068 760.275)"/>
+				  <path id="two" d="M0 0s333 191 699-2" [style.stroke]="'url(#'+ logoLoaderId +'-d)'" style="fill:none;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-opacity:1" transform="translate(161.732 385.092)"/>
+				  <path id="three" d="M -228.631 92.216 C -228.631 92.216 -3 218.712 228.579 90.216" [style.stroke]="'url(#'+ logoLoaderId +'-e)'" style="fill:none;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-opacity:1" transform="translate(510.732 151.713)"></path>
+				  <path id="four" d="M 510.73 151.976 C 501.269 151.976 493.598 144.305 493.598 134.844 C 493.598 125.382 501.269 117.712 510.73 117.712 C 520.191 117.712 527.861 125.382 527.861 134.844 C 527.861 144.305 520.191 151.976 510.73 151.976 Z" [style.fill]="'url(#'+ logoLoaderId +'-e)'" [style.stroke]="'url(#'+ logoLoaderId +'-e)'" style="stroke-width: 60; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 10; stroke-opacity: 1;"></path>
+				</g>
+			</svg>
+		</ng-template>
+	
+		<ng-template #DEFAULT>
+			<span class="loader">
+				<span class="dot one"></span>
+				<span class="dot two"></span>
+				<span class="dot three"></span>
+			</span>
+		</ng-template>
+	
+		<p class="loader-info" *ngIf="loaderInfo && loaderInfo !== ''">{{loaderInfo}}</p>
+	</div>
+
+	<span class="loader-backdrop"></span>
+</div>

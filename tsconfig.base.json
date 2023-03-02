@@ -14,7 +14,23 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@fhem-native/app-config": ["libs/app-config/index.ts"],
+      "@fhem-native/components": ["libs/components/src/index.ts"],
+      "@fhem-native/directives": ["libs/directives/src/index.ts"],
+      "@fhem-native/fhem-components": ["libs/fhem-components/src/lib/index.ts"],
+      "@fhem-native/modules": ["libs/modules/src/index.ts"],
+      "@fhem-native/pages": ["libs/pages/src/index.ts"],
+      "@fhem-native/services": ["libs/services/src/index.ts"],
+      "@fhem-native/types/common": ["libs/types/src/lib/common/index.ts"],
+      "@fhem-native/types/components": [
+        "libs/types/src/lib/components/index.ts"
+      ],
+      "@fhem-native/types/fhem": ["libs/types/src/lib/fhem/index.ts"],
+      "@fhem-native/types/room": ["libs/types/src/lib/room/index.ts"],
+      "@fhem-native/types/storage": ["libs/types/src/lib/storage/index.ts"],
+      "@fhem-native/utils": ["libs/utils/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

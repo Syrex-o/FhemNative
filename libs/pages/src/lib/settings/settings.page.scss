@@ -1,0 +1,7 @@
+:host{
+    ion-icon{
+        &.rotated{
+            transform: rotate(180deg);
+        }
+    }
+}

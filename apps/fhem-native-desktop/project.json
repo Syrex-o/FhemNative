@@ -1,0 +1,191 @@
+{
+  "name": "fhem-native-desktop",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/fhem-native-desktop/src",
+  "prefix": "fhem-native-desktop",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/fhem-native-desktop",
+        "index": "apps/fhem-native-desktop/src/index.html",
+        "main": "apps/fhem-native-desktop/src/main.ts",
+        "polyfills": "apps/fhem-native-desktop/src/polyfills.ts",
+        "tsConfig": "apps/fhem-native-desktop/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/ui/styles"]
+        },
+        "assets": [
+          "apps/fhem-native-desktop/src/assets",
+          {
+            "glob": "**/*.svg",
+            "input": "node_modules/ionicons/dist/ionicons/svg",
+            "output": "./svg"
+          },
+          {
+            "glob": "**/*.ttf",
+            "input": "libs/ui/assets/fonts",
+            "output": "assets/fonts"
+          },
+          {
+            "glob": "*.json",
+            "input": "libs/ui/assets/i18n/app",
+            "output": "assets/i18n"
+          },
+          {
+            "glob": "**/*.*",
+            "input": "libs/ui/assets/img/common",
+            "output": "assets/img"
+          },
+          {
+            "glob": "**/*.*",
+            "input": "libs/ui/assets/img/app",
+            "output": "assets/img/app"
+          }
+        ],
+        "styles": [
+          "apps/fhem-native-desktop/src/styles.scss",
+          {
+            "input": "apps/fhem-native-desktop/src/theme/variables.scss"
+          }
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "15kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/fhem-native-desktop/src/environments/environment.ts",
+              "with": "apps/fhem-native-desktop/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "fhem-native-desktop:build:production"
+        },
+        "development": {
+          "browserTarget": "fhem-native-desktop:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "fhem-native-desktop:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/fhem-native-desktop/src/**/*.ts",
+          "apps/fhem-native-desktop/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/fhem-native-desktop"],
+      "options": {
+        "jestConfig": "apps/fhem-native-desktop/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "cap": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "--help"
+      }
+    },
+    "add": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "add"
+      },
+      "configurations": {
+
+      }
+    },
+    "copy": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "copy"
+      },
+      "configurations": {
+        "electron": {
+          "cmd": "copy @capacitor-community/electron"
+        }
+      }
+    },
+    "open": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "open"
+      },
+      "configurations": {
+        "electron": {
+          "cmd": "open @capacitor-community/electron"
+        }
+      }
+    },
+    "run": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "run"
+      },
+      "configurations": {
+
+      }
+    },
+    "sync": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "sync"
+      },
+      "configurations": {
+
+      }
+    },
+    "update": {
+      "executor": "@nxext/capacitor:cap",
+      "options": {
+        "cmd": "update"
+      },
+      "configurations": {
+
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,100 @@
+// Styles for all pages/components
+
+// positions
+.pos-rel{
+    position: relative;
+}
+
+// overflow
+.no-overflow{ overflow: hidden; }
+
+// paddings
+.pad-lr-auto_2{
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+.pad-r_0-75{
+    padding-right: 0.75rem;
+}
+.pad-l_0-75{
+    padding-left: 0.75rem;
+}
+
+.pad-tb_0-75{
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+.pad-tb_0-5{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.pad-tb_0-25{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+// flex
+.flex{
+    display: flex;
+    &.f-col{
+        flex-direction: column;
+    }
+    &.f-wrap{
+        flex-wrap: wrap;
+    }
+
+    &.f-item-center{
+        align-items: center;
+    }
+    &.f-item-left{
+        align-items: flex-start;
+    }
+
+    &.f-content-center{
+        justify-content: center;
+    }
+    &.f-space-between{
+        justify-content: space-between;
+    }
+}
+
+// grow/shrink items
+.f-grow{flex: 1;}
+.f-no-shrink{flex-shrink: 0;}
+
+// flex gaps
+.f-gap-0-5{ gap: 0.5rem; }
+
+
+// margin codes
+.mt-5{ margin-top: 5rem; }
+.mt-2-5{ margin-top: 2.5rem; }
+.mt-1-5{ margin-top: 1.5rem; }
+.mt-1{ margin-top: 1rem; }
+.mt-0-5{ margin-top: 0.5rem; }
+
+.mb-5{ margin-bottom: 5rem; }
+.mb-2-5{ margin-bottom: 2.5rem; }
+.mb-1-5{ margin-bottom: 1.5rem; }
+.mb-1{ margin-bottom: 1rem; }
+.mb-0-5{ margin-bottom: 0.5rem; }
+
+// width codes
+.w-100{ width: 100%;}
+.w-80{ width: 80%;}
+.w-60{ width: 60%;}
+.w-50{ width: 50%;}
+
+@media (max-width: 1024px) {
+    .pad-lr-auto_2{
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .pad-lr-auto_2{
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "services",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/services/src",
+  "prefix": "fhem-native",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/services"],
+      "options": {
+        "jestConfig": "libs/services/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/services/src/**/*.ts",
+          "libs/services/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

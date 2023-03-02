@@ -1,0 +1,18 @@
+:host{
+	display: block;
+	padding: var(--item-spacing-a) 0px;
+	.box-container{
+		position: relative;
+		display: flex;
+		align-items: center;
+		background-color: var(--tertiary);
+		border-radius: var(--radius-a);
+		gap: var(--item-spacing-a);
+		padding: var(--item-spacing-a);
+		min-height: var(--item-height-b);
+		&.ion-activatable{
+			overflow: hidden;
+			cursor: pointer;
+		}
+	}
+}

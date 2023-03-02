@@ -1,0 +1,36 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 30, height: 30}"
+    [fhemDeviceConfig]="{
+        device, reading,
+        connected: true,
+        readingAvailable: (device !== '' && reading !== '') ? true : false
+    }"
+    (initDevice)="getButtonState($event)"
+    (updateDevice)="getButtonState($event)">
+    <button class="fhem-native-button ion-activatable" (click)="sendCmd()"
+        [ngStyle]="{
+            'background-color': buttonColor,
+            'border-top-left-radius.px': customBorder ? borderRadiusTopLeft : borderRadius,
+            'border-top-right-radius.px': customBorder ? borderRadiusTopRight : borderRadius,
+            'border-bottom-left-radius.px': customBorder ? borderRadiusBottomLeft : borderRadius,
+            'border-bottom-right-radius.px': customBorder ? borderRadiusBottomRight : borderRadius
+        }">
+        <ion-ripple-effect></ion-ripple-effect>
+
+        <p *ngIf="!iconOnly" [ngStyle]="{ 'color': labelColor, 'width': 'calc(100% - '+ iconSize +'px - 16px)'}">
+            {{label !== '' ? label : device}}
+        </p>
+
+        <fhem-native-icon
+            [ngStyle]="{
+                'color': buttonState ? iconColorOn : iconColorOff,
+                'width.px': iconSize,
+                'height.px': iconSize
+            }"
+            [class.icon-only]="iconOnly"
+            [icon]="buttonState ? iconOn : iconOff">
+        </fhem-native-icon>
+    </button>
+</fhem-native-component>

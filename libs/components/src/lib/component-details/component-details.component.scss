@@ -1,0 +1,52 @@
+ion-popover.component-details-popover{
+    --background: var(--secondary);
+
+    --width: 50%;
+    --min-width: 300px;
+    --max-width: 600px;
+
+    --height: 50%;
+    --min-height: 300px;
+    --max-height: 600px;
+    &::part(content){
+        display: block;
+        border-radius: 24px;
+        padding: var(--padding-b);
+    }
+
+    .flex-container{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    fhem-native-select-icon{
+        width: 100px;
+        margin-right: var(--item-spacing-b);
+    }
+    fhem-native-input{
+        width: 50%;
+        max-width: 300px;
+        min-width: 150px;
+        margin-left: var(--item-spacing-b);
+    }
+
+    .app-button{
+        width: 200px;
+        margin: var(--item-spacing-b) 0;
+    }
+
+
+    .flex-box{
+        display: flex;
+        &.inline{
+            align-items: flex-start;
+            justify-content: center;
+        }
+        &.center{
+            align-items: center;
+            flex-direction: column;
+        }
+    }
+}

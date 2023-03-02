@@ -1,0 +1,114 @@
+:root{
+	// background colors
+	--primary: rgb(25, 24, 22);
+	--secondary: rgb(13, 13, 12);
+	--tertiary: rgb(35, 37, 36);
+	--quaternary: rgb(235, 241, 244);
+
+	// text colors
+	--text-a: rgb(247, 251, 250);
+	--text-b: rgba(247, 251, 250, 0.5);
+	--text-c: rgb(14, 15, 16);
+	--text-d: rgba(14, 15, 16, 0.5);
+
+	// button colors
+	--btn-text-a: #E1F3F5;
+	--btn-text-b: #2f85ff;
+	--btn-text-c: #000;
+
+	--btn-bg-a: #2f85ff;
+	--btn-bg-a-inactive: #A7A7A7;
+	--btn-bg-b: transparent;
+	--btn-bg-c: #fff;
+
+	// Shadows
+	--sahdow-a: rgba(49, 49, 49, 0.3) 0px 2px 4px;
+	
+	--shadow-b: rgba(28, 54, 76, 0.15) 0px 6px 20px -6px;
+	--shadow-b-active: rgba(28, 54, 76, 0.35) 0px 10px 20px;
+
+	// signal colors
+	--signal-a: #3dbbed;
+	--signal-b: #3e5f9f;
+
+	// indicator colors
+	--success: #CBFFAE;
+	--success-b: #262338;
+	--success-c: rgba(234,249,222,0.15);
+
+	--warning: #FFE6B0;
+	--warning-b: #262338;
+	--warning-c: rgba(255,248,233,0.15);
+
+	--info: #2f85ff;
+	--info-b: #E1F3F5;
+	--info-c: rgba(61,91,241,0.15);
+
+	--error: #FFABE8;
+	--error-b: #262338;
+	--error-c: rgba(255,236,252,0.15);
+
+	// spacings
+	--spacing-a: 2px;
+	--spacing-b: 1px;
+	--spacing-c: 0.5px;
+	--spacing-d: 0px;
+
+	// Fonts
+	--font-a: 'Montserrat-Bold', sans-serif;
+	--font-b: 'Montserrat', sans-serif;
+
+	// Border radius
+	--radius-a: 4px;
+	--radius-b: 8px;
+	--radius-c: 16px;
+
+	// Paddings
+	--padding-a: 8px;
+	--padding-b: 16px;
+
+	// Static variables
+	--backdrop-op: 0.3;
+
+	/*
+		Item Style Guide
+			Heights of items
+			Spacings between items
+	*/
+	// Standard item heights
+	--item-height-a: 64px;
+	--item-height-b: 56px;
+
+	// Standard item spacings
+	--item-spacing-a: 10px;
+	--item-spacing-b: 5px;
+
+	/*
+		Font Size Guide
+			Web starts at 0
+			Mobile starts at 2
+	*/
+	--size-0: 67px;
+	--lHeight-0: 89px;
+
+	--size-1: 50px;
+	--lHeight-1: 67px;
+
+	--size-2: 37px;
+	--lHeight-2: 50px;
+
+	--size-3: 28px;
+	--lHeight-3: 37px;
+
+	--size-4: 21px;
+	--lHeight-4: 28px;
+
+	--size-5: 16px;
+	--lHeight-5: 21px;
+
+	--size-6: 14px;
+	--lHeight-6: 18px;
+
+	--size-7: 12px;
+	--lHeight-7: 18px;
+}

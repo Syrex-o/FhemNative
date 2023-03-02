@@ -1,0 +1,25 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 100, height: 45}"
+    [fhemDeviceConfig]="{device, reading, readingAvailable: true}"
+    (initDevice)="getToggleState($event)"
+    (updateDevice)="getToggleState($event)">
+    <div class="fhem-native-switch">
+        <fhem-native-switch 
+            [(ngModel)]="toggleState" 
+            [actOnCallback]="true"
+            [showInfoBubble]="false"
+            [switchType]="style"
+            [label]="customLabels && label !== '' ? label : device"
+            [info]="customLabels && info !== '' ? info : ''"
+            [labelColor]="customLabelColors ? labelColor : undefined"
+            [infoColor]="customLabelColors ? infoColor : undefined"
+            [backgroundColorOn]="backgroundColorOn"
+            [backgroundColorOff]="backgroundColorOff"
+            [knobColorOn]="knobColorOn"
+            [knobColorOff]="knobColorOff"
+            (clicked)="toggle()">
+        </fhem-native-switch>
+    </div>
+</fhem-native-component>

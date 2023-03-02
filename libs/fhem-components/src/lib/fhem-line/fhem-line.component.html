@@ -1,0 +1,34 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 30, height: 30}">
+    <div class="fhem-native-line" [ngClass]="orientation">
+        <ng-container *ngIf="orientation === 'horizontal' else VERTICAL">
+            <div class="line-item horizontal"
+                [ngStyle]="{
+                    'top': '50%',
+                    'height': curvePercentage === 0 ? height+'px' : '100%', 
+                    'background-color': curvePercentage === 0 ? color : 'transparent',
+                    'transform': 'translate3d(0, -50%, 0)' + 'rotate('+rotation+'deg)',
+                    'border-left': curvePercentage !== 0 ? height+'px solid '+color : '0px',
+                    'border-top': curvePercentage !== 0 ? height+'px solid '+color : '0px',
+                    'border-top-left-radius': curvePercentage+'%'
+                }">
+            </div>
+        </ng-container>
+
+        <ng-template #VERTICAL>
+            <div class="line-item vertical"
+                [ngStyle]="{
+                    'left': '50%',
+                    'width': curvePercentage === 0 ? height+'px' : '100%', 
+                    'background-color': curvePercentage === 0 ? color : 'transparent',
+                    'transform': 'translate3d(-50%, 0, 0)' + 'rotate('+rotation+'deg)',
+                    'border-right': curvePercentage !== 0 ? height+'px solid '+color : '0px',
+                    'border-bottom': curvePercentage !== 0 ? height+'px solid '+color : '0px',
+                    'border-bottom-right-radius': curvePercentage+'%'
+                }">
+        </div>
+        </ng-template>
+    </div>
+</fhem-native-component>

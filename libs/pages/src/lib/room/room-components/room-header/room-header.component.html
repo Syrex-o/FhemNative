@@ -1,0 +1,18 @@
+<div class="flex-block">
+    <div class="logo-container">
+        <img src="/assets/img/icon.png" alt="FhemNative Logo">
+    </div>
+    <div class="burger-menu" (click)="toggleMenu()">
+        <span class="line first"></span>
+        <span class="line second"></span>
+        <span class="line third"></span>
+    </div>
+</div>
+
+<div class="flex-block">
+    <p class="spacing-b color-b-app">{{room.name | uppercase}}</p>
+</div>
+
+<div class="flex-block">
+    <fhem-native-room-header-editor></fhem-native-room-header-editor>
+</div>
