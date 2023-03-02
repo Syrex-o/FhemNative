@@ -1,0 +1,6 @@
+<button *ngIf="!settings.modes.roomEdit && settings.app.enableEditing"
+	class="btn-round blue fixed-top-right right-pad ion-activatable theme-background theme-shadow-one"
+	(click)="edit()">
+	<ion-icon class="edit" name="create"></ion-icon>
+	<ion-ripple-effect></ion-ripple-effect>
+</button>

@@ -1,0 +1,58 @@
+:host{
+	.category{
+		margin-bottom: 8px;
+		padding-bottom: 8px;
+		border-bottom: 1px solid #565656;
+		.weather-container{
+			position: relative;
+			width: 100%;
+			min-height: 30px;
+			p{
+				padding-top: 5px;
+				width: calc(100% - 100px);
+			}
+			span{
+				top: 50%;
+				transform: translateY(-50%);
+			}
+		}
+		.des{
+			margin-bottom: 2px;
+			font-size: 1.1em;
+			margin-left: 8px;
+			margin-top:0px;
+			font-weight: 500;
+			&.right{
+				position: absolute;
+				right: 8px;
+			}
+		}
+		.des_small{
+			font-size: 13px;
+			margin: 0;
+			margin-left: 8px;
+			font-weight: 400;
+		}
+	}
+	.informer-container{
+		position: relative;
+		display: flex;
+		width: 100%;
+		.informer-icon-container{
+			position: absolute;
+			width: 40px;
+			height: 100%;
+			.informer-icon{
+				font-size: 35px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+		.informer-message{
+			margin-bottom: 0px;
+			margin-left: 50px;
+		}
+	}
+}

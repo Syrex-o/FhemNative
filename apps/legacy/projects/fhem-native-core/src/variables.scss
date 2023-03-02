@@ -1,0 +1,33 @@
+:root{
+	// THEME Variables for FhemNative
+	// buttons
+	--btn-blue: rgb(20, 169, 213);
+	--btn-dark-blue: #051e34;
+	--btn-green: rgb(76, 175, 80);
+	--btn-red: rgb(214, 33, 33);
+	--btn-blue-bg: #2994b3;
+
+	--gradient: linear-gradient(to right, #32a6ff 0%,#5d94ad 100%);
+
+	// Themes
+	--primary: #212121;
+	--primary-op: #21212199;
+
+	--secondary: #303030;
+	--secondary-op: #30303080;
+
+	--text: #fff;
+	--des: #ffffffb3;
+	--des-op: rgb(255 255 255 / 20%);
+
+	// box shadows
+	--shadow-one: 0px 4px 10px 0px rgb(0 0 0 / 30%);
+	--shadow-two: 0px 2px 5px 5px rgb(0 0 0 / 40%);
+
+	--active: rgb(20, 169, 213);
+
+	--neumorph-in: 0px 0px 0px 0px rgba(23,23,23,.801), 0px 0px 0px 0px rgba(40,40,40,.801), inset 6px 6px 16px 0px rgba(23,23,23,.801), inset -6px -6px 16px 0px rgba(40,40,40,.801);
+	--neumorph-out: 6px 6px 16px 0px rgba(23,23,23,.801), -6px -6px 16px 0px rgba(40,40,40,.801), inset 0px 0px 0px 0px rgba(23,23,23,.801), inset 0px 0px 0px 0px rgba(40,40,40,.801);
+	--neumorph-border: 1px solid rgba(40,40,40,.801);
+	--neumorph-small-out: 2px 2px 6px 0px rgba(23,23,23,.801), -2px -2px 6px 0px rgba(40,40,40,.801), inset 0px 0px 0px 0px rgba(23,23,23,.801), inset 0px 0px 0px 0px rgba(40,40,40,.801);
+}

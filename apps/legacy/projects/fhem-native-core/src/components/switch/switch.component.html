@@ -1,0 +1,111 @@
+<div class="switch-container {{settings.app.theme}}" 
+	[ngClass]="switchStyle" 
+	[class.allow-break]="allowLinebreak"
+	[ngStyle]="{'border-bottom': showBorder ? ('1px solid ' + borderColor) : '0px'}" 
+	[class.padding]="padding">
+	<!-- Standard toggle -->
+	<ng-container *ngIf="switchStyle === 'toggle' || switchStyle === 'NM-IN-toggle' || switchStyle === 'NM-OUT-toggle'">
+		<ng-container *ngTemplateOutlet="TOGGLE"></ng-container>
+	</ng-container>
+	<!-- Outline toggle -->
+	<ng-container *ngIf="switchStyle === 'toggle-outline' || switchStyle === 'NM-IN-toggle-outline' || switchStyle === 'NM-OUT-toggle-outline'">
+		<ng-container *ngTemplateOutlet="TOGGLE_OUTLINE"></ng-container>
+	</ng-container>
+	<!-- Gooey inline -->
+	<ng-container *ngIf="switchStyle === 'gooey-inline'">
+		<ng-container *ngTemplateOutlet="GOOEY_INLINE"></ng-container>
+	</ng-container>
+	<!-- Gooey outline -->
+	<ng-container *ngIf="switchStyle === 'gooey-outline' || switchStyle === 'NM-IN-gooey-outline' || switchStyle === 'NM-OUT-gooey-outline'">
+		<ng-container *ngTemplateOutlet="GOOEY_OUTLINE"></ng-container>
+	</ng-container>
+	<!-- Value toggle (value/icon) -->
+	<ng-container *ngIf="switchStyle === 'value-toggle'">
+		<ng-container *ngTemplateOutlet="VALUE_TOGGLE"></ng-container>
+	</ng-container>
+</div>
+
+<!-- Standard toggle -->
+<ng-template #TOGGLE>
+	<ng-container *ngTemplateOutlet="LABELS"></ng-container>
+	<button 
+		class="toggle inline"
+		(click)="toggle()"
+		[class.on]="toggleState"
+		[style.background]="toggleState ? colorOn : colorOff">
+		<span [style.background]="toggleState ? thumbColorOn : thumbColorOff"></span>
+	</button>
+</ng-template>
+<!-- Outline toggle -->
+<ng-template #TOGGLE_OUTLINE>
+	<ng-container *ngTemplateOutlet="LABELS"></ng-container>
+	<button 
+		class="toggle outline"
+		(click)="toggle()"
+		[class.on]="toggleState"
+		[style.background]="toggleState ? colorOn : colorOff">
+		<span [style.background]="toggleState ? thumbColorOn : thumbColorOff"></span>
+	</button>
+</ng-template>
+<!-- Gooey inline -->
+<ng-template #GOOEY_INLINE>
+	<ng-container *ngTemplateOutlet="LABELS"></ng-container>
+	<button
+		class="toggle inline gooey-inline"
+		(click)="toggle()"
+		[ngClass]="toggleState ? 'on' : 'off'"
+		[style.background]="toggleState ? colorOn : colorOff">
+		<span [style.background]="toggleState ? thumbColorOn : thumbColorOff"></span>
+	</button>
+	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="800">
+		<defs>
+			<filter id="gooey">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"></feGaussianBlur>
+				<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+			</filter>
+		</defs>
+	</svg>
+</ng-template>
+<!-- Gooey outline -->
+<ng-template #GOOEY_OUTLINE>
+	<ng-container *ngTemplateOutlet="LABELS"></ng-container>
+	<button
+		class="toggle outline gooey-outline"
+		(click)="toggle()"
+		[ngClass]="toggleState ? 'on' : 'off'"
+		[style.background]="toggleState ? colorOn : colorOff">
+		<span [style.background]="toggleState ? thumbColorOn : thumbColorOff"></span>
+	</button>
+</ng-template>
+<!-- Value Toggle -->
+<ng-template #VALUE_TOGGLE>
+	<ng-container *ngTemplateOutlet="LABELS"></ng-container>
+	<button
+		class="toggle value-toggle"
+		(click)="toggle()"
+		[ngClass]="toggleState ? 'on' : 'off'"
+		[style.background]="toggleState ? colorOn : colorOff">
+		<div class="value-container">
+			<p [ngStyle]="{
+				'color': !toggleState ? thumbColorOff : '#acb2c0',
+				'text-shadow': '0 0 12px ' + (!toggleState ? thumbColorOff : '#acb2c0')
+			}">Off</p>
+		</div>
+		<div class="value-container">
+			<p [ngStyle]="{
+				'color': toggleState ? thumbColorOn : '#acb2c0',
+				'text-shadow': '0 0 12px ' + (toggleState ? thumbColorOn : '#acb2c0')
+			}">On</p>
+		</div>
+		<div class="value-overlay"></div>
+	</button>
+</ng-template>
+
+
+<!-- Toggle Text -->
+<ng-template #LABELS>
+	<div class="label-container" [ngClass]="switchStyle" [class.title-only]="!subTitle || subTitle === ''">
+		<p class="title theme-text">{{label}}</p>
+		<p class="subtitle theme-des" *ngIf="subTitle && subTitle !== ''">{{subTitle}}</p>
+	</div>
+</ng-template>

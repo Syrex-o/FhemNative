@@ -1,0 +1,64 @@
+<core-settings
+	(onWebsiteClick)="openWebsite()"
+	(onPrivacyClick)="openPrivacy()">
+	<!-- Display Screen Size Info of device -->
+	<div class="settings-block" ElectronWindowResizePlaceholder>
+		<p class="block-label theme-text">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.TITLE' | translate }}</p>
+		<div class="category switch-category">
+			<switch
+				[padding]="false"
+				[(ngModel)]="settings.app.customWindowScale.enable"
+				[label]="'GENERAL.SETTINGS.ADVANCED.WINDOW.ENABLE.TITLE' | translate"
+				[subTitle]="'GENERAL.SETTINGS.ADVANCED.WINDOW.ENABLE.INFO' | translate"
+				(onToggle)="changeAppSettingJSON('customWindowScale', 'enable', $event)">
+			</switch>
+		</div>
+		<!-- Manual selection -->
+		<div class="category btn-category" *ngIf="devices.length > 0 && !settings.app.customWindowScale.custom">
+			<p class="label theme-text">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.SELECT_DEVICE.TITLE' | translate }}</p>
+			<p class="des theme-des">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.SELECT_DEVICE.INFO' | translate }}</p>
+			<selector 
+				class="select"
+				[items]="devices"
+				[addNewItems]="false"
+				bindName="device"
+				bindValue="device"
+				[(ngModel)]="settings.app.customWindowScale.deviceSelection"
+				(onValueChange)="changeCustomDeviceSize($event)">
+				<ng-template let-item="item" let-index="index">
+					<span class="device-name">{{item.device}}</span>
+					<span class="device-dimensions">{{item.dimensions.width}} x {{item.dimensions.height}}</span>
+				</ng-template>
+			</selector>
+		</div>
+		<!-- Custom window size -->
+		<div class="category switch-category">
+			<switch
+				[padding]="false"
+				[(ngModel)]="settings.app.customWindowScale.custom"
+				[label]="'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.TITLE' | translate"
+				[subTitle]="'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.INFO' | translate"
+				(onToggle)="changeAppSettingJSON('customWindowScale', 'custom', $event)">
+			</switch>
+		</div>
+		<div class="category btn-full-category" *ngIf="settings.app.customWindowScale.custom">
+			<p class="label theme-text">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.SUB_INFO' | translate }}</p>
+			<p class="des theme-des">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.WIDTH' | translate }}</p>
+			<div class="input">
+				<input type="number" [(ngModel)]="settings.app.customWindowScale.dimensions.width" placeholder="min 200">
+				<span class="bar"></span>
+			</div>
+			<p class="des theme-des">{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.HEIGHT' | translate }}</p>
+			<div class="input">
+				<input type="number" [(ngModel)]="settings.app.customWindowScale.dimensions.height" placeholder="min 200">
+				<span class="bar"></span>
+			</div>
+			<button class="ion-activatable" (click)="changeCustomDeviceSizeFromInput()">
+				{{ 'GENERAL.SETTINGS.ADVANCED.WINDOW.CUSTOM.BUTTON' | translate }}
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+	</div>
+
+	
+</core-settings>

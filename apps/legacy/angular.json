@@ -1,0 +1,918 @@
+{
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"newProjectRoot": "projects",
+	"projects": {
+		"FhemNativeMobile": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				},
+				"@schematics/angular:application": {
+					"strict": true
+				}
+			},
+			"root": "projects/fhem-native-mobile",
+			"sourceRoot": "projects/fhem-native-mobile/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/FhemNativeMobile",
+						"index": "projects/fhem-native-mobile/src/index.html",
+						"main": "projects/fhem-native-mobile/src/main.ts",
+						"polyfills": "projects/fhem-native-mobile/src/polyfills.ts",
+						"tsConfig": "projects/fhem-native-mobile/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/fhem-native-mobile/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							},
+							{
+								"glob": "**/*.json",
+								"input": "projects/fhem-native-core/assets",
+								"output": "./assets"
+							},
+							{
+								"glob": "**/*.png",
+								"input": "projects/fhem-native-core/assets/img",
+								"output": "./assets/img"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss",
+							{ "input": "projects/fhem-native-core/src/variables.scss" },
+							{
+								"input": "node_modules/@ionic/angular/css/core.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/normalize.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/structure.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/typography.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/display.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/padding.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/float-elements.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-alignment.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-transformation.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/flex-utils.css"
+							}
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kb",
+									"maximumError": "2mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kb",
+									"maximumError": "10kb"
+								}
+							],
+							"fileReplacements": [
+								{
+									"replace": "projects/fhem-native-mobile/src/environments/environment.ts",
+									"with": "projects/fhem-native-mobile/src/environments/environment.prod.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"configurations": {
+						"production": {
+							"browserTarget": "FhemNativeMobile:build:production"
+						},
+						"development": {
+							"browserTarget": "FhemNativeMobile:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "FhemNativeMobile:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/fhem-native-mobile/src/test.ts",
+						"polyfills": "projects/fhem-native-mobile/src/polyfills.ts",
+						"tsConfig": "projects/fhem-native-mobile/tsconfig.spec.json",
+						"karmaConfig": "projects/fhem-native-mobile/karma.conf.js",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/fhem-native-mobile/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss"
+						],
+						"scripts": []
+					}
+				},
+				"ionic-cordova-serve": {
+					"builder": "@ionic/angular-toolkit:cordova-serve",
+					"options": {
+						"cordovaBuildTarget": "FhemNativeMobile:ionic-cordova-build",
+						"devServerTarget": "FhemNativeMobile:serve"
+					},
+					"configurations": {
+						"production": {
+							"cordovaBuildTarget": "FhemNativeMobile:ionic-cordova-build:production",
+							"devServerTarget": "FhemNativeMobile:serve:production"
+						}
+					}
+				},
+				"ionic-cordova-build": {
+					"builder": "@ionic/angular-toolkit:cordova-build",
+					"options": {
+						"browserTarget": "FhemNativeMobile:build"
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "FhemNativeMobile:build:production"
+						}
+					}
+				}
+			}
+		},
+		"FhemNativeDesktop": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				},
+				"@schematics/angular:application": {
+					"strict": true
+				}
+			},
+			"root": "projects/fhem-native-desktop",
+			"sourceRoot": "projects/fhem-native-desktop/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/FhemNativeDesktop",
+						"index": "projects/fhem-native-desktop/src/index.html",
+						"main": "projects/fhem-native-desktop/src/main.ts",
+						"polyfills": "projects/fhem-native-desktop/src/polyfills.ts",
+						"tsConfig": "projects/fhem-native-desktop/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/fhem-native-desktop/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							},
+							{
+								"glob": "**/*.json",
+								"input": "projects/fhem-native-core/assets",
+								"output": "./assets"
+							},
+							{
+								"glob": "**/*.png",
+								"input": "projects/fhem-native-core/assets/img",
+								"output": "./assets/img"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss",
+							{ "input": "projects/fhem-native-core/src/variables.scss" },
+							{
+								"input": "node_modules/@ionic/angular/css/core.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/normalize.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/structure.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/typography.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/display.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/padding.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/float-elements.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-alignment.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-transformation.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/flex-utils.css"
+							}
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kb",
+									"maximumError": "2mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kb",
+									"maximumError": "10kb"
+								}
+							],
+							"fileReplacements": [
+								{
+									"replace": "projects/fhem-native-desktop/src/environments/environment.ts",
+									"with": "projects/fhem-native-desktop/src/environments/environment.prod.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"configurations": {
+						"production": {
+							"browserTarget": "FhemNativeDesktop:build:production"
+						},
+						"development": {
+							"browserTarget": "FhemNativeDesktop:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "FhemNativeDesktop:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/fhem-native-desktop/src/test.ts",
+						"polyfills": "projects/fhem-native-desktop/src/polyfills.ts",
+						"tsConfig": "projects/fhem-native-desktop/tsconfig.spec.json",
+						"karmaConfig": "projects/fhem-native-desktop/karma.conf.js",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/fhem-native-desktop/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss"
+						],
+						"scripts": []
+					}
+				},
+				"ionic-cordova-serve": {
+					"builder": "@ionic/angular-toolkit:cordova-serve",
+					"options": {
+						"cordovaBuildTarget": "FhemNativeDesktop:ionic-cordova-build",
+						"devServerTarget": "FhemNativeDesktop:serve"
+					},
+					"configurations": {
+						"production": {
+							"cordovaBuildTarget": "FhemNativeDesktop:ionic-cordova-build:production",
+							"devServerTarget": "FhemNativeDesktop:serve:production"
+						}
+					}
+				},
+				"ionic-cordova-build": {
+					"builder": "@ionic/angular-toolkit:cordova-build",
+					"options": {
+						"browserTarget": "FhemNativeDesktop:build"
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "FhemNativeDesktop:build:production"
+						}
+					}
+				}
+			}
+		},
+		"FhemNativeWebsite": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				},
+				"@schematics/angular:application": {
+					"strict": true
+				}
+			},
+			"root": "projects/fhem-native-website",
+			"sourceRoot": "projects/fhem-native-website/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/FhemNativeWebsite",
+						"index": "projects/fhem-native-website/src/index.html",
+						"main": "projects/fhem-native-website/src/main.ts",
+						"polyfills": "projects/fhem-native-website/src/polyfills.ts",
+						"tsConfig": "projects/fhem-native-website/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/fhem-native-website/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							},
+							{
+								"glob": "**/*.json",
+								"input": "projects/fhem-native-core/assets",
+								"output": "./assets"
+							},
+							{
+								"glob": "**/*.png",
+								"input": "projects/fhem-native-core/assets/img",
+								"output": "./assets/img"
+							},
+							{
+								"glob": "**/*.json",
+								"input": "projects/fhem-native-website/src/assets/web_i18n",
+								"output": "./assets/web_i18n"
+							},
+							{
+								"glob": "**/*.png",
+								"input": "projects/fhem-native-website/src/assets/images",
+								"output": "./assets/images"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss",
+							"projects/fhem-native-website/src/styles.scss",
+							{ "input": "projects/fhem-native-core/src/variables.scss" },
+							{
+								"input": "node_modules/@ionic/angular/css/core.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/normalize.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/structure.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/typography.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/display.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/padding.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/float-elements.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-alignment.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-transformation.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/flex-utils.css"
+							}
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kb",
+									"maximumError": "2mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kb",
+									"maximumError": "10kb"
+								}
+							],
+							"fileReplacements": [
+								{
+									"replace": "projects/fhem-native-website/src/environments/environment.ts",
+									"with": "projects/fhem-native-website/src/environments/environment.prod.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"configurations": {
+						"production": {
+							"browserTarget": "FhemNativeWebsite:build:production"
+						},
+						"development": {
+							"browserTarget": "FhemNativeWebsite:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "FhemNativeWebsite:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/fhem-native-website/src/test.ts",
+						"polyfills": "projects/fhem-native-website/src/polyfills.ts",
+						"tsConfig": "projects/fhem-native-website/tsconfig.spec.json",
+						"karmaConfig": "projects/fhem-native-website/karma.conf.js",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/fhem-native-website/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss",
+							"projects/fhem-native-website/src/styles.scss",
+						],
+						"scripts": []
+					}
+				},
+				"ionic-cordova-serve": {
+					"builder": "@ionic/angular-toolkit:cordova-serve",
+					"options": {
+						"cordovaBuildTarget": "FhemNativeWebsite:ionic-cordova-build",
+						"devServerTarget": "FhemNativeWebsite:serve"
+					},
+					"configurations": {
+						"production": {
+							"cordovaBuildTarget": "FhemNativeWebsite:ionic-cordova-build:production",
+							"devServerTarget": "FhemNativeWebsite:serve:production"
+						}
+					}
+				},
+				"ionic-cordova-build": {
+					"builder": "@ionic/angular-toolkit:cordova-build",
+					"options": {
+						"browserTarget": "FhemNativeWebsite:build"
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "FhemNativeWebsite:build:production"
+						}
+					}
+				}
+			}
+		},
+		"SmartSprinkler": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				},
+				"@schematics/angular:application": {
+					"strict": true
+				}
+			},
+			"root": "projects/smart-sprinkler",
+			"sourceRoot": "projects/smart-sprinkler/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/SmartSprinkler",
+						"index": "projects/smart-sprinkler/src/index.html",
+						"main": "projects/smart-sprinkler/src/main.ts",
+						"polyfills": "projects/smart-sprinkler/src/polyfills.ts",
+						"tsConfig": "projects/smart-sprinkler/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/smart-sprinkler/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							},
+							{
+								"glob": "**/*.json",
+								"input": "projects/fhem-native-core/assets",
+								"output": "./assets"
+							},
+							{
+								"glob": "**/*.png",
+								"input": "projects/fhem-native-core/assets/img",
+								"output": "./assets/img"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss",
+							{ "input": "projects/fhem-native-core/src/variables.scss" },
+							{
+								"input": "node_modules/@ionic/angular/css/core.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/normalize.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/structure.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/typography.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/display.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/padding.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/float-elements.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-alignment.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-transformation.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/flex-utils.css"
+							}
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kb",
+									"maximumError": "2mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kb",
+									"maximumError": "10kb"
+								}
+							],
+							"fileReplacements": [
+								{
+									"replace": "projects/smart-sprinkler/src/environments/environment.ts",
+									"with": "projects/smart-sprinkler/src/environments/environment.prod.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"configurations": {
+						"production": {
+							"browserTarget": "SmartSprinkler:build:production"
+						},
+						"development": {
+							"browserTarget": "SmartSprinkler:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "SmartSprinkler:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/smart-sprinkler/src/test.ts",
+						"polyfills": "projects/smart-sprinkler/src/polyfills.ts",
+						"tsConfig": "projects/smart-sprinkler/tsconfig.spec.json",
+						"karmaConfig": "projects/smart-sprinkler/karma.conf.js",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/smart-sprinkler/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss"
+						],
+						"scripts": []
+					}
+				},
+				"ionic-cordova-serve": {
+					"builder": "@ionic/angular-toolkit:cordova-serve",
+					"options": {
+						"cordovaBuildTarget": "SmartSprinkler:ionic-cordova-build",
+						"devServerTarget": "SmartSprinkler:serve"
+					},
+					"configurations": {
+						"production": {
+							"cordovaBuildTarget": "SmartSprinkler:ionic-cordova-build:production",
+							"devServerTarget": "SmartSprinkler:serve:production"
+						}
+					}
+				},
+				"ionic-cordova-build": {
+					"builder": "@ionic/angular-toolkit:cordova-build",
+					"options": {
+						"browserTarget": "SmartSprinkler:build"
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "SmartSprinkler:build:production"
+						}
+					}
+				}
+			}
+		},
+		"SmartSprinklerWebsite": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				},
+				"@schematics/angular:application": {
+					"strict": true
+				}
+			},
+			"root": "projects/smart-sprinkler-website",
+			"sourceRoot": "projects/smart-sprinkler-website/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/SmartSprinklerWebsite",
+						"index": "projects/smart-sprinkler-website/src/index.html",
+						"main": "projects/smart-sprinkler-website/src/main.ts",
+						"polyfills": "projects/smart-sprinkler-website/src/polyfills.ts",
+						"tsConfig": "projects/smart-sprinkler-website/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/smart-sprinkler-website/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							},
+							{
+								"glob": "**/*.json",
+								"input": "projects/fhem-native-core/assets",
+								"output": "./assets"
+							},
+							{
+								"glob": "**/*.png",
+								"input": "projects/fhem-native-core/assets/img",
+								"output": "./assets/img"
+							},
+							{
+								"glob": "**/*.png",
+								"input": "projects/smart-sprinkler-website/src/assets/images",
+								"output": "./assets/images"
+							},
+							{
+								"glob": "**/*.jpeg",
+								"input": "projects/smart-sprinkler-website/src/assets/images",
+								"output": "./assets/images"
+							},
+							{
+								"glob": "**/*.svg",
+								"input": "projects/smart-sprinkler-website/src/assets/images",
+								"output": "./assets/images"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss",
+							"projects/smart-sprinkler-website/src/styles.scss",
+							{ "input": "projects/fhem-native-core/src/variables.scss" },
+							{ "input": "projects/smart-sprinkler-website/src/variables.scss" },
+							{
+								"input": "node_modules/@ionic/angular/css/core.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/normalize.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/structure.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/typography.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/display.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/padding.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/float-elements.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-alignment.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/text-transformation.css"
+							},
+							{
+								"input": "node_modules/@ionic/angular/css/flex-utils.css"
+							}
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kb",
+									"maximumError": "3mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kb",
+									"maximumError": "50kb"
+								}
+							],
+							"fileReplacements": [
+								{
+									"replace": "projects/smart-sprinkler-website/src/environments/environment.ts",
+									"with": "projects/smart-sprinkler-website/src/environments/environment.prod.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"configurations": {
+						"production": {
+							"browserTarget": "SmartSprinklerWebsite:build:production"
+						},
+						"development": {
+							"browserTarget": "SmartSprinklerWebsite:build:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "SmartSprinklerWebsite:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/smart-sprinkler-website/src/test.ts",
+						"polyfills": "projects/smart-sprinkler-website/src/polyfills.ts",
+						"tsConfig": "projects/smart-sprinkler-website/tsconfig.spec.json",
+						"karmaConfig": "projects/smart-sprinkler-website/karma.conf.js",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/smart-sprinkler-website/src/favicon.ico",
+							{
+								"glob": "**/*.svg",
+								"input": "node_modules/ionicons/dist/ionicons/svg",
+								"output": "./svg"
+							}
+						],
+						"styles": [
+							"projects/fhem-native-core/src/styles.scss",
+							"projects/smart-sprinkler-website/src/styles.scss",
+						],
+						"scripts": []
+					}
+				},
+				"ionic-cordova-serve": {
+					"builder": "@ionic/angular-toolkit:cordova-serve",
+					"options": {
+						"cordovaBuildTarget": "SmartSprinklerWebsite:ionic-cordova-build",
+						"devServerTarget": "SmartSprinklerWebsite:serve"
+					},
+					"configurations": {
+						"production": {
+							"cordovaBuildTarget": "SmartSprinklerWebsite:ionic-cordova-build:production",
+							"devServerTarget": "SmartSprinklerWebsite:serve:production"
+						}
+					}
+				},
+				"ionic-cordova-build": {
+					"builder": "@ionic/angular-toolkit:cordova-build",
+					"options": {
+						"browserTarget": "SmartSprinklerWebsite:build"
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "SmartSprinklerWebsite:build:production"
+						}
+					}
+				}
+			}
+		}
+	},
+	"defaultProject": "FhemNativeMobile"
+}

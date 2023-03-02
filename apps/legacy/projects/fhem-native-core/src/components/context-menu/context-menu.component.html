@@ -1,0 +1,295 @@
+<div class="context-menu-container" outside-click (onOutsideClick)="removeContextMenu(true, $event)" [ngClass]="dropDownPosition">
+	<div #CONTEXT_MENU [ngClass]="settings.operatingPlatform" @ShowHide
+		class="context-menu theme-background"
+		[ngStyle]="{'left.px': x, 'top.px': y}">
+		<!-- component specific -->
+		<ng-container *ngIf="source === 'component'">
+			<!-- component infos/settings -->
+			<div class="block border theme-text">
+				<p class="header">{{ 'GENERAL.EDIT_COMPONENT.MENU.HEADERS.COMPONENT' | translate }}</p>
+				<!-- Component Settings -->
+				<button class="inner ion-activatable theme-text" (click)="toggleComponentSettings()">
+					<ion-icon name="cog-outline"></ion-icon>
+					<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.SETTINGS' | translate }}</p>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+
+				<!-- Component Infos -->
+				<button class="inner ion-activatable theme-text" (click)="toggleComponentDetails()">
+					<ion-icon name="information-circle-outline"></ion-icon>
+					<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.DETAILS' | translate }}</p>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</ng-container>
+
+		<!-- Export/Import -->
+		<div class="block border theme-text">
+			<p class="header">{{ 'GENERAL.EDIT_COMPONENT.MENU.HEADERS.SHARE' | translate }}</p>
+			<!-- Export -->
+			<div class="inner-expand">
+				<button [class.tappable]="source === 'component' || selectComponent.selectorList.length > 0"
+					class="inner ion-activatable block-tappable theme-text"
+					(click)="toggleSubMenu('export')">
+					<icon class="smaller" icon="file-export"></icon>
+					<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.EXPORT.BUTTON' | translate }}</p>
+					<ion-icon class="arrow" name="caret-forward-outline"></ion-icon>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<!-- Inner Menu -->
+				<div class="expand theme-background" [class.show]="show.export" outside-click (onOutsideClick)="toggleSubMenu('export', true)">
+					<!-- File Export -->
+					<button class="inner ion-activatable theme-text" (click)="exportComponents('file'); toggleSubMenu('export')">
+						<ion-icon name="eye-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.EXPORT.AS_FILE' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- QR Export -->
+					<button class="inner ion-activatable theme-text" (click)="exportComponents('qr'); toggleSubMenu('export')">
+						<ion-icon class="smaller" name="qr-code-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.EXPORT.AS_QR' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+
+			<!-- Import -->
+			<div class="inner-expand">
+				<button class="inner ion-activatable theme-text" (click)="toggleSubMenu('import')">
+					<icon class="smaller" icon="file-import"></icon>
+					<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.IMPORT.BUTTON' | translate }}</p>
+					<ion-icon class="arrow" name="caret-forward-outline"></ion-icon>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<!-- Inner Menu -->
+				<div class="expand theme-background" [class.show]="show.import" outside-click (onOutsideClick)="toggleSubMenu('import', true)">
+					<!-- File Import -->
+					<!-- upload via selection -->
+					<input type="file" class="file-input" (change)="importFromFile($event)" #fileUpload>
+					<button class="inner ion-activatable theme-text" (click)="settings.blockRoomReload = true; fileUpload.click(); toggleSubMenu('import')">
+						<ion-icon name="document-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.IMPORT.AS_FILE' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- QR Import -->
+					<button *ngIf="settings.operatingPlatform === 'mobile'" class="inner ion-activatable theme-text" 
+						(click)="importFromQr(); toggleSubMenu('import')">
+						<ion-icon class="smaller" name="qr-code-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.IMPORT.AS_QR' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Align -->
+		<div class="block border theme-text">
+			<p class="header">{{ 'GENERAL.EDIT_COMPONENT.MENU.HEADERS.ALIGN' | translate }}</p>
+			<ng-container *ngIf="source === 'component'">
+				<!-- Layers: Foreground/Background -->
+				<div class="inner-expand">
+					<button [class.tappable]="source === 'component' && !structure.getComponent(this.componentID)?.pinned"
+						class="inner ion-activatable block-tappable theme-text" (click)="toggleSubMenu('align')">
+						<icon class="smaller" icon="window-restore"></icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ALIGN.BUTTON' | translate }}</p>
+						<ion-icon class="arrow" name="caret-forward-outline"></ion-icon>	
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Inner Menu -->
+					<div class="expand theme-background" [class.show]="show.align" outside-click (onOutsideClick)="toggleSubMenu('align', true)">
+						<!-- Foreground -->
+						<button class="inner ion-activatable theme-text" (click)="sendTo('front'); toggleSubMenu('align')">
+							<icon class="smaller" icon="window-restore"></icon>
+							<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ALIGN.FOREGROUND' | translate }}</p>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+						<!-- Background -->
+						<button class="inner ion-activatable theme-text" (click)="sendTo('back'); toggleSubMenu('align')">
+							<icon class="smaller opacity" icon="window-restore"></icon>
+							<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ALIGN.BACKGROUND' | translate }}</p>
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</div>
+				</div>
+			</ng-container>
+
+			<!-- Arrage -->
+			<div class="inner-expand">
+				<button [class.tappable]="selectComponent.selectorList.length > 0"
+					class="inner ion-activatable block-tappable theme-text" (click)="toggleSubMenu('arrange')">
+					<icon class="smaller" icon="window-restore"></icon>
+					<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ARRANGE.BUTTON' | translate }}</p>
+					<ion-icon class="arrow" name="caret-forward-outline"></ion-icon>	
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<!-- Inner Menu -->
+				<div class="expand theme-background" [class.show]="show.arrange" outside-click (onOutsideClick)="toggleSubMenu('arrange', true)">
+					<!-- Left -->
+					<button class="inner ion-activatable theme-text" (click)="arrange('left'); toggleSubMenu('arrange')">
+						<ion-icon name="arrow-back-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ARRANGE.LEFT' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Right -->
+					<button class="inner ion-activatable theme-text" (click)="arrange('right'); toggleSubMenu('arrange')">
+						<ion-icon name="arrow-forward-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ARRANGE.RIGHT' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Top -->
+					<button class="inner ion-activatable theme-text" (click)="arrange('top'); toggleSubMenu('arrange')">
+						<ion-icon name="arrow-up-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ARRANGE.TOP' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Bottom -->
+					<button class="inner ion-activatable theme-text" (click)="arrange('bottom'); toggleSubMenu('arrange')">
+						<ion-icon name="arrow-down-outline"></ion-icon>
+						<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.ARRANGE.BOTTOM' | translate }}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+
+			<!-- Pin/Unpin -->
+			<button class="inner ion-activatable theme-text" *ngIf="source === 'component'" (click)="pinComponent()">
+				<ion-icon name="pin-outline"></ion-icon>
+				<p>{{ 
+					structure.getComponent(this.componentID)?.pinned ? 
+					('GENERAL.EDIT_COMPONENT.MENU.UNPIN' | translate) : 
+					('GENERAL.EDIT_COMPONENT.MENU.PIN' | translate) 
+				}}</p>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+
+			<!-- Group/Ungroup -->
+			<button [class.tappable]="selectComponent.selectorList.length > 1" (click)="groupComponents()"
+				class="inner ion-activatable block-tappable theme-text">
+				<icon [icon]="!selectComponent.isGroupedAny() ? 'object-group' : 'object-ungroup'"></icon>
+				<p>{{ 
+					!selectComponent.isGroupedAny() ? 
+					('GENERAL.EDIT_COMPONENT.MENU.GROUP' | translate) : 
+					('GENERAL.EDIT_COMPONENT.MENU.UNGROUP' | translate) 
+				}}</p>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+
+		<!-- Edit -->
+		<div class="block theme-text">
+			<p class="header">{{ 'GENERAL.EDIT_COMPONENT.MENU.HEADERS.EDIT' | translate }}</p>
+			<!-- Select/Unselect single and all -->
+			<div class="inner-expand">
+				<button class="inner ion-activatable theme-text" (click)="toggleSubMenu('select')">
+					<icon icon="clipboard"></icon>
+					<p>{{'GENERAL.EDIT_COMPONENT.MENU.SELECT' | translate}}</p>
+					<ion-icon class="arrow" name="caret-forward-outline"></ion-icon>	
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<!-- Inner Menu -->
+				<div class="expand theme-background" [class.show]="show.select" outside-click (onOutsideClick)="toggleSubMenu('select', true)">
+					<!-- Select/Unselect Single -->
+					<button [class.tappable]="source === 'component' && !structure.getComponent(this.componentID)?.pinned"
+						class="inner ion-activatable block-tappable theme-text" (click)="markForSelection(); toggleSubMenu('select')">
+						<icon [icon]="!selectComponent.evalCopySelector(componentID) ? 'clipboard-check' : 'clipboard'"></icon>
+						<p>{{ 
+							!selectComponent.evalCopySelector(componentID) ? 
+							('GENERAL.EDIT_COMPONENT.MENU.SELECT' | translate) : 
+							('GENERAL.EDIT_COMPONENT.MENU.UNSELECT' | translate) 
+						}}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Select/Unselect All -->
+					<button class="inner ion-activatable theme-text"
+						(click)="!selectComponent.evalCopySelectorAll(componentLoader.currentContainer) ? 
+							selectComponent.buildCopySelectorAll(componentLoader.currentContainer) : 
+							deselectAllComponents(); toggleSubMenu('select')">
+						<icon [icon]="!selectComponent.evalCopySelectorAll(componentLoader.currentContainer) ? 'clipboard-list' : 'clipboard'"></icon>
+						<p>{{ 
+							!selectComponent.evalCopySelectorAll(componentLoader.currentContainer) ? 
+							('GENERAL.EDIT_COMPONENT.MENU.SELECT_ALL' | translate) : 
+							('GENERAL.EDIT_COMPONENT.MENU.DESELECT_ALL' | translate) 
+						}}</p>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+
+			<!-- Copy -->
+			<button [class.tappable]="(source === 'component' && !structure.getComponent(this.componentID)?.pinned) || (source !== 'component' && selectComponent.selectorList.length > 0)"
+				(click)="copyComp()" class="inner ion-activatable block-tappable theme-text">
+				<icon icon="copy"></icon>
+				<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.COPY' | translate }}</p>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+
+			<!-- Paste -->
+			<button [class.tappable]="selectComponent.copyList.length > 0"
+				(click)="pasteComp()" class="inner ion-activatable block-tappable theme-text">
+				<icon icon="paste"></icon>
+				<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.PASTE' | translate }}</p>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+
+			<!-- Delete -->
+			<button [class.tappable]="(source === 'component' && !structure.getComponent(this.componentID)?.pinned) || (source !== 'component' && selectComponent.selectorList.length > 0)"
+				(click)="compDelete()" class="inner ion-activatable block-tappable theme-text">
+				<icon icon="trash"></icon>
+				<p>{{ 'GENERAL.EDIT_COMPONENT.MENU.DELETE' | translate }}</p>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+		</div>
+	</div>
+
+	<!-- QR Code Picker -->
+	<picker
+		[(ngModel)]="show.qr"
+		[height]="80"
+		class="qr"
+		[showConfirmBtn]="false"
+		[cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate"
+		[zIndex]="10001">
+		<div header>
+			<h2 class="theme-text">QR-Code</h2>
+		</div>
+		<div body class="page" *ngIf="show.qr">
+			<qrcode class="qr-code" [qrdata]="show.qrData" [width]="show.qrWidth" [errorCorrectionLevel]="'L'" [elementType]="'svg'"></qrcode>
+		</div>
+	</picker>
+
+	<!-- Component Details -->
+	<picker
+		[height]="'65'"
+		[zIndex]="1101"
+		[confirmBtn]="'GENERAL.BUTTONS.OKAY' | translate"
+		[showCancelBtn]="false"
+		[ngModel]="show.componentDetails.show"
+		(onClose)="toggleComponentDetails()">
+		<h2 *ngIf="show.componentDetails?.fhem" header class="theme-text">
+			{{ 'GENERAL.EDIT_COMPONENT.MENU.DETAILS' | translate }}: {{'COMPONENTS.'+[show.componentDetails.component.name]+'.NAME' | translate}}
+		</h2>
+		<div body class="page details" *ngIf="show.componentDetails?.fhem">
+			<div class="config-data">
+				<p class="head theme-text">{{ 'GENERAL.DICTIONARY.COMPONENT' | translate }}:</p>
+				<div class="details-row" *ngFor="let detail of show.componentDetails.component | keyvalue">
+					<span class="key theme-text">{{detail.key}}:</span>
+					<span class="value theme-des">{{detail.value}}</span>
+				</div>
+			</div>
+			<div class="config-data">
+				<p class="head theme-text">FhemNative userAttr Definition:</p>
+				<div class="details-row">
+					<span class="key theme-text">userAttr:</span>
+					<span class="value theme-des">{{show.componentDetails.fhem.userAttr}}</span>
+				</div>
+				<p class="theme-text">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.TITLE' | translate }}:</p>
+				<p class="des theme-des">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.SHORT.INFO' | translate }}</p>
+				<textarea class="user-attr theme-des">{{show.componentDetails.fhem.value.short}}</textarea>
+
+				<p class="theme-text">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.TITLE' | translate }}:</p>
+				<p class="des theme-des">{{ 'GENERAL.EDIT_COMPONENT.MENU.DEF_DETAILS.LONG.INFO' | translate }}</p>
+				<textarea class="user-attr theme-des">{{show.componentDetails.fhem.value.long}}</textarea>
+			</div>
+		</div>
+	</picker>
+</div>

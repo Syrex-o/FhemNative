@@ -1,0 +1,85 @@
+:host{
+	.swiper{
+		width: inherit;
+		height: inherit;
+		p{
+			text-align: center;
+			margin: 0;
+			line-height: 35px;
+		}
+		.btn-round{
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 101;
+			cursor: pointer;
+			pointer-events: all;
+		}
+		.custom-header{
+			position: absolute;
+			width: 100%;
+			height: 40px;
+			top: 0px;
+			p{
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			&.lower-text {
+				height: 45px;
+				p{
+					top: 70%;
+				}
+			}
+		}
+		.content{
+			position: relative;
+			height: 100%;
+			width: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+			pointer-events: all;
+			&.custom-header-enabled{
+				height: calc(100% - 40px);
+				top: 20px;
+				&.show-pager-enabled{
+					height: calc(100% - 45px);
+					top: 22.5px;
+				}
+			}
+			.container{
+				width: inherit;
+				height: inherit;
+			}
+		}
+		// neumorph
+		&.NM-IN-standard,
+		&.NM-OUT-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				border: var(--neumorph-border) !important;
+				ion-slides{
+					background: var(--primary) !important;
+				}
+			}
+		}
+		&.NM-IN-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				.content{
+					box-shadow: var(--neumorph-in) !important;
+				}
+			}
+		}
+		&.NM-OUT-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				box-shadow: var(--neumorph-out) !important;
+			}
+		}
+	}
+}

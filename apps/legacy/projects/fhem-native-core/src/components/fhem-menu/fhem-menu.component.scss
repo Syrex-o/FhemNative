@@ -1,0 +1,134 @@
+:host{
+	z-index: 20010;
+	.header{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		padding: 15px;
+		h1{
+			margin: 0;
+		}
+	}
+	.page{
+		.connection-block{
+			border-radius: 10px;
+			border: 2px dotted #565656;
+			padding: 10px;
+			margin-bottom: 20px;
+		}
+		.settings-block {
+			position: relative;
+			width: 100%;
+			margin-bottom: 10px;
+			border-bottom: 1px solid #565656;
+			&.no-border{
+				border-bottom: 0px;
+			}
+			.block-label {
+				font-weight: 600;
+				font-size: 1.1em;
+				margin-top: 0;
+			}
+			.category {
+				position: relative;
+				width: 100%;
+				padding-left: 8px;
+				padding-right: 8px;
+				margin-bottom: 10px;
+				.label {
+					margin-bottom: 5px;
+					margin-top: 5px;
+					font-weight: 500;
+				}
+				.des {
+					margin-top: -2px;
+					margin-bottom: 5px;
+					font-size: 13px;
+				}
+				&.btn-category-round{
+					.btn-round{
+						position: absolute;
+						top: 0;
+						right: 8px;
+						ion-icon{
+							&.trash{
+								color: var(--btn-red);
+							}
+						}
+					}
+				}
+				&.btn-category {
+					.btn-container, ion-select {
+						position: absolute;
+						top: 50%;
+						transform: translateY(-50%);
+						right: 8px;
+						width: 90px;
+					}
+					p{
+						width: calc(100% - 90px);
+					}
+				}
+				&.btn-full-category{
+					button {
+						width: 100%;
+						height: 40px;
+						text-transform: uppercase;
+						color: #fff;
+						font-size: 1.1em;
+						margin-bottom: 10px;
+						&.save,
+						&.cancel{
+							border-radius: 10px;
+						}
+						&.save{
+							background: var(--btn-green);
+						}
+						&.cancel{
+							background: var(--btn-red);
+						}
+					}
+				}
+				input{
+					font-size:18px;
+					padding:10px 10px 10px 5px;
+					display:block;
+					width:100%;
+					border:none;
+					background: transparent;
+					border-bottom:1px solid #757575;
+					color: #757575;
+					&:focus{
+						outline:none;
+					}
+				}
+				.bar{ 
+					position: relative; 
+					display: block; 
+					width: 100%; 
+					&:before,
+					&:after{
+						content:'';
+						height:2px;
+						width:0;
+						bottom:1px;
+						position:absolute;
+						background:var(--btn-blue);
+						transition:0.2s ease all;
+					}
+					&:before{
+						left:50%;
+					}
+					&:after{
+						right:50%;
+					}
+				}
+				input:focus ~ .bar:before, input:focus ~ .bar:after {
+					width:50%;
+				}
+			}
+		}
+	}
+}

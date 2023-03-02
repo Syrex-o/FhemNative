@@ -1,0 +1,56 @@
+{
+	"productName": "FhemNative",
+	"directories": {
+		"output": "dist/FhemNativeDesktop-electron/"
+	},
+	"files": [
+		"electron-main.js",
+		"dist/FhemNativeDesktop",
+		"**/*",
+		"!**/*.ts",
+		"!*.code-workspace",
+		"!LICENSE.md",
+		"!package.json",
+		"!package-lock.json",
+		"!src/",
+		"!e2e/",
+		"!hooks/",
+		"!angular.json",
+		"!_config.yml",
+		"!karma.conf.js",
+		"!tsconfig.json",
+		"!tslint.json"
+	],
+	"extraResources": [
+		{
+			"from": "projects/fhem-native-core/assets/i18n/",
+			"to": "assets/i18n"
+		},
+		{
+			"from": "projects/fhem-native-core/assets/sounds/",	
+			"to": "assets/sounds"
+		},
+		{
+			"from": "projects/fhem-native-core/assets/img/",
+			"to": "assets/img"
+		}
+	],
+	"win": {
+		"icon": "projects/fhem-native-desktop/resources/icon.png",
+		"target": [
+			"portable"
+		]
+	},
+	"mac": {
+		"icon": "projects/fhem-native-desktop/resources/icon.png",
+		"target": [
+			"dmg"
+		]
+	},
+	"linux": {
+		"icon": "dist/assets/icons",
+		"target": [
+			"AppImage"
+		]
+	}
+}

@@ -1,0 +1,145 @@
+<p class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.INFO' | translate}}</p>
+<div class="category" *ngIf="smartSprinkler">
+	<switch
+		[actOnCallback]="true"
+		[allowLinebreak]="true"
+		[(ngModel)]="smartSprinkler?.readings.enabled.Value"
+		[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.ENABLE.TITLE' | translate"
+		[subTitle]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.ENABLE.INFO' | translate"
+		(onToggle)="changeSmartSetting('enabled', !$event)">
+	</switch>
+</div>
+<div *ngIf="smartSprinkler && smartSprinkler.readings.enabled.Value" @ShowHide>
+	<!-- Rain Menu -->
+	<div class="category">
+		<switch
+			[actOnCallback]="true"
+			[allowLinebreak]="true"
+			[(ngModel)]="smartSprinkler?.readings.rain.Value"
+			[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.RAIN.TITLE' | translate"
+			[subTitle]="('COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.RAIN.INFO' | translate) + smartSprinkler?.readings.rainOff.Value+' l/m2.'"
+			(onToggle)="changeSmartSetting('rain', !$event)">
+		</switch>
+		<div class="options" *ngIf="smartSprinkler?.readings.rain.Value" @ShowHide>
+			<p class="des theme-text">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.RAIN_VALUE.TITLE' | translate}}
+			</p>
+			<p class="des_small theme-des">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.RAIN_VALUE.INFO' | translate}}
+			</p>
+			<ion-select class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[(ngModel)]="smartSprinkler?.readings.rainOff.Value" (ionChange)="changeSmartSettingIon('rainOff', $event)">
+				<ion-select-option *ngFor="let val of rainOffValues" [value]="val">{{val}} l/m2</ion-select-option>
+			</ion-select>
+		</div>
+	</div>
+	<!-- Wind Menu -->
+	<div class="category">
+		<switch
+			[actOnCallback]="true"
+			[allowLinebreak]="true"
+			[(ngModel)]="smartSprinkler?.readings.wind.Value"
+			[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND.TITLE' | translate"
+			[subTitle]="('COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND.INFO' | translate)+smartSprinkler?.readings.windOff.Value+' km/h.'"
+			(onToggle)="changeSmartSetting('wind', !$event)">
+		</switch>
+		<div class="options" *ngIf="smartSprinkler?.readings.wind.Value" @ShowHide>
+			<p class="des theme-text">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND_VALUE.TITLE' | translate}}
+			</p>
+			<p class="des_small theme-des">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WIND_VALUE.INFO' | translate}}
+			</p>
+			<ion-select class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[(ngModel)]="smartSprinkler?.readings.windOff.Value" (ionChange)="changeSmartSettingIon('windOff', $event)">
+				<ion-select-option *ngFor="let val of windOffValues" [value]="val">{{val}} km/h</ion-select-option>
+			</ion-select>
+		</div>
+	</div>
+	<!-- Max Temp Time Adjustment -->
+	<div class="category">
+		<div class="options">
+			<p class="des theme-text">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP.TITLE' | translate}}
+			</p>
+			<p class="des_small theme-des">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP.INFO' | translate}}{{smartSprinkler?.readings.highTemp.Value}}&#8451;.
+			</p>
+			<ion-select class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[(ngModel)]="smartSprinkler?.readings.highTemp.Value" (ionChange)="changeSmartSettingIon('highTemp', $event)">
+				<ion-select-option *ngFor="let val of maxTempValues" [value]="val">{{val}} &#8451;</ion-select-option>
+			</ion-select>
+		</div>
+		<div class="options">
+			<p class="des theme-text">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP_VALUE.TITLE' | translate}}
+			</p>
+			<p class="des_small theme-des">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAX_TEMP_VALUE.INFO' | translate}}
+			</p>
+			<ion-select class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[ngModel]="smartSprinkler?.readings.highPercentage.Value"
+				[selectedText]="smartSprinkler?.readings.highPercentage.Value + '%'" 
+				(ionChange)="adjustMaxPercentage('highPercentage', $event)">
+				<ion-select-option *ngFor="let val of maxTempPercentages" [value]="val">{{val}}%</ion-select-option>
+			</ion-select>
+		</div>
+	</div>
+	<!-- Min Temp Time Adjustment -->
+	<div class="category">
+		<div class="options">
+			<p class="des theme-text">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP.TITLE' | translate}}
+			</p>
+			<p class="des_small theme-des">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP.INFO' | translate}}{{smartSprinkler?.readings.lowTemp.Value}}&#8451;.
+			</p>
+			<ion-select 
+				class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[(ngModel)]="smartSprinkler?.readings.lowTemp.Value" (ionChange)="changeSmartSettingIon('lowTemp', $event)">
+				<ion-select-option *ngFor="let val of minTempValues" [value]="val">{{val}} &#8451;</ion-select-option>
+			</ion-select>
+		</div>
+		<div class="options">
+			<p class="des theme-text">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP_VALUE.TITLE' | translate}}
+			</p>
+			<p class="des_small theme-des">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MIN_TEMP_VALUE.INFO' | translate}}
+			</p>
+			<ion-select 
+				class="theme-text"
+				[okText]="'GENERAL.BUTTONS.CONFIRM' | translate" [cancelText]="'GENERAL.BUTTONS.CANCEL' | translate"
+				[(ngModel)]="smartSprinkler?.readings.lowPercentage.Value" (ionChange)="changeSmartSettingIon('lowPercentage', $event)">
+				<ion-select-option *ngFor="let val of minTempPercentages" [value]="val">{{val}}%</ion-select-option>
+			</ion-select>
+		</div>
+	</div>
+	<!-- Winter Protect -->
+	<div class="category">
+		<switch
+			[actOnCallback]="true"
+			[allowLinebreak]="true"
+			[(ngModel)]="smartSprinkler?.readings.winterProtect.Value"
+			[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAIL.TITLE' | translate"
+			[subTitle]="('COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAIL.INFO' | translate)+'5&#8451;'"
+			(onToggle)="changeSmartSetting('winterProtect', !$event)">
+		</switch>
+		<div class="options mail" *ngIf="smartSprinkler?.readings.winterProtect.Value" @ShowHide>
+			<p class="des theme-text">
+				{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.MAIL_VALUE.TITLE' | translate}}
+			</p>
+			<p class="des_small theme-des">
+				{{smartSprinkler?.readings.mail.Value}}
+			</p>
+			<button (click)="editMail('')">
+				<ion-icon class="theme-text" name="create"></ion-icon>
+			</button>
+		</div>
+	</div>
+</div>

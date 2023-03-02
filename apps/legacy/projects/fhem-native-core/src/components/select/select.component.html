@@ -1,0 +1,60 @@
+<div 
+	outside-click (onOutsideClick)="closeMenu()"
+	class="select-container theme-background" 
+	[class.open]="opened" 
+	[class.full-height]="fullHeight"
+	[class.single-selection]="singleSelection"
+	[ngStyle]="{
+		'border-top-left-radius.px': borderRadius.top_left,
+		'border-top-right-radius.px': borderRadius.top_right,
+		'border-bottom-left-radius.px': borderRadius.bottom_left,
+		'border-bottom-right-radius.px': borderRadius.bottom_right,
+		'border': '1px solid ' + borderColor
+	}">
+	<div class="select-value-container">
+		<div class="selection-container">
+			<div *ngIf="selectedDisplay.length === 0 && placeholder" class="placeholder shorten theme-text">{{placeholder}}</div>
+			<ng-container *ngIf="selectedDisplay.length > 0">
+				<ng-container *ngFor="let item of selectedDisplay; let i = index">
+					<div class="selected-item theme-text">
+						<span *ngIf="selectedDisplay.length > 1" class="remove ion-activatable" (click)="removeItem(item, i)">
+							<span class="line first"></span>
+							<span class="line second"></span>
+							<ion-ripple-effect></ion-ripple-effect>
+						</span>
+						<span class="label shorten">{{item}}</span>
+					</div>
+				</ng-container>
+			</ng-container>
+			<div class="select-value ion-activatable" (click)="toggleSelectionMenu(true)">
+				<input class="theme-text" *ngIf="searchable" [(ngModel)]="input" (ngModelChange)="onInputChange($event)">
+				<ion-ripple-effect></ion-ripple-effect>
+			</div>
+		</div>
+		<div class="dropdown-container ion-activatable" (click)="toggleSelectionMenu()">
+			<ion-icon class="select-arrow theme-text" name="triangle"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</div>
+	</div>
+	<div @Unfold class="select-item-container theme-background" *ngIf="opened" [ngStyle]="{'border': '1px solid ' + borderColor}">
+		<ng-container *ngFor="let item of _items; let i = index;">
+			<div class="item ion-activatable theme-text"
+				[ngStyle]="{'border-bottom': '1px solid ' + borderColor}"
+				(click)="selectItem(item, i)">
+				<ng-template *ngIf="templateRef" [ngTemplateOutlet]="templateRef" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+				<ng-template *ngIf="!templateRef" [ngTemplateOutlet]="DEFAULT_ITEM" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+				<ion-ripple-effect></ion-ripple-effect>
+			</div>
+		</ng-container>
+		<div *ngIf="_items.length === 0 && input !== '' && !addNewItems" 
+			class="item theme-text">{{'COMPONENTS.Select.TRANSLATOR.NO_ITEMS' | translate}}
+		</div>
+		<div *ngIf="_items.length === 0 && input !== '' && addNewItems" class="item theme-text"
+			(click)="addUserValue()">{{'COMPONENTS.Select.TRANSLATOR.ADD' | translate}} {{input}}
+		</div>
+	</div>
+</div>
+
+<ng-template #DEFAULT_ITEM let-item="item" let-index="index">
+	<p class="shorten">{{ (bindLabel ? item[bindLabel] : item) }}</p>
+</ng-template>

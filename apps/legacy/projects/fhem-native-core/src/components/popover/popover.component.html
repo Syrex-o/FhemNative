@@ -1,0 +1,26 @@
+<div class="popup-container" @ShowHide (@ShowHide.done)="animationEnd($event)" *ngIf="showPopup" [ngClass]="settings.operatingPlatform">
+	<!-- Backdrop -->
+	<div class="backdrop" (click)="closePopup(backdropDismiss)"></div>
+	<!-- Popup Container -->
+	<div [@PopupContent]="toggleAnimation" [ngStyle]="{'width.%': width,'height.%': height}" class="popup-content theme-background">
+		<!-- Header -->
+		<div class="popup-header">
+			<div class="header-left">
+				<ng-content select="[header]"></ng-content>
+			</div>
+			<div class="header-right" *ngIf="showCloseButton">
+				<button class="close-container ion-activatable theme-background-two" (click)="closePopup(closeButtonDismiss)">
+					<div class="close">
+						<span class="line top theme-text-background"></span>
+						<span class="line bottom theme-text-background"></span>
+					</div>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</div>
+		<!-- Content -->
+		<div class="popup-body">
+			<ng-content select="[body]"></ng-content>
+		</div>
+	</div>
+</div>

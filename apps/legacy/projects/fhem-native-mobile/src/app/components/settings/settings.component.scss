@@ -1,0 +1,51 @@
+:host{
+	.settings-block {
+		position: relative;
+		width: 100%;
+		margin-bottom: 10px;
+		border-bottom: 1px solid #565656;
+		.block-label {
+			font-weight: 600;
+			font-size: 1.1em;
+		}
+	}
+	.category {
+		position: relative;
+		width: 100%;
+		padding-left: 8px;
+		padding-right: 8px;
+		margin-bottom: 10px;
+		.label {
+			margin-bottom: 5px;
+			margin-top: 5px;
+			font-weight: 500;
+		}
+		.des {
+			margin-top: -2px;
+			margin-bottom: 5px;
+			font-size: 13px;
+		}
+		.device-size{
+			position: absolute;
+			right: 8px;
+			top: 0;
+			line-height: 40px;
+			margin: 0;
+		}
+		&.btn-category {
+			.label, .des{
+				width: calc(100% - 100px);
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			.btn-container, ion-select {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				right: 8px;
+				width: 90px;
+			}
+		}
+	}
+}

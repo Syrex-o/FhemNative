@@ -1,0 +1,11 @@
+<p class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WINTER.INFO' | translate}}</p>
+<div class="category" *ngIf="smartSprinkler">
+	<switch
+		[(ngModel)]="smartSprinkler?.readings?.winterMode.Value"
+		[actOnCallback]="true"
+		[allowLinebreak]="true"
+		(onToggle)="changeWinterMode(!$event)"
+		[label]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WINTER.BUTTONS.TITLE' | translate"
+		[subTitle]="'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WINTER.BUTTONS.INFO' | translate">
+	</switch>
+</div>

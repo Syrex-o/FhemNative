@@ -1,0 +1,269 @@
+:host{
+	.thermostat{
+		width: inherit;
+		height: inherit;
+		// basic thermostat
+		.thermostat-one{
+			width: 100%;
+			height: 100%;
+			line{
+				stroke: #fff;
+			}
+			.dragger{
+				cursor: pointer;
+				pointer-events: all;
+				ellipse,
+				path{
+					fill: #ddd;
+				}
+				text{
+					user-select: none;
+					font-size: 1.4em;
+					position: absolute;
+					transform: translate3d(10px,0,0);
+					text-anchor: middle;
+					transition: all .3s ease;
+					&.center{
+						transform: translate3d(10px, 12px, 0);
+					}
+					&.hide{
+						opacity: 0;
+					}
+				}
+				.dragTip{
+					transform: translate3d(-240px, -395px, 0);
+					transform-origin: 20% 50%;
+				}
+			}
+			#liquid{
+				position: absolute;
+				transform: translate3d(-160%, -80%,0);
+				&.animate{
+					animation: mover 1s linear infinite;
+				}
+			}
+		}
+		// circular-one
+		.thermostat-two{
+			width: 100%;
+			height: 100%;
+			z-index: 2;
+			user-select: none;
+			.tick{
+				stroke-width: 1;
+			}
+			.temp,
+			.temp-current{
+				font-weight: 400;
+				dominant-baseline: central;
+				font-variant-numeric: tabular-nums;
+				transition: all .3s ease;
+			}
+			.temp{
+				font-size: 4rem;
+			}
+			.temp-current{
+				font-size: 2rem;
+				transform: translate3d(0, 50px, 0);
+				&.hide{
+					opacity: 0;
+				}
+			}
+			.control{
+				pointer-events: all;
+				transform-origin: 50% 50%;
+				.track {
+					fill: none;
+					transform-origin: 50% 50%;
+				}
+				.handle{
+					cursor: pointer;
+				}
+			}
+		}
+		.thermostat-three{
+			width: 100%;
+			height: 100%;
+			z-index: 2;
+			user-select: none;
+			.tick-container{
+				width: inherit;
+				height: inherit;
+				span{
+					position: absolute;
+					width: 100%;
+					height: 3px;
+					transform-origin: center;
+					top: 50%;
+					left: 50%;
+				}
+			}
+			.circle-overlay{
+				position: absolute;
+				width: 90%;
+				height: 90%;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 50%;
+				.circle-inner{
+					position: absolute;
+					width: 95%;
+					height: 95%;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					border-radius: 50%;
+					.rotator-container{
+						position: absolute;
+						width: 80%;
+						height: 80%;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						border-radius: 50%;
+						.rotator{
+							position: absolute;
+							width: 100%;
+							height: 100%;
+							will-change: transform;
+							.knob{
+								position: absolute;
+								top: 5px;
+								left: 50%;
+								width: 30px;
+								height: 30px;
+								transform: translateX(-50%);
+								border-radius: 50%;
+								cursor: pointer;
+								pointer-events: all;
+								will-change: transform;
+							}
+						}
+						.value-container{
+							position: absolute;
+							width: 45%;
+							height: 45%;
+							top: 50%;
+							left: 50%;
+							transform: translate(-50%, -50%);
+							border-radius: 50%;
+							p{
+								position: absolute;
+								left: 50%;
+								transform: translateX(-50%);
+								font-size: 16px;
+								font-weight: 600;
+								margin: 0;
+							}
+							.first,
+							.second{
+								transition: all .3s ease;
+							}
+							.first{
+								font-size: 16px;
+								top: 20%;
+								&.center{
+									top: 50%;
+									transform: translate(-50%, -50%);
+								}
+							}
+							.second{
+								font-size: 12px;
+								bottom: 15%;
+								&.hide{
+									opacity: 0;
+								}
+							}
+						}
+					}
+				}
+			}
+			// neumorph
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					border: var(--neumorph-border);
+				}
+				span,
+				.circle-overlay,
+				.circle-inner,
+				.rotator-container,
+				.knob,
+				.value-container{
+					background: var(--primary);
+				}
+				span,
+				.circle-inner,
+				.knob,
+				.value-container{
+					box-shadow: var(--neumorph-in);
+				}
+				.rotator-container{
+					box-shadow: var(--neumorph-small-out);
+				}
+			}
+		}
+		.thermostat-four{
+			width: 100%;
+			height: 100%;
+			pointer-events: all;
+			svg{
+				width: 100%;
+				height: 100%;
+				.shape{
+					transform-origin: center;
+					transition: all .3s ease;
+				}
+				.inner{
+					fill: #000;
+				}
+				path{
+					pointer-events: none;
+					transition: all .1s ease;
+					&.active{
+						fill: rgba(255, 255, 255, 0.8);
+					}
+				}
+				.head,
+				.value,
+				.current-temp{
+					user-select: none;
+					pointer-events: none;
+					text-anchor: middle;
+					fill: #fff;
+				}
+				.head{
+					font-size: 0.8em;
+					transform: translate(0, -20px);
+				}
+				.value{
+					font-size: 1.8em;
+					transform: translate(0, 10px);
+				}
+				.current-temp{
+					alignment-baseline: central;
+					font-weight: 500;
+					transition: all .5s ease;
+					&.hide{
+						opacity: 0;
+					}
+				}
+			}
+		}
+	}
+
+	// animations
+	@keyframes mover{
+		0%{
+			transform: translate3d(-100%, -80%,0);
+		}
+		100%{
+			transform: translate3d(-180%, -80%,0);
+		}
+	}
+}

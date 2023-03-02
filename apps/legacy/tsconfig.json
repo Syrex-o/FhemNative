@@ -1,0 +1,39 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"baseUrl": "./",
+		"outDir": "./dist/out-tsc",
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"sourceMap": true,
+		"declaration": false,
+		"downlevelIteration": true,
+		"experimentalDecorators": true,
+		"moduleResolution": "node",
+		"importHelpers": true,
+		"target": "es2017",
+		"module": "es2020",
+		"lib": [
+			"es2018",
+			"dom"
+		],
+		"paths": {
+			"@FhemNative/router": ["./projects/fhem-native-core/src/router/routing.module.ts"],
+			"@FhemNative/side-menu/*": ["./projects/fhem-native-core/src/components/side-menu/*"],
+			"@FhemNative/services/*": ["./projects/fhem-native-core/src/services/*"],
+			"@FhemNative/components/*": ["./projects/fhem-native-core/src/components/*"],
+			"@FhemNative/directives/*": ["./projects/fhem-native-core/src/directives/*"],
+			"@FhemNative/interfaces": ["./projects/fhem-native-core/src/interfaces/interfaces.type.ts"],
+			"@FhemNative/animations": ["./projects/fhem-native-core/src/animations/animations.ts"]
+		}
+	},
+	"angularCompilerOptions": {
+		"enableI18nLegacyMessageIdFormat": false,
+		"strictInjectionParameters": true,
+		"strictInputAccessModifiers": true,
+		"strictTemplates": true
+	}
+}

@@ -1,0 +1,129 @@
+:host{
+	.sprinkler-settings{
+		height: 100%;
+		margin-top: 1px;
+		ion-slides{
+			height: inherit;
+			ion-slide{
+				overflow-y: auto;
+				overflow-x: hidden;
+				margin-top: 20px;
+			}
+		}
+		.scroll-overlay{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 30px;
+			box-shadow: 0px 15px 15px -10px rgba(0,0,0,0.3);
+		}
+		.sprinkler-interval{
+			position: absolute;
+			top: 20px;
+			left: 0;
+			width: 100%;
+			padding-left: 8px;
+			padding-right: 8px;
+			padding-bottom: 20px;
+			.des{
+				margin-bottom: 2px;
+				font-size: 1.1em;
+				margin-left: 8px;
+				margin-top:0px;
+				font-weight: 500;
+			}
+			.des_small{
+				font-size: 13px;
+				margin: 0;
+				margin-left: 8px;
+				font-weight: 400;
+			}
+			.disable-interval{
+				width: 100%;
+				position: relative;
+				margin-bottom: 10px;
+				.btn{
+					position: relative;
+					text-transform: uppercase;
+					outline: 0;
+					width: 90%;
+					border: 0;
+					padding: 12px;
+					color: #FFFFFF;
+					font-size: 14px;
+					cursor: pointer;
+					background: var(--btn-blue);
+					box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.3);
+					z-index: 11;
+				}
+			}
+			.overlay-interval2{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				z-index: 10;
+				transition: all .3s ease;
+				background: rgba(0,0,0,0.3);
+			}
+			.category{
+				margin-bottom: 8px;
+				border-bottom: 1px solid #565656;
+				h4{
+					margin-bottom: 0px;
+				}
+				.naming{
+					position: relative;
+					width: 100%;
+					height: 45px;
+					.sprinkler-name{
+						margin: 0;
+						left: 50%;
+						transform: translate(-50%, -50%);
+					}
+					.sprinkler-name,
+					.sprinkler-color,
+					ion-icon{
+						position: absolute;
+						top: 50%;
+					}
+					.sprinkler-color,
+					ion-icon{
+						width: 30px;
+						height: 30px;
+						transform: translateY(-50%);
+					}
+					.sprinkler-color{
+						border-radius: 50%;
+						left: 10px;
+					}
+					ion-icon{
+						right: 10px;
+						color: var(--btn-blue);
+						font-size: 30px;
+					}
+				}
+				.summary{
+					text-align: left;
+					h4{
+						text-align: center;
+					}
+					.runtime,
+					.runtime-detail{
+						display: inline-block;
+					}
+					.runtime{
+						font-weight: 600;
+						width: 130px;
+						margin-bottom: 0px;
+					}
+					.runtime-detail{
+						margin-top: 0px;
+					}
+				}
+			}
+		}
+	}
+}

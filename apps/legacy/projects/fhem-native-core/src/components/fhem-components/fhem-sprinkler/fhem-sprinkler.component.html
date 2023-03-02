@@ -1,0 +1,141 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: null, connected: true}" 
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="200"
+	[minimumHeight]="200">
+	<div class="sprinkler">
+		<loader *ngIf="!fullyLoaded"></loader>
+		<div class="sprinkler-page-container" *ngIf="sprinklers.states?.length > 0 && fullyLoaded">
+			<div class="btn-box">
+				<div class="row">
+					<!-- Winter Mode -->
+					<button *ngIf="smartSprinkler" class="btn-icon ion-activatable" (click)="winterMenu = !winterMenu;">
+						<ion-icon name="snow" class="snow theme-text" [ngClass]="smartSprinkler.readings.winterMode.Value ? 'on' : 'off'"></ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Smart Sprinkler -->
+					<button *ngIf="smartSprinkler" class="btn-icon ion-activatable" (click)="smartSprinklerMenu = !smartSprinklerMenu;">
+						<ion-icon name="sunny" class="sun theme-text" [ngClass]="smartSprinkler.readings.enabled.Value ? 'on' : 'off'"></ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Weather -->
+					<button *ngIf="weatherDevice && smartSprinkler" class="btn-icon ion-activatable" (click)="weatherMenu = !weatherMenu;">
+						<ion-icon name="thunderstorm" class="weather theme-text"
+							[ngClass]="smartSprinkler.readings.enabled.Value && (weatherDevice.readings.tooRainy.Value || weatherDevice.readings.tooWindy.Value) ? 'on' : 'off'">
+						</ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Sprinkler colors -->
+					<button *ngIf="sprinklers.names.length > 0" class="btn-icon ion-activatable" (click)="colorMenu = !colorMenu;">
+						<ion-icon class="theme-text"  name="color-palette"></ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+					<!-- Sprinkler Settings -->
+					<button *ngIf="sprinklers.states.length > 0" class="btn-icon ion-activatable" (click)="settingsMenu = !settingsMenu;">
+						<ion-icon class="theme-text"  name="cog"></ion-icon>
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+				<div class="row">
+					<button class="btn timeline ion-activatable" (click)="timeLineMenu = !timeLineMenu;">
+						Timeline
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</div>
+			</div>
+			<div class="sprinkler-switch-container" *ngIf="smartSprinkler && smartSprinkler.readings && fullyLoaded && sprinklers.states.length > 0">
+				<div class="sprinkler-switch">
+					<switch [(ngModel)]="smartSprinkler.readings.runInterval.Value"
+						[label]="'COMPONENTS.Sprinkler.TRANSLATOR.RUN_INTERVAL.TITLE' | translate"
+						[subTitle]="
+							('COMPONENTS.Sprinkler.TRANSLATOR.RUN_INTERVAL.INFO' | translate) + ' (' +
+							(smartSprinkler.readings.manualRuntime?.Value ? smartSprinkler.readings.manualRuntime.Value : 30) + 'min)'
+						"
+						[actOnCallback]="true"
+						[allowLinebreak]="true"
+						(onToggle)="toggleAll($event)">
+					</switch>
+				</div>
+				<div class="sprinkler-switch" *ngFor="let sprinkler of sprinklers.states; let i = index">
+					<switch [(ngModel)]="sprinkler.callback"
+						[label]="sprinklers.names[i]"
+						[actOnCallback]="true"
+						[allowLinebreak]="true"
+						(onToggle)="toggle($event, i)"
+						[subTitle]="sprinklerSubtitles[i] || ''">
+					</switch>
+				</div>
+			</div>
+		</div>
+	</div>
+</fhem-component-container>
+
+<!-- Container for Sprinkler Setting -->
+<ng-container #CONFIG_CONTAINER></ng-container>
+
+<!-- Winter Mode Menu -->
+<popover [(ngModel)]="winterMenu" [width]="90" [height]="90">
+	<div header *ngIf="winterMenu">
+		<h1 newsSlide class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WINTER.TITLE' | translate}}</h1>
+	</div>
+	<div body class="page">
+		<sprinkler-winter [smartSprinkler]="smartSprinkler"></sprinkler-winter>
+	</div>
+</popover>
+
+<!-- Smart Sprinkler Menu -->
+<popover [(ngModel)]="smartSprinklerMenu" [width]="90" [height]="90">
+	<div header *ngIf="smartSprinklerMenu">
+		<h1 newsSlide class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.TITLE' | translate}}</h1>
+	</div>
+	<div body class="page" *ngIf="smartSprinklerMenu">
+		<sprinkler-smart [smartSprinkler]="smartSprinkler" [sprinklers]="sprinklers"></sprinkler-smart>
+	</div>
+</popover>
+
+<!-- Weather Menu -->
+<popover [(ngModel)]="weatherMenu" [width]="90" [height]="90">
+	<div header *ngIf="weatherMenu">
+		<h1 newsSlide class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.SMART_SPRINKLER.CONFIG.WEATHER' | translate}}</h1>
+	</div>
+	<div body class="page">
+		<sprinkler-weather [weather]="weatherDevice" [smartSprinkler]="smartSprinkler"></sprinkler-weather>
+	</div>
+</popover>
+
+<!-- Color Menu -->
+<popover [(ngModel)]="colorMenu" [width]="90" [height]="90">
+	<div header *ngIf="colorMenu">
+		<h1 newsSlide class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.COLORS.TITLE' | translate}}</h1>
+	</div>
+	<div body class="page">
+		<sprinkler-colors [sprinklerNames]="sprinklers.names" [sprinklerColors]="sprinklerColors"></sprinkler-colors>
+	</div>
+</popover>
+<!-- Settings Menu -->
+<popover [(ngModel)]="settingsMenu" [width]="90" [height]="90">
+	<div header *ngIf="settingsMenu">
+		<h1 newsSlide class="theme-text">{{'COMPONENTS.Sprinkler.TRANSLATOR.RUNTIMES.TITLE' | translate}}</h1>
+	</div>
+	<div body class="page" *ngIf="settingsMenu">
+		<sprinkler-settings [sprinklers]="sprinklers" 
+			[smartSprinkler]="smartSprinkler" 
+			[sprinklerColors]="sprinklerColors"
+			(onSprinklerEdit)="editSprinkler($event)">
+		</sprinkler-settings>
+	</div>
+</popover>
+<!-- Timeline Menu -->
+<picker *ngIf="sprinklers.states.length > 0" [(ngModel)]="timeLineMenu" [height]="90" [showConfirmBtn]="false" [cancelBtn]="'GENERAL.BUTTONS.CLOSE' | translate">
+	<div header>
+		<h1 class="theme-text">Timeline</h1>
+	</div>
+	<div body class="page" *ngIf="timeLineMenu">
+		<sprinkler-timeline [updater]="updater" 
+			[sprinklers]="sprinklers"
+			[sprinklerColors]="sprinklerColors"
+			[smartSprinkler]="smartSprinkler" 
+			[weather]="weatherDevice" 
+			(onSprinklerEdit)="editSprinkler($event)"></sprinkler-timeline>
+	</div>
+</picker>

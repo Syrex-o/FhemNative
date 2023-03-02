@@ -1,0 +1,81 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}" 
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="200"
+	[minimumHeight]="270">
+	<div class="pinpad {{settings.app.theme}}" [ngClass]="arr_data_style[0]">
+		<div class="pinpad-valid theme-background-two" *ngIf="fhemDevice?.readings[data_pin]">
+			<div class="pinpad-header">
+				<table class="dot-container">
+					<tr>
+						<td *ngFor="let dot of pin; let i = index">
+							<span class="dot" [ngClass]="(enteredPin.length >= i + 1 ? 'active' : 'not-active')"></span>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="pinpad-content">
+				<div class="state-container">
+					<p
+						*ngIf="falseCounter.toString() !== data_tries"
+						[ngClass]="(fhemDevice?.readings[data_reading].Value === data_getOn ? 'on' : 'off')"
+						class="state">{{(fhemDevice?.readings[data_reading].Value === data_getOn ? data_labelOnText: data_labelOffText)}}
+					</p>
+					<p
+						*ngIf="falseCounter.toString() === data_tries"
+						class="false-text">{{falseText}}
+					</p>
+				</div>
+				<div class="btns">
+					<table>
+						<tr>
+							<td *ngFor="let num of [1,2,3]">
+								<button class="btn ion-activatable theme-text" (click)="enterNum(num)">{{num}}
+									<ion-ripple-effect></ion-ripple-effect>
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td *ngFor="let num of [4,5,6]">
+								<button class="btn ion-activatable theme-text" (click)="enterNum(num)">{{num}}
+									<ion-ripple-effect></ion-ripple-effect>
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td *ngFor="let num of [7,8,9]">
+								<button class="btn ion-activatable theme-text" (click)="enterNum(num)">{{num}}
+									<ion-ripple-effect></ion-ripple-effect>
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button class="btn ion-activatable theme-text">
+									<ion-icon name="arrow-back"></ion-icon>
+									<ion-ripple-effect></ion-ripple-effect>
+								</button>
+							</td>
+							<td>
+								<button class="btn ion-activatable theme-text" (click)="enterNum(0)">0
+									<ion-ripple-effect></ion-ripple-effect>
+								</button>
+							</td>
+							<td>
+								<button class="btn ion-activatable theme-text" (click)="setOn()">
+									<ion-icon name="key"></ion-icon>
+									<ion-ripple-effect></ion-ripple-effect>
+								</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<p class="theme-text" *ngIf="!fhemDevice?.readings[data_pin]">
+			{{'COMPONENTS.Pinpad.TRANSLATOR.NO_PIN_READING' | translate}}
+			{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
+		</p>
+	</div>
+</fhem-component-container>

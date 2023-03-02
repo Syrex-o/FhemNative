@@ -1,0 +1,54 @@
+:host{
+	.colorSet .category{
+		height: 45px;
+		margin-bottom: 8px;
+		padding-bottom: 8px;
+		border-bottom: 1px solid #565656;
+		.des{
+			position: absolute;
+			font-weight: 500;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 50px;
+			width: calc(100% - 150px);
+			margin: 0;
+		}
+	}
+	.options{
+		position: relative;
+		selector{
+			position: absolute;
+			right: 8px;
+			width: 125px;
+			top: 0;
+		}
+		.sprinkler-color{
+			position: absolute;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			top: 7.5px;
+			left: 5px;
+		}
+		.sprinkler-color-label{
+			position: absolute;
+			left: 40px;
+			margin: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: calc(100% - 190px) !important;
+		}
+		.color-palette-value{
+			position: absolute;
+			width: 25px;
+			height: 25px;
+			border-radius: 50%;
+			top: 5px;
+			left: 5px;
+		}
+		.color-palette-label{
+			position: absolute;
+			left: 35px;
+		}
+	}
+}

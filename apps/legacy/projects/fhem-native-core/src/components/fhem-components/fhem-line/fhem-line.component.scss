@@ -1,0 +1,53 @@
+:host{
+	.line{
+		width: inherit;
+		height: inherit;
+		position: absolute;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+		.line-item{
+			position: absolute;
+			&.horizontal{
+				width: 100%;
+				left: 0;
+			}
+			&.vertical{
+				height: 100%;
+				top: 0;
+			}
+		}
+		// neumorph
+		&.NM-IN-standard,
+		&.NM-OUT-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				.line-item{
+					background: var(--primary) !important;
+					border: var(--neumorph-border);
+				}
+			}
+		}
+		// neumorph in
+		&.NM-IN-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				.line-item{
+					box-shadow: var(--neumorph-in) !important;
+				}
+			}
+		}
+		// neumorph in
+		&.NM-OUT-standard{
+			&.dark,
+			&.dark-alternative,
+			&.bright{
+				.line-item{
+					box-shadow: var(--neumorph-out) !important;
+				}
+			}
+		}
+	}
+}

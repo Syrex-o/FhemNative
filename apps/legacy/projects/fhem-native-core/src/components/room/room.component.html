@@ -1,0 +1,19 @@
+<div class="room-container">
+	<room-header></room-header>
+	<!-- Menu Buttons -->
+	<menu-button-container [create]="'CreateRoomComponent'"></menu-button-container>
+	<!-- Content -->
+	<div class="content theme-background"
+		grouper [editingEnabled]="settings.modes.roomEdit" [containerID]="structure.currentRoom?.ID"
+		[attr.id]="'room_@' + structure.currentRoom?.ID">
+		<!-- Component Container -->
+		<ng-container class="container" #container></ng-container>
+
+		<!-- Add Component Button -->
+		<button *ngIf="settings.modes.roomEdit" class="add-btn right-pad ion-activatable theme-background" (click)="createComponentMenu()">
+			<span class="line top"></span>
+			<span class="line bottom"></span>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+	</div>
+</div>

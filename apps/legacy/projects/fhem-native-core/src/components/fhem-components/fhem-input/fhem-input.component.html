@@ -1,0 +1,56 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: null, reading: null, connected: true}"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="100"
+	[minimumHeight]="35">
+	<div class="input" [class.reduce-size]="bool_data_showFavorites" [ngStyle]="{
+			'background': style_backgroundColor,
+			'border': '1px solid ' + style_borderColor,
+			'box-shadow': bool_data_showShadow ? '0px 15px 25px 0 rgba(0, 0, 0, 0.3)' : '0px',
+			'border-top-left-radius.px': bool_data_customBorder ? data_borderRadiusTopLeft : data_borderRadius,
+			'border-top-right-radius.px': bool_data_customBorder ? data_borderRadiusTopRight : data_borderRadius,
+			'border-bottom-left-radius.px': bool_data_customBorder ? data_borderRadiusBottomLeft : data_borderRadius,
+			'border-bottom-right-radius.px': bool_data_customBorder ? data_borderRadiusBottomRight : data_borderRadius
+		}">
+		<div class="input-container">
+			<input type="text" [(ngModel)]="command" placeholder="{{command}}" [ngStyle]="{'color': style_textColor}">
+		</div>
+		<button class="btn-favs ion-activatable" 
+			*ngIf="bool_data_showFavorites"
+			[ngStyle]="{
+				'background': style_buttonColor,
+				'border-right': '1px solid ' + style_borderColor
+			}"
+			(click)="showCommandFavs()">
+			<ion-icon name="star" [style.color]="style_iconColor"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+		<button class="btn-send ion-activatable" [style.background]="style_buttonColor" (click)="sendCmd()">
+			<icon [icon]="icon_sendIcon" [style.color]="style_iconColor" [class.animate]="animateSend"></icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+	</div>
+</fhem-component-container>
+
+<picker
+	[(ngModel)]="showFavs"
+	[height]="60"
+	[showConfirmBtn]="false">
+	<div body class="fav-content">
+		<p *ngIf="!commandFavs || commandFavs.length === 0" class="no-favs theme-text">
+			{{ 'COMPONENTS.Input.TRANSLATOR.NO_FAVOURITES' | translate }}
+		</p>
+		<ng-container *ngIf="commandFavs && commandFavs.length > 0">
+			<div class="list-item" *ngFor="let command of commandFavs; let i = index">
+				<button class="list-btn first ion-activatable" (click)="setFavCommand(command)">
+					<span class="command-label theme-text">{{command}}</span>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+				<button class="list-btn second ion-activatable" (click)="removeFavCommand(i)">
+					<ion-icon name="trash"></ion-icon>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+		</ng-container>
+	</div>
+</picker>

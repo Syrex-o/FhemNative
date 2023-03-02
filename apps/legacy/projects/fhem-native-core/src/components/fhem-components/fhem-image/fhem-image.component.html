@@ -1,0 +1,25 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true, offline: true}" 
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex, rotation: rotation}"
+	[allowRotation]="true"
+	[minimumWidth]="40"
+	[minimumHeight]="40">
+	<div class="image">
+		<div class="image-container">
+			<div class="uploader" *ngIf="allowSelection">
+				<input type="file" class="file-input" (change)="uploadFile($event)" #localFileUploader>
+				<button (click)="settings.blockRoomReload = true; localFileUploader.click()" class="ion-activatable theme-background theme-shadow-one">
+					<ion-icon class="theme-text" name="document-outline"></ion-icon>
+					<p class="theme-text">Upload</p>
+					<ion-ripple-effect></ion-ripple-effect>
+				</button>
+			</div>
+			<p class="error theme-text" *ngIf="(!src || src === '') && !allowSelection">
+				{{'COMPONENTS.Image.TRANSLATOR.NO_URL' | translate}}
+				{{'GENERAL.ERRORS.NOT_FOUND.COMPONENT_HELPER' | translate}}
+			</p>
+			<img *ngIf="src && src !== ''" [src]="src">
+		</div>
+	</div>
+</fhem-component-container>

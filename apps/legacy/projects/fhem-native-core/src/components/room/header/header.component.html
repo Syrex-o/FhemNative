@@ -1,0 +1,13 @@
+<ion-header class="theme-background header">
+	<!-- Room Name and Icon -->
+	<ng-container *ngIf="settings.allowRoomCreation">
+		<!-- Room Name/Icon -->
+		<div class="room-info" *ngIf="structure.currentRoom"
+			roomColor [UID]="structure.currentRoom?.UID" [roomColor]="structure.currentRoom?.color" [theme]="settings.app.theme">
+			<icon [icon]="structure.currentRoom.icon"></icon>
+			<ion-title>{{structure.currentRoom.name}}</ion-title>
+		</div>
+	</ng-container>
+	<!-- Edit Button -->
+	<edit-btn></edit-btn>
+</ion-header>

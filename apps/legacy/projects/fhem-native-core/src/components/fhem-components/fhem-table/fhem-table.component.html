@@ -1,0 +1,70 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: null, connected: true}"
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="100"
+	[minimumHeight]="50">
+	<div class="table">
+		<table>
+			<colgroup>
+				<col *ngFor="let col of displayHeader" class="col" [attr.width]="(100 / displayHeader.length) + '%'" />
+			</colgroup>
+			<!-- HEADER -->
+			<tr>
+				<th *ngFor="let head of displayHeader" class="theme-text">{{head}}</th>
+			</tr>
+			<!-- Content -->
+			<ng-container *ngFor="let reading of displayReadings">
+				<tr *ngIf="fhemDevice?.readings[reading]">
+					<ng-container *ngFor="let attr of displayHeader">
+						<td *ngIf="attr === 'Reading'" class="theme-text">{{reading}}</td>
+						<td *ngIf="attr === 'Value'" class="theme-text">{{fhemDevice?.readings[reading].Value}}</td>
+						<td *ngIf="attr === 'Time'" class="theme-text">{{fhemDevice?.readings[reading].Time}}</td>
+					</ng-container>
+				</tr>
+			</ng-container>
+		</table>
+		<button class="btn-round inner blue ion-activatable theme-background" 
+			*ngIf="showEditButton && settings.app.enableEditing && settings.modes.roomEdit" (click)="editTable()">
+			<ion-icon name="create"></ion-icon>
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
+	</div>
+</fhem-component-container>
+<picker
+	[confirmBtn]="'GENERAL.BUTTONS.SAVE' | translate"
+	[showCancelBtn]="false"
+	[backdropDismiss]="false"
+	[cancelButtonDismiss]="false"
+	[(ngModel)]="showTableConfig"
+	[height]="85"
+	[zIndex]="100001"
+	(onConfirm)="saveTableConfig()">
+	<div header class="header">
+		<h2 class="theme-text">{{ 'GENERAL.COMPONENT.CUSTOM_INPUTS.PICKER.HEADER' | translate }}</h2>
+	</div>
+	<div body class="body">
+		<!-- TABLE header -->
+		<div class="config-container">
+			<p class="theme-text">{{ 'COMPONENTS.Table.TRANSLATOR.CONFIG.TABLE.TITLE' | translate}}</p>
+			<p class="des theme-des">{{ 'COMPONENTS.Table.TRANSLATOR.CONFIG.TABLE.INFO' | translate}}</p>
+			<selector
+				[items]="headerValues"
+				[multiple]="true"
+				[searchable]="false"
+				[(ngModel)]="displayHeader">
+			</selector>
+		</div>
+		<!-- READINGS -->
+		<div class="config-container">
+			<p class="theme-text">{{ 'COMPONENTS.Table.TRANSLATOR.CONFIG.READINGS.TITLE' | translate}}</p>
+			<p class="des theme-des">{{ 'COMPONENTS.Table.TRANSLATOR.CONFIG.READINGS.INFO' | translate}}</p>
+			<selector
+				[items]="readings"
+				[multiple]="true"
+				[searchable]="false"
+				[(ngModel)]="displayReadings">
+			</selector>
+		</div>
+	</div>
+</picker>

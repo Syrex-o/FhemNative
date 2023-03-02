@@ -1,0 +1,19 @@
+<ng-container *ngIf="sprinklerColors?.color">
+	<div class="colorSet" *ngFor="let color of sprinklerColors.color; let i = index">
+		<div class="category options">
+			<span class="sprinkler-color" [style.background]="color.val"></span>
+			<p class="des sprinkler-color-label theme-text">{{sprinklerNames[i]}}</p>
+			<selector
+				[items]="settings.componentColors"
+				[addNewItems]="true"
+				[searchable]="true"
+				[(ngModel)]="color.val"
+				(onValueChange)="updateSprinklerColor()">
+				<ng-template let-item="item">
+					<span class="color-palette-value" [style.background]="item"></span>
+					<span class="color-palette-label theme-text">{{item}}</span>
+				</ng-template>
+			</selector>
+		</div>
+	</div>
+</ng-container>

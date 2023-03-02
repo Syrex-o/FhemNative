@@ -1,0 +1,74 @@
+<fhem-component-container 
+	[specs]="{ID: ID, device: data_device, reading: data_reading, available: true}" 
+	[fhemDevice]="fhemDevice"
+	[position]="{width: width, height: height, top: top, left: left, zIndex: zIndex}"
+	[minimumWidth]="200"
+	[minimumHeight]="80">
+	<div class="medialist">
+		<div class="playlist-container">
+			<table class="playlist" *ngIf="fhemDevice">
+				<thead>
+					<tr class="header">
+						<th colspan="4" class="header-labels theme-background">
+							<p class="theme-text">{{'COMPONENTS.MediaList.DICTIONARY.TOTAL_DURATION' | translate}}</p>
+							<p *ngIf="fhemDevice?.readings.currentdir_playlistduration" class="length theme-text">
+								{{time.secToTime(fhemDevice.readings.currentdir_playlistduration.Value)}}
+							</p>
+						</th>
+						<th colspan="2" class="header-labels theme-background" class="icon">
+							<button class="ion-activatable" (click)="toggleAll()">
+								<ion-icon class="theme-text" name="play"></ion-icon>
+								<ion-ripple-effect></ion-ripple-effect>
+							</button>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="playlist-item" *ngFor="let item of list; let i = index">
+						<td colspan="5">
+							<button class="item-btn ion-activatable" (click)="playItem(i)">
+								<div class="item index">
+									<p class="theme-text">{{i+1}}</p>
+								</div>
+								<div class="item image">
+									<img [src]="item.Cover">
+								</div>
+								<div class="item info">
+									<p class="song theme-text">{{item.Title}}</p>
+									<p class="artist theme-des">{{item.Artist}}</p>
+								</div>
+								<div class="item time">
+									<p class="theme-text">{{time.secToTime(item.Time)}}</p>
+								</div>
+								<ion-ripple-effect></ion-ripple-effect>
+							</button>
+						</td>
+						<td colspan="1">
+							<button class="btn ion-activatable" (click)="showDetails(i)">
+								<ion-icon class="theme-text" name="ellipsis-vertical"></ion-icon>
+								<ion-ripple-effect></ion-ripple-effect>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</fhem-component-container>
+
+<picker [height]="65"
+	[(ngModel)]="displayDetails.show"
+	[showCancelBtn]="false"
+	[confirmBtn]="'GENERAL.BUTTONS.CLOSE' | translate">
+	<div body class="page" *ngIf="displayDetails.show">
+		<div class="image-container">
+			<img [src]="list[displayDetails.index].Cover">
+		</div>
+		<div class="song-info-container">
+			<p class="song theme-text" *ngIf="list[displayDetails.index].Title">{{list[displayDetails.index].Title}}</p>
+			<p class="album theme-text" *ngIf="list[displayDetails.index].Album">{{list[displayDetails.index].Album}}</p>
+			<p class="artist theme-text" *ngIf="list[displayDetails.index].Artist">{{list[displayDetails.index].Artist}}</p>
+			<p class="time theme-text" *ngIf="list[displayDetails.index].Time">{{time.secToTime(list[displayDetails.index].Time)}}</p>
+		</div>
+	</div>
+</picker>
