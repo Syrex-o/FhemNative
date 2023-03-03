@@ -35,7 +35,6 @@ export class FhemBoxContainerComponent{
 	@Input() notchDefinition!: string;
 
 	// Selections
-	@Input() style!: string;
 	@Input() headerStyle!: TextStyle;
 	@Input() headerPosition!: string;
 

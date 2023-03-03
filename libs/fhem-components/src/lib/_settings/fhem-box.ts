@@ -1,5 +1,5 @@
 import { ComponentSettings } from "@fhem-native/types/components";
-import { componentPositionStyles, componentStyleVariations, componentTextStyles} from './common';
+import { componentPositionStyles, componentTextStyles} from './common';
 
 /*
     Box component
@@ -19,7 +19,6 @@ export const Settings: ComponentSettings = {
 			notchDefinition: {type: 'string', value: '0% 5%, 5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%'}
 		},
 		arr_data: {
-			style: {items: componentStyleVariations, value: 'standard'},
 			headerStyle: {items: componentTextStyles, value: 'normal'},
 			headerPosition: {items: componentPositionStyles, value: 'left'}
 		},
@@ -51,9 +50,8 @@ export const Settings: ComponentSettings = {
 		'arr_data.headerStyle': {dependOn: ['bool.showHeader'], value: [true]},
 		'arr_data.headerPosition': {dependOn: ['bool.showHeader'], value: [true]},
 		// styles
-		'bool.showShadow': {dependOn: ['arr_data.style'], value: ['standard']},
-		'style.headerColor': {dependOn: ['arr_data.style', 'bool.showHeader'], value: ['standard', true]},
-		'style.backgroundColor': {dependOn: ['arr_data.style', 'bool.gradientBackground'], value: ['standard', false]},
+		'style.headerColor': {dependOn: ['bool.showHeader'], value: [true]},
+		'style.backgroundColor': {dependOn: ['bool.gradientBackground'], value: [false]},
 		
 		'arr_style_grad.gradientBackgroundColor': {dependOn: ['bool.gradientBackground'], value: [true]},
 	}

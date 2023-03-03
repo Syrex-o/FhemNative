@@ -1,5 +1,5 @@
 import { ComponentSettings } from "@fhem-native/types/components";
-import { componentPositionStyles, componentStyleVariations, componentTextStyles} from './common';
+import { componentPositionStyles, componentTextStyles} from './common';
 
 /*
     Box component
@@ -15,7 +15,6 @@ export const Settings: ComponentSettings = {
 			containerPages: {type: 'number', value: 3}
 		},
 		arr_data: {
-			style: {items: componentStyleVariations, value: 'standard'},
 			headerStyle: {items: componentTextStyles, value: 'normal'},
 			headerPosition: {items: componentPositionStyles, value: 'left'},
 			orientation: {items: ['horizontal', 'vertical'], value: 'horizontal'},
@@ -39,7 +38,6 @@ export const Settings: ComponentSettings = {
 		// styles
 		'style.pagerOnColor': {dependOn: ['bool.showPager'], value: [true]},
 		'style.pagerOffColor': {dependOn: ['bool.showPager'], value: [true]},
-		'style.headerColor': {dependOn: ['arr_data.style', 'bool.showHeader'], value: ['standard', true]},
-		'style.backgroundColor': {dependOn: ['arr_data.style'], value: ['standard']}
+		'style.headerColor': {dependOn: ['bool.showHeader'], value: [true]}
 	}
 };

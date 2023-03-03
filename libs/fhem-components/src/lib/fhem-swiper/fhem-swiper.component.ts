@@ -49,7 +49,6 @@ export class FhemSwiperComponent implements AfterViewInit{
     @Input() containerPages!: number;
 
 	// Selections
-    @Input() style!: string;
     @Input() headerStyle!: TextStyle;
 	@Input() headerPosition!: string;
 	@Input() orientation!: string;
