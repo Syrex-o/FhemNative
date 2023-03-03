@@ -79,3 +79,13 @@ export function IsJsonString(str: any): boolean {
 	}
 	return true;
 }
+
+/**
+ * Create date string for naming
+ * @returns 
+ */
+export function getFileDate(): string{
+	const padL = (nr: number, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+	const dt = new Date();
+	return `${padL(dt.getMonth()+1)}/${padL(dt.getDate())}/${dt.getFullYear()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`;
+}
