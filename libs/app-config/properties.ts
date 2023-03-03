@@ -3,13 +3,6 @@ import { AppSetting } from "@fhem-native/types/storage";
 import { ConnectionProfile } from "@fhem-native/types/fhem";
 
 /**
- * Main version code
- */
-export const VersionCode = {
-	major: 3, minor: 0, patch: 0
-}
-
-/**
  * Language Options
  */
 export const LangOptions = ['de', 'en'];
@@ -24,7 +17,7 @@ export const ThemeOptions = ['bright', 'dark'];
 */
 export const ConnectionTypes = [
     { value: 'fhemweb', display: 'Fhemweb' },
-    { value: 'websocket', display: 'Websocket' }
+    // { value: 'websocket', display: 'Websocket' }
 ];
 
 /*
