@@ -170,6 +170,7 @@
             },
             "BUTTONS": {
                 "CREATE_ROOM": "Raum erstellen",
+                "DELETE_ROOM": "Raum löschen",
                 "UPDATE_ROOM": "Raum speichern"
             },
             "ERRORS": {
@@ -192,6 +193,14 @@
                 "NO_ROOM_CONFIG": {
                     "TEXT": "Falsche Konfiguration",
                     "INFO": "Bei der Konfigurationsdatei handelt es sich nicht um einen Raum-Export."
+                }
+            }
+        },
+        "EXPORT": {
+            "ERRORS": {
+                "FAILED_EXPORT": {
+                    "TEXT": "Fehler beim exportieren",
+                    "INFO": "Die Konfigurationsdatei konnte nicht exportiert werden."
                 }
             }
         },
@@ -309,10 +318,6 @@
                     }
                 },
                 "arr_data": {
-                    "style":{
-                        "name": "Style",
-                        "info": "Style der Box"
-                    },
                     "headerStyle": {
                         "name": "Kopfzeilen Text Style",
                         "info": "Style vom Text der Kopfzeile"
@@ -397,10 +402,6 @@
                     }
                 },
                 "arr_data": {
-                    "style":{
-                        "name": "Style",
-                        "info": "Style der Box"
-                    },
                     "headerStyle": {
                         "name": "Kopfzeilen Text Style",
                         "info": "Style vom Text der Kopfzeile"
@@ -693,7 +694,66 @@
             }
         },
         "Swiper": {
-
+            "NAME": "Swiper",
+			"INFO": "Ein Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
+            "INPUTS": {
+                "data": {
+                    "headline": {
+                        "name": "Kopfzeile",
+					    "info": "Label der Kopfzeile"
+                    },
+                    "borderRadius": {
+                        "name": "Rand-Radius",
+					    "info": "Radius vom Rand des Swipers"
+                    },
+                    "containerPages": {
+                        "name": "Seiten",
+					    "info": "Anzahl der Seiten für den Swiper"
+                    }
+                },
+                "bool": {
+                    "showPager": {
+                        "name": "Seiten-Indikator",
+					    "info": "Anzeigen/nicht anzeigen des Seiten-Indikators"
+                    },
+                    "showHeader": {
+                        "name": "Kopfzeile anzeigen",
+                        "info": "Kopfzeile anzeigen/nicht anzeigen"
+                    }
+                },
+                "arr_data": {
+                    "headerStyle": {
+                        "name": "Kopfzeilen Text Style",
+                        "info": "Style vom Text der Kopfzeile"
+                    },
+                    "headerPosition": {
+                        "name": "Kopfzeilen Text Position",
+                        "info": "Position vom Text dert Kopfzeile"
+                    },
+                    "orientation": {
+                        "name": "Orientierung",
+					    "info": "Ausrichtung des Swipers"
+                    }
+                },
+                "style": {
+                    "headerColor": {
+                        "name": "Kopfzeile Farbe",
+					    "info": "Hintergrundfarbe der Kopfzeile"
+                    },
+                    "backgroundColor": {
+                        "name": "Hintergrundfarbe",
+					    "info": "Hintergrundfarbe der Swiper-Seiten"
+                    },
+                    "pagerOnColor": {
+                        "name": "Seiten-Indikator On-Farbe",
+					    "info": "On-Farbe des Seiten-Indikators"
+                    },
+                    "pagerOffColor":{
+                        "name": "Seiten-Indikator Off-Farbe",
+                        "info": "Off-Farbe des Seiten-Indikators"
+                    }
+                }
+            }
         },
         "Switch": {
             "NAME": "Switch",
@@ -735,6 +795,48 @@
                     "info": {
                         "name": "Info",
 					    "info": "Anzuzeigendes Info Label"
+                    }
+                },
+                "bool": {
+                    "customLabels": {
+                        "name": "Eigene Labels",
+					    "info": "Benutzerdefinierte Labels aktivieren/deaktivieren"
+                    },
+                    "customLabelColors": {
+                        "name": "Eigene Label-Farben",
+					    "info": "Benutzerdefinierte Label-Farben aktivieren/deaktivieren"
+                    }
+                },
+                "arr_data": {
+                    "style": {
+                        "name": "Switch Style",
+					    "info": "Style des Switch"
+                    }
+                },
+                "style": {
+                    "labelColor": {
+                        "name": "Label-Farbe",
+                        "info": "Farbe des Labels im Switch"
+                    },
+                    "infoColor": {
+                        "name": "Info-Farbe",
+                        "info": "Farbe des Info Labels im Switch"
+                    },
+                    "backgroundColorOn": {
+                        "name": "Hintergrundfarbe on",
+					    "info": "Hintergrundfarbe des Switch im ON Zustand"
+                    },
+                    "backgroundColorOff": {
+                        "name": "Hintergrundfarbe off",
+					    "info": "Hintergrundfarbe des Switch im OFF Zustand"
+                    },
+                    "knobColorOn": {
+                        "name": "Thumb Farbe on",
+					    "info": "Hintergrundfarbe des Thumbs im ON Zustand"
+                    },
+                    "knobColorOff": {
+                        "name": "Thumb Farbe off",
+					    "info": "Hintergrundfarbe des Thumbs im OFF Zustand"
                     }
                 }
             }
