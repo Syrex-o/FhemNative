@@ -7,12 +7,13 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SettingsPageComponent } from './settings.page';
-import { SettingsPageRoutingModule } from './settings-routing.module';
 
 import { ScrollHeaderModule } from '@fhem-native/directives';
 
 import { CloseBtnContainerModule, SelectModule, SwitchModule, TextBlockModule, UI_BoxComponent, UI_CategoryComponent } from '@fhem-native/components';
 import { ImportExportService } from '@fhem-native/services';
+
+import { SettingsPageRoutingModule } from './settings-routing.module';
 
 @NgModule({
 	imports: [
@@ -34,6 +35,13 @@ import { ImportExportService } from '@fhem-native/services';
 		UI_CategoryComponent
 	],
 	providers: [ ImportExportService ],
-	declarations: [ SettingsPageComponent ]
+	declarations: [ SettingsPageComponent ],
+	exports: [ 
+		IonicModule,
+		TranslateModule,
+		ScrollHeaderModule,
+		CloseBtnContainerModule,
+		SettingsPageComponent
+	]
 })
 export class SettingsPageModule {}
