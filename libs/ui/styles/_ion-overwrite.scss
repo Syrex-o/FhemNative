@@ -45,6 +45,7 @@ ion-alert{
         .alert-message{
             color: var(--text-b);
             letter-spacing: var(--sapcing-b);
+            line-height: 22px;
         }
         .alert-button-group{
             margin-bottom: var(--item-spacing-a);

@@ -193,8 +193,9 @@ button.toast-close-button {
 // Custom
 .toast {
 	position: relative;
+    width: 50vw;
 	min-height: 45px;
-	max-width: 150px;
+	max-width: 200px;
 	min-width: 100px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
@@ -203,15 +204,27 @@ button.toast-close-button {
 	padding: 8px;
 	margin-top: 3px;
 	overflow: hidden;
+    background-image: none;
 	&.toast-success {
+        color: var(--success-b);
 		background-color: var(--success);
+        .toast-progress{
+            background-color: var(--success-b);
+        }
 	}
 	&.toast-info {
+        color: var(--info-b);
 		background-color: var(--info);
-		background-image: none;
+        .toast-progress{
+            background-color: var(--info-b);
+        }
 	}
 	&.toast-error {
+        color: var(--error-b);
 		background-color: var(--error);
+        .toast-progress{
+            background-color: var(--error-b);
+        }
 	}
 	.toast-title {
 		font-size: 16px;
@@ -225,8 +238,8 @@ button.toast-close-button {
 	}
 	// progress
 	.toast-progress{
-		background-color: #fff;
 		opacity: 1;
 		height: 2px;
+        opacity: 0.5;
 	}
 }
