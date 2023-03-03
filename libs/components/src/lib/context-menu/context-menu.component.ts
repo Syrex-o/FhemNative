@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, ViewEncapsulation, OnInit, Inject } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { DOCUMENT } from '@angular/common';
-import { fromEvent, map } from 'rxjs';
+import { fromEvent } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -13,6 +13,7 @@ import { ComponentLoaderService, EditorService, ImportExportService, SelectCompo
 
 import { FhemComponentSettings } from '@fhem-native/types/components';
 import { clone, decimalRounder, getUID } from '@fhem-native/utils';
+import { APP_CONFIG } from '@fhem-native/app-config';
 
 @UntilDestroy()
 @Component({
@@ -40,7 +41,8 @@ export class ContextMenuComponent implements OnInit{
 		private compLoader: ComponentLoaderService,
 		private popoverController: PopoverController,
 		public selectComponent: SelectComponentService,
-		@Inject(DOCUMENT) private document: Document){
+		@Inject(DOCUMENT) private document: Document,
+		@Inject(APP_CONFIG) private appConfig: any){
 	}
 
 	ngOnInit(): void {
@@ -361,7 +363,7 @@ export class ContextMenuComponent implements OnInit{
 			componentSettings.push(compressedSettings);
 		}
 
-		if(componentSettings.length > 0) this.importExport.exportComponents( componentSettings );
+		if(componentSettings.length > 0) this.importExport.exportComponents(componentSettings);
 		this.dismissInformer('export');
 	}
 

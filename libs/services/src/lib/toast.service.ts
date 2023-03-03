@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 // Services
 import { TranslateService } from '@ngx-translate/core';
 import { clone } from '@fhem-native/utils';
+import { LoggerService } from './logger.service';
 
 interface NotifyDefaults {
 	tapToDismiss: boolean,
@@ -15,6 +16,8 @@ interface NotifyDefaults {
 	progressBar?: boolean
 }
 
+export declare type ToastStyle = 'info'|'error'|'success';
+
 @Injectable({providedIn: 'root'})
 export class ToastService {
 	// store current alert, to dismiss before creating a new one
@@ -23,7 +26,7 @@ export class ToastService {
 	// default taost settings
 	private toastSettings: NotifyDefaults = {
 		tapToDismiss: true,
-		timeOut: 1500,
+		timeOut: 1_500,
 		progressBar: true,
 		positionClass: 'toast-bottom-left',
 		toastClass: 'toast',
@@ -32,14 +35,15 @@ export class ToastService {
 	// default notofy settings
 	private notifySettings: NotifyDefaults = {
 		tapToDismiss: true,
-		timeOut: 3000,
+		timeOut: 3_000,
 		positionClass: 'toast-top-center',
 		toastClass: 'notify',
 		easing: 'ease-out'
 	};
 
 	constructor(
-		private zone: NgZone, 
+		private zone: NgZone,
+		private logger: LoggerService,
 		private toast: ToastrService,
 		private translate: TranslateService,
 		private alertCtrl: AlertController, 
@@ -51,21 +55,19 @@ export class ToastService {
 		// info
 		// error
 		// success
-	public addToast(head: string, message: string, style: string, stayTime?: number): void {
+	public addToast(head: string, message: string, style: ToastStyle, stayTime?: number): void {
 		this.zone.run(() => {
-			const styling: string = style.toLowerCase();
-			if(styling === 'info' || styling === 'error' || styling === 'success'){
-				const settings: NotifyDefaults = clone( this.toastSettings );
-				if(stayTime) settings.timeOut = stayTime;
+			const settings: NotifyDefaults = clone( this.toastSettings );
+			if(stayTime) settings.timeOut = stayTime;
 
-				this.toast[styling](message, head, settings);
-			}
+			this.toast[style](message, head, settings);
 		});
-		if (style === 'error') console.error(head + ': ' + message);
+
+		return this.logger[style]( `${head}: ${message}` );
 	}
 
 	// adds a toast message from translate keys
-	public addTranslatedToast(head: string, message: string, style: string, stayTime?: number): void{
+	public addTranslatedToast(head: string, message: string, style: ToastStyle, stayTime?: number): void{
 		this.addToast( this.translate.instant(head), this.translate.instant(message), style, stayTime );
 	}
 
