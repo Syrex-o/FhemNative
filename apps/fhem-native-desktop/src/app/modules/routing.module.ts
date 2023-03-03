@@ -6,6 +6,10 @@ const routes: Routes = [
 		path: '',
 		loadChildren: () => import('@fhem-native/pages').then( m => m.AppPagesModule)
 	},
+	{
+		path: 'settings',
+		loadChildren: () => import('../pages/settings/settings.module').then( m => m.DesktopSettingsPageModule)
+	},
 	{ path: '', redirectTo: '', pathMatch: 'full' },
 	{ path: '**', redirectTo: ''}
 ];
