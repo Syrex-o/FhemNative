@@ -35,18 +35,17 @@
             position: absolute;
             width: 35px;
             left: 50%;
+            top: 50%;
             height: 2px;
             background-color: var(--text-a);
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             &.first{
-                top: 10px;
+                transform: translate(-50%, calc(-50% - 5px));
             }
             &.second{
-                top: 50%;
-                transform: translateX(-50%) translateY(-50%);
-            }
-            &.third{
-                bottom: 10px;
+                left: 50%;
+                width: 25px;
+                transform: translate(calc(-50% - 5px), calc(-50% + 5px));
             }
         }
     }
