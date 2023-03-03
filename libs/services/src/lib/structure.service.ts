@@ -41,6 +41,15 @@ export class StructureService {
 		return this.rooms.find(x=> x.UID === roomUID);
 	}
 
+	/**
+	 * Find roomIndex by UID
+	 * @param roomUID UID of room
+	 * @returns room index
+	 */
+	private findRoomIndex(roomUID: string): number {
+		return this.rooms.findIndex(x=> x.UID === roomUID);
+	}
+
     /**
 	 * Get the current room
 	 * @param roomUID: UID of room
@@ -111,7 +120,17 @@ export class StructureService {
 		relRoom.icon = room.icon;
 
 		this.getStructuredRoomList();
-		console.log('TODO: room update');
+	}
+
+	public deleteRoom(roomUID: string): void{
+		const relRoomIndex = this.findRoomIndex(roomUID);
+		if(relRoomIndex === -1) return;
+
+		this.rooms.splice(relRoomIndex, 1);
+		this.getStructuredRoomList();
+
+		// check if currently in room
+		if(roomUID === this.currentRoom?.UID) this.changeRoom(this.rooms[0]);
 	}
 
 	/**

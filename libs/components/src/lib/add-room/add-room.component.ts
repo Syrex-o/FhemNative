@@ -55,6 +55,12 @@ export class AddRoomComponent implements OnInit{
         this.popoverCtrl.dismiss();
     }
 
+    deleteRoom(): void{
+        this.structure.deleteRoom(this.room.UID);
+        this.undoManager.addChange();
+        this.popoverCtrl.dismiss();
+    }
+
     cancel(): void{
         this.popoverCtrl.dismiss();
     }

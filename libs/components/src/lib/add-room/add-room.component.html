@@ -11,6 +11,10 @@
             {{ 'MENUS.CREATE_ROOM.BUTTONS.'+ (newRoom ? 'CREATE_ROOM' : 'UPDATE_ROOM') | translate }}
             <ion-ripple-effect></ion-ripple-effect>
         </button>
+        <button *ngIf="!newRoom" class="app-button cancel ion-activatable" (click)="deleteRoom()">
+            {{ 'MENUS.CREATE_ROOM.BUTTONS.DELETE_ROOM' | translate }}
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
         <button class="app-button info inverse ion-activatable" (click)="cancel()">
             {{ 'DICT.CANCEL' | translate }}
             <ion-ripple-effect></ion-ripple-effect>
