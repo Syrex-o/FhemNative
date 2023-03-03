@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Observable, of, switchMap } from 'rxjs';
 
-import { SettingsService, StructureService } from '@fhem-native/services';
-import { Subscription } from 'rxjs';
+import { FhemService, SettingsService, StructureService, ToastService } from '@fhem-native/services';
 
 import { ShowHide } from './animations';
 
@@ -11,44 +11,32 @@ import { ShowHide } from './animations';
 	styleUrls: ['../pages.style.scss', 'home.page.scss'],
     animations: [ ShowHide ]
 })
-export class HomePageComponent implements OnInit, OnDestroy{
-    settingsSub!: Subscription;
-    showHelper = false;
+export class HomePageComponent{
+    renderer$: Observable<{showHelper: boolean, loaded: boolean}> = this.settings.appDefaultsLoaded.pipe(
+        switchMap(loaded=>{
+            if(!loaded) return of({loaded: false, showHelper: false});
+            // check for valid profile
+            if(!this.fhem.checkPreConnect()) return of({loaded: true, showHelper: true});
+            // valid config --> navigate to initial room
+            this.structure.loadRooms(true);
+            return of({loaded: true, showHelper: false});
+        })
+    );
 
     constructor(
-        public settings: SettingsService,
+        private fhem: FhemService,
+        private toast: ToastService,
+        private settings: SettingsService,
         private structure: StructureService){
-
-    }
-
-    ngOnInit(): void{
-        this.checkConfig();
-    }
-
-    private checkConfig(): void{
-        // needed on initial start --> settings are not assigned, when app is first time initialized
-        this.settingsSub = this.settings.appDefaultsLoaded.subscribe((loaded: boolean)=>{
-            if(loaded){
-                if(this.settings.connectionProfiles.length > 0 && this.settings.connectionProfiles[0].IP !== ''){
-                    // valid config --> navigate to initial room
-                    this.structure.loadRooms(true);
-                }else{
-                    // no config created --> show message
-                    this.showHelper = true;
-                }
-            }
-        });
     }
 
     openWeb(): void{
-        window.open('https://fhemnative.de', "_blank");
+        // window.open('https://fhemnative.de', "_blank");
+        this.toast.showAlert('Sorry', 'We are working hard on this part.', false);
     }
 
     triggerDemoMode(): void{
-        console.log('demo mode');
-    }
-
-    ngOnDestroy(): void {
-        if(this.settingsSub) this.settingsSub.unsubscribe();
+        // console.log('demo mode');
+        this.toast.showAlert('Sorry', 'We are working hard on this part.', false);
     }
 }

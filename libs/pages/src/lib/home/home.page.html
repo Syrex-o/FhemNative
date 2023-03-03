@@ -1,13 +1,13 @@
 <ion-content [fullscreen]="true" class="background-a-ion">
-    <div class="page-container">
+    <div class="page-container" *ngIf="renderer$ | async as renderer">
 
-        <ng-container *ngIf="showHelper">
+        <ng-container *ngIf="renderer.showHelper">
             <div class="center" @ShowHide>
                 <img src="assets/img/icon_transparent.png">
                 <h1 class="size-a-app color-a-app spacing-d no-margin">FhemNative</h1>
 
                 <div class="margin-bottom-20">
-                    <p class="size-d-app bold color-d-app spacing-a">
+                    <p class="size-d-app bold color-b-app spacing-a">
                         FhemNative konnte keine Konfiguration für FHEM finden. <br>
                         Jetzt IP-Einstellungen konfigurieren:
                     </p>
@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="margin-bottom-20">
-                    <p class="size-d-app bold color-d-app spacing-a">
+                    <p class="size-d-app bold color-b-app spacing-a">
                         Neu bei FhemNative?
                     </p>
     
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="margin-bottom-20">
-                    <p class="size-d-app bold color-d-app spacing-a">
+                    <p class="size-d-app bold color-b-app spacing-a">
                         FhemNative ohne FHEM ausprobieren:
                     </p>
     
@@ -42,12 +42,8 @@
             </div>
         </ng-container>
 
-        <ng-container *ngIf="!settings.appDefaultsLoaded.value">
-            <ng-container *ngTemplateOutlet="LOADER; context: {$implicit: !settings.appDefaultsLoaded.value}"></ng-container>
+        <ng-container *ngIf="!renderer.loaded">
+            <fhem-native-loader @ShowHide></fhem-native-loader>
         </ng-container>
     </div>
 </ion-content>
-
-<ng-template #LOADER let-handler>
-	<fhem-native-loader @ShowHide *ngIf="handler"></fhem-native-loader>
-</ng-template>
