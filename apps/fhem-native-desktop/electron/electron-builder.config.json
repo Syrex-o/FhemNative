@@ -4,7 +4,7 @@
   "copyright": "Copyright © 2023 Slap Apps UG (haftungsbeschränkt)",
   "directories": {
     "buildResources": "resources",
-    "output": "../../../dist/apps/fhem-native-desktop/"
+    "output": "../../../dist/apps/fhem-native-desktop-electron/"
   },
   "files": [
     "assets/**/*",

@@ -174,7 +174,9 @@
         "cmd": "sync"
       },
       "configurations": {
-
+        "electron": {
+          "cmd": "sync @capacitor-community/electron"
+        }
       }
     },
     "update": {

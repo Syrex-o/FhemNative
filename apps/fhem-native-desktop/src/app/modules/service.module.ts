@@ -9,6 +9,6 @@ import { environment } from '../../environments/environment';
 
 @NgModule({
 	imports: [ CoreServicesModule ],
-	providers: [ { provide: APP_CONFIG, useValue: environment} ]
+	providers: [ {provide: APP_CONFIG, useValue: environment} ]
 })
 export class ServiceModule {}

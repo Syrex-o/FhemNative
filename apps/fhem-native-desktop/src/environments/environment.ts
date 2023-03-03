@@ -1,10 +1,12 @@
+import { DesktopVersionCode } from "@fhem-native/app-config";
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
 	production: false,
-	platform: 'desktop'
+	platform: 'desktop',
+	versionCode: DesktopVersionCode
 };
 
 /*
