@@ -21,12 +21,13 @@ export class ThemeService {
 		const actualTheme = this.availableThemes.find(x=> x.name === theme);
 		if(!actualTheme) return;
 
+		// change vaiables
+		Object.keys(actualTheme.properties).forEach(property => {
+			this.cssServive.changeVariableValue(property, actualTheme.properties[property]);
+		});
+
 		// change active theme
 		this.active.next(actualTheme);
-		// change vaiables
-		Object.keys(this.active.value.properties).forEach(property => {
-			this.cssServive.changeVariableValue(property, this.active.value.properties[property]);
-		});
 	}
 
 	// observalble of active theme
