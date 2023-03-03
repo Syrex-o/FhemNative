@@ -8,18 +8,20 @@
         <!-- default selection, when no component is selected -->
         <ng-template [ngIf]="!editor.currentComponentConfig" [ngIfElse]="COMP_MODIFIER">
             <ng-container *ngFor="let comp of componentCategories">
-                <!-- category header -->
-                <div class="category-item">
-                    <fhem-native-text-line [text]="('MENUS.CREATE_COMPONENT.CATEGORIES.' + comp.category) | translate" [bold]="true"></fhem-native-text-line>
-                </div>
-
-                <!-- components of single category -->
-                <ng-container *ngFor="let component of comp.components">
-                    <button class="category-item content-item ion-activatable" (click)="selectComponent(component)">
-                        <fhem-native-text-line [text]="('MENUS.CREATE_COMPONENT.COMPONENT_NAMES.' + component) | translate" [bold]="true"></fhem-native-text-line>
-                        <ion-ripple-effect></ion-ripple-effect>
-                    </button>
-                </ng-container>
+                <fhem-native-ui-category class="mb-1-5">
+                    <!-- category header -->
+                    <ng-container name *ngTemplateOutlet="COMP_CATEGORY_HEADER; context: {$implicit: comp.category}"></ng-container>
+                    
+                    <div content>
+                        <!-- components of single category -->
+                        <ng-container *ngFor="let component of comp.components">
+                            <button class="category-item content-item ion-activatable" (click)="selectComponent(component)">
+                                <fhem-native-text-line [text]="('MENUS.CREATE_COMPONENT.COMPONENT_NAMES.' + component) | translate" [bold]="true"></fhem-native-text-line>
+                                <ion-ripple-effect></ion-ripple-effect>
+                            </button>
+                        </ng-container>
+                    </div>
+                </fhem-native-ui-category>
             </ng-container>
         </ng-template>
     </div>
@@ -54,7 +56,7 @@
     <ng-container *ngIf="editor.currentComponentConfig">
         <div class="comp-settings-container comp-inputs">
             <ng-container *ngFor="let compInputs of editor.currentComponentConfig?.inputs | keyvalue: keepOrder; trackBy: trackByFn">
-                <fhem-native-ui-category>
+                <fhem-native-ui-category class="mb-1-5">
                     <!-- settings section header -->
                     <ng-container name *ngTemplateOutlet="CONFIG_HEADER; context: {$implicit: compInputs.key}"></ng-container>
                 
@@ -187,5 +189,8 @@
 <!-- settings entry header -->
 <ng-template #CONFIG_HEADER let-setting>
     <fhem-native-text-line [wrap]="false">{{'COMPONENTS.GENERAL.SETTINGS.' + setting | translate}}</fhem-native-text-line>
-    <!-- <p class="color-b-app size-e-app">{{'COMPONENTS.GENERAL.SETTINGS.' + setting | translate}}</p> -->
+</ng-template>
+
+<ng-template #COMP_CATEGORY_HEADER let-setting>
+    <fhem-native-text-line [wrap]="false">{{'MENUS.CREATE_COMPONENT.CATEGORIES.' + setting | translate}}</fhem-native-text-line>
 </ng-template>
