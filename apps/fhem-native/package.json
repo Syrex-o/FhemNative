@@ -7,7 +7,7 @@
     "@capacitor/keyboard": "^4.0.0",
     "@capacitor/splash-screen": "^4.0.0",
     "@capacitor/status-bar": "^4.0.0",
-    "@capacitor/filesystem": "^4.1.4",
+    "@byteowls/capacitor-filesharer": "^4.0.0",
     "@capawesome/capacitor-file-picker": "^0.6.2"
   },
   "devDependencies": {
