@@ -1,12 +1,12 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import { VersionCode } from "@fhem-native/app-config";
+import { MobileVersionCode } from "@fhem-native/app-config";
 
 export const environment = {
 	production: false,
-	platform: 'desktop',
-	versionCode: VersionCode
+	platform: 'mobile',
+	versionCode: MobileVersionCode
 };
 
 /*
