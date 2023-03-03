@@ -4,11 +4,10 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, timeout, take, tap, ReplaySubject, takeUntil, timer, share, toArray, distinct, switchMap, of, Observable, concat, delay, merge, map, filter } from 'rxjs';
 import { WebSocketSubject } from 'rxjs/webSocket';
 
-import { TranslateService } from '@ngx-translate/core';
-
 // Services
 import { LoggerService } from './logger.service';
 import { SettingsService } from './settings.service';
+import { ToastService, ToastStyle } from './toast.service';
 
 import { IsJsonString } from '@fhem-native/utils';
 
@@ -51,12 +50,26 @@ export class FhemService {
 		TEST_SOCKET_CONNECT: 5_000
 	}
 
-    constructor(private settings: SettingsService, private logger: LoggerService){
+    constructor(private settings: SettingsService, private toast: ToastService, private logger: LoggerService){
 		this.deviceUpdateSub.subscribe((fhemDevice)=>{
 			for(const listenDevice of this.listenDevices){
 				if(listenDevice.device === fhemDevice.device && listenDevice.handler) listenDevice.handler(fhemDevice);
 			}
 		});
+	}
+
+	/**
+	 * Toast messages to user
+	 * includes logging
+	 * @param message toast message
+	 * @param level toast/log level
+	 * @returns
+	 */
+	private fhemToaster(message: string, level: ToastStyle){
+		if(this.settings.app.allowToasts) return this.toast.addToast('FHEM', message, level);
+
+		// just log if no toasts are allowd
+		this.logger[level](message);
 	}
 
 	/*
@@ -139,7 +152,7 @@ export class FhemService {
             this.connectionInProgress = true;
 
 			const currentConnectionProfile = this.settings.connectionProfiles[this.currConnProfileIndex];
-			this.logger.info(`Try connecting with profile: ${this.currConnProfileIndex} - trial: ${this.tries}`);
+			this.fhemToaster(`Try connecting with profile: ${this.currConnProfileIndex} - trial: ${this.tries}`, 'info');
 
 			// create socket
 			this.socket = new WebSocketSubject({
@@ -198,7 +211,7 @@ export class FhemService {
 		}else{
 			this.tries = 0;
 			this.connected.next(null);
-			this.logger.error(`Maximum Trials reached. Trying to reconnect in ${this.timeouts.MAX_TRIAL_WAIT / 1000}sek`);
+			this.fhemToaster(`Maximum Trials reached. Trying to reconnect in ${this.timeouts.MAX_TRIAL_WAIT / 1000}sek`, 'error');
 
 			if(this.maxTrialTimeout) clearTimeout(this.maxTrialTimeout);
 			this.maxTrialTimeout = setTimeout(()=> this.connect(), this.timeouts.MAX_TRIAL_WAIT);
@@ -222,7 +235,7 @@ export class FhemService {
 		this.connectionInProgress = false;
 		this.tries = 0;
 
-		this.logger.info(`Connection established with profile: ${this.currConnProfileIndex}`);
+		this.fhemToaster(`Connection established with profile: ${this.currConnProfileIndex}`, 'success');
 		if(this.awaitConnTimeout) clearTimeout(this.awaitConnTimeout);
 	}
 
@@ -238,7 +251,7 @@ export class FhemService {
 	*/
 	private onConnectionComplete(): void{
 		this.connected.next(null);
-		this.logger.info('Connection closed');
+		this.fhemToaster('Connection closed', 'info');
 
 		this.reset();
 		this.retry();
@@ -249,7 +262,7 @@ export class FhemService {
 	*/
 	private onConnectionError(err: string): void{
 		this.connected.next(false);
-		this.logger.error(err);
+		this.fhemToaster(err, 'error');
 
 		this.reset();
 		this.retry();
