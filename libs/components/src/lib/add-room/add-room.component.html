@@ -2,9 +2,10 @@
     <h2 class="center size-b-app color-a-app">{{ ('MENUS.CREATE_ROOM.HEADS.' + (newRoom ? 'NEW' : 'UPDATE')) | translate}}</h2>
 
     <div class="flex-box col">
-        <fhem-native-input [label]="'Room Name'" placeholder="Name" [(ngModel)]="room.name"></fhem-native-input>
-        <fhem-native-select-icon [label]="'Room Icon'" [searchable]="true" [(ngModel)]="room.icon"></fhem-native-select-icon>
+        <fhem-native-input [label]="('MENUS.CREATE_ROOM.INPUTS.ROOM_NAME.TEXT' | translate)" [placeholder]="('MENUS.CREATE_ROOM.INPUTS.ROOM_NAME.PLACEHOLDER' | translate)" [(ngModel)]="room.name"></fhem-native-input>
+        <fhem-native-select-icon [label]="('MENUS.CREATE_ROOM.INPUTS.ROOM_ICON' | translate)" [searchable]="true" [(ngModel)]="room.icon"></fhem-native-select-icon>
     </div>
+
 
     <div class="flex-box center">
         <button class="app-button info ion-activatable" (click)="save()">

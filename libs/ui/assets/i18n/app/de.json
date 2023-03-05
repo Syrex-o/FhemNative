@@ -168,6 +168,13 @@
                 "NEW": "Neuer Raum",
                 "UPDATE": "Raum bearbeiten"
             },
+            "INPUTS": {
+                "ROOM_NAME": {
+                    "TEXT": "Raum Name",
+                    "PLACEHOLDER": "Raum Namen eingeben"
+                },
+                "ROOM_ICON": "Raum Icon"
+            },
             "BUTTONS": {
                 "CREATE_ROOM": "Raum erstellen",
                 "DELETE_ROOM": "Raum löschen",
