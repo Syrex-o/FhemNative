@@ -18,6 +18,6 @@
         }">
             <p class="color-a-app">{{headline}}</p>
         </div>
-        <div class="box-content" [class.reduce-height]="showHeader" [style.background]="backgroundColor"></div>
+        <div class="box-content" [class.reduce-height]="showHeader" [style.background]="gradientBackground ? _gradientBackgroundColor : backgroundColor"></div>
     </div>
 </fhem-native-component>

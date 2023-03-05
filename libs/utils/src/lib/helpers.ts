@@ -89,3 +89,29 @@ export function getFileDate(): string{
 	const dt = new Date();
 	return `${padL(dt.getMonth()+1)}/${padL(dt.getDate())}/${dt.getFullYear()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`;
 }
+
+/**
+ * Get Css gradient from color array
+ * @param colorArr list of colors
+ * @returns string of linear gradient
+ */
+export function getCssGradient(colorArr: string[]): string{
+	if(colorArr.length === 0) return 'rgba(0, 0, 0, 0)';
+
+	// add initial stop
+	const gradient = [ (colorArr[0] + ' 0%') ];
+
+	// get stops
+	let colorStops = 0.5;
+	if(colorArr.length > 2){
+		colorStops = Math.round( ((1 / (colorArr.length -1)) + Number.EPSILON) * 100 ) / 100;
+	}
+	// add stops
+	for(let i = 1; i <= colorArr.length -2; i++){
+		gradient.push( `${colorArr[i]} ${(i * colorStops) * 100}%` );
+	}
+	// add last stop
+	gradient.push( `${colorArr[colorArr.length -1]} 100%` );
+
+	return `linear-gradient(90deg, ${gradient.join(', ')})`;
+}

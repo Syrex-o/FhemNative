@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { FhemComponentModule } from '../_fhem-component/fhem-component.module';
 
-import { getFontStyleFromSelection, getFontWeightFromSelection, TextStyle } from '@fhem-native/utils';
+import { getCssGradient, getFontStyleFromSelection, getFontWeightFromSelection, TextStyle } from '@fhem-native/utils';
 
 import { ComponentPosition } from '@fhem-native/types/components';
 
@@ -48,9 +48,12 @@ export class FhemBoxComponent{
 	// header style
 	headerFontWeight = 400;
 	headerFontStyle = 'normal';
+	_gradientBackgroundColor!: string;
 
 	onInitComponent(): void{
 		this.headerFontStyle = getFontStyleFromSelection(this.headerStyle);
 		this.headerFontWeight = getFontWeightFromSelection(this.headerStyle);
+
+		if(this.gradientBackground) this._gradientBackgroundColor = getCssGradient(this.gradientBackgroundColor);
 	}
 }
