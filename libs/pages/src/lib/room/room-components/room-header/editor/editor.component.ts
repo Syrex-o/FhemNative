@@ -1,7 +1,7 @@
 import { Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import { IonPopover } from '@ionic/angular';
 
-import { EditorService, StructureService, UndoRedoService } from '@fhem-native/services';
+import { EditorService, SettingsService, StructureService } from '@fhem-native/services';
 
 @Component({
 	selector: 'fhem-native-room-header-editor',
@@ -14,7 +14,7 @@ export class RoomHeaderEditorComponent{
 
 	coreEditor$ = this.editor.core.getMode();
 
-	constructor(private editor: EditorService, private structure: StructureService, private undoManager: UndoRedoService){}
+	constructor(private editor: EditorService, private structure: StructureService, public settings: SettingsService){}
 
 	switchToEditMode(): void{
 		if(this.structure.currentRoom) this.editor.core.enterEditMode(this.structure.currentRoom.UID);

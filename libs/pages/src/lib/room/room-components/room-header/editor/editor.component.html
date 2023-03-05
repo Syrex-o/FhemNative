@@ -22,7 +22,7 @@
 
     <!-- No Edit Mode -->
     <ng-template #NO_EDIT>
-        <ion-button class="editor-trigger-btn" (click)="switchToEditMode()">
+        <ion-button class="editor-trigger-btn" (click)="switchToEditMode()" *ngIf="settings.app.allowEditing">
             <ion-icon name="pencil-outline"></ion-icon>
         </ion-button>
     </ng-template>
@@ -34,7 +34,7 @@
         <fhem-native-switch class="flex-block-item after-line" label="Grid" [(ngModel)]="mode.editComponents" (clicked)="switchGridMode($event)"></fhem-native-switch>
     
         <button class="app-button editor-save-btn save ion-activatable" (click)="saveChanges()">
-            Speichern
+            {{'DICT.SAVE' | translate}}
             <ion-ripple-effect></ion-ripple-effect>
         </button>
     </ng-template>
