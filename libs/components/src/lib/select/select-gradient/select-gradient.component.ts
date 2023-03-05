@@ -52,7 +52,11 @@ export class SelectGradientComponent extends SelectComponent implements AfterVie
         // create color stops
         if(this.innerValue && this.innerValue.length > 0){
             grd.addColorStop(0, this.innerValue[0]);
-            const colorStops = Math.round( ((1 / this.innerValue.length) + Number.EPSILON) * 100 ) / 100;
+            
+            let colorStops = 0.5;
+            if(this.innerValue.length > 2){
+                colorStops = Math.round( ((1 / (this.innerValue.length -1)) + Number.EPSILON) * 100 ) / 100;
+            }
             for(let i = 1; i <= this.innerValue.length -2; i++){
                 grd.addColorStop( i * colorStops , this.innerValue[i]);
             }
