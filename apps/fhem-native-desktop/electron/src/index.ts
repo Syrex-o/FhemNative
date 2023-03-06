@@ -75,6 +75,13 @@ app.on('activate', async function () {
 	}
 });
 
+// certificate allow test
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+	// allow all
+	event.preventDefault();
+	callback(true);
+});
+
 // Place all ipc or other electron api calls and custom functionality under this line
 
 // dynamic window resize
