@@ -133,9 +133,7 @@
       "options": {
         "cmd": "add"
       },
-      "configurations": {
-
-      }
+      "configurations": {}
     },
     "copy": {
       "executor": "@nxext/capacitor:cap",
@@ -164,9 +162,7 @@
       "options": {
         "cmd": "run"
       },
-      "configurations": {
-
-      }
+      "configurations": {}
     },
     "sync": {
       "executor": "@nxext/capacitor:cap",
@@ -184,9 +180,7 @@
       "options": {
         "cmd": "update"
       },
-      "configurations": {
-
-      }
+      "configurations": {}
     }
   },
   "tags": []

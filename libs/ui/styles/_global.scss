@@ -9,10 +9,10 @@ a{
 .rounded{ border-radius: var(--radius-b); }
 
 // letter spacings
-.spacing-a{ letter-spacing: var(--spacing-a); }
-.spacing-b{ letter-spacing: var(--spacing-b); }
-.spacing-c{ letter-spacing: var(--spacing-c); }
-.spacing-d{ letter-spacing: var(--spacing-d); }
+.spacing-a{ letter-spacing: var(--spacing-a) !important; }
+.spacing-b{ letter-spacing: var(--spacing-b) !important; }
+.spacing-c{ letter-spacing: var(--spacing-c) !important; }
+.spacing-d{ letter-spacing: var(--spacing-d) !important; }
 
 // text manipulation
 .bold{ font-weight: 600; }

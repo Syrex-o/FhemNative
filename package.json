@@ -9,12 +9,10 @@
     "show:deps": "nx dep-graph",
     "init:firebase": "nx g @angular/fire:ng-add",
     "postinstall": "ngcc --properties es2020 browser module main",
-    "resources": "cordova-res android --skip-config --copy",
+    "serve:web:fhem-native-docs": "nx serve fhem-native-docs",
     "serve:web:fhem-native": "nx serve fhem-native",
     "serve:web:fhem-native-desktop": "nx serve fhem-native-desktop",
     "open:desktop:fhem-native": "nx build fhem-native-desktop && nx run fhem-native-desktop:sync:electron && nx run fhem-native-desktop:open:electron",
-    "serve:web:website": "nx serve website",
-    "build:web:website": "nx build website --prod",
     "build:app:ios:fhem-native": "nx build fhem-native && nx run fhem-native:sync:ios && nx run fhem-native:open:ios",
     "build:app:android:fhem-native": "nx build fhem-native && nx run fhem-native:sync:android && nx run fhem-native:open:android",
     "build:desktop:fhem-native": "nx build fhem-native-desktop && nx run fhem-native-desktop:sync:electron && cd apps/fhem-native-desktop/electron && npm run electron:make"
@@ -59,6 +57,7 @@
     "swiper": "^8.4.5",
     "tslib": "^2.3.0",
     "uuid": "^9.0.0",
+    "yaml": "^2.2.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

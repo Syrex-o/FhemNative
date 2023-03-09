@@ -4,6 +4,7 @@
 export interface ConnectionProfile {
 	IP: string,
 	PORT: string,
+	// secure option
 	WSS: boolean,
 	type: string,
 	basicAuth: boolean,
