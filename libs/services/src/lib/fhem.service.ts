@@ -32,6 +32,7 @@ export class FhemService {
 	private deviceRequestCombiner: Subject<{deviceName: string, readingName: string}>|null = null;
 
     // connection
+	public blockReConnect = false;
 	private preventConnect = false;
 	private socket!: WebSocketSubject<any>|null;
 
@@ -97,8 +98,10 @@ export class FhemService {
 				// Login data for basicAuth
 				(connectionProfile.basicAuth ? connectionProfile.USER + ':' + connectionProfile.PASSW + '@' : '' );
 
-			// add ip and port
-			url += connectionProfile.IP + ':' + connectionProfile.PORT;
+			// add ip
+			url += connectionProfile.IP;
+			// add port
+			url += (connectionProfile.PORT !== '' ? `:${connectionProfile.PORT}` : '');
 
 			if(connectionProfile.type === 'fhemweb') url += '?XHR=1&inform=type=status;filter=.*;fmt=JSON' + '&timestamp=' + Date.now();
 		}
@@ -120,6 +123,7 @@ export class FhemService {
 	 */
 	public async testConnectionProfile(profile: ConnectionProfile): Promise<boolean>{
 		return new Promise((resolve)=>{
+
 			const testSocket = new WebSocketSubject({
 				url: this.getConnectionUrl(profile),
 				protocol: profile.type === 'websocket' ? 'json' : '',
@@ -189,6 +193,8 @@ export class FhemService {
 		Reconnect handler
 	*/
 	public reconnect(): void{
+		if(this.blockReConnect) return;
+
 		this.preventConnect = false;
 		this.disconnect();
 		this.connect();
