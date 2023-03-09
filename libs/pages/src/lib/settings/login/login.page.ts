@@ -29,6 +29,7 @@ export class LoginPageComponent implements OnInit, OnDestroy{
 	}
 
 	ngOnInit(): void {
+		this.fhem.blockReConnect = true;
 		this.fhem.disconnect();
 		this.backBtn.handle(this.handleID, ()=> this.cancelIPSettings());
 	}
@@ -121,6 +122,8 @@ export class LoginPageComponent implements OnInit, OnDestroy{
 	}
 
 	ngOnDestroy(): void {
+		this.fhem.blockReConnect = false;
+
 		this.loader.hideLoader();
 		// try to connect on page destroy
 		this.fhem.resetConnectionTries();
