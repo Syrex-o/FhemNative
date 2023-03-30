@@ -1,0 +1,29 @@
+:host{
+    .fhem-native-image{
+        width: 100%;
+		height: 100%;
+        .img-bg{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .select-container{
+            position: relative;
+            overflow-y: auto;
+            width: 100%;
+            height: 100%;
+            pointer-events: all;
+            button{
+                margin-bottom: var(--item-spacing-a);
+            }
+        }
+    }
+}
