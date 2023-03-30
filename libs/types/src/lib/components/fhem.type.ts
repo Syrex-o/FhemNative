@@ -2,7 +2,7 @@
 
 export interface FhemDeviceConfig {
     device: string,
-    reading: string,
+    reading?: string,
 
     // determine, when to render component
     connected?: boolean,

@@ -1,4 +1,6 @@
+import { Type } from "@angular/core"
 import { BaseComponentPosition } from "./core.type"
+import { ComponentSettings } from "./settings.type"
 
 /**
  * Main Editor
@@ -16,6 +18,14 @@ export interface ComponentEditor {
     edit: boolean,
     componentUID: string|null,
     containerId: string|null,
+}
+
+/**
+ * Component config editor
+ */
+export interface ComponentConfigEditor {
+    new: Type<any>|null,
+    componentConfig: ComponentSettings|null
 }
 
 /**
