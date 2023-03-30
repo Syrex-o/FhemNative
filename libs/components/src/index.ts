@@ -18,6 +18,9 @@ export * from './lib/input/input.module';
 export * from './lib/loader/loader.module';
 export * from './lib/popover/popover.module';
 
+export * from './lib/picker/picker.component';
+export * from './lib/popup/popup.component';
+
 export * from './lib/select/select.module';
 export * from './lib/select/select.component';
 export * from './lib/select/select-color/select-color.module';

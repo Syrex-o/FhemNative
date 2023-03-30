@@ -1,6 +1,6 @@
 :host{
 	--toggle-width: 60px;
-
+	user-select: none;
 	display: block;
 	padding: var(--item-spacing-a) 0px;
 	fhem-native-ui-box{ padding: 0; }

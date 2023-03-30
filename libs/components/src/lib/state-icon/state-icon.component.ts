@@ -1,5 +1,8 @@
 import { Component, forwardRef, HostBinding, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { tap } from 'rxjs';
+
+import { ThemeService } from '@fhem-native/services';
 
 @Component({
 	selector: 'fhem-native-state-icon',
@@ -15,12 +18,15 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 export class StateIconComponent {
     // state icon type 
     @Input() icon = 'plus';
-    @HostBinding('class') get class(){ return [
-        this.icon,
-        ( this.value ? 'active' : 'inactive' )
-    ]; };
+
+	@Input() iconColor: string|undefined;
+    @HostBinding('class') get class(){ return [this.icon, ( this.value ? 'active' : 'inactive' ) ]; };
 
     value = false;
+	theme$ = this.theme.getThemePipe('--btn-text-a').pipe(tap(x=> this._iconColor = this.iconColor || x));
+	_iconColor: string|undefined;
+
+	constructor(private theme: ThemeService){}
 
     onTouched: () => void = () => {};
 	onChange: (_: any) => void = (_: any) => {};

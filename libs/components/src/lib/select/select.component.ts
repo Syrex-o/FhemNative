@@ -58,6 +58,9 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 	@Input() info = '';
 	@Input() placeholder = 'Select One';
 
+	// determine if toggle should only switch state, when actual value changes
+	@Input() actOnCallback = false;
+
 	// Styling Inputs
 	@Input() height = this.cssVariable.getVariableValue('--item-height-b');
 	@Input() backgroundColor: string|undefined;
@@ -93,7 +96,7 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 		this.filteredItems = this.items;
 	}
 
-	ngOnChanges(changes: SimpleChanges): void {
+	ngOnChanges(): void {
 		this.filteredItems = this.items;
 		this.getContainerHeight();
 	}

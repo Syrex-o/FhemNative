@@ -1,11 +1,11 @@
 <!-- component parts -->
-<ng-container *ngIf="source === 'component'">
+<ng-container *ngIf="source === 'component' && (componentConfigEditor$ | async) as compConfigEditor">
     <!-- Settings -->
     <div class="context-menu-block border">
         <h2 class="block-header color-a-app size-e-app spacing-a">{{'MENUS.CONTEXT_MENU.COMPONENT.TEXT' | translate }}</h2>
 
          <!-- edit component -->
-         <button *ngIf="!editor.currentComponentConfig" class="inner ion-activatable" (click)="editComponentModal()">
+         <button *ngIf="!compConfigEditor.componentConfig" class="inner ion-activatable" (click)="editComponentModal()">
             <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'settings-outline', text: 'MENUS.CONTEXT_MENU.COMPONENT.CONTENT.SETTINGS', translate: true}"></ng-container>
         </button>
 
@@ -80,7 +80,7 @@
 </ng-container>
 
 <!-- grid parts -->
-<ng-container *ngIf="source === 'grid'">
+<ng-container *ngIf="source === 'grid' && (componentConfigEditor$ | async) as compConfigEditor">
     <!-- New Parts -->
     <div class="context-menu-block border">
         <h2 class="block-header size-e-app color-a-app">{{'MENUS.CONTEXT_MENU.NEW.TEXT' | translate }}</h2>
@@ -91,7 +91,7 @@
         </button>
 
         <!-- add component -->
-        <button *ngIf="!editor.currentComponentConfig" class="inner ion-activatable" (click)="createComponentModal()">
+        <button *ngIf="!compConfigEditor.componentConfig" class="inner ion-activatable" (click)="createComponentModal()">
             <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'add-outline', text: 'MENUS.CONTEXT_MENU.NEW.CONTENT.COMPONENT', translate: true}"></ng-container>
         </button>
     </div>

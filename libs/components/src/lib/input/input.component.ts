@@ -54,7 +54,9 @@ export class InputComponent implements ControlValueAccessor, AfterContentInit{
 	}
 
 	updateIonChanges(e: any){
-		this.value = this.inputType === 'number' ? parseInt(e.detail.value) : e.detail.value;
+		const val: string = e.detail.value;
+
+		this.value = this.inputType === 'number' ? parseFloat(val === '' ? '0' : val) : val;
 
 		// trim input if needed --> no spaces
 		if(this.trimInput) setTimeout(()=> this.value = (typeof this.value !== 'number') ? this.value.replace(/\s+/g, '') : this.value, 0);

@@ -28,6 +28,8 @@ export class ContextMenuComponent implements OnInit{
 	@Input() source!: 'component'|'grid';
 	@Input() transformationManager!: TransformationManagerDirective;
 
+	componentConfigEditor$ = this.editor.getComponentConfigEditor();
+
 	// relevant component
 	canBeGrouped = false;
 	canBeUnGrouped = false;
@@ -104,6 +106,7 @@ export class ContextMenuComponent implements OnInit{
 
 		// get unfolded config
 		const componentSettings = await this.compLoader.unFlattenComponentConfig( component );
+
 		// start editor
 		this.editor.component.editComponent(componentSettings, this.transformationManager.containerId, this.componentId);
 

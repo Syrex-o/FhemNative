@@ -1,11 +1,13 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { IconService } from '@fhem-native/services';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
 	selector: 'fhem-native-icon',
 	templateUrl: './icon.component.html',
 	styleUrls: ['./icon.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconComponent implements OnChanges{
     // get the icon input
@@ -15,16 +17,15 @@ export class IconComponent implements OnChanges{
 	@Input() ripple = false;
 
     // actual icon to display
-	public _icon: {icon: any, type: string} = {icon: 'home', type: 'ion'};
+	icon$ = new BehaviorSubject<{type: string, icon: any}>({type: 'ion', icon: 'home-outline'});
 
     constructor(public iconService: IconService){}
 
     ngOnChanges(changes: SimpleChanges){
-		if(changes['icon']){
-			const current: string = changes['icon'].currentValue;
-			const foundIcon = this.iconService.findIcon(current);
-			
-			this._icon = foundIcon ? foundIcon : (this.ionFallback ? {icon: current, type: 'ion'} : {icon: 'home', type: 'ion'})
-		}
+		if(!('icon' in changes)) return;
+		const current: string|undefined = changes['icon'].currentValue;
+
+		if(!current) return;
+		this.icon$.next( this.iconService.findIcon(current) || {type: 'ion', icon: this.ionFallback ? current : 'home'} );
 	}
 }

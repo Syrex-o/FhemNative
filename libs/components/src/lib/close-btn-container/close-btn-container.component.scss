@@ -2,6 +2,8 @@
     ion-header{
         --height: 60px;
         ion-toolbar{
+            --padding-start: 0px;
+            --padding-end: 0px;
             --background: var(--primary);
             --border-color: transparent;
             .header{
