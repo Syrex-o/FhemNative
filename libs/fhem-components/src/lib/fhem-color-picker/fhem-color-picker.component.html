@@ -1,0 +1,123 @@
+<fhem-native-component #COMPONENT
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 30, height: 30}"
+    [fhemDeviceConfig]="{
+        device, reading,
+        readingAvailable: true
+    }"
+    (resized)="updateScales()"
+    (transformationEnd)="updateScales()"
+
+    (initComponent)="onInitComponent()"
+    
+    (initDevice)="setFhemDevice($event)"
+    (updateDevice)="updateFhemDevice($event)">
+    <div class="fhem-native-color-picker">
+        <ng-container *ngIf="usePopup; else COLOR_PICKER">
+            <button class="fhem-native-button ion-activatable" (click)="togglePopup()"
+                [ngStyle]="{
+                    'background-color': '#' + color,
+                    'border-top-left-radius.px': customBorder ? borderRadiusTopLeft : borderRadius,
+                    'border-top-right-radius.px': customBorder ? borderRadiusTopRight : borderRadius,
+                    'border-bottom-left-radius.px': customBorder ? borderRadiusBottomLeft : borderRadius,
+                    'border-bottom-right-radius.px': customBorder ? borderRadiusBottomRight : borderRadius
+                }">
+
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+            
+            <!-- popup -->
+            <fhem-native-popup 
+                [(ngModel)]="popupState"
+                [width]="popupWidth"
+                [height]="popupHeight"
+                [headerAnimation]="false" 
+                [popupHeader]="headline">
+                <div content>
+                    <ng-container *ngTemplateOutlet="COLOR_PICKER"></ng-container>
+                </div>
+            </fhem-native-popup>
+        </ng-container>
+    </div>
+</fhem-native-component>
+
+<ng-template #COLOR_PICKER>
+    <div class="fhem-native-color-picker-content" [class.in-popup]="usePopup">
+        <div class="favs" *ngIf="showFavMenu">
+            <button class="btn-round ion-activatable theme-background-two" (click)="toggleFavs()">
+				<ion-icon name="color-palette"></ion-icon>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+            <button class="btn-round ion-activatable theme-background-two" (click)="addToColorFavs()">
+				<ion-icon name="star"></ion-icon>
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+        </div>
+        <div #COLOR_SELECTOR class="color-selector" [class.show-fav-menu]="showFavMenu">
+            <div class="wheel-container" [ngStyle]="{'width.px': dimSize,'height.px': dimSize}">
+                <div 
+                    fhemNativeMover 
+                    [updateOnMove]="updateOnMove" 
+                    [threshold]="threshold" 
+                    (startMove)="startOuterMove()" 
+                    (whileMove)="whileOuterMove($event)" 
+                    (endMove)="endOuterMove()"
+                    class="outer-circle" [ngStyle]="{'background': 'linear-gradient( rgb(0, 0, 0), '+ styles['outerGradient'] +', rgb(245, 243, 240) )'}">
+					<div class="select-brightness">
+						<div class="overlay"></div>
+					</div>
+					<div class="rotator rotator-outer" [class.animate]="styles['animateOuter']" [ngStyle]="{'transform': 'rotate('+ styles['outerRotation'] +'deg)'}">
+						<div class="knob knob-outer"></div>
+					</div>
+				</div>
+                <div class="inner-circle"
+                    fhemNativeMover 
+                    [updateOnMove]="updateOnMove" 
+                    [threshold]="threshold" 
+                    (startMove)="startInnerMove()" 
+                    (whileMove)="whileInnerMove($event)" 
+                    (endMove)="endInnerMove()">
+					<canvas #CANVAS class="canvas canvas-inner"></canvas>
+					<div class="knob knob-inner">
+						<div 
+                            #KNOB
+                            [class.animate]="styles['animateInner']" 
+                            [ngStyle]="{'background': '#' + color, 'transform': styles['innerTranslate']}" class="knob-inner-move">
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<fhem-native-picker
+    [(ngModel)]="favMenuState"
+    [height]="60"
+    [headerAnimation]="false"
+    [pickerHeader]="'COMPONENTS.Color Picker.DICT.FAVS' | translate">
+    <div content>
+        <ng-container *ngIf="colorFavs && colorFavs.length > 0; else NO_FAVS">
+            <ng-container *ngFor="let colorFav of colorFavs; let i = index">
+                <div class="fhem-native-color-picker-fav-color">
+                    <fhem-native-ui-box [clickable]="true" (click)="setFavColor(colorFav)">
+                        <span class="color" [style.background-color]="colorFav"></span>
+                        <p class="color-a-app bold size-e-app no-margin">{{colorFav}}</p>
+                    </fhem-native-ui-box>
+                    <button class="btn-round ion-activatable theme-background-two" (click)="removeFavColor(i)">
+                        <ion-icon name="trash"></ion-icon>
+                        <ion-ripple-effect></ion-ripple-effect>
+                    </button>
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <ng-template #NO_FAVS>
+            <fhem-native-text-block class="center"
+                [label]="('COMPONENTS.Color Picker.ERRORS.NO_FAVS.name' | translate)"
+                [info]="('COMPONENTS.Color Picker.ERRORS.NO_FAVS.info' | translate)">
+            </fhem-native-text-block>
+        </ng-template>
+    </div>
+</fhem-native-picker>
