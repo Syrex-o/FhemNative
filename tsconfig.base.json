@@ -20,6 +20,7 @@
       "@fhem-native/directives": ["libs/directives/src/index.ts"],
       "@fhem-native/docs": ["libs/docs/src/index.ts"],
       "@fhem-native/fhem-components": ["libs/fhem-components/src/lib/index.ts"],
+      "@fhem-native/guards": ["libs/guards/src/index.ts"],
       "@fhem-native/modules": ["libs/modules/src/index.ts"],
       "@fhem-native/pages": ["libs/pages/src/index.ts"],
       "@fhem-native/services": ["libs/services/src/index.ts"],
@@ -27,10 +28,10 @@
       "@fhem-native/types/components": [
         "libs/types/src/lib/components/index.ts"
       ],
+      "@fhem-native/types/docs": ["libs/types/src/lib/docs/index.ts"],
       "@fhem-native/types/fhem": ["libs/types/src/lib/fhem/index.ts"],
       "@fhem-native/types/room": ["libs/types/src/lib/room/index.ts"],
       "@fhem-native/types/storage": ["libs/types/src/lib/storage/index.ts"],
-      "@fhem-native/types/docs": ["libs/types/src/lib/docs/index.ts"],
       "@fhem-native/utils": ["libs/utils/src/index.ts"]
     }
   },
