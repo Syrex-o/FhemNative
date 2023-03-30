@@ -1,0 +1,54 @@
+<fhem-native-component #COMPONENT
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 160, height: 160}"
+    [fhemDeviceConfig]="{
+        device, reading,
+        readingAvailable: true
+    }"
+    (resized)="updateScales()"
+    (transformationEnd)="updateScales()"
+
+    (initComponent)="initialize()"
+    (initDevice)="setFhemDevice($event)"
+    (updateDevice)="updateFhemDevice($event)">
+    <div class="fhem-native-circle-slider">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" [attr.viewBox]="styles['viewBox']" preserveAspectRatio="xMinYMin meet">
+            <defs>
+				<filter [attr.id]="'blurFilter' + UID" x="0" y="0" width="100%" height="100%">
+					<feGaussianBlur in="SourceGraphic" [attr.stdDeviation]="styles['blurRadius']" />
+					<feComponentTransfer>
+						<feFuncA type="discrete" tableValues="1 1"/>
+					</feComponentTransfer>
+				</filter>
+				<clipPath [attr.id]="'sliderClip' + UID">
+					<path [attr.d]="styles['clipPathStr']" stroke="black"></path>
+				</clipPath>
+			</defs>
+            <g [attr.transform]="styles['arcTranslateStr']" class="container">
+                <g>
+					<circle cx="0" cy="0" [attr.r]="radius - (arcThickness / 2)" [attr.fill]="circleBackgroundColor" class="circle-bg" [attr.transform]="styles['translateBg']"/>
+				</g>
+                <g class="toClip" [attr.clip-path]="'url(#sliderClip' + UID +')'">
+					<g class="toFilter" [attr.filter]="'url(#blurFilter' + UID +')'">
+						<path [attr.d]="arc.d" [attr.fill]="arc.color" *ngFor="let arc of styles['gradArcs']"></path>
+					</g>
+					<!-- ngFor is a quirk fix for webkit rendering issues -->
+					<path [attr.d]="styles['nonSelectedArc'].d" [attr.fill]="styles['nonSelectedArc'].color" *ngFor="let number of [0,1,2,3,4,5]"></path>
+				</g>
+                <circle fhemNativeMover [updateOnMove]="updateOnMove" [threshold]="threshold" (startMove)="startMove()" (whileMove)="whileMove($event)" (endMove)="endMove()"
+					[attr.cx]="styles['thumbPosition'].x" [attr.cy]="styles['thumbPosition'].y" [attr.r]="pinRadius" 
+					[attr.fill]="thumbColor" [attr.stroke-width]="thumbBorder / scaleFactor" class="circle">
+				</circle>
+            </g>
+        </svg>
+        <div class="labels" [class.custom-position]="customLabelPosition"
+            [ngStyle]="{
+                'top.%': customLabelPosition ? labelTopPos : '50',
+                'left.%': customLabelPosition ? labelLeftPos : '50'
+            }">
+            <p class="text" [ngStyle]="{'font-size.px': textSize, 'color': labelColor}">{{value + labelExtension}}</p>
+			<p class="subline" [ngStyle]="{'color': thumbColor}">{{label}}</p>
+        </div>
+    </div>
+</fhem-native-component>
