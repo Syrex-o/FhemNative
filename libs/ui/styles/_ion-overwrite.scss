@@ -10,6 +10,12 @@ ion-select{
     letter-spacing: var(--sapcing-b);
 }
 
+ion-backdrop{
+    pointer-events: all;
+    opacity: var(--backdrop-op);
+    background-color: var(--secondary);
+}
+
 ion-action-sheet,
 ion-popover,
 ion-alert{
