@@ -1,0 +1,69 @@
+:host{
+    .fhem-native-icon{
+        width: 100%;
+		height: 100%;
+        .indicator{
+            position: absolute;
+			border-radius: 10px;
+			text-align: center;
+			line-height: 20px;
+			padding: 8px;
+			font-size: 15px;
+			transition: all .3s ease;
+			opacity: 1;
+        }
+        .main-icon{
+            position: absolute;
+			width: 100%;
+			height: 100%;
+			transition: all .3s ease;
+        }
+        &.show-indicator{
+            .main-icon{
+                width: 82%;
+				height: 82%;
+            }
+            // indicator positions
+            &.top-right{
+                .indicator{
+					right: 0;
+					top: 0;
+				}
+                .main-icon{
+                    left: 0;
+					bottom: 0;
+                }
+            }
+            &.top-left{
+                .indicator{
+					left: 0;
+					top: 0;
+				}
+                .main-icon{
+					right: 0;
+					bottom: 0;
+				}
+            }
+            &.bottom-left{
+                .indicator{
+					left: 0;
+					bottom: 0;
+				}
+                .main-icon{
+					right: 0;
+					top: 0;
+				}
+            }
+            &.bottom-right{
+                .indicator{
+					right: 0;
+					bottom: 0;
+				}
+                .main-icon{
+					left: 0;
+					top: 0;
+				}
+            }
+        }
+    }
+}
