@@ -1,0 +1,53 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 80, height: 30}"
+    [fhemDeviceConfig]="{
+        device, reading,
+        readingAvailable: true
+    }"
+    (initComponent)="initValues()"
+    (initDevice)="setFhemDevice($event)"
+    (updateDevice)="setFhemDevice($event)"
+    fhemNativeOutsideClick (outsideClick)="selectState = false">
+    <div class="fhem-native-select" [class.error]="!_items.length">
+        <ng-container *ngIf="_items.length; else ERROR">
+            <div class="select-container-wrapper">
+                <button class="ion-activatable select-btn" [style.background-color]="selectColor" (click)="selectState = !selectState;">
+                    <div class="inner-container">
+                        <div class="value-container">
+                            <fhem-native-text-line [color]="labelColor" [shorten]="true" [bold]="true" [text]="_alias[selectedIndex] || (selected || '')"/>
+                        </div>
+                        <fhem-native-state-icon [iconColor]="iconColor" [(ngModel)]="selectState"/>
+                    </div>
+                    <ion-ripple-effect/>
+                </button>
+            </div>
+            <!-- selection items -->
+            <div class="accordion-container" *ngIf="selectState" [style.background-color]="selectColor">
+                <div class="scroll-container">
+                    <ng-container *ngFor="let item of _items; let i = index">
+                        <button class="selection-item-btn ion-activatable"
+                            [class.active]="selected === item" [style.background-color]="selected === item ? selectActiveColor : 'transparent'"
+                            (click)="selectItem(i, item)">
+                            <div class="inner-container">
+                                <div class="select-value-container">
+                                    <fhem-native-text-line [color]="labelColor" [shorten]="true" [bold]="true" [text]="_alias ? _alias[i] || item : item"/>
+                                </div>
+                                <ion-icon [style.color]="iconColor" name="checkmark-outline"/>
+                            </div>
+                            <ion-ripple-effect [style.color]="selectActiveColor"/>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #ERROR>
+            <fhem-native-text-block
+                [label]="('COMPONENTS.Select.ERRORS.NO_ITEMS.name' | translate)"
+                [info]="('COMPONENTS.Select.ERRORS.NO_ITEMS.info' | translate)">
+            </fhem-native-text-block>
+        </ng-template>
+    </div>
+</fhem-native-component>
