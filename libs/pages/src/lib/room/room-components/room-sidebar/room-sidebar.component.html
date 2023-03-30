@@ -1,7 +1,7 @@
 <div class="flex-container">
     <!-- logo container -->
     <div *ngIf="mobile" class="logo-container">
-        <img src="/assets/img/icon.png" alt="FhemNative Logo">
+        <img src="/assets/img/icon_transparent.png" alt="FhemNative Logo">
         <p class="bold no-margin font-a spacing-c color-a-app">FhemNative</p>
         <button class="menu-btn keep-size no-margin ion-activatable" (click)="toggleMenu()">
             <ion-icon name="close-outline"></ion-icon>
@@ -54,7 +54,7 @@
 </div>
 
 <!-- settings -->
-<div class="flex-container">
+<div class="flex-container" *ngIf="(settings.demoMode | async) === false">
     <button class="menu-btn no-margin ion-activatable" (click)="switchPage(['/', 'settings'])">
         <ion-icon name="settings-outline"></ion-icon>
         <fhem-native-text-line [text]="'PAGES.SETTINGS.HEAD' | translate" [shorten]="true" [bold]="true"></fhem-native-text-line>
