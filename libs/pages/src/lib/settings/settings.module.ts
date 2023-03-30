@@ -7,13 +7,14 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SettingsPageComponent } from './settings.page';
+import { SettingsPageRoutingModule } from './settings-routing.module';
+
+import { RightsTermsComponent } from '../rights';
 
 import { ScrollHeaderModule } from '@fhem-native/directives';
 
-import { CloseBtnContainerModule, SelectModule, SwitchModule, TextBlockModule, UI_BoxComponent, UI_CategoryComponent } from '@fhem-native/components';
+import { CloseBtnContainerModule, PickerComponent, SelectModule, SwitchModule, TextBlockModule, UI_BoxComponent, UI_CategoryComponent } from '@fhem-native/components';
 import { ImportExportService } from '@fhem-native/services';
-
-import { SettingsPageRoutingModule } from './settings-routing.module';
 
 @NgModule({
 	imports: [
@@ -28,11 +29,14 @@ import { SettingsPageRoutingModule } from './settings-routing.module';
 		// Components
 		SelectModule,
 		SwitchModule,
+		PickerComponent,
 		CloseBtnContainerModule,
 		// UI components
 		TextBlockModule,
 		UI_BoxComponent,
-		UI_CategoryComponent
+		UI_CategoryComponent,
+		// Rights
+		RightsTermsComponent
 	],
 	providers: [ ImportExportService ],
 	declarations: [ SettingsPageComponent ],

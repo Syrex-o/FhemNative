@@ -1,16 +1,42 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
+import { IonicModule, NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { BackButtonService, FhemService, LoaderService, SettingsService, StorageService, StructureService, ToastService } from '@fhem-native/services';
 
+import { ScrollHeaderModule } from '@fhem-native/directives';
+
+import { CloseBtnContainerModule, InputModule, SelectColorModule, SelectModule, StateIconModule, SwitchModule, TextBlockModule } from '@fhem-native/components';
+
 import { getUID } from '@fhem-native/utils';
+
 import { ConnectionTypes, DefaultConnectionProfile } from '@fhem-native/app-config';
+import { Route } from '@angular/router';
 
 @Component({
+	standalone: true,
 	selector: 'fhem-native-login',
 	templateUrl: 'login.page.html',
-	styleUrls: ['../../pages.style.scss', 'login.page.scss']
+	styleUrls: ['../../pages.style.scss', 'login.page.scss'],
+	imports: [
+		IonicModule,
+		FormsModule,
+		CommonModule,
+		TranslateModule,
+		// Components
+		InputModule,
+		SelectModule,
+		SwitchModule,
+		StateIconModule,
+		TextBlockModule,
+		SelectColorModule,
+		CloseBtnContainerModule,
+		// Directives
+		ScrollHeaderModule
+	]
 })
 export class LoginPageComponent implements OnInit, OnDestroy{
 	private handleID = getUID();
@@ -131,3 +157,10 @@ export class LoginPageComponent implements OnInit, OnDestroy{
 		this.backBtn.removeHandle(this.handleID);
 	}
 }
+
+export const LOGIN_ROUTES: Route[] = [
+    {
+        path: '',
+        component: LoginPageComponent
+    }
+];

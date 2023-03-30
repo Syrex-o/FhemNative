@@ -34,9 +34,4 @@ export class HomePageComponent{
         // window.open('https://fhemnative.de', "_blank");
         this.toast.showAlert('Sorry', 'We are working hard on this part.', false);
     }
-
-    triggerDemoMode(): void{
-        // console.log('demo mode');
-        this.toast.showAlert('Sorry', 'We are working hard on this part.', false);
-    }
 }
