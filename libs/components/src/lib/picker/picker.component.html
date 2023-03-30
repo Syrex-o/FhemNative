@@ -1,0 +1,24 @@
+<div @PickerOpacity class="picker-container" *ngIf="value">
+    <ion-backdrop *ngIf="showBackdrop" [tappable]="true" (ionBackdropTap)="onDismiss()"></ion-backdrop>
+
+    <div @PickerContent [style.height.%]="height" class="picker-content background-a-app">
+        <div class="picker-header">
+            <fhem-native-close-btn-container #HEADER [pageHeader]="pickerHeader" (closeButtonClicked)="onDismiss()">
+                <ng-content select="[header]"></ng-content>
+            </fhem-native-close-btn-container>
+        </div>
+        <div class="picker-inner-content">
+            <ng-container *ngIf="!headerAnimation; else ANIMATED_HEADER">
+                <ion-content [class.add-padding]="addPaddingToContent" [scrollEvents]="true" class="background-a-ion">
+                    <ng-content select="[content]"></ng-content>
+                </ion-content>
+            </ng-container>
+        </div>
+
+        <ng-template #ANIMATED_HEADER>
+            <ion-content [class.add-padding]="addPaddingToContent" [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
+                <ng-content select="[content]"></ng-content>
+            </ion-content>
+        </ng-template>
+    </div>
+</div>
