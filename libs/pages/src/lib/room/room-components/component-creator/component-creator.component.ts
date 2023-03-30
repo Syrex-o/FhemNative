@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, Type, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 
-import { ColorService, ComponentLoaderService, EditorService, IconService, SettingsService, StructureService, UndoRedoService } from '@fhem-native/services';
+import { ColorService, ComponentLoaderService, EditorService, IconService, SettingsService, StructureService } from '@fhem-native/services';
 
-import { decimalRounder, leaf } from '@fhem-native/utils';
+import { leaf } from '@fhem-native/utils';
 import { ComponentCategories, ComponentTypes } from '@fhem-native/app-config';
-import { ComponentPosition, FhemComponentSettings } from '@fhem-native/types/components';
+import { FhemComponentSettings } from '@fhem-native/types/components';
 
 @Component({
 	selector: 'fhem-native-room-component-creator',
@@ -17,9 +17,10 @@ import { ComponentPosition, FhemComponentSettings } from '@fhem-native/types/com
 export class RoomComponentCreatorComponent{
     componentTypes = ComponentTypes;
     componentCategories = ComponentCategories;
-    newComponent: Type<any>|undefined;
+    // newComponent: Type<any>|undefined;
 
     componentEditor$ = this.editor.component.getMode();
+    componentConfigEditor$ = this.editor.getComponentConfigEditor();
 
     @Input() expandState = false;
 
@@ -31,15 +32,14 @@ export class RoomComponentCreatorComponent{
     constructor(
         public icon: IconService,
         public colors: ColorService,
-        public editor: EditorService,
+        private editor: EditorService,
         public settings: SettingsService,
         private structure: StructureService,
-        private undoManager: UndoRedoService,
         private compLoader: ComponentLoaderService){
     }
 
-    closeMenu(): void{
-        this.editor.revertComponent();
+    async closeMenu(){
+        await this.editor.revertComponent();
         this.editor.component.leaveEditMode();
 	}
 
@@ -49,7 +49,7 @@ export class RoomComponentCreatorComponent{
      */
     async selectComponent(compRef: string): Promise<void>{
         // get component configuration
-        this.newComponent = await this.compLoader.importFhemComponent(compRef);
+        // this.newComponent = await this.compLoader.importFhemComponent(compRef);
         const compConfig = await this.compLoader.importFhemComponentConfig(compRef);
 
         // switch to edit mode of component
@@ -65,8 +65,12 @@ export class RoomComponentCreatorComponent{
      * @returns bool to hide/show setting
      */
     checkForHideSetting(inputRef: string, settingsKey: string): boolean{
-        const compInputs = this.editor.currentComponentConfig?.inputs;
-        const compDependencies = this.editor.currentComponentConfig?.dependencies;
+        const compEditor = this.componentConfigEditor$.value;
+        const compInputs = compEditor.componentConfig?.inputs;
+        const compDependencies = compEditor.componentConfig?.dependencies;
+
+        // const compInputs = this.editor.currentComponentConfig?.inputs;
+        // const compDependencies = this.editor.currentComponentConfig?.dependencies;
 
         if(compDependencies && compInputs){
             // get relevant dependency
@@ -101,10 +105,10 @@ export class RoomComponentCreatorComponent{
 
         const componentSettings = this.structure.getComponent(componentEditor.componentUID || '');
         const containerRegistry = this.compLoader.getContainerRegistry(componentEditor.containerId || '');
-        if(!componentSettings || !containerRegistry || !this.editor.currentComponentConfig) return;
+        if(!componentSettings || !containerRegistry || !this.componentConfigEditor$.value.componentConfig) return;
 
         // get relevant config
-        const componentConfig = this.compLoader.getFhemComponentConfig(this.editor.currentComponentConfig, (componentSettings as FhemComponentSettings));
+        const componentConfig = this.compLoader.getFhemComponentConfig(this.componentConfigEditor$.value.componentConfig, (componentSettings as FhemComponentSettings));
         // update component in view
         this.editor.updateComponentInView(containerRegistry, componentConfig);
     }
@@ -113,64 +117,6 @@ export class RoomComponentCreatorComponent{
      * Save component/modify and update
      */
     saveComponent(): void{
-        const componentEditor = this.editor.component.getCurrentMode();
-        
-        if(this.editor.currentComponentConfig && componentEditor.containerId){
-            const containerRegistry = this.compLoader.getContainerRegistry(componentEditor.containerId);
-            const compContainer = this.structure.getComponentContainer(componentEditor.containerId);
-
-            if(containerRegistry && compContainer){
-                if(this.newComponent){
-                    // new component
-                    const fhemComponentConfig = this.compLoader.getFhemComponentConfig(this.editor.currentComponentConfig);
-                    // transform dimensions to percentage
-                    fhemComponentConfig.position = this.getPercentagePosition(fhemComponentConfig, containerRegistry.container, compContainer);
-                    // add to view
-                    this.compLoader.addFhemComponent(containerRegistry, fhemComponentConfig, this.newComponent);
-                    // add to structure
-                    this.structure.addComponent(compContainer, fhemComponentConfig);
-
-                    // mark as change
-                    this.undoManager.addChange();
-
-                    // reset component reference
-                    this.newComponent = undefined;
-                }
-                else if(componentEditor.componentUID){
-                    // component already exist --> apply changes
-                    // get component from structure
-                    const componentSettings = this.structure.getComponent(componentEditor.componentUID);
-                    if(componentSettings){
-                        // get current config
-                        const currentComponentSettings = this.compLoader.getFhemComponentConfig(this.editor.currentComponentConfig, (componentSettings as FhemComponentSettings));
-
-                        // look for changes
-                        if(JSON.stringify(currentComponentSettings) !== JSON.stringify(componentSettings)){
-                            // update component in structure
-                            this.structure.updateComponent(containerRegistry.containerId, currentComponentSettings);
-                            // update component in view
-                            this.editor.updateComponentInView(containerRegistry, currentComponentSettings);
-                             // mark as change
-                            this.undoManager.addChange();
-                        }
-                    }
-                }
-            }
-            // leave editor
-            this.editor.component.leaveEditMode();
-        }
-    }
-
-    private getPercentagePosition(componentConfig: FhemComponentSettings, container: ViewContainerRef, compContainer: FhemComponentSettings[]): ComponentPosition{
-        const containerDimensions: HTMLElement = container.element.nativeElement.parentNode;
-        const maxZindex = compContainer.length ? Math.max(...compContainer.map(x=> x.position.zIndex)) : 1;
-
-        return {
-            top: componentConfig.position.top,
-            left: componentConfig.position.left,
-            width: decimalRounder(( parseInt(componentConfig.position.width) / containerDimensions.offsetWidth ) * 100, this.structure.getGridDecimal()) + '%',
-            height: decimalRounder(( parseInt(componentConfig.position.height) / containerDimensions.offsetHeight ) * 100, this.structure.getGridDecimal()) + '%',
-            zIndex: maxZindex + 1
-        }
+        this.editor.saveComponent();
     }
 }
