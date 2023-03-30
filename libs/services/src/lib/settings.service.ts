@@ -14,20 +14,22 @@ import { ConnectionProfile } from '@fhem-native/types/fhem';
 export class SettingsService {
     // building default storage
 	public app: any = {};
+	// main demo mode
+	public demoMode = new BehaviorSubject<boolean>(false);
 	
     // fhem connection profiles
 	public connectionProfiles: ConnectionProfile[] = [];
 
     // app defaults
 	public appDefaultsLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-	public appDefaults: AppSetting[] = BaseAppSettings.concat([
+	private appDefaults: AppSetting[] = BaseAppSettings.concat([
         // app language
 		{name: 'language', default: 'de', toStorage: true, callback: (lang: string)=> {this.translate.setDefaultLang(lang || 'en');}},
         // fhem connection profiles
 		{name: 'connectionProfiles', default: JSON.stringify([]), toStorage: false, callback: (data: any)=>{if(data.length === 0){ this.connectionProfiles = [{...DefaultConnectionProfile}]; }}},
     ]);
 
-    constructor(private storage: StorageService,private translate: TranslateService){}
+    constructor(protected storage: StorageService, protected translate: TranslateService){}
 
     // load app defaults
 	public loadDefaults(): Promise<any>{

@@ -3,11 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { SandboxGuardService } from './sandbox-guard.service';
 import { SandboxPageComponent } from './sandbox.page';
 
+import { StructureService } from '@fhem-native/services';
+import { SandboxStructureService } from './services/sandbox-structure.service';
+
 const routes: Routes = [
 	{
 		path: '',
 		component: SandboxPageComponent,
 		canActivate: [SandboxGuardService],
+		providers: [
+			{provide: StructureService, useExisting: SandboxStructureService}
+		],
 		children: [
 			{
 				path: 'room',

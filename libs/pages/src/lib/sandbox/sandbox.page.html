@@ -1,1 +1,49 @@
 <ion-router-outlet></ion-router-outlet>
+
+<button id="sandbox-container-trigger" class="ion-activatable">
+    <ion-icon name="help"></ion-icon>
+    <ion-ripple-effect/>
+</button>
+
+<ion-popover [dismissOnSelect]="true" mode="ios" trigger="sandbox-container-trigger" triggerAction="click" side="bottom" alignment="center" cssClass="sandbox-container-popover">
+    <ng-template>
+        <button class="app-button info ion-activatable" (click)="demoDeviceState = !demoDeviceState;">
+            {{'PAGES.SANDBOX.MENU.DEVICES' | translate}}
+            <ion-ripple-effect/>
+        </button>
+        <button class="app-button cancel ion-activatable" (click)="leaveSandbox()">
+            {{'PAGES.SANDBOX.MENU.LEAVE' | translate}}
+            <ion-ripple-effect/>
+        </button>
+    </ng-template>
+</ion-popover>
+
+<fhem-native-picker
+    [(ngModel)]="demoDeviceState"
+    [height]="80"
+    [headerAnimation]="false"
+    [pickerHeader]="'PAGES.SANDBOX.DEMO_DEVICES.HEAD' | translate">
+    <div content>
+        <ng-container *ngFor="let fhemDevice of fhem.devices">
+            <fhem-native-ui-category>
+                <!-- category header -->
+                <fhem-native-text-line name [wrap]="false" text="Demo Device:">
+                    <span class="bold color-a-app size-d-app">{{fhemDevice.device}}</span>
+                </fhem-native-text-line>
+                        
+                <div content>
+                    <fhem-native-text-line [bold]="true" text="Readings:"/>
+                    <ng-container *ngFor="let reading of fhemDevice.readings | keyvalue">
+                        <fhem-native-ui-box>
+                            <div class="reading-line color-a-app size-e-app">
+                                <p class="no-margin">{{reading.key}}</p>
+                                <p class="no-margin">{{reading.value.Value}}</p>
+                                <p class="no-margin">{{reading.value.Time}}</p>
+                            </div>
+                        </fhem-native-ui-box>
+                    </ng-container>
+                </div>
+            </fhem-native-ui-category>
+        </ng-container>
+    </div>
+</fhem-native-picker>

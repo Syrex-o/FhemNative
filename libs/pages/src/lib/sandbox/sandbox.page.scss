@@ -5,11 +5,48 @@
 	top: 0;
 	left: 0;
 	overflow: hidden;
-    img{
-        position: relative;
-        width: 50%;
-        height: auto;
-        max-width: 350px;
-        min-width: 150px;
+    #sandbox-container-trigger{
+        position: fixed;
+        width: 45px;
+        height: 45px;
+        bottom: 5px;
+        right: 5px;
+        border-radius: 50%;
+        overflow: hidden;
+        z-index: 2000;
+        background-color: var(--btn-bg-a);
+        ion-icon{
+            font-size: 26px;
+            color: var(--text-a);
+        }
+    }
+}
+
+ion-popover.sandbox-container-popover{
+	--width: auto;
+    --background: var(--secondary);
+    &::part(content){
+        padding: 10px;
+        align-items: stretch;
+    }
+
+    .app-button{
+        font-size: 13px;
+        line-height: 20px;
+        margin-bottom: 10px;
+    }
+}
+
+.reading-line{
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    p{
+        flex-grow: 1;
+        // &:nth-child(1){
+            width: 90px;
+        // }
     }
 }
