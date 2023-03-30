@@ -1,0 +1,36 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 60, height: 60}">
+    <div class="fhem-native-clock">
+        <ng-container [ngSwitch]="style">
+            <ng-container *ngSwitchCase="'digital'">
+                <svg *ngIf="digitalClock$ | async as digitalClock" class="date" viewBox="0 0 69 18">
+                    <text [attr.fill]="hourColor" [attr.x]="displayValue('ss') ? 0 : 10" y="15" class="hour">{{digitalClock.HH}}</text>
+                    <text [attr.fill]="color" [attr.x]="displayValue('mm') ? 21 : 27" y="14">:</text>
+                    <text [attr.fill]="minuteColor" [attr.x]="displayValue('ss') ? 25 : 32" y="15" y="15" class="min">{{digitalClock.mm}}</text>
+                    <text [attr.fill]="color" *fhemNativeNgIfOnce="displayValue('ss')" x="44" y="14" >:</text>
+                    <text [attr.fill]="secondColor" *fhemNativeNgIfOnce="displayValue('ss')" x="48" y="15" class="sec">{{digitalClock.ss}}</text>
+                </svg>
+            </ng-container>
+            <ng-container *ngSwitchCase="'analog'">
+                <svg *ngIf="analogClock$ | async as analogClock" class="date" viewBox="0 0 100 100">
+                    <circle [attr.stroke]="color" class="outer" cx="50" cy="50" r="48" stroke-width="1"></circle>
+                    <g *fhemNativeNgIfOnce="showTicks">
+                        <g class="tick" *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+                            [attr.fill]="color" [ngStyle]="{'transform': 'rotate('+ i * 30 +'deg)'}">
+                            <rect class="tick-rect" height="3" width="1" x="49.5" y="2"></rect>
+                            <text [attr.x]="i > 9 ? 46.5 : 48.5" y="12" class="hour-text">{{i}}</text>
+                        </g>
+                    </g>
+                    <g>
+                        <rect [attr.fill]="hourColor" *fhemNativeNgIfOnce="displayValue('HH')" class="pointer h" height="30" width="1" x="49.5" y="20" [ngStyle]="{'transform': 'rotate('+ analogClock.HH +'deg)'}"></rect>
+                        <rect [attr.fill]="minuteColor" *fhemNativeNgIfOnce="displayValue('mm')" class="pointer m" height="40" width="1" x="49.5" y="10" [ngStyle]="{'transform': 'rotate('+ analogClock.mm +'deg)'}"></rect>
+                        <rect [attr.fill]="secondColor" *fhemNativeNgIfOnce="displayValue('ss')" class="pointer s" height="45" width="1" x="49.5" y="5" [ngStyle]="{'transform': 'rotate('+ analogClock.ss +'deg)'}"></rect>
+                    </g>
+                    <circle [attr.fill]="color" class="middle" cx="50" cy="50" r="3"></circle>
+                </svg>
+            </ng-container>
+        </ng-container>
+    </div>
+</fhem-native-component>
