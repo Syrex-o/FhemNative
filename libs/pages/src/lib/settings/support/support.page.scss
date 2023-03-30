@@ -1,0 +1,48 @@
+:host{
+    .price-container{
+        padding-bottom: 0.5rem;
+    }
+    .amount-container{
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        overflow-x: auto;
+        border-radius: 8px;
+        .amount-select-container{
+            border-radius: 12px;
+            border: 1px solid var(--tertiary);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: box-shadow .15s ease-out, transform .15s ease-out, background-color .15s ease-out;
+            .inner{
+                text-align: center;
+                .decimals{
+                    font-size: 0.7rem;
+                }
+                .currency{
+                    margin-top: 0px;
+                    font-size: 0.7rem;
+                }
+            }
+            &.active{
+                transform: scale(1.15);
+                background-color: var(--primary);
+                box-shadow: 0px 1px 2px rgba(35,37,36,.1),0px 2px 8px rgba(35,37,36,.12);
+            }
+        }
+    }
+    .pay-btn{
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        ion-icon{
+            font-size: 1.2rem;
+        }
+        &.disabled{
+            pointer-events: none;
+            opacity: 0.5;
+            background-color: var(--btn-bg-a-inactive);
+        }
+    }
+}
