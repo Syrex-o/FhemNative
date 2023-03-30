@@ -10,6 +10,7 @@ import { StorageSetting } from '@fhem-native/types/storage';
 export class StorageService {
 	// storage handler
 	public _storage: Storage | null = null;
+	protected storagePrefix = '';
 
 	constructor(private storage: Storage) {}
 
@@ -21,17 +22,26 @@ export class StorageService {
 	}
 
 	/**
+	 * Get relevant storage name
+	 * @param storageName 
+	 * @returns
+	 */
+	private getStorageName(storageName: string): string{
+		return `${this.storagePrefix}${storageName}`;
+	}
+
+	/**
 	 * Used to get setting or to define a default setting
 	 * @param obj: {name: storage variable name, default: default value of storage variable}
 	 * @returns default or value depending on scenario
 	 */
 	public setAndGetSetting(obj: StorageSetting ): Promise<any> {
 		return new Promise((resolve) => {
-			this._storage?.get(obj.name).then((value:any) => {
+			this._storage?.get( this.getStorageName(obj.name) ).then((value:any) => {
 				if(value === null){
 					// setting is not defined jet
 					// setting gets defined and default is resolved after saving
-					this._storage?.set(obj.name, obj.default).then(() => {
+					this._storage?.set( this.getStorageName(obj.name), obj.default).then(() => {
 						resolve(this.testJSON(obj.default) ? JSON.parse(obj.default as any) : obj.default);
 					});
 				}else{
@@ -49,7 +59,7 @@ export class StorageService {
 	 */
 	public changeSetting(obj: StorageSetting): Promise<any> {
 		return new Promise((resolve) => {
-			this._storage?.set(obj.name, obj.change).then(() => {
+			this._storage?.set(this.getStorageName(obj.name), obj.change).then(() => {
 				resolve(this.testJSON(obj.change) ? JSON.parse(obj.change as string) : obj.change);
 			});
 		});
@@ -60,7 +70,7 @@ export class StorageService {
 	// needs name
 	public getSetting(name: string): Promise<any> {
 		return new Promise((resolve) => {
-			this._storage?.get(name).then((value) => {
+			this._storage?.get(this.getStorageName(name)).then((value) => {
 				resolve(this.testJSON(value) ? JSON.parse(value) : value);
 			});
 		});
