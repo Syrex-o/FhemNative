@@ -1,0 +1,20 @@
+:host{
+    .fhem-native-label{
+        width: 100%;
+		height: 100%;
+        overflow: hidden;
+        &.error{
+            overflow-y: auto;
+            pointer-events: all;
+        }
+        .label{
+            width: 100%;
+			margin: 0;
+			position: absolute;
+			top: 50%;
+			transform: translate3d(0,-50%,0);
+			left: 0;
+			transition: all .2s ease;
+        }
+    }
+}
