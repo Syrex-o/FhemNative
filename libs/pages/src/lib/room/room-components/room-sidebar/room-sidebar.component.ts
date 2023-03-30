@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import { AddRoomComponent } from '@fhem-native/components';
-import { EditorService, StructureService, UndoRedoService } from '@fhem-native/services';
+import { EditorService, SettingsService, StructureService, UndoRedoService } from '@fhem-native/services';
 
 import { Room } from '@fhem-native/types/room';
 
@@ -27,7 +27,8 @@ export class RoomSidebarComponent {
 	
 	constructor(
 		private router: Router,
-		private editor: EditorService, 
+		private editor: EditorService,
+		public settings: SettingsService,
 		public structure: StructureService, 
 		private undoManager: UndoRedoService,
 		private popoverCtrl: PopoverController){
