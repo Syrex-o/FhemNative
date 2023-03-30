@@ -30,7 +30,7 @@ export class TransformationManagerDirective implements OnChanges, OnDestroy{
 	// event sub list
 	private subscriptions: Subscription[] = [];
 
-	// evnet handlers
+	// event handlers
 	dragEnd$ = merge( fromEvent<MouseEvent>(this.document, "mouseup"), fromEvent<TouchEvent>(this.document, "touchend") ).pipe( untilDestroyed(this) );
 	drag$ = merge( fromEvent<MouseEvent>(this.document, "mousemove"), fromEvent<TouchEvent>(this.document, "touchmove") ).pipe( takeUntil(this.dragEnd$) );
 
@@ -74,6 +74,20 @@ export class TransformationManagerDirective implements OnChanges, OnDestroy{
 		this.transformationItems.delete(transformationItem.id);
 	}
 
+	/**
+	 * Block scrolling of container
+	 */
+	public blockScroll(): void{
+		this.container.style.overflowY = 'hidden';
+	}
+
+	/**
+	 * Allow scrolling of container
+	 */
+	public allowScroll(): void{
+		this.container.style.overflowY = 'auto';
+	}
+
 	// add move rect to items
 	private buildTransformationRects(): void{
 		this.transformationItems.forEach(section=> section.buildTransformationRect());
@@ -99,14 +113,14 @@ export class TransformationManagerDirective implements OnChanges, OnDestroy{
 		// current dimensions on start move trigger
 		this.updateContainerDimensions();
 		// block scrolling of container
-		this.container.style.overflowY = 'hidden';
+		this.blockScroll();
 		// get initial values
 		this.transformationItems.forEach((item)=> item.prepareEvents(startEvent) );
 	}
 
 	endTransformations(): void{
 		// allow scrolling
-		this.container.style.overflowY = 'auto';
+		this.allowScroll();
 		this.endTransformationAny.emit( this.getTransformationProperties() );
 	}
 
