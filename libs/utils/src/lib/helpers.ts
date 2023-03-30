@@ -90,28 +90,31 @@ export function getFileDate(): string{
 	return `${padL(dt.getMonth()+1)}/${padL(dt.getDate())}/${dt.getFullYear()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`;
 }
 
-/**
- * Get Css gradient from color array
- * @param colorArr list of colors
- * @returns string of linear gradient
- */
-export function getCssGradient(colorArr: string[]): string{
-	if(colorArr.length === 0) return 'rgba(0, 0, 0, 0)';
+// get percentage of value
+export function getValuePercentage(value: number, min: number, max: number): number{
+	return (value - min) / (max - min);
+}
 
-	// add initial stop
-	const gradient = [ (colorArr[0] + ' 0%') ];
+export function toValueNumber(factor: number, min: number, max: number, step: number): number {
+	return Math.round(factor * (max - min) / step) * step + min;
+}
 
-	// get stops
-	let colorStops = 0.5;
-	if(colorArr.length > 2){
-		colorStops = Math.round( ((1 / (colorArr.length -1)) + Number.EPSILON) * 100 ) / 100;
+export function animateMove(fromNum: number, toNum: number, cb: (val: number)=> void): void{
+	let interval: any;
+	let pos = fromNum;
+	const orginalValue = toNum;
+
+	const frame = ()=>{
+		const count = (pos > toNum) ? - 1 : 1;
+		interval = setInterval(()=>{
+			if ( Math.round(pos) === Math.round(toNum)  ) {
+				cb(orginalValue);
+				clearInterval(interval);
+			}else{
+				pos = parseFloat( (pos + count).toFixed(1) );
+				cb(pos);
+			}
+		}, 5);
 	}
-	// add stops
-	for(let i = 1; i <= colorArr.length -2; i++){
-		gradient.push( `${colorArr[i]} ${(i * colorStops) * 100}%` );
-	}
-	// add last stop
-	gradient.push( `${colorArr[colorArr.length -1]} 100%` );
-
-	return `linear-gradient(90deg, ${gradient.join(', ')})`;
+	frame();
 }
