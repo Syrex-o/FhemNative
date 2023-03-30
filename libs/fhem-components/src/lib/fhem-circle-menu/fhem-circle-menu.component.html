@@ -1,0 +1,52 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 30, height: 30}"
+    [fhemDeviceConfig]="{
+        device, reading,
+        readingAvailable: true
+    }"
+    (initComponent)="getArrValues()"
+    (initDevice)="setFhemDevice($event)"
+    (updateDevice)="setFhemDevice($event)"
+    fhemNativeOutsideClick (outsideClick)="closeMenu()">
+    <div class="fhem-native-circle-menu" #CIRCLE_MENU>
+        <button class="button ion-activatable" (click)="toggleMenu()"
+            [ngStyle]="{
+                'background-color': buttonColor,
+                'border-top-left-radius.px': customBorder ? borderRadiusTopLeft : borderRadius,
+                'border-top-right-radius.px': customBorder ? borderRadiusTopRight : borderRadius,
+                'border-bottom-left-radius.px': customBorder ? borderRadiusBottomLeft : borderRadius,
+                'border-bottom-right-radius.px': customBorder ? borderRadiusBottomRight : borderRadius
+            }">
+            <fhem-native-icon [icon]="icon" [style.color]="buttonState ? iconColorOn : iconColorOff"/>
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
+        <!-- Menu Items -->
+        <div class="circle-menu-items" [ngClass]="buttonState ? 'show' : 'hide'">
+            <ng-container *ngFor="let item of _items; let i = index; trackBy: trackByFn">
+                <div class="circle-menu-item ion-activatable" (click)="select(i)"
+                    [class.active]="item === currentValue"
+                    [ngStyle]="{
+                        'background-color': item === currentValue ? activeColor : buttonColor,
+                        'border-top-left-radius.px': customBorder ? borderRadiusTopLeft : borderRadius,
+                        'border-top-right-radius.px': customBorder ? borderRadiusTopRight : borderRadius,
+                        'border-bottom-left-radius.px': customBorder ? borderRadiusBottomLeft : borderRadius,
+                        'border-bottom-right-radius.px': customBorder ? borderRadiusBottomRight : borderRadius,
+                        'transform': buttonState ? translator(i) : 'translate(0px,0px)',
+                        'opacity': buttonState ? 1 : 0,
+                        'transition-delay': buttonState ? (i * 0.04)+'s' : '0s'
+                    }">
+                    <ng-container *ngIf="useIcons && icons[i] && iconColors[i]; else USE_TEXT">
+                        <fhem-native-icon [icon]="icons[i]" [style.color]="iconColors[i]"/>
+                    </ng-container>
+
+                    <ng-template #USE_TEXT>
+                        <p [style.color]="labelColor">{{item}}</p>
+                    </ng-template>
+                    <ion-ripple-effect></ion-ripple-effect>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</fhem-native-component>
