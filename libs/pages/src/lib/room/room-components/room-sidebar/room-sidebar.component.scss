@@ -4,14 +4,16 @@
     --main-spacing: 10px;
 }
 
-    .flex-container,
-    .scroll-container{
+    .flex-container{
         padding: var(--padding-a);
     }
     .scroll-container{
-        left: 0;
+        padding: 0 var(--padding-a);
+    }
+    .scroll-container{
         width: 100%;
-        height: calc(100% - ( calc(var(--item-height) * var(--outer-items)) + calc(var(--padding-a) * var(--outer-items)) + calc(var(--main-spacing) * 2) ) );
+        flex-grow: 1;
+        height: calc(100% - ( calc(var(--item-height) * var(--outer-items)) + calc(var(--main-spacing) * 2) ) );
         overflow-x: hidden;
         overflow-y: auto;
         &.edit-mode{
