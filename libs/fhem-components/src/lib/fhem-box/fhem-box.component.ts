@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 
 import { FhemComponentModule } from '../_fhem-component/fhem-component.module';
 
-import { getCssGradient, getFontStyleFromSelection, getFontWeightFromSelection, TextStyle } from '@fhem-native/utils';
+import { getCssGradient, getFontStyleFromSelection, getFontWeightFromSelection, TextPosition, TextStyle } from '@fhem-native/utils';
 
 import { ComponentPosition } from '@fhem-native/types/components';
 
 @Component({
 	standalone: true,
 	imports: [ FhemComponentModule ],
-	selector: 'fhem-native-box',
+	selector: 'fhem-native-component-box',
 	templateUrl: './fhem-box.component.html',
 	styleUrls: ['./fhem-box.component.scss']
 })
@@ -29,7 +29,7 @@ export class FhemBoxComponent{
 
 	// Selections
 	@Input() headerStyle!: TextStyle;
-	@Input() headerPosition!: string;
+	@Input() headerPosition!: TextPosition;
 
 	// Styling
 	@Input() headerColor!: string;

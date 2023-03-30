@@ -11,7 +11,7 @@ import { ComponentPosition } from '@fhem-native/types/components';
 @Component({
 	standalone: true,
 	imports: [ IconModule, FhemComponentModule ],
-	selector: 'fhem-native-button',
+	selector: 'fhem-native-component-button',
 	templateUrl: './fhem-button.component.html',
 	styleUrls: ['./fhem-button.component.scss']
 })

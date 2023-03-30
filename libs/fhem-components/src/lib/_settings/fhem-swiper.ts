@@ -2,7 +2,7 @@ import { ComponentSettings } from "@fhem-native/types/components";
 import { componentPositionStyles, componentTextStyles} from './common';
 
 /*
-    Box component
+    Swiper Container component
 */
 export const Settings: ComponentSettings = {
     name: 'Swiper',

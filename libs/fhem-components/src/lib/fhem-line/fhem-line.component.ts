@@ -7,7 +7,7 @@ import { ComponentPosition } from '@fhem-native/types/components';
 @Component({
 	standalone: true,
     imports: [ FhemComponentModule ],
-	selector: 'fhem-native-line',
+	selector: 'fhem-native-component-line',
 	templateUrl: './fhem-line.component.html',
 	styleUrls: ['./fhem-line.component.scss']
 })

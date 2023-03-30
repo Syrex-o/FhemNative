@@ -11,7 +11,7 @@ import { ComponentPosition } from '@fhem-native/types/components';
 @Component({
 	standalone: true,
     imports: [  SwitchModule, FhemComponentModule ],
-	selector: 'fhem-native-switch-component',
+	selector: 'fhem-native-component-switch',
 	templateUrl: './fhem-switch.component.html',
     styles: [
         '.fhem-native-switch {width: 100%; height: 100%; pointer-events: all;}',

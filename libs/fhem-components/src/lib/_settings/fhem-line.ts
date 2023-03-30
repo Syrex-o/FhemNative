@@ -1,7 +1,7 @@
 import { ComponentSettings } from "@fhem-native/types/components";
 
 /*
-    Box component
+    Line component
 */
 export const Settings: ComponentSettings = {
     name: 'Line',

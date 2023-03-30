@@ -16,7 +16,7 @@ import { ComponentPosition, FhemComponentSettings, FhemComponentContainerSetting
 SwiperCore.use([Pagination]);
 @Component({
 	standalone: true,
-	selector: 'fhem-native-swiper',
+	selector: 'fhem-native-component-swiper',
 	templateUrl: './fhem-swiper.component.html',
 	styleUrls: ['./fhem-swiper.component.scss'],
 	imports: [

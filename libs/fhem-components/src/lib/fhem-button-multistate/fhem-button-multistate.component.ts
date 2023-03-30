@@ -12,7 +12,7 @@ import { commaListToArray } from '@fhem-native/utils';
 @Component({
 	standalone: true,
 	imports: [ IconModule, FhemComponentModule ],
-	selector: 'fhem-native-button-multistate',
+	selector: 'fhem-native-component-button-multistate',
 	templateUrl: './fhem-button-multistate.component.html',
 	styleUrls: ['../fhem-button/fhem-button.component.scss']
 })

@@ -10,7 +10,7 @@ import { ComponentPosition, FhemComponentSettings } from '@fhem-native/types/com
 
 @Component({
 	standalone: true,
-	selector: 'fhem-native-grouper',
+	selector: 'fhem-native-component-grouper',
 	templateUrl: './fhem-grouper.component.html',
 	styleUrls: ['../fhem-box/fhem-box.component.scss'],
 	imports: [

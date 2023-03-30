@@ -11,7 +11,7 @@ import { ComponentPosition, FhemComponentSettings } from '@fhem-native/types/com
 
 @Component({
 	standalone: true,
-	selector: 'fhem-native-box-container',
+	selector: 'fhem-native-component-box-container',
 	templateUrl: './fhem-box-container.component.html',
 	styleUrls: ['../fhem-box/fhem-box.component.scss'],
 	imports: [

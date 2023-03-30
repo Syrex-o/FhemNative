@@ -1,7 +1,7 @@
 import { ComponentSettings } from "@fhem-native/types/components";
 
 /*
-    Button component
+    Button Multistate component
 */
 export const Settings: ComponentSettings = {
     name: 'Button Multistate',
