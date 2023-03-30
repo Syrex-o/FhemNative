@@ -1,0 +1,18 @@
+:host{
+    .fhem-native-iframe{
+        width: 100%;
+		height: 100%;
+        overflow: hidden;
+        &.error{
+            overflow-y: auto;
+            pointer-events: all;
+        }
+        iframe{
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 0;
+            pointer-events: all;
+		}
+    }
+}
