@@ -16,7 +16,7 @@ import { ConnectionProfile, FhemDevice, ListenDevice } from '@fhem-native/types/
 @Injectable({providedIn: 'root'})
 export class FhemService {
     public connectionInProgress = false;
-	public connected: BehaviorSubject<boolean|null> = new BehaviorSubject<boolean|null>(null);
+	public connected = new BehaviorSubject<boolean|null>(null);
 
     // device subscriptions
 	public deviceGetSub: Subject<FhemDevice> = new Subject<FhemDevice>();
@@ -51,7 +51,7 @@ export class FhemService {
 		TEST_SOCKET_CONNECT: 5_000
 	}
 
-    constructor(private settings: SettingsService, private toast: ToastService, private logger: LoggerService){
+    constructor(public settings: SettingsService, public toast: ToastService, public logger: LoggerService){
 		this.deviceUpdateSub.subscribe((fhemDevice)=>{
 			for(const listenDevice of this.listenDevices){
 				if(listenDevice.device === fhemDevice.device && listenDevice.handler) listenDevice.handler(fhemDevice);
@@ -412,7 +412,7 @@ export class FhemService {
 		if(index > -1) this.listenDevices.splice(index, 1);
 	}
 
-	private addListenDevice(componentUID: string, deviceName: string, deviceUpdateCb: (fhemdevice: FhemDevice) => void): void{
+	protected addListenDevice(componentUID: string, deviceName: string, deviceUpdateCb: (fhemdevice: FhemDevice) => void): void{
 		const device = this.listenDevices.find(x=> x.id === componentUID);
 		if(device){
 			// update 
@@ -507,7 +507,13 @@ export class FhemService {
 		return result;
 	}
 
-	// test for state values, true or false decisions
+	/**
+	 * Test for state values, true or false decisions
+	 * @param device 
+	 * @param reading 
+	 * @param compareTo 
+	 * @returns result of readign value check
+	 */
 	public deviceReadingActive(device: FhemDevice|null, reading: string, compareTo: any): boolean{
 		if(device && device.readings[reading]){
 			const value = device.readings[reading].Value.toString().toLowerCase();

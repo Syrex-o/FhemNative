@@ -11,7 +11,7 @@ import {
 	faTint, faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 
-interface Icon {
+export interface Icon {
 	type: 'ion'|'fas', 
 	icon: string
 }

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { FhemService } from './fhem.service';
 import { StructureService } from './structure.service';
-import { SelectComponentService } from './select-component.service';
 import { ComponentLoaderService } from './component-loader.service';
 
 import { clone } from '@fhem-native/utils';
@@ -24,10 +22,8 @@ export class UndoRedoService {
 	private currentStack = -1;
 
 	constructor(
-		private fhem: FhemService,
-		private structure: StructureService,
-		private compLoader: ComponentLoaderService,
-		private selectComponent: SelectComponentService){
+		protected structure: StructureService,
+		protected compLoader: ComponentLoaderService){
 	}
 
 	public init() {

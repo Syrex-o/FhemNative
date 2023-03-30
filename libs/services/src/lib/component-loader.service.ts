@@ -285,7 +285,7 @@ export class ComponentLoaderService {
 	 * @param currentComponentConfig current Settings of component from storage
 	 * @returns updated Settings with new/updated attributes
 	 */
-	private async getUpdatedFhemComponentConfig(currentComponentConfig: FhemComponentSettings): Promise<FhemComponentSettings>{
+	public async getUpdatedFhemComponentConfig(currentComponentConfig: FhemComponentSettings): Promise<FhemComponentSettings>{
 		// get base component settings and flatten
 		const baseComponentSettings = await this.importFhemComponentConfig(currentComponentConfig.name);
 		const compareComponentSettings: FhemComponentSettings = JSON.parse(JSON.stringify( currentComponentConfig ));

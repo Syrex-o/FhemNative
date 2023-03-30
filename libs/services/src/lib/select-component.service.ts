@@ -14,10 +14,7 @@ export class SelectComponentService {
     public selectorList = new Map<string, TransformationItemDirective>();
     public copyList: FhemComponentSettings[] = [];
 
-    constructor(
-        private structure: StructureService,
-        private compLoader: ComponentLoaderService){
-    }
+    constructor(protected structure: StructureService, protected compLoader: ComponentLoaderService){}
 
     /**
      * Add selection flag to item

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { StorageService } from './storage.service';
 import { SettingsService } from './settings.service';
@@ -24,12 +24,11 @@ export class StructureService {
 	public currentRoom: Room|undefined;
 
     constructor(
-		private router: Router,
-		private route: ActivatedRoute,
-		private storage: StorageService, 
-		private settings: SettingsService,
-		private navCtrl: NavController,
-		private componentLoader: ComponentLoaderService){
+		public route: ActivatedRoute,
+		public storage: StorageService, 
+		public settings: SettingsService,
+		public navCtrl: NavController,
+		public componentLoader: ComponentLoaderService){
     }
 
 	/**
@@ -65,14 +64,16 @@ export class StructureService {
 	 * @param roomUID: UID of room
 	 * @param params: rooom parameters
 	 */
-	private navigateToRoom(roomUID: string, params?: RoomParams, backwards?: boolean): void{
+	protected navigateToRoom(roomUID: string, params?: RoomParams, backwards?: boolean) {
+		const navigateTo = ['room', roomUID];
+		const navigateptions = { relativeTo: this.route, replaceUrl: true, queryParams: params };
+
 		if(!this.currentRoom || this.currentRoom.UID !== roomUID || !this.route.snapshot.queryParams['UID']){
-			if(backwards){
-				this.navCtrl.navigateBack(['/room', roomUID], { relativeTo: this.route, replaceUrl: true, queryParams: params });
-			}else{
-				this.navCtrl.navigateForward(['/room', roomUID], { relativeTo: this.route, replaceUrl: true, queryParams: params });
-			}
+			return backwards ? 
+				this.navCtrl.navigateBack(navigateTo, navigateptions) : 
+				this.navCtrl.navigateForward(navigateTo, navigateptions);
 		}
+		return null;
 	}
 
 	/**
@@ -151,23 +152,23 @@ export class StructureService {
 	 */
 	public loadRooms(navigate?: boolean): Promise<void>{
         return new Promise((resolve)=>{
-				this.storage.setAndGetSetting({name: 'rooms', default: JSON.stringify( [{...DefaultRoom}] )}).then((result: Room[])=>{
-					// generate Unique ID for rooms, if not defined
-					let allUID = true;
-					result.forEach((room: Room)=>{
-						if(!room.UID){
-							allUID = false;
-							room.UID = getUID();
-						}
-					});
-					// save rooms, when new ID´s are generated
-					if(!allUID) this.storage.changeSetting({name: 'rooms', change: JSON.stringify(result)});
-					this.rooms = result;
-					// navigate to room
-					if(navigate) this.changeRoom(this.rooms[0]);
-					this.getStructuredRoomList();
-					resolve();
+			this.storage.setAndGetSetting({name: 'rooms', default: JSON.stringify( [{...DefaultRoom}] )}).then((result: Room[])=>{
+				// generate Unique ID for rooms, if not defined
+				let allUID = true;
+				result.forEach((room: Room)=>{
+					if(!room.UID){
+						allUID = false;
+						room.UID = getUID();
+					}
 				});
+				// save rooms, when new ID´s are generated
+				if(!allUID) this.storage.changeSetting({name: 'rooms', change: JSON.stringify(result)});
+				this.rooms = result;
+				// navigate to room
+				if(navigate) this.changeRoom(this.rooms[0]);
+				this.getStructuredRoomList();
+				resolve();
+			});
 		});
     }
 
@@ -181,6 +182,7 @@ export class StructureService {
 		for(let component of this.getAllComponents()){
 			component = await this.componentLoader.getCompressedFhemComponentConfig(component);
 		}
+
 
 		this.rooms = await this.storage.changeSetting({ name: 'rooms', change: JSON.stringify(this.rooms) });
 		this.getCurrentRoom(this.currentRoom.UID);
