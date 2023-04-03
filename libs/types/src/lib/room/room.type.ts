@@ -21,3 +21,9 @@ export interface RoomParams {
 	name: string,
 	UID: string
 }
+
+// sahred config in reading
+export interface SharedConfig {
+	versionCode: string,
+	rooms: Room[]
+}

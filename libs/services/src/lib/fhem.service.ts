@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 // websocket 
-import { Subject, BehaviorSubject, timeout, take, tap, ReplaySubject, takeUntil, timer, share, toArray, distinct, switchMap, of, Observable, concat, delay, merge, map, filter } from 'rxjs';
+import { Subject, BehaviorSubject, timeout, take, tap, ReplaySubject, takeUntil, timer, share, toArray, distinct, switchMap, of, Observable, concat, delay, merge, map, filter, throttleTime } from 'rxjs';
 import { WebSocketSubject } from 'rxjs/webSocket';
 
 // Services
@@ -9,8 +9,14 @@ import { LoggerService } from './logger.service';
 import { SettingsService } from './settings.service';
 import { ToastService, ToastStyle } from './toast.service';
 
-import { IsJsonString } from '@fhem-native/utils';
+import { ComponentLoaderService } from './component-loader.service';
+import { StructureService } from './structure.service';
 
+import { APP_CONFIG } from '@fhem-native/app-config';
+
+import { getRawVersionCode, IsJsonString } from '@fhem-native/utils';
+
+import { SharedConfig } from '@fhem-native/types/room';
 import { ConnectionProfile, FhemDevice, ListenDevice } from '@fhem-native/types/fhem';
 
 @Injectable({providedIn: 'root'})
@@ -51,11 +57,32 @@ export class FhemService {
 		TEST_SOCKET_CONNECT: 5_000
 	}
 
-    constructor(public settings: SettingsService, public toast: ToastService, public logger: LoggerService){
-		this.deviceUpdateSub.subscribe((fhemDevice)=>{
+	private readonly sharedConfigUID = 'SHARED_CONFIG_DEVICE';
+
+    constructor(
+		protected toast: ToastService,
+		protected logger: LoggerService,
+		protected settings: SettingsService,
+		protected structure: StructureService,
+		protected compLoader: ComponentLoaderService,
+		@Inject(APP_CONFIG) protected appConfig: any){
+		
+		let timeout: any;
+		let toastDevices: string[] = [];
+
+		this.deviceUpdateSub.pipe( throttleTime(50) ).subscribe((fhemDevice)=>{
+			toastDevices.push(fhemDevice.device);
+
 			for(const listenDevice of this.listenDevices){
 				if(listenDevice.device === fhemDevice.device && listenDevice.handler) listenDevice.handler(fhemDevice);
 			}
+
+			if(timeout) clearInterval(timeout);
+			timeout = setTimeout(()=>{
+				const uniqueDevices = [...new Set(toastDevices)];
+				this.fhemToaster(`Update received for device${uniqueDevices.length > 1 ? 's' : ''}: ${uniqueDevices.join(', ')}`, 'info');
+				toastDevices = [];
+			}, 300);
 		});
 	}
 
@@ -66,9 +93,15 @@ export class FhemService {
 	 * @param level toast/log level
 	 * @returns
 	 */
-	private fhemToaster(message: string, level: ToastStyle){
+	private fhemToaster(message: string, level: ToastStyle): void{
 		if(this.settings.app.allowToasts) return this.toast.addToast('FHEM', message, level);
 
+		// just log if no toasts are allowd
+		this.logger[level](message);
+	}
+
+	private sharedConfigToaster(message: string, level: ToastStyle): void{
+		if(this.settings.app.allowToasts) return this.toast.addToast('Shared Config', message, level);
 		// just log if no toasts are allowd
 		this.logger[level](message);
 	}
@@ -243,6 +276,9 @@ export class FhemService {
 
 		this.fhemToaster(`Connection established with profile: ${this.currConnProfileIndex}`, 'success');
 		if(this.awaitConnTimeout) clearTimeout(this.awaitConnTimeout);
+
+		// check for shared config
+		this.initializeSharedConfig();
 	}
 
 	private reset(): void{
@@ -343,9 +379,9 @@ export class FhemService {
 		return this.devices.find(x=> x.device === deviceName);
 	}
 
-	public getDevice(componentUID: string, deviceName: string, readingName: string, deviceUpdateCb: (fhemdevice: FhemDevice) => void): Observable<FhemDevice|null>{
+	public getDevice(componentUID: string, deviceName: string, readingName: string, deviceUpdateCb: (fhemdevice: FhemDevice) => void, preventListening?: boolean): Observable<FhemDevice|null>{
 		// add device listener list
-		this.addListenDevice(componentUID, deviceName, deviceUpdateCb);
+		if(!preventListening) this.addListenDevice(componentUID, deviceName, deviceUpdateCb);
 
 		if(!this.deviceRequestCombiner){
 			this.deviceRequestCombiner = new ReplaySubject();
@@ -521,5 +557,112 @@ export class FhemService {
 			if(value === compareTo) return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Get shared config device 
+	 * apply config on messages
+	 */
+	public initializeSharedConfig(): Promise<void>{
+		return new Promise((resolve)=>{
+			if(!this.settings.app.sharedConfig.enabled) return resolve();
+
+			this.sharedConfigToaster('Try to load shared config', 'info');
+				
+			this.getDevice(
+				this.sharedConfigUID,
+				this.settings.app.sharedConfig.device,
+				this.settings.app.sharedConfig.reading,
+				(d)=> this.applySharedConfig(d)
+			).pipe( take(1) ).subscribe({
+				next: (d)=> {
+					this.applySharedConfig(d),
+					resolve();
+				}
+			});
+		})
+	}
+
+	public removeSharedConfig(): void{
+		this.removeDevice(this.sharedConfigUID);
+	}
+
+	public async getSharedConfig(): Promise<SharedConfig> {
+		if(this.structure.rooms.length == 0) await this.structure.loadRooms();
+
+		const compressedRooms = await this.structure.getCompressedRooms();
+		return {
+			versionCode: getRawVersionCode(this.appConfig.versionCode),
+            rooms: compressedRooms
+		}
+	}
+
+	public async updateSharedConfig(): Promise<void>{
+		const sharedConf = this.structure.settings.app.sharedConfig;
+		if(sharedConf.enabled && sharedConf.device !== '' && sharedConf.reading !== ''){
+			const sharedConfig = await this.getSharedConfig();
+
+            this.setAttr(sharedConf.device, sharedConf.reading, JSON.stringify(sharedConfig));
+		}
+	}
+
+	public validateSharedConfig(testObj: any): boolean{
+		// test for valid object
+		if(typeof testObj !== 'object' || Array.isArray(testObj) || testObj === null) return false;
+		// test config
+		if(!('versionCode' in testObj)) return false;
+		if(!('rooms' in testObj)) return false;
+		if(testObj.rooms.length === 0) return false;
+
+		return true;
+	}
+
+	/**
+	 * initialize/update shared config based on incoming server messages
+	 * @param device 
+	 */
+	private async applySharedConfig(device: FhemDevice|null): Promise<void>{
+		if(!device || !device.readings[this.settings.app.sharedConfig.reading]) return;
+
+		const testConfig = device.readings[this.settings.app.sharedConfig.reading].Value;
+		if(!this.validateSharedConfig(testConfig)) return this.sharedConfigToaster('Received invalid shared config', 'error');
+
+		this.sharedConfigToaster('Received valid shared config', 'success');
+		
+		const relevantConfig: SharedConfig = testConfig;
+		this.structure.rooms = relevantConfig.rooms;
+
+		if(!this.structure.currentRoom){
+			this.structure.currentRoom = this.structure.rooms[0];
+		}else{
+			// check if current room still exists
+			const foundRoom = this.structure.rooms.find(x=> x.UID === this.structure.currentRoom?.UID);
+
+			// room does not exist --> change to initial room
+			if(!foundRoom) return this.structure.changeRoom(this.structure.rooms[0]);
+
+			// room exists --> update components in room
+			// get container
+			const containerRegistry = this.compLoader.getContainerRegistry(foundRoom.UID);
+			if(containerRegistry){
+				const compUIDs = containerRegistry.components.map(x=> x.componentUID);
+				for(const compUID of compUIDs){
+					// get relevant component
+					const component = this.structure.getComponent(compUID);
+					if(!component) continue;
+
+					// remove selected components from view
+					const componentRegistry = this.compLoader.getComponentFromRegistry(component.UID);
+					if(!componentRegistry) continue;
+
+					this.compLoader.destroyComponent(componentRegistry);
+				}
+
+				// load container components
+				this.compLoader.loadContainerComponents(foundRoom.components, containerRegistry);
+			}
+		}
+		// overwrite rooms with shared config
+		await this.structure.saveRooms();
 	}
 }

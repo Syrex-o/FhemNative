@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { FhemService } from './fhem.service';
 import { StructureService } from './structure.service';
 import { ComponentLoaderService } from './component-loader.service';
 
@@ -22,6 +23,7 @@ export class UndoRedoService {
 	private currentStack = -1;
 
 	constructor(
+		protected fhem: FhemService,
 		protected structure: StructureService,
 		protected compLoader: ComponentLoaderService){
 	}
@@ -137,22 +139,11 @@ export class UndoRedoService {
 
 	public async applyChanges(): Promise<void>{
 		// remove all selections
-		// this.selectComponent.removeContainerCopySelector(this.componentLoader.currentContainer, true);
         await this.structure.saveRooms();
 
+		// update shared config
+		await this.fhem.updateSharedConfig();
 
-		// this.structure.saveRooms().then((res)=>{
-		// 	if('sharedConfig' in this.settings.app && this.settings.app.sharedConfig.enable){
-		// 		this.componentLoader.getMinifiedConfig().then((miniConf: Room[])=>{
-		// 			// send miniconf to fhem reading
-		// 			this.fhem.setAttr(
-		// 				this.settings.app.sharedConfig.device,
-		// 				this.settings.app.sharedConfig.reading,
-		// 				JSON.stringify(miniConf)
-		// 			);
-		// 		});
-		// 	}
-		// });
 		// reset values
 		this.reset();
 	}

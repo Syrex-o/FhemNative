@@ -1,0 +1,17 @@
+:host{
+    .save-container{
+        padding: var(--item-spacing-a) 0;
+        button{
+            width: 100%;
+            margin-bottom: var(--item-spacing-a);
+        }
+    }
+
+    // test results 
+    ion-icon{
+        color: var(--error);
+        &.valid{
+            color: var(--success);
+        }
+    }
+}

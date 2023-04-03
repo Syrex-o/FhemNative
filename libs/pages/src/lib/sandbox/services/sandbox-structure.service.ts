@@ -15,8 +15,8 @@ export class SandboxStructureService extends StructureService {
 		override storage: SandboxStorageService, 
 		override settings: SettingsService,
 		override navCtrl: NavController,
-		override componentLoader: ComponentLoaderService){
-        super(route, storage, settings, navCtrl, componentLoader);
+		override compLoader: ComponentLoaderService){
+        super(route, storage, settings, navCtrl, compLoader);
     }
 
     override navigateToRoom(roomUID: string, params?: RoomParams, backwards?: boolean) {

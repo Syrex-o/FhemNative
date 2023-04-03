@@ -1,0 +1,75 @@
+<fhem-native-close-btn-container #HEADER  pageHeader="Shared Config" (closeButtonClicked)="closePage()"/>
+
+<ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
+    <div class="auto-container">
+		<h2 class="size-b-app color-a-app">Shared Config</h2>
+        <div content *ngIf="primaryColor$ | async as primaryColor">
+            <fhem-native-switch
+                [boxed]="true"
+                [showInfoBubble]="false"
+                [backgroundColorOff]="primaryColor"
+                [label]="'PAGES.ADVANCED.FHEM.SHARED_CONFIG.BUTTON.HEAD' | translate" 
+                [info]="'PAGES.ADVANCED.FHEM.SHARED_CONFIG.BUTTON.INFO' | translate"
+                [(ngModel)]="sharedConfig.enabled"
+                (clicked)="updateSharedConfigState($event)">
+            </fhem-native-switch>
+
+            <ng-container *ngIf="sharedConfig.enabled">
+                <!-- shared config device -->
+                <fhem-native-input
+                    [trimInput]="true"
+                    [label]="('PAGES.ADVANCED.FHEM.SHARED_CONFIG.DEVICE.HEAD' | translate)"
+                    [info]="('PAGES.ADVANCED.FHEM.SHARED_CONFIG.DEVICE.INFO' | translate)"
+                    placeholder="Device"
+                    [(ngModel)]="sharedConfig.device"
+                    (ngModelChange)="invalidateSharedConfig()">
+                </fhem-native-input>
+    
+                <!-- shared config reading -->
+                <fhem-native-input
+                    [trimInput]="true"
+                    [label]="('PAGES.ADVANCED.FHEM.SHARED_CONFIG.READING.HEAD' | translate)"
+                    [info]="('PAGES.ADVANCED.FHEM.SHARED_CONFIG.READING.INFO' | translate)"
+                    placeholder="Reading"
+                    [(ngModel)]="sharedConfig.reading"
+                    (ngModelChange)="invalidateSharedConfig()">
+                </fhem-native-input>
+
+                <!-- test results -->
+                <div class="test-results-container mt-1-5">
+                    <p class="center color-a-app size-d-app bold">Test Results:</p>
+                    <fhem-native-ui-box>
+                        <fhem-native-text-block class="w-100" label="Connected: "/>
+                        <ion-icon class="size-b-app" [class.valid]="sharedConfigValid.connected" [name]="sharedConfigValid.connected ? 'checkmark-circle-outline' : 'close-circle-outline'"/>
+                    </fhem-native-ui-box>
+                    <fhem-native-ui-box>
+                        <fhem-native-text-block class="w-100" label="Device Present: "/>
+                        <ion-icon class="size-b-app" [class.valid]="sharedConfigValid.devicePresent" [name]="sharedConfigValid.devicePresent ? 'checkmark-circle-outline' : 'close-circle-outline'"/>
+                    </fhem-native-ui-box>
+                    <fhem-native-ui-box>
+                        <fhem-native-text-block class="w-100" label="Reading Present: "/>
+                        <ion-icon class="size-b-app" [class.valid]="sharedConfigValid.readingPresent" [name]="sharedConfigValid.readingPresent ? 'checkmark-circle-outline' : 'close-circle-outline'"/>
+                    </fhem-native-ui-box>
+                    <fhem-native-ui-box>
+                        <fhem-native-text-block class="w-100" label="Shared Config valid: "/>
+                        <ion-icon class="size-b-app" [class.valid]="sharedConfigValid.validConfig" [name]="sharedConfigValid.validConfig ? 'checkmark-circle-outline' : 'close-circle-outline'"/>
+                    </fhem-native-ui-box>
+                </div>
+    
+                <div class="save-container">
+                    <button class="app-button info ion-activatable" (click)="testSharedConfig()">
+                        {{'PAGES.ADVANCED.FHEM.SHARED_CONFIG.TEST.BUTTON' | translate}}
+                        <ion-ripple-effect></ion-ripple-effect>
+                    </button>
+    
+                    <ng-container *ngIf="sharedConfigValid.readingPresent">
+                        <button class="app-button info ion-activatable" (click)="transferSharedConfig()">
+                            {{'PAGES.ADVANCED.FHEM.SHARED_CONFIG.TRANSFER.BUTTON' | translate}}
+                            <ion-ripple-effect></ion-ripple-effect>
+                        </button>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ion-content>

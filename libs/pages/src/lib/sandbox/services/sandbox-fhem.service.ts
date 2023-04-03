@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { SandboxSettingsService } from './sandbox-settings.service';
 
-import { FhemService, LoggerService, ToastService } from '@fhem-native/services';
+import { ComponentLoaderService, FhemService, LoggerService, ToastService } from '@fhem-native/services';
 
 import { FhemDevice } from '@fhem-native/types/fhem';
+import { SandboxStructureService } from './sandbox-structure.service';
+import { APP_CONFIG } from '@fhem-native/app-config';
 
 @Injectable({providedIn: 'root'})
 export class SandboxFhemService extends FhemService {
@@ -57,11 +59,13 @@ export class SandboxFhemService extends FhemService {
     ];
 
     constructor(
-        override settings: SandboxSettingsService, 
         override toast: ToastService, 
-        override logger: LoggerService
-    ){
-        super(settings, toast, logger);
+        override logger: LoggerService,
+        override settings: SandboxSettingsService,
+        override structure: SandboxStructureService,
+        override compLoader: ComponentLoaderService,
+        @Inject(APP_CONFIG) override appConfig: any){
+        super(toast, logger, settings, structure, compLoader, appConfig);
     }
 
     public override getDevice(componentUID: string, deviceName: string, readingName: string, deviceUpdateCb: (fhemdevice: FhemDevice) => void): Observable<FhemDevice | null> {
