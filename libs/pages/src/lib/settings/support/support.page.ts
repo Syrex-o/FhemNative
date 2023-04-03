@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Route, RouterModule } from "@angular/router";
+import { Route } from "@angular/router";
 import { IonicModule, NavController } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -24,7 +24,6 @@ import { RightsSupportComponent } from "../../rights";
         FormsModule,
         CommonModule,
         IonicModule,
-        RouterModule,
         TranslateModule,
         CloseBtnContainerModule,
         SwitchModule,
@@ -36,7 +35,7 @@ import { RightsSupportComponent } from "../../rights";
 export class SupportPageComponent implements OnInit, OnDestroy{
     private handleID = getUID();
 
-    showSupport = true;
+    showSupport = false;
     termsAccepted = false;
     readonly availableAmounts = [1, 3, 5, 10];
     selectedAmount = 3;
