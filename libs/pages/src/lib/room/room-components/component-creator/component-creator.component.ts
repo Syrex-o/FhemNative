@@ -80,15 +80,14 @@ export class RoomComponentCreatorComponent{
                 for(let i = 0; i < relDependency.dependOn.length; i++){
                     const refValue = leaf(compInputs, relDependency.dependOn[i] );
                     // check if result is object (arr_data)
+                    const compareData = ( (typeof refValue === 'object' && refValue !== null) ? refValue.value : refValue);
                     // compare values
-                    if(
-                        ( 
-                            (typeof refValue === 'object' && refValue !== null) ? 
-                            refValue.value : 
-                            refValue
-                        ) !== relDependency.value[i]
-                    ){
-                        return true;
+                    // check if dependency value is array --> must match any
+                    if( Array.isArray(relDependency.value[i]) ){
+                        if( !(relDependency.value[i] as Array<any>).includes(compareData) ) return true;
+                    }else{
+                        // single value --> just match
+                        if( compareData !== relDependency.value[i] ) return true;
                     }
                 }
             }

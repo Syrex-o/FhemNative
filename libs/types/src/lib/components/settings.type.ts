@@ -4,7 +4,7 @@ import { ComponentPosition } from "./core.type"
 // Component dependencies in creation and edit menu
 export interface ComponentDependency {
 	dependOn: string[], 
-	value: Array<boolean|string>
+	value: Array<boolean|string|string[]>
 }
 
 /**
