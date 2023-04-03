@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 import { StorageService } from './storage.service';
 import { SettingsService } from './settings.service';
 import { ComponentLoaderService } from './component-loader.service';
 
 import { DefaultRoom } from '@fhem-native/app-config';
+
 import { decimalRounder, getUID } from '@fhem-native/utils';
 
 import { Room, RoomParams } from '@fhem-native/types/room';
 import { FhemComponentContainerSettings, FhemComponentSettings } from '@fhem-native/types/components';
-import { NavController } from '@ionic/angular';
 
 @Injectable({providedIn: 'root'})
 export class StructureService {
@@ -28,7 +29,7 @@ export class StructureService {
 		public storage: StorageService, 
 		public settings: SettingsService,
 		public navCtrl: NavController,
-		public componentLoader: ComponentLoaderService){
+		public compLoader: ComponentLoaderService){
     }
 
 	/**
@@ -54,8 +55,7 @@ export class StructureService {
 	 * @param roomUID: UID of room
 	 */
 	public getCurrentRoom(roomUID: string): void{
-		const foundRoom = this.findRoom(roomUID);
-		if(foundRoom) this.currentRoom = foundRoom;
+		this.currentRoom = this.findRoom(roomUID);
 	}
 
     /**
@@ -173,16 +173,24 @@ export class StructureService {
     }
 
 	/**
+	 * Compress all components in rooms
+	 * @returns 
+	 */
+	public async getCompressedRooms(): Promise<Room[]>{
+		for(let component of this.getAllComponents()){
+			component = await this.compLoader.getCompressedFhemComponentConfig(component);
+		}
+		return this.rooms;
+	}
+
+	/**
 	 * Save room configuration
 	 */
 	public async saveRooms(): Promise<void>{
 		if(!this.currentRoom) return;
 		
 		// minify component config
-		for(let component of this.getAllComponents()){
-			component = await this.componentLoader.getCompressedFhemComponentConfig(component);
-		}
-
+		await this.getCompressedRooms();
 
 		this.rooms = await this.storage.changeSetting({ name: 'rooms', change: JSON.stringify(this.rooms) });
 		this.getCurrentRoom(this.currentRoom.UID);
