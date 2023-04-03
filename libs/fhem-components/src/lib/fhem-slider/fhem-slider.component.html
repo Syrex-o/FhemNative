@@ -1,0 +1,126 @@
+<fhem-native-component #COMPONENT
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: minX, height: minY}"
+    [fhemDeviceConfig]="{
+        device, reading,
+        readingAvailable: true
+    }"
+    (initComponent)="initialize()"
+    (initDevice)="setFhemDevice($event)"
+    (updateDevice)="updateFhemDevice($event)">
+    <div class="fhem-native-slider">
+        <div class="slider-container" [ngClass]="[orientation, 'type--' + sliderType]">
+            <ng-container [ngSwitch]="sliderType">
+				<!-- standard slider -->
+                <ng-container *ngSwitchCase="'slider'">
+                    <div class="inner" 
+						fhemNativeMover 
+						[updateOnMove]="updateOnMove" 
+						[threshold]="threshold" 
+						(startMove)="startMove()" 
+						(whileMove)="whileMove($event)" 
+						(endMove)="endMove()"
+						[ngStyle]="{
+                            'background-color': backgroundColor,
+                            'height': orientation === 'horizontal' ? sliderHeight+'px' : '100%',
+                            'width': orientation === 'vertical' ? sliderHeight+'px' : '100%'
+                        }">
+                        <ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'slider', thumb: true, pin: true}"/>
+                    </div>
+                </ng-container>
+
+				<!-- box slider -->
+				<ng-container *ngSwitchCase="'box'">
+					<div class="slider-container-box" [style.gap.px]="(orientation === 'horizontal' ? thumbWidth : thumbHeight) / 1.5" [style.background-color]="boxBackgroundColor">
+						<button class="ion-activatable" [style.background-color]="buttonColor" (click)="reduceByStep()">
+							<ion-icon [style.color]="iconColor" name="remove"></ion-icon>
+							<ion-ripple-effect/>
+						</button>
+						<div class="inner" 
+							fhemNativeMover 
+							[updateOnMove]="updateOnMove" 
+							[threshold]="threshold" 
+							(startMove)="startMove()" 
+							(whileMove)="whileMove($event)" 
+							(endMove)="endMove()"
+							[ngStyle]="{
+								'height': orientation === 'horizontal' ? sliderHeight+'px' : '100%',
+								'width': orientation === 'vertical' ? sliderHeight+'px' : '100%'
+							}">
+							<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'box', thumb: true, pin: false}"/>
+						</div>
+						<button class="ion-activatable" [style.background-color]="buttonColor" (click)="addByStep()">
+							<ion-icon [style.color]="iconColor" name="add"></ion-icon>
+							<ion-ripple-effect/>
+						</button>
+					</div>
+				</ng-container>
+
+				<!-- ios slider -->
+				<ng-container *ngSwitchCase="'ios-slider'">
+					<div class="inner"
+						fhemNativeMover 
+						[updateOnMove]="updateOnMove" 
+						[threshold]="threshold" 
+						(startMove)="startMove()" 
+						(whileMove)="whileMove($event)" 
+						(endMove)="endMove()"
+						[style.background-color]="boxBackgroundColor">
+						<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'ios-slider', thumb: false, pin: false}"/>
+						<fhem-native-icon [icon]="sliderIcon" [style.color]="iconColor"/>
+					</div>
+				</ng-container>
+            </ng-container>
+        </div>
+    </div>
+</fhem-native-component>
+
+<ng-template #SLIDER_ACTIVE let-class let-thumb="thumb" let-pin="pin">
+	<div class="slider-bg drag-item"
+		[ngClass]="class"
+		[style.background]="fillColor"
+		[style.height.%]="orientation === 'horizontal' ? 100 : styles['move']"
+		[style.width.%]="orientation === 'horizontal' ? styles['move'] : 100"
+		[ngStyle]="styles['baseSliderStyle']">
+		<ng-container *ngIf="thumb">
+			<ng-container *ngTemplateOutlet="THUMB; context: {$implicit: class, pin: pin}"/>
+		</ng-container>	
+	</div>
+</ng-template>
+
+<ng-template #THUMB let-class let-pin="pin">
+	<div fhemNativeMover [updateOnMove]="updateOnMove" [threshold]="threshold" (startMove)="startMove()" (whileMove)="whileMove($event)" (endMove)="endMove()"
+        class="slider-thumb"
+		[ngClass]="class"
+		[ngStyle]="{
+			'background': thumbColor,
+			'width.px': thumbWidth,
+			'height.px': thumbHeight,
+			'left': orientation === 'horizontal' ? 'calc('+ styles['baseThumbStyle'].left +' - '+ (thumbWidth / 2) +'px)' : '50%',
+			'top': orientation === 'horizontal' ? '50%' : 'calc('+ styles['baseThumbStyle'].top +' - '+ (thumbHeight / 2)  +'px)'
+		}">
+		<span 
+			*ngIf="showValueInThumb" class="thumb-value"
+			[ngStyle]="{
+				'color': thumbValueColor,
+				'line-height': (orientation === 'horizontal' ? thumbHeight : thumbWidth) + 'px'
+			}">{{displayAs(value) + labelExtension}}
+		</span>
+		<ng-container *ngIf="pin">
+			<ng-container *ngTemplateOutlet="PIN; context: {$implicit: class}"/>
+		</ng-container>
+	</div>
+</ng-template>
+
+<ng-template #PIN let-class>
+	<span class="slider-pin" [ngClass]="class" [class.show]="styles['showPin']"
+		[ngStyle]="{
+			'background': fillColor,
+			'top': orientation === 'horizontal' ? (thumbHeight * -1) + 'px' : '50%',
+			'left': orientation === 'vertical' ? (thumbWidth * -1) + 'px' : '50%'
+		}">
+		{{displayAs(value) + labelExtension}}
+		<span class="pin-arrow" [style.borderTopColor]="fillColor"></span>
+	</span>
+</ng-template>

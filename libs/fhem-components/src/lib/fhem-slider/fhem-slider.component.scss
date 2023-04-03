@@ -1,0 +1,160 @@
+:host{
+    .fhem-native-slider{
+        width: 100%;
+		height: 100%;
+        pointer-events: all;
+        user-select: all;
+        .slider-container{
+			position: absolute;
+			pointer-events: all;
+			&.vertical{
+				height: 100%;
+				top: 0;
+				left: 50%;
+				transform: translate3d(-50%,0,0);
+			}
+			&.horizontal{
+				left: 0;
+				top: 50%;
+                width: 100%;
+				transform: translate3d(0,-50%,0);
+			}
+            .inner{
+                position: relative;
+                width: 100%;
+                height: 100%;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .slider-bg{
+                z-index: 1;
+				position: absolute;
+				border-radius: inherit;
+                .slider-thumb{
+					position: absolute;
+					border-radius: 50%;
+					z-index: 2;
+					cursor: pointer;
+					box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+					.thumb-value{
+						position: absolute;
+						width: 100%;
+						height: 100%;
+						overflow: hidden;
+						text-align: center;
+						pointer-events: none;
+						user-select: none;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+					}
+				}
+                .slider-pin{
+                    position: absolute;
+                    font-size: 12px;
+                    line-height: 1.333;
+                    padding: 1px 5px;
+                    border-radius: 4px;
+                    opacity: 0;
+                    transition: all .2s ease;
+                    pointer-events: none;
+                    .pin-arrow{
+                        position: absolute;
+                        bottom: -6px;
+                        width: 0;
+                        height: 0;
+                        overflow: hidden;
+                        border: 3px solid transparent;
+                        left: 50%;
+                        transform: translateX(-50%);
+                    }
+                    &.show{
+                        opacity: 1;
+                    }
+                }
+            }
+            &.type--slider{
+
+            }
+            &.type--box{
+                width: 100%;
+                height: 100%;
+                .slider-container-box{
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    gap: 10px;
+                    padding: 10px;
+                    align-items: center;
+                    border-radius: var(--radius-a);
+                    justify-content: space-between;
+                    button{
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        overflow: hidden;
+                        width: 40px;
+					    height: 40px;
+                        flex-shrink: 0;
+                        border-radius: 50%;
+                        font-size: 30px;
+                        background-color: transparent;
+
+                    }
+                }
+                &.vertical{
+                    .slider-container-box{
+                        flex-direction: column-reverse;
+                    }
+                }
+            }
+
+            &.type--ios-slider{
+                width: 100%;
+                height: 100%;
+
+                --icon-size: 30px;
+                fhem-native-icon{
+                    position: absolute;
+					width: auto;
+					height: auto;
+                    font-size: var(--icon-size);
+					z-index: 2;
+                }
+                &.horizontal{
+                    fhem-native-icon{
+                        top: 50%;
+                        left: var(--icon-size);
+                        transform: translateY(-50%)
+                    }
+                }
+                &.vertical{
+                    fhem-native-icon{
+                        bottom: var(--icon-size);
+                        left: 50%;
+                        transform: translateX(-50%)
+                    }
+                }
+            }
+
+            // orientations
+            &.horizontal{
+                .slider-thumb{
+                    transform: translateY(-50%);
+                }
+                .slider-pin{
+                    transform: translateX(-50%);
+                }
+            }
+            &.vertical{
+                .slider-thumb{
+                    transform: translateX(-50%);
+                }
+                .slider-pin{
+                    transform: translateY(-50%) rotate(-90deg);
+                }
+            }
+        }
+    }
+}
