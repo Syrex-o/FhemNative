@@ -1,0 +1,109 @@
+<fhem-native-component #COMPONENT
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 120, height: 120}"
+    [fhemDeviceConfig]="{
+        device, reading,
+        readingAvailable: true
+    }"
+    (resized)="updateScales()"
+    (transformationEnd)="updateScales()"
+
+    (initComponent)="initialize()"
+    (initDevice)="setFhemDevice($event)"
+    (updateDevice)="updateFhemDevice($event)">
+    <div class="fhem-native-thermostat" [ngClass]="'type--' + sliderType">
+        <ng-container [ngSwitch]="sliderType">
+            <!-- standard thermostat -->
+            <ng-container *ngSwitchCase="'thermostat'">
+                <svg class="thermostat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 5 250 470">
+                    <defs>
+                        <linearGradient [attr.id]="UID + '_1'" x1="57" y1="150" x2="57" y2="546" gradientUnits="userSpaceOnUse">
+                            <stop [attr.stop-color]="gradientColor1" offset="0"/>
+                            <stop [attr.stop-color]="gradientColor2" offset="20%"/>
+                            <stop [attr.stop-color]="gradientColor3" offset="50%"/>
+                            <stop [attr.stop-color]="gradientColor4" offset="100%"/>
+                        </linearGradient>
+                        <rect id="tube" x="110" y="150" width="86" height="400" rx="43" ry="43"/>
+                            <clipPath id="liquidMask">
+                            <use xlink:href="#tube" class="liquidMask" />
+                        </clipPath>
+                        <clipPath id="tubeMask">
+                            <use xlink:href="#tube" class="liquidMask" />
+                        </clipPath>
+                        <path id="liquid" [class.animate]="enableAnimation" d="M757,552v490H357V552c50,0,50,20,100,20s50-20,100-20,50,20,100,20S707,552,757,552Z" />
+                        <mask [attr.id]="UID + '_2'">
+                            <use [style.transform]="'translateY('+ (styles['factor'] - 5 - styles['move'])+'%)'" xlink:href="#liquid" class="liquid" x="0" fill="#FCEFD6" />
+                            <use [style.transform]="'translateY('+ (styles['factor'] - 5 - styles['move'])+'%)'" xlink:href="#liquid" class="liquid" x="0" fill="#EEE" opacity="0.7"/>
+                        </mask>
+                    </defs>
+                    <g class="whole" transform="translate(0, -100)">
+                        <use xlink:href="#tube" class="bounding" fill="#C8D9D3" opacity="0.61"/>
+                        <g class="dragger"
+                            fhemNativeMover 
+                            [updateOnMove]="updateOnMove" 
+                            [threshold]="threshold" 
+                            (startMove)="startMove()" 
+                            (whileMove)="whileMove($event)" 
+                            (endMove)="endMove()"
+                            [style.transform]="'translateY('+ (styles['factor'] - styles['move'])+'%)'">
+                            <ellipse cx="50" cy="145" rx="50" ry="40"/>
+                            <path class="dragTip" d="M315.5,556.76,299.24,540.5l16.26-16.26,36.26,16.26Z"/>
+                            <text class="label" font-weight="bold" x="40" y="140" [class.center]="value === current">{{value + labelExtension}}</text>
+                            <text class="label" font-weight="bold" x="40" y="170" 
+                                [class.hide]="value === current"
+                                [attr.fill]="(current > value) ? coolingColor : (current < value ? heatingColor : '#000')">
+                                {{current + labelExtension}}
+                            </text>
+                        </g>
+                        <g [attr.mask]="'url(#'+UID+'_2)'">
+                            <use xlink:href="#tube" [attr.fill]="'url(#'+UID+'_1)'" />
+                        </g>
+                        <line class="tubeShine" x1="130" y1="200" x2="130" y2="443" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="8" opacity="0.21" stroke-dasharray="153 30" stroke-dashoffset="-20"/>
+                        <g class="measurements" fill="none" stroke-width="3" stroke-linecap="round" opacity="1">
+                            <line x1="112" y1="196" x2="130" y2="196" />
+                            <line x1="112" y1="234" x2="130" y2="234" />
+                            <line x1="112" y1="273" x2="130" y2="273" />
+                            <line x1="112" y1="311" x2="130" y2="311" />
+                            <line x1="112" y1="350" x2="130" y2="350" />
+                            <line x1="112" y1="388" x2="130" y2="388" />
+                            <line x1="112" y1="426" x2="130" y2="426" />
+                            <line x1="112" y1="465" x2="130" y2="465" />
+                            <line x1="112" y1="503" x2="130" y2="503" />
+                        </g>
+                    </g>
+                </svg>
+            </ng-container>
+            <!-- tick thermostat -->
+            <ng-container *ngSwitchCase="'tick'">
+                <svg class="tick" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" [attr.viewBox]="styles['viewBox']">
+					<defs>
+						<linearGradient id="outer-thermostat" x1="0%" y1="0%" x2="0%" y2="100%">  
+							<stop [attr.stop-color]="tickGradientColor1" offset="0%"/>
+							<stop [attr.stop-color]="tickGradientColor2" offset="100%"/>
+						</linearGradient>
+					</defs>
+					<circle class="outer" [attr.cx]="styles['radius']" [attr.cy]="styles['radius']" [attr.r]="styles['radius']" fill="url(#outer-thermostat)"></circle>
+					<circle class="inner" [attr.cx]="styles['radius']" [attr.cy]="styles['radius']" [attr.r]="styles['radius'] * 0.96"></circle>
+					<circle 
+                        fhemNativeMover 
+                        [updateOnMove]="updateOnMove" 
+                        [threshold]="threshold" 
+                        (startMove)="startTickMove()" 
+                        (whileMove)="whileTickMove($event)" 
+                        (endMove)="endMove()"
+                        [attr.fill]=" (current > value) ? coolingColor : (current < value ? heatingColor : backgroundColor)" 
+                        class="shape drag-item" cx="50%" cy="50%" [attr.r]="styles['radius'] * 0.8">
+					</circle>
+					<g class="ticks drag-item">
+						<path *ngFor="let tick of styles['ticks']" [attr.d]="tick.d" [attr.fill]="tick.class ? tickColor : 'rgb(221 221 221 / 40%)'"></path>
+					</g>
+					<text [style.fill]="labelColor"  class="current-temp" alignment-baseline="central" [attr.x]="styles['tickDrawPos'][0]" [attr.y]="styles['tickDrawPos'][1]" [class.hide]="value === current">{{current}}</text>
+
+					<text [style.fill]="labelColor"  class="value" [attr.x]="styles['radius']" [attr.y]="styles['radius']">{{value + labelExtension}}</text>
+                    <text [style.fill]="labelColor"  class="device" [attr.x]="styles['radius']" [attr.y]="styles['radius']">{{device}}</text>
+				</svg>
+            </ng-container>
+        </ng-container>
+    </div>
+</fhem-native-component>
