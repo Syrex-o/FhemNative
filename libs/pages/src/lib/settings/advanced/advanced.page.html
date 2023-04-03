@@ -1,0 +1,19 @@
+<fhem-native-close-btn-container #HEADER  [pageHeader]="('PAGES.ADVANCED.HEAD_SHORT' | translate)" (closeButtonClicked)="closePage()"/>
+
+<ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
+    <div class="auto-container">
+		<h2 class="size-b-app color-a-app">{{'PAGES.ADVANCED.HEAD' | translate}}</h2>
+
+        <fhem-native-ui-category>
+            <fhem-native-text-line name [wrap]="false"> {{'PAGES.SETTINGS.FHEM.HEAD' | translate}}</fhem-native-text-line>
+
+            <div content>
+                <!-- shared config -->
+                <fhem-native-ui-box [clickable]="true" [routerLink]="['shared-config']">
+                    <fhem-native-text-block class="w-100" [label]="'PAGES.ADVANCED.FHEM.SHARED_CONFIG.HEAD' | translate" [info]="'PAGES.ADVANCED.FHEM.SHARED_CONFIG.INFO' | translate"/>
+                    <ion-icon class="color-a-app size-b-app" name="pencil-outline"></ion-icon>
+                </fhem-native-ui-box>
+            </div>
+        </fhem-native-ui-category>
+    </div>
+</ion-content>

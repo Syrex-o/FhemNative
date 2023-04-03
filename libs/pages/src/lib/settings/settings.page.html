@@ -6,19 +6,19 @@
         <div content>
             <!-- login -->
             <fhem-native-ui-box [clickable]="true" [routerLink]="['login']">
-                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.SOCKET_SETTINGS.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.SOCKET_SETTINGS.INFO' | translate"></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.SOCKET_SETTINGS.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.SOCKET_SETTINGS.INFO' | translate"/>
                 <ion-icon class="color-a-app size-b-app" name="lock-closed-outline"></ion-icon>
             </fhem-native-ui-box>
 
             <!-- room export -->
             <fhem-native-ui-box [clickable]="true" (click)="downloadConfig()">
-                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.EXPORT.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.EXPORT.INFO' | translate"></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.EXPORT.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.EXPORT.INFO' | translate"/>
                 <ion-icon class="color-a-app size-b-app" name="download-outline"></ion-icon>
             </fhem-native-ui-box>
 
             <!-- room import -->
             <fhem-native-ui-box [clickable]="true" class="mb-1-5" (click)="importConfig()">
-                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.IMPORT.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.IMPORT.INFO' | translate"></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.FHEM.IMPORT.TEXT' | translate" [info]="'PAGES.SETTINGS.FHEM.IMPORT.INFO' | translate"/>
                 <ion-icon class="color-a-app size-b-app rotated" name="download-outline"></ion-icon>
             </fhem-native-ui-box>
         </div>
@@ -103,32 +103,43 @@
         <div content>
             <!-- trademarks/markennutzung -->
             <fhem-native-ui-box [clickable]="true" (click)="showTrademarks = !showTrademarks">
-                <fhem-native-text-block class="w-100" label="Hinweis zur Markennutzung"></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" label="Hinweis zur Markennutzung"/>
                 <ion-icon class="color-a-app size-b-app" name="eye-outline"></ion-icon>
             </fhem-native-ui-box>
 
             <!-- terms -->
             <fhem-native-ui-box [clickable]="true" (click)="showTerms = !showTerms">
-                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.TERMS' | translate"></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.TERMS' | translate"/>
                 <ion-icon class="color-a-app size-b-app" name="eye-outline"></ion-icon>
             </fhem-native-ui-box>
             
             <!-- web -->
             <fhem-native-ui-box [clickable]="true" (click)="openExternal('https://fhemnative.de')">
-                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.WEB' | translate"></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.WEB' | translate"/>
                 <ion-icon class="color-a-app size-b-app" name="globe-outline"></ion-icon>
             </fhem-native-ui-box>
 
             <!-- data -->
             <fhem-native-ui-box [clickable]="true" (click)="openExternal('https://fhemnative.de/rights/privacy')">
-                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.DATA' | translate"></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.DATA' | translate"/>
                 <ion-icon class="color-a-app size-b-app" name="globe-outline"></ion-icon>
             </fhem-native-ui-box>
+        </div>
+    </fhem-native-ui-category>
 
+    <fhem-native-ui-category>
+        <fhem-native-text-line name [wrap]="false"> {{'PAGES.SETTINGS.ADVANCED.HEAD' | translate}}</fhem-native-text-line>
+        <div content>
             <!-- Version -->
             <fhem-native-ui-box>
-                <fhem-native-text-block class="w-100" label="Version: "></fhem-native-text-block>
+                <fhem-native-text-block class="w-100" label="Version: "/>
                 <fhem-native-text-line>{{currentVersion}}</fhem-native-text-line>
+            </fhem-native-ui-box>
+            
+            <!-- advanced settings -->
+            <fhem-native-ui-box [clickable]="true" [routerLink]="['advanced']">
+                <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.ADVANCED.SETTINGS' | translate"/>
+                <ion-icon class="color-a-app size-b-app" name="cog-outline"></ion-icon>
             </fhem-native-ui-box>
         </div>
     </fhem-native-ui-category>
