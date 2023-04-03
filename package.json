@@ -48,6 +48,8 @@
     "@ngx-translate/http-loader": "^7.0.0",
     "angular2-hotkeys": "^13.1.0",
     "angularx-qrcode": "^15.0.1",
+    "date-fns": "^2.29.3",
+    "date-fns-tz": "^2.0.0",
     "firebase": "^9.4.0",
     "ng-recaptcha": "^11.0.0",
     "ngx-cookie-service": "^15.0.0",
