@@ -62,7 +62,7 @@ export class FhemComponent implements AfterViewInit, OnDestroy{
 	minWidthPercentage = 0; minHeightPercentage = 0;
 
 	// device holder
-	fhemDevice: FhemDevice|null = null;
+	fhemDevice: FhemDevice|undefined;
 
 	constructor(
 		private fhem: FhemService,
@@ -160,7 +160,9 @@ export class FhemComponent implements AfterViewInit, OnDestroy{
 	// create context menu
 	async onContextClick(event: MouseEvent|TouchEvent): Promise<void>{
 		const { role, data } = await this.contextMenu.createContextMenu(ContextMenuComponent, event, false, {
-			source: 'component', componentId: this.UID, transformationManager: this.transformationManager
+			source: 'component', 
+			componentId: this.UID, 
+			transformationManager: this.transformationManager
 		});
 
 		if(role === 'backdrop' || role === 'standard') return this.selectComponent.removeAllSelectors();
