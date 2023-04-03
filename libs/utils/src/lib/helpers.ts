@@ -92,11 +92,21 @@ export function getFileDate(): string{
 
 // get percentage of value
 export function getValuePercentage(value: number, min: number, max: number): number{
-	return (value - min) / (max - min);
+	let v = (value - min) / (max - min);
+	if(v >= 1) v = 1;
+	if(v <= 0) v = 0;
+
+	return v;
 }
 
 export function toValueNumber(factor: number, min: number, max: number, step: number): number {
 	return Math.round(factor * (max - min) / step) * step + min;
+}
+
+export function restrictToRange(val: number, min: number, max: number): number{
+	if (val < min) return min;
+	if (val > max) return max;
+	return val;
 }
 
 export function animateMove(fromNum: number, toNum: number, cb: (val: number)=> void): void{
