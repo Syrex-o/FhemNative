@@ -29,7 +29,8 @@ export const ComponentCategories = [
 	{
 		category: 'SLIDER', components: [
 			'CIRCLE SLIDER',
-			// 'SLIDER'
+			'SLIDER',
+			'THERMOSTAT'
 		]
 	},
 	{
