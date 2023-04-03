@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
@@ -40,6 +40,8 @@ export class PickerComponent implements ControlValueAccessor, OnInit, OnDestroy{
     @Input() pickerHeader = '';
     @Input() headerAnimation = true;
 
+	@Output() cancelled = new EventEmitter<void>();
+
 	// Current open/close state
 	value = false;
 
@@ -63,6 +65,7 @@ export class PickerComponent implements ControlValueAccessor, OnInit, OnDestroy{
 	onDismiss(): void{
 		this.value = false;
 		this.updateChanges();
+		this.cancelled.emit();
 	}
 
 	ngOnDestroy(): void {
