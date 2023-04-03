@@ -63,6 +63,10 @@
                 "TERMS": "Nutzungsbedingungen",
                 "WEB": "Website",
                 "DATA": "Datenschutz"
+            },
+            "ADVANCED": {
+                "HEAD": "Erweitert",
+                "SETTINGS": "Erteiterte Einstellungen"
             }
         },
         "MEMBER": {
@@ -155,6 +159,55 @@
                         "TEXT": "Passwort",
                         "PLACEHOLDER": "Passwort eingeben",
                         "INFO": "Passwort für FHEM Basic Auth."
+                    }
+                }
+            }
+        },
+        "ADVANCED": {
+            "HEAD": "Erweiterte Einstellungen",
+            "HEAD_SHORT": "Erweitert",
+            "FHEM": {
+                "SHARED_CONFIG": {
+                    "HEAD": "Geteilte FhemNative Konfiguration",
+                    "INFO": "FhemNative Konfiguration in FHEM Reading hinterlegen und mit anderen Geräten teilen",
+                    "SAVE": "Konfiguration speichern",
+                    "BUTTON": {
+                        "HEAD": "Konfiguration teilen",
+                        "INFO": "Geteilte Konfiguration in FHEM Reading aktivieren/deaktivieren"
+                    },
+                    "DEVICE": {
+                        "HEAD": "FHEM Device",
+						"INFO": "FHEM Device für die Konfiguration"
+                    },
+                    "READING":{
+                        "HEAD": "FHEM Device Reading",
+                        "INFO": "FHEM Device Reading, dass die Konfiguration enthält/enthalten soll"
+                    },
+                    "TEST": {
+                        "BUTTON": "Konfiguration testen",
+                        "ERRORS": {
+                            "NO_CONNECTION": {
+                                "HEAD": "Keine aktive Verbindung zu FHEM",
+                                "INFO": "Um die geteilte Konfiguration testen zu können, muss eine aktive Verbindung zu FHEM bestehen."
+                            },
+                            "MISSING": {
+                                "HEAD": "Fehlende Daten",
+                                "INFO": "Bitte geben Sie sowohl Device als auch Reading für die geteilte Konfiguration an."
+                            },
+                            "DEVICE_NOT_FOUND": {
+                                "HEAD": "Device nicht gefunden",
+                                "INFO": "Das angegebene FHEM Device konnte nicht gefunden werden."
+                            },
+                            "READING_NOT_FOUND": {
+                                "HEAD": "Reading nicht gefunden",
+                                "INFO": "Das angegebene FHEM Device Reading konnte nicht gefunden werden."
+                            }
+                        }
+                    },
+                    "TRANSFER": {
+                        "BUTTON": "Konfiguration überschreiben",
+                        "HEAD": "Achtung! Bitte machen Sie vorher ein Backup!",
+                        "INFO": "Ein Transfer wird nur beim ersten erstellen oder beim Wechsel des Konfigurations-Readings benötigt. Wollen Sie das Reading wirklich überschreiben? Alle Geräte verwenden dann die aktuelle Konfiguration DIESES Geräts."
                     }
                 }
             }
@@ -346,8 +399,10 @@
                 "PICKER": "Picker",
                 "POPUP": "Popup",
                 "SELECT": "Select",
+                "SLIDER": "Slider",
                 "SWIPER": "Swiper",
-                "SWITCH": "Switch"
+                "SWITCH": "Switch",
+                "THERMOSTAT": "Thermostat"
             }
         }
     },
@@ -962,7 +1017,7 @@
                     },
                     "threshold":{
                         "name": "Schwellenwert",
-					    "info": "Aktions-Drosselung. Nur jeden 'n'ten an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
                     },
                     "label":{
                         "name": "Label",
@@ -1002,7 +1057,7 @@
                     },
                     "step": {
                         "name": "Schritte",
-					"info": "Schritte in denen sich der Slider bewegt"
+					    "info": "Schritte in denen sich der Slider bewegt"
                     },
                     "min": {
                         "name": "Min Wert",
@@ -1114,7 +1169,7 @@
                     },
                     "threshold":{
                         "name": "Schwellenwert",
-					    "info": "Aktions-Drosselung. Nur jeden 'n'ten an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
                     },
                     "headline":{
                         "name": "Kopfzeile",
@@ -1835,6 +1890,114 @@
                 }
             }
         },
+        "Slider": {
+            "NAME": "Slider",
+            "INFO": "Ein Slider, der numerische und Zeit Werte ändern kann.",
+            "INPUTS": {
+                "data": {
+                    "device": {
+                        "name": "Geräte Name",
+                        "info": "Name des Fhem Geräts"
+                    },
+                    "reading": {
+                        "name": "Reading Name",
+                        "info": "Name des Fhem Readings"
+                    },
+                    "setReading":{
+                        "name": "Set Reading",
+                        "info": "Name des set Befehls (falls benötigt)"
+                    },
+                    "threshold":{
+                        "name": "Schwellenwert",
+					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+                    },
+                    "labelExtension":{
+                        "name": "Label-Endung",
+					    "info": "Endung des Werte-Labels (Bsp. %)"
+                    },
+                    "min": {
+                        "name": "Min Wert",
+					    "info": "Minimal Wert des Sliders"
+                    },
+                    "max": {
+                        "name": "Max Wert",
+					    "info": "Maximal Wert des Sliders"
+                    },
+                    "sliderHeight":{
+                        "name": "Breite/Höhe",
+					    "info": "Breite/Höhe des SLiders, basierend auf der Ausrichtung"
+                    },
+                    "data_thumbWidth":{
+                        "name": "Thumb Breite",
+                        "info": "Breite des Slider-Thumbs"
+                    },
+                    "data_thumbHeight":{
+                        "name": "Thumb Höhe",
+                        "info": "Höhe des Slider-Thumbs"
+                    }
+                },
+                "arr_data": {
+                    "sliderType": {
+                        "name": "Style",
+					    "info": "Style des Sliders"
+                    },
+                    "orientation": {
+                        "name": "Orientierung",
+					    "info": "Ausrichtung des Sliders"
+                    }
+                },
+                "bool": {
+                    "updateOnMove":{
+                        "name": "Update bei Bewegung",
+					    "info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+                    },
+                    "showPin": {
+                        "name": "Zeige Pin",
+					    "info": "Anzeigen/nicht anzeigen des Slider Pins"
+                    },
+                    "showValueInThumb": {
+                        "name": "Zeige Wert im Thumb",
+					    "info": "Anzeigen/nicht anzeigen des aktuellen Wertes im Thumb"
+                    }
+                },
+                "icon": {
+                    "sliderIcon":{
+                        "name": "Slider Icon",
+					    "info": "Icon im Slider (für Style im ios-Modus)"
+                    }
+                },
+                "style": {
+                    "backgroundColor":{
+                        "name": "Hintergrundfarbe",
+                        "info": "Hintergrundfarbe des Sliders"
+                    },
+                    "boxBackgroundColor": {
+                        "name": "Box Hintergrundfarbe",
+                        "info": "Hintergrundfarbe der Slider-Box"
+                    },
+                    "thumbColor":{
+                        "name": "Thumb-Farbe",
+					    "info": "Hintergrundfarbe des Slider-Thumbs"
+                    },
+                    "thumbValueColor":{
+                        "name": "Thumb-Wert Farbe",
+					    "info": "Farbe des Wertes im Thumb"
+                    },
+                    "fillColor":{
+                        "name": "Füllfarbe",
+					    "info": "Füllfarbe des Sliders"
+                    },
+                    "iconColor": {
+                        "name": "Icon-Farbe",
+					    "info": "Farbe des Slider Icons"
+                    },
+                    "buttonColor": {
+                        "name": "Hintergrundfarbe",
+					    "info": "Hintergrundfarbe der Buttons"
+                    }
+                }
+            }
+        },
         "Swiper": {
             "NAME": "Swiper",
 			"INFO": "Ein Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
@@ -1979,6 +2142,112 @@
                     "knobColorOff": {
                         "name": "Thumb Farbe off",
 					    "info": "Hintergrundfarbe des Thumbs im OFF Zustand"
+                    }
+                }
+            }
+        },
+        "Thermostat": {
+            "NAME": "Thermostat",
+            "INFO": "Ein Thermostat, um Temperaturwerte anzeigt anzuzeigen und an FHEM zu senden.",
+            "INPUTS": {
+                "data": {
+                    "device": {
+                        "name": "Geräte Name",
+                        "info": "Name des Fhem Geräts"
+                    },
+                    "reading": {
+                        "name": "Reading Name",
+                        "info": "Name des Fhem Readings (bsp. desired-temp)"
+                    },
+                    "setReading":{
+                        "name": "Set Reading",
+                        "info": "Name des set Befehls (falls benötigt, bsp. desired-temp)"
+                    },
+                    "displayReading": {
+                        "name": "Anzeige-Reading",
+                        "info": "Reading Wert der Angezeigt werden soll (bsp. measured-temp)"
+                    },
+                    "threshold":{
+                        "name": "Schwellenwert",
+					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+                    },
+                    "labelExtension":{
+                        "name": "Label-Endung",
+					    "info": "Endung des Werte-Labels (Bsp. %)"
+                    },
+                    "steps": {
+                        "name": "Schritte",
+					    "info": "Schritte in denen sich das Thermostat bewegt"
+                    },
+                    "min": {
+                        "name": "Min Wert",
+					    "info": "Minimal Wert des Thermostats"
+                    },
+                    "max": {
+                        "name": "Max Wert",
+					    "info": "Maximal Wert des Thermostats"
+                    }
+                },
+                "bool": {
+                    "updateOnMove":{
+                        "name": "Update bei Bewegung",
+					    "info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+                    },
+                    "enableAnimation": {
+                        "name": "Thermostat Animation",
+					    "info": "Aktivieren/deaktivieren der Thermostat-Animation"
+                    }
+                },
+                "arr_data": {
+                    "sliderType": {
+                        "name": "Style",
+					    "info": "Style des Thermostats"
+                    }
+                },
+                "style": {
+                    "backgroundColor": {
+                        "name": "Hintergrundfarbe",
+					    "info": "Hintergrundfarbe des runden Thremostats"
+                    },
+                    "tickColor": {
+                        "name": "Tick-Farbe",
+					    "info": "Tick-Farbe des runden Thremostats"
+                    },
+                    "heatingColor": {
+                        "name": "Aufheiz-Farbe",
+                        "info": "Farbe, während der Aufheiz-Phase"
+                    },
+                    "coolingColor": {
+                        "name": "Abkühlungs-Farbe",
+                        "info": "Farbe, während der Abkühlungs-Phase"
+                    },
+                    "labelColor": {
+                        "name": "Label-Farbe",
+					    "info": "Farbe der Labels im runden Thremostat"
+                    },
+                    "gradientColor1": {
+                        "name": "Verlaufsfarbe 1",
+					    "info": "Farbverlaufs-Farbe 1"
+                    },
+                    "gradientColor2":{
+                        "name": "Verlaufsfarbe 2",
+                        "info": "Farbverlaufs-Farbe 2"
+                    },
+                    "gradientColor3":{
+                        "name": "Verlaufsfarbe 3",
+                        "info": "Farbverlaufs-Farbe 3"
+                    },
+                    "gradientColor4":{
+                        "name": "Verlaufsfarbe 4",
+                        "info": "Farbverlaufs-Farbe 4"
+                    },
+                    "tickGradientColor1":{
+                        "name": "Verlaufsfarbe 1",
+                        "info": "Farbverlaufs-Farbe 1 des runden Thremostats"
+                    },
+                    "tickGradientColor2":{
+                        "name": "Verlaufsfarbe 2",
+                        "info": "Farbverlaufs-Farbe 2 des runden Thremostats"
                     }
                 }
             }
