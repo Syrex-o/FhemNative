@@ -37,11 +37,12 @@ export const ComponentColors = [
 	'#00405d', '#ffcc33', '#ff6138', '#ff0000',
 	'#fcd20b', '#e47911', '#a4c639', '#7fbb00',
 	'#0060a3', '#1d8dd5', '#003366', '#005cff',
-	'#97b538', '#272727', '#2ec6ff', '#434E5D',
-	'#58677C', '#58677c', '#14a9d5', '#2994b3',
-	'#a2a4ab', '#FF0909', '#F3481A', '#FABA2C',
-	'#232524', '#00BCF2', '#ddd', '#fff', '#000', 
-	'transparent'
+	'#97b538', '#0d0d0c', '#272727', '#2ec6ff',
+	'#434E5D', '#58677C', '#58677c', '#14a9d5',
+	'#2994b3', '#a2a4ab', '#2d3436', '#d3d3d3',
+	'#FF0909', '#F3481A',
+	'#FABA2C', '#232524', '#00BCF2', '#ddd',
+	'#fff', '#000', 'transparent'
 ];
 
 /*
@@ -56,6 +57,8 @@ export const BaseAppSettings: AppSetting[] = [
 	{name: 'allowEditing', default: true, toStorage: true},
     // grid to move components
 	{name: 'grid', default: JSON.stringify({enabled: true, gridSize: 20}), toStorage: true},
+	// sahred config
+	{name: 'sharedConfig', default: JSON.stringify({enabled: false, device: '', reading: ''}), toStorage: true}
 ]
 
 /**
