@@ -53,7 +53,7 @@ export const ComponentCategories = [
 			'PICKER',
 			'POPUP',
 			'SWIPER',
-			// 'TABS'
+			'TABS'
 		]
 	}
 ];

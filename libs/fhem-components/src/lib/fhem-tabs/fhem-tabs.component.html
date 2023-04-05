@@ -1,0 +1,36 @@
+<fhem-native-component 
+	[UID]="UID" 
+	[position]="position"
+	[minDimensions]="{width: 100, height: 100}"
+    (initComponent)="getContainer()">
+    <div class="fhem-native-tabs"
+        [ngClass]="'position--'+tabPosition"
+        [ngStyle]="{
+            'border-top-left-radius.px': customBorder ? borderRadiusTopLeft : borderRadius,
+            'border-top-right-radius.px': customBorder ? borderRadiusTopRight : borderRadius,
+            'border-bottom-left-radius.px': customBorder ? borderRadiusBottomLeft : borderRadius,
+            'border-bottom-right-radius.px': customBorder ? borderRadiusBottomRight : borderRadius
+        }">
+        <div class="tab-header">
+            <ng-container *ngFor="let compContainer of component?.components; let i = index;">
+                <button class="ion-activatable" 
+                    [style.background-color]="currentTab === i ? activeTabColor : headerColors[i] || headerColors[0]" 
+                    (click)="switchTab(i)">
+                    <fhem-native-icon [icon]="icons[i] || icons[0]" [style.color]="iconColors[i] || iconColors[0]"/>
+                    <ion-ripple-effect/>
+                </button>
+            </ng-container>
+        </div>
+        <div class="tab-content">
+            <ng-container *ngFor="let compContainer of component?.components; let i = index;">
+                <div class="single-tab" *ngIf="i === currentTab" [style.background-color]="backgroundColors[i] || backgroundColors[0]">
+                    <fhem-native-component-loader [containerId]="compContainer.containerUID" [components]="compContainer.components"/>
+                    <!-- edit btn -->
+                    <ng-container *ngIf="(editFrom$ | async) as editFrom">
+                        <fhem-native-edit-button *ngIf="editFrom !== compContainer.containerUID" (editBtnClicked)="switchToEditMode(compContainer)"/>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</fhem-native-component>
