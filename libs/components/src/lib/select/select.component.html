@@ -1,7 +1,7 @@
 <div #selectContainer class="select-container" [class.has-info]="info !== ''" [class.open]="selectState" [ngClass]="selectionType">
 	<div class="select-container-wrapper" *ngIf="theme$ | async">
 		<button class="ion-activatable select-btn" 
-			(click)="selectState = !selectState;"
+			(click)="toggleSelectState()"
 			[style.height]="height"
 			[style.backgroundColor]="_backgroundColor"
 			[attr.id]="selectionType === 'accordion' ? '' : selectorTriggerID">
@@ -62,18 +62,24 @@
 	</div>
 	<div class="scroll-container" [style.height]="searchable ? 'calc(100% - '+ height +')' : '100%'">
 		<ng-container *ngFor="let item of filteredItems; let i = index">
-			<button class="selection-item-btn ion-activatable" [style.height]="height"
-				[class.active]="value === ( selectProp ? item[selectProp] : item ) || checkForMultiActive(item)" 
-				(click)="selectItem(item, i)">
-				<div class="inner-container">
-					<div class="select-value-container">
-						<ng-template *ngIf="itemTemplate" [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
-						<ng-template *ngIf="!itemTemplate" [ngTemplateOutlet]="DEFAULT_ITEM" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+			<div class="selection-item" 
+				[style.height]="height"
+				[class.active]="value === ( selectProp ? item[selectProp] : item ) || checkForMultiActive(item)">
+				<button class="selection-item-btn ion-activatable" (click)="selectItem(item, i)">
+					<div class="inner-container">
+						<div class="select-value-container">
+							<ng-template *ngIf="itemTemplate" [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+							<ng-template *ngIf="!itemTemplate" [ngTemplateOutlet]="DEFAULT_ITEM" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+						</div>
+						<ion-icon name="checkmark-outline"></ion-icon>
 					</div>
-					<ion-icon name="checkmark-outline"></ion-icon>
-				</div>
-				<ion-ripple-effect [style.color]="_backgroundColor"></ion-ripple-effect>
-			</button>
+					<ion-ripple-effect [style.color]="_backgroundColor"/>
+				</button>
+				<button *ngIf="multi " class="deselect-multi-container ion-activatable" (click)="removeSelectedItem(item, i)">
+					<ion-icon name="trash-outline"></ion-icon>
+					<ion-ripple-effect [style.color]="_backgroundColor"/>
+				</button>
+			</div>
 		</ng-container>
 	</div>
 </ng-template>

@@ -5,7 +5,7 @@ import { tap } from 'rxjs';
 
 import { CssVariableService, ThemeService } from '@fhem-native/services';
 
-import { getUID } from '@fhem-native/utils';
+import { clone, getUID } from '@fhem-native/utils';
 
 @Component({
 	selector: 'fhem-native-select',
@@ -87,22 +87,39 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 	writeValue(value: any): void {
 		this.value = value;
 		this.updateChanges();
+		this.sortFilteredItems();
 	}
 
 	constructor(public cssVariable: CssVariableService, public theme: ThemeService){}
 
 	ngOnInit(): void {
 		this.getContainerHeight();
-		this.filteredItems = this.items;
+		this.filteredItems = clone(this.items);
+		this.sortFilteredItems();
 	}
 
 	ngOnChanges(): void {
-		this.filteredItems = this.items;
+		this.filteredItems = clone(this.items);
+		this.sortFilteredItems();
 		this.getContainerHeight();
+	}
+
+	toggleSelectState(): void{
+		this.selectState = !this.selectState;
+		if(this.selectState) this.sortFilteredItems();
 	}
 
 	private getContainerHeight(): void{
 		this._containerMaxHeight = Math.min(250, parseInt(this.height) * this.items.length + ( parseInt(this.height) * (this.searchable ? 1 : 0) ) + 30);
+	}
+
+	private sortFilteredItems(): void{
+		if(!this.multi || !this.value) return;
+		this.filteredItems.sort((a, b)=>{
+			const relA = this.selectProp ? a[this.selectProp] : a;
+			const relB = this.selectProp ? b[this.selectProp] : b;
+			return this.value.indexOf(relB) - this.value.indexOf(relA);
+		});
 	}
 
 	// check items for active, when multi selection is allowed
@@ -124,22 +141,18 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 		this.filteredItems = this.items.filter((x)=>{
 			return ( this.selectProp ? x[this.selectProp] : x ).toLowerCase().indexOf( filter ) > -1
 		});
+		this.sortFilteredItems();
 	}
 
-	selectItem(item: any, index: number){
+	selectItem(item: any, index: number): void{
 		const itemValue = this.selectProp ? item[this.selectProp] : item;
 
 		// check for multi selection
 		if(this.multi){
 			// copy selection array
 			const res = [...this.value];
-			// check if value is in array
-			const itemIndex = this.value.indexOf(itemValue);
-			if(itemIndex > -1){
-				res.splice(itemIndex, 1);
-			}else{
-				res.push(itemValue);
-			}
+			res.push(itemValue);
+
 			this.value = res;
 			this.updateChanges();
 
@@ -154,5 +167,24 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 			}
 			this.selectState = false;
 		}
+	}
+
+	removeSelectedItem(item: any, index: number): void{
+		if(!this.multi) return;
+
+		const itemValue = this.selectProp ? item[this.selectProp] : item;
+		// copy selection array
+		const res = [...this.value];
+
+		// check if value is in array
+		const itemIndex = this.value.lastIndexOf(itemValue);
+		if(item === -1) return;
+
+		res.splice(itemIndex, 1);
+
+		this.value = res;
+		this.updateChanges();
+
+		this.selectionChanged.emit({index: index, value: itemValue});
 	}
 }

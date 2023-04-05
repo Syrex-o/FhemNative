@@ -22,7 +22,6 @@ export class SelectColorComponent extends SelectComponent {
         super(cssVariable, theme);
     }
 
-
     ngModelChangeCallback(e: any){
         this.onChange(e);
     }
