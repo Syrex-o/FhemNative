@@ -39,10 +39,6 @@ testem.log
 Thumbs.db
 /.firebase
 
-# Firebase
-.firebaserc
-firebase.json
-
 .angular
 
 # Firebase

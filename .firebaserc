@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fhemnative-10b33": {
+      "hosting": {
+        "website": [
+          "fhemnative-10b33"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fhemnative-10b33"
+  }
+}
