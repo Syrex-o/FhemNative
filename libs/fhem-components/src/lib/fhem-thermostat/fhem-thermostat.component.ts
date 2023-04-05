@@ -67,14 +67,8 @@ export class FhemThermostatComponent{
 	styles: Record<string, any> = {
 		// percentage movement
 		move: 0,
-		// rotation in deg
-		rotation: 0,
 		// multiply factor for movement
 		factor: 100,
-		// rotation substraction
-		rotationSub: 0,
-		// heater ticks
-		heaterTicks: [],
 		// tick styles
 		viewBox: '0 0 300 300',
 		radius: 0,
@@ -260,7 +254,7 @@ export class FhemThermostatComponent{
 	}
 
     private getCurrentValue(): void{
-        this.current = this.fhemDevice?.readings[this.displayReading].Value || this.value;
+        this.current = this.fhemDevice?.readings[this.displayReading]?.Value || this.value;
     }
 
 	startMove(): void{
