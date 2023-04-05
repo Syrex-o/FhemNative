@@ -1,0 +1,14 @@
+:host{
+    .gif{
+        position: relative;
+        width: 100%;
+        min-width: 200px;
+        &.round{
+            border-radius: 20px;
+        }
+        &.center{
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}

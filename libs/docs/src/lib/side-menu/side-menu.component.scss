@@ -1,0 +1,120 @@
+:host{
+    
+
+    --logo-height: 60px;
+    --logo-padding-horizontal: 1.5rem;
+
+    --sidebar-content-padding-vertical: 1.5rem;
+    --sidebar-content-padding-horizontal: 1rem;
+
+    --nav-item-icon-gap: 10px;
+    --nav-item-padding-vertical: .8rem;
+    --nav-item-padding-main-horizontal: 0.4rem;
+    --nav-item-padding-sub-horizontal: .8rem;
+    .desktop-menu{
+        display: block;
+        position: sticky;
+        top: 0;
+        background-color: var(--tertiary);
+        height: 100vh;
+        width: var(--sidebar-width);
+        overflow: hidden;
+    }
+
+    .sidebar{
+        .logo{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: var(--logo-height);
+            padding: 0 var(--logo-padding-horizontal);
+            img{
+                width: 45px;
+                height: 45px;
+            }
+        }
+        .sidebar-content{
+            overflow-y: auto;
+            height: calc(100vh - var(--logo-height));
+            padding: var(--sidebar-content-padding-vertical) var(--sidebar-content-padding-horizontal);
+            ul{
+                li{
+                    padding-bottom: .5rem;
+                    &.last-main-item{
+                        padding-bottom: 1.5rem;
+                    }
+                    a{
+                        display: flex;
+                        align-items: center;
+                        border-radius: 8px;
+                        gap: var(--nav-item-icon-gap);
+                        ion-icon{
+                            transition: transform .3s cubic-bezier(.25,.46,.45,.94);
+                            &.rotated{
+                                transform: rotate(90deg);
+                            }
+                        }
+                        p{
+                            margin: 0;
+                        }
+                        &.main{
+                            padding: var(--nav-item-padding-vertical) var(--nav-item-padding-main-horizontal);
+                        }
+                        &.sub{
+                            padding: var(--nav-item-padding-vertical) var(--nav-item-padding-sub-horizontal);
+                            padding-left: calc(var(--nav-item-padding-main-horizontal) + var(--nav-item-icon-gap) + var(--nav-item-padding-sub-horizontal));
+                        }
+                        &.active{
+                            background-color: var(--primary);
+                        }
+                    }
+                }
+            }
+            .sub-menu{
+                height: 0px;
+                overflow: hidden;
+                opacity: 0;
+                transition: opacity 1s cubic-bezier(.25,.46,.45,.94), height .5s cubic-bezier(.25,.46,.45,.94);
+                will-change: height;
+                .sub-menu-list{
+                    transform: translateY(40px);
+                    transition: transform .5s cubic-bezier(.25,.46,.45,.94);
+                }
+                &.active{
+                    opacity: 1;
+                    padding-top: 0.5rem;
+                    .sub-menu-list{
+                        transform: translateY(0px);
+                    }
+                }
+            }
+        }
+    }
+
+    .des-block{
+        .name{
+            margin: 0;
+        }
+        .info{
+            margin-top: 0;
+        }
+    }
+
+    ul{
+        padding: 0;
+        list-style-type: none;
+    }
+
+    ion-menu{
+        --background: var(--tertiary);
+        ion-content{
+            --background: var(--tertiary);
+        }
+    }
+
+    @media (max-width: 1000px){
+        .desktop-menu{
+            display: none;
+        }
+    }
+}

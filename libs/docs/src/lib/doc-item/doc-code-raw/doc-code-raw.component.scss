@@ -1,0 +1,34 @@
+:host{
+    .code-block{
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        padding-right: 0px;
+    }
+    pre{
+        line-height: 200%;
+        width: calc(100% - 60px);
+    }
+    .copy-container{
+        width: 50px;
+        cursor: pointer;
+        position: relative;
+        .copy-icon{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            opacity: 0.5;
+            font-size: 20px;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.1s ease, transform 0.1s ease;
+            &:active{
+                transform: translate(-50%, -50%) scale(1.3);
+            }
+        }
+        &:hover{
+            .copy-icon{
+                opacity: 1;
+            }
+        }
+    }
+}

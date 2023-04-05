@@ -1,0 +1,42 @@
+:host{
+    .code-block{
+        margin: 30px 0;
+        position: relative;
+        border: 1px solid var(--text-b);
+        border-radius: var(--radius-b);
+        padding: 10px;
+        table{
+            .line-num{
+                width: 1%;
+                padding-left: 10px;
+                min-width: 50px;
+                border-right: 1px solid var(--text-b);
+            }
+            .line-code{
+                position: relative;
+                padding-left: 10px;
+                padding-right: 50px;
+                overflow: visible;
+                word-wrap: normal;
+                .copy-icon{
+                    position: absolute;
+                    top: 50%;
+                    opacity: 0;
+                    right: 10px;
+                    font-size: 20px;
+                    transform: translateY(-50%);
+                    transition: opacity 0.1s ease, transform 0.1s ease;
+                    &:active{
+                        transform: translateY(-50%) scale(1.3);
+                    }
+                }
+                &:hover{
+                    .copy-icon{
+                        opacity: 1;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}
