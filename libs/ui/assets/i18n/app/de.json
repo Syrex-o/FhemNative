@@ -402,6 +402,7 @@
                 "SLIDER": "Slider",
                 "SWIPER": "Swiper",
                 "SWITCH": "Switch",
+                "TABS": "Tabs",
                 "THERMOSTAT": "Thermostat"
             }
         }
@@ -2142,6 +2143,76 @@
                     "knobColorOff": {
                         "name": "Thumb Farbe off",
 					    "info": "Hintergrundfarbe des Thumbs im OFF Zustand"
+                    }
+                }
+            }
+        },
+        "Tabs": {
+            "NAME": "Tabs",
+            "INFO": "Ein Tabs-Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
+            "INPUTS": {
+                "data": {
+                    "containerPages": {
+                        "name": "Seiten",
+					    "info": "Anzahl der Tabs"
+                    },
+                    "borderRadius": {
+                        "name": "Rand-Radius",
+                        "info": "Radius vom Rand der Tabs Komponente"
+                    },
+                    "borderRadiusTopLeft":{
+                        "name": "Rand-Radius oben links",
+                        "info": "Radius vom Rand der Tabs Komponente oben links"
+                    },
+                    "borderRadiusTopRight":{
+                        "name": "Rand-Radius oben rechts",
+                        "info": "Radius vom Rand der Tabs Komponente oben rechts"
+                    },
+                    "borderRadiusBottomLeft":{
+                        "name": "Rand-Radius unten links",
+                        "info": "Radius vom Rand der Tabs Komponente unten links"
+                    },
+                    "borderRadiusBottomRight":{
+                        "name": "Rand-Radius unten rechts",
+                        "info": "Radius vom Rand der Tabs Komponente unten rechts"
+                    }
+                },
+                "bool": {
+                    "customBorder":{
+                        "name": "Eigener Rand-Radius",
+                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
+                    }
+                },
+                "arr_data": {
+                    "tabPosition": {
+                        "name": "Tabs Position",
+					    "info": "Position der Tab-Selektion"
+                    }
+                },
+                "arr_icon": {
+                    "icons":{
+                        "name": "Icons",
+					    "info": "Liste von Icons für die Tab-Selektion"
+                    }
+                },
+                "style": {
+                    "activeTabColor": {
+                        "name": "Aktiv-Farbe",
+					    "info": "Hintergrundfarbe des Tabs, der gerdae aktiv ist"
+                    }
+                },
+                "arr_style": {
+                    "iconColors":{
+                        "name": "Icon Farben",
+                        "info": "Icon Farben der Tabs"
+                    },
+                    "headerColors": {
+                        "name": "Kopfzeilen-Farben",
+                        "info": "Kopfzeilen-Farben der Tabs"
+                    },
+                    "backgroundColors": {
+                        "name": "Hintergrundfarben",
+                        "info": "Hintergrundfarben der Tabs"
                     }
                 }
             }
