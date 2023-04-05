@@ -1,0 +1,20 @@
+// global styles
+@import 'libs/ui/styles/_fonts.scss';
+@import 'libs/ui/styles/_align.scss';
+@import 'libs/ui/styles/_global.scss';
+@import 'libs/ui/styles/_toasts.scss';
+@import 'libs/ui/styles/_ion-overwrite.scss';
+@import 'libs/ui/styles/_variables.scss';
+
+// Web specific styles
+@import 'libs/ui/styles/web/sizes.scss';
+@import 'libs/ui/styles/web/colors.scss';
+@import 'libs/ui/styles/web/styles.scss';
+
+@import '~@ionic/angular/css/core.css';
+
+/* Basic CSS for apps built with Ionic */
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+@import '~@ionic/angular/css/display.css';

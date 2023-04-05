@@ -1,0 +1,232 @@
+META:
+    HEAD: Externer Zugriff
+    INFO: 
+
+CONTENT:
+    - BLOCK:
+        - SECTION_HEADER: 
+            text: Außerhalb des lokalen Netzwerks über FhemNative auf FHEM zugreifen.
+
+        - INNER_HEADER:
+            ID: important
+            text: "!!! Wichtig vorab:"
+
+        - TEXT:
+            - Seid euch den Gefahren bewusst!
+            - FhemNative ist nicht mit der Intention programmiert worden, eine absolut sichere Verbindung zu FHEM herzustellen.
+            - "Dinge über die ich mir klar sein sollte, bevor ich weitermache:"
+
+        - LIST:
+            - Kein System ist 100% sicher
+            - FhemNative speichert Benutzername und Passwort lokal auf eurem Gerät
+            - Fallweise macht ihr eure FHEM Instanz aus dem Internet aus erreichbar/angreifbar
+
+        - TEXT:
+            - "Solltet ihr FhemNative dennoch außerhalb eures lokalen Nezwerks verwenden wollen, sind hier mehrere Wege:"
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: vpn
+            text: "VPN"
+
+        - TEXT:
+            - Eine VPN Verbindung herzustellen, um sich mit FHEM zu verbinden, ist eindeutig empfohlen!
+            - Ein VPN Tunnel stellt eine sichere und verschlüsselte Verbindung her. 
+            - Für FhemNative ist die Verbindung über einen VPN Tunnel so, als wärt ihr im lokalen Netzwerk.
+            - "Guides zum einrichten von VPNs:"
+
+        - LINK:
+            type: external
+            text: "VPN mit Fritz!Box:"
+            linkText: avm.de
+            link: https://avm.de/service/vpn/
+
+        - LINK:
+            type: external
+            text: "VPN unter Android einrichten:"
+            linkText: avm.de
+            link: https://avm.de/service/wissensdatenbank/dok/FRITZ-Box-7560/1060_VPN-zur-FRITZ-Box-unter-Android-einrichten/
+
+        - LINK:
+            type: external
+            text: "VPN am iPhone/iPad einrichten:"
+            linkText: avm.de
+            link: https://avm.de/service/wissensdatenbank/dok/FRITZ-Box-7490/252_VPN-zur-FRITZ-Box-am-iPhone-oder-iPad-einrichten/
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: apache2
+            text: "Reverse Proxy über Apache2 Server"
+
+        - TEXT:
+            - Dieser Guide beschreibt, wie ihr FhemNative über einen Reverse Proxy mit DynDNS verwenden könnt.
+            - Diese Mehode wird eindeutig nicht empfohlen! Die Beschreibung richtet sich ausschließlich an Personen, die sich den Gefahren bewusst sind.
+            - "Notwendige Schritte für die Einrichtung:"
+
+        - LIST:
+            - wie im Abschnitt 'Sicherheit' beschrieben, die FHEM Instanz mit basicAuth absichern
+            - Apache2 Server installieren/konfigurieren
+            - SSL Zertifikat generieren
+            - DynDNS erestellen/einrichten
+
+        - INNER_HEADER:
+            ID: apache-config
+            text: Apache2 Server installieren/konfigurieren
+
+        - TEXT:
+            - "Als erstes werden die notwendigen Pakete installiert:"
+
+        - CODE:
+            - sudo apt-get update
+            - sudo apt-get upgrade
+            - sudo apt install apache2
+        
+        - TEXT:
+            - "Jetzt können die benötigten Rechte angelegt werden:"
+
+        - CODE:
+            - sudo chown -R www-data:www-data /var/www/html/
+            - sudo chmod -R 770 /var/www/html/
+
+        - TEXT:
+            - "Im Anschluss solltet ihr bereits die 'Default Page' von Apache im Browser anzeigen können unter: http://<IP Adresse des Raspberry Pi>"
+        
+        - TEXT:
+            - "Jetzt können die notwendigen Module aktiviert werden:"
+
+        - CODE:
+            - sudo a2enmod proxy proxy_http proxy_wstunnel rewrite ssl
+        
+        - TEXT:
+            - "Anschließend wird eine 'default' Konfiguration angelegt:"
+
+        - CODE:
+            - sudo nano /etc/apache2/conf-available/proxy_default.conf
+
+        - CODE_RAW: >-
+
+                <IfModule mod_proxy.c>
+                    ProxyRequests Off
+                    <Proxy *>
+                        Order deny,allow
+                        Allow from all
+                    </Proxy>
+                </IfModule>
+
+        - TEXT:
+            - "Nach dem speichern, kann dir konfiguration mit folgendem Befhel aktiviert werden:"
+
+        - CODE:
+            - sudo a2enconf proxy_default
+
+        - TEXT:
+            - Jetzt kann die fhem Konfigurationsdatei angelegt werden.
+            - Bitte achtet darauf den Port so einzustellen, wie ihr ihn in dem neu angelegten WEB device definiert habt!
+
+        - CODE:
+            - sudo nano /etc/apache2/conf-available/fhem.conf
+
+        - CODE_RAW: >-
+
+                <IfModule mod_proxy.c>
+                    <Location /fhem>
+                        RewriteEngine On
+
+                        RewriteCond %{HTTP:Upgrade} =websocket [NC]
+                        RewriteRule /fhem(.*)           ws://localhost:8088/fhem$1 [P,L]
+                        RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+                        RewriteRule /fhem(.*)           http://localhost:8088/fhem$1 [P,L]
+
+                        ProxyPass http://localhost:8088/fhem
+                        ProxyPassReverse http://localhost:8088/fhem
+
+                    </Location>
+                </IfModule>
+
+        - CODE:
+            - sudo a2enconf fhem
+
+        - TEXT:
+            - "Jetzt muss der Apache Server neu gestertet werden:"
+
+        - CODE:
+            - sudo service apache2 restart
+
+        - INNER_HEADER:
+            ID: ssl-certificate
+            text: SSL Zertifikat generieren
+
+        - TEXT:
+            - Damit die Kommunikation zu FHEM verschlüsselt ist, kann ein SSL Zertifikat angelegt werden.
+            - FhemNative akzeptiert grundsätzlich selbst-signierte Zertifikate.
+            - Dieser Guide verwendet openssl um ein Zertifikat zu generieren.
+            - "Als erstes installieren wir openssl:"
+
+        - CODE:
+            - apt-get install openssl
+        
+        - TEXT:
+            - "Anschließend können wir die Apache2 conf Datei anpassen:"
+
+        - CODE:
+            - sudo nano /etc/apache2/apache2.conf
+
+        - TEXT:
+            - "Am Ender der Config können folgende Zeilen eingefügt werden:"
+
+        - CODE_RAW: >-
+
+            <Directory /var/www/html>
+                AllowOverride All
+            </Directory>
+
+        - TEXT:
+            - "Jetzt kann mit openssl ein privater Schlüssel und das Websitezertifikat erstellt werden:"
+
+        - CODE:
+            - mkdir /etc/apache2/certificate
+            - cd /etc/apache2/certificate
+            - sudo openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out apache-certificate.crt -keyout apache.key
+
+        - TEXT:
+            - "Anschließend kann die 000-default.conf umgestellt werden, dass nur noch https Verbindungen erlaubt werden:"
+
+        - CODE:
+            - nano /etc/apache2/sites-enabled/000-default.conf
+
+        - CODE_RAW: >-
+
+            <VirtualHost *:80>
+                RewriteEngine On
+                RewriteCond %{HTTPS} !=on
+                RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]
+            </VirtualHost>
+            
+            <VirtualHost *:443>
+                ServerAdmin webmaster@localhost
+                DocumentRoot /var/www/html
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+                SSLEngine on
+                SSLCertificateFile /etc/apache2/certificate/apache-certificate.crt
+                SSLCertificateKeyFile /etc/apache2/certificate/apache.key
+            </VirtualHost>
+
+        - TEXT:
+            - Jetzt kann der Apache service neu gestartet werden. 
+
+        - CODE:
+            - sudo service apache2 restart
+        
+        - TEXT:
+            - Eure FHEM Instanz sollte nun ausschließlich über https erreichbar sein.
+            - "Bsp. URL: https://192.168.178.222/fhem"
+
+        - INNER_HEADER:
+            ID: dyn-dns
+            text: DynDNS erestellen/einrichten
+
+        - TEXT:
+            - Um jetzt auch von außerhalb eures lokalen Netzwerks Zugriff auf FHEM zu haben, wird DynDNS verwendet.
+            - Die Liste der Anbieter ist lang und ihr könnt euch einen aussuchen.

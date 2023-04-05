@@ -1,0 +1,18 @@
+:host{
+    ion-skeleton-text{
+        position: relative;
+        --border-radius: 16px;
+        background-color: var(--secondary);
+        min-width: 200px;
+        margin-top: .5rem;
+        &._1_2{
+            width: 50%;
+        }
+        &._1_3{
+            width: 33%;
+        }
+        &._2_3{
+            width: 66%;
+        }
+    }
+}

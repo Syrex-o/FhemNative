@@ -1,0 +1,68 @@
+META:
+    HEAD: Sicherheit
+    INFO: Kommunikation absichern
+
+CONTENT:
+    - BLOCK:
+        - SECTION_HEADER: 
+            text: Sichere Verbindungen
+
+        - TEXT:
+            - "FhemNative bietet die Möglichkeit die Verbindung zu FHEM etwas sicherer zu machen:"
+
+        - INNER_HEADER:
+            ID: basic-auth
+            text: Basic Auth
+
+        - TEXT:
+            - Wenn die Option Basic Auth innerhalb der FhemNative Websocket-Einstellungen aktiviert wird, hat man die Möglichkeit Benutzernamen und Passwort einzugeben.
+            - FhemNative verwendet dann diese Informationen beim erstellen der URL, um sich mit FHEM zu verbinden.
+
+        - TEXT:
+            - Damit diese Option funktioniert, muss basicAuth innerhalb von FHEM aktiviert werden. Dafür muss im ersten Schritt ein base64 Hash erstellt werden.
+            - "Das kann direkt im Terminal auf dem Raspberry Pi mit folgendem Komando gemacht werden:"
+
+        - CODE:
+            - echo -n benutzername:passwort | base64
+
+        - TEXT:
+            - "'benutzername' und 'passwort' müssen mit den selbst gewählten Login Informationen augetauscht werden."
+            - Nach der Eingabe des Befehls sollte der Hash in der Konsole angezeigt werden.
+
+        - INNER_HEADER:
+            ID: basic-auth-old-method
+            text: Basic Auth in FHEM einrichten (alte Methode)
+
+        - TEXT:
+            - Bevor du nun Benutzername und Passwort verwenden kannst, muss basicAuth in FHEM aktiviert werden.
+            - "Das geht indem du dem relevanten WEB device in FHEM folgendes Attribut zuweist:"
+
+        - CODE:
+            - attr WEB basicAuth base64
+
+        - TEXT:
+            - base64' musst du dabei mit dem generierten Hash Wert ersetzen.
+            - Damit die Änderungen übernommen werden, ist ein Neustart der FHEM Instanz notwendig. Anschließend sollte die Weboberfläche im Browser dich nach Benutzer und Passwort fragen.
+            - Hat alles geklappt, kann die Option basicAuth auch in FhemNative aktiviert werden.
+
+        - INNER_HEADER:
+            ID: basic-auth-new-method
+            text: Basic Auth in FHEM einrichten (neue Methode)
+
+        - TEXT:
+            - in FHEM gibt es seid langer Zeit einen neuen Weg, Basic Auth einzurichten.
+            - "Idealerweise legt man als erstes ein neues WEB device unter einem anderen Port an. Bsp.:"
+
+        - CODE:
+            - define apiWEB 8088 global
+
+        - TEXT:
+            - Anschließend kann ein neues allowed device angelegt werden, dass die Basic Auth Einstellungen verwaltet.
+            - "allowed device anlegen:"
+
+        - CODE:
+            - define allowed_WEB allowed apiWEB
+
+        - TEXT:
+            - Anschließend könnt ihr dem neuen allowed device das Attribut basicAuth zuweisen (Identisch zur alten Methode).
+            - Nun sollte die Oberfläche unter dem neu definierten Port nur noch mit Benutzername und Passwort erreichbar sein.

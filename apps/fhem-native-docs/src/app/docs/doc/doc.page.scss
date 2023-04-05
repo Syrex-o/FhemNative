@@ -1,0 +1,20 @@
+:host{
+    .full-container{
+        padding: 2rem 0;
+    }
+    .info{
+        margin-top: 0;
+    }
+    .edit-btn{
+        display: flex;
+        margin: 2rem 0;
+        align-items: center;
+        gap: 10px;
+        padding: 0 .5rem;
+        border-radius: var(--radius-b);
+        background-color: var(--info);
+        ion-icon{
+            font-size: 2rem;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+:host{
+    --sidebar-width: 300px;
+
+    .doc-page{
+        display: flex;
+        width: 100%;
+        .doc-page-content{
+            flex-grow: 1;
+            min-width: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            width: calc(100% - var(--sidebar-width));
+            main{
+                position: relative;
+                height: 100%;
+                padding: 1rem;
+                padding-bottom: 2rem;
+            }
+        }
+    }
+
+    @media (max-width: 1000px){
+        --sidebar-width: 0px;
+    }
+}

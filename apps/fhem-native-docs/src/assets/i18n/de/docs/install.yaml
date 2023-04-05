@@ -1,0 +1,85 @@
+META:
+    HEAD: Installation
+    INFO: Wie installiere ich FhemNative?
+
+CONTENT:
+    - BLOCK: 
+        - SECTION_HEADER:
+            text: "FhemNative unterstützt verschiedene Verbindungs-Typen:"
+
+        - INNER_HEADER:
+            ID: fhemweb
+            text: 1. FHEMWEB
+
+        - TEXT:
+            - "Bei dieser Variante ist keine zusätzliche Installation notwendig."
+            - "Es muss lediglich ein Attribut in der FHEMWEB Oberfälche für das WEB device gesetzt werden:"
+        
+        - CODE:
+            - attr WEB longpoll websocket
+
+        - NOTE:
+            - text: "Bitte nutze den vordefinierten Port:"
+            - text-bold: 8083
+            - line-break:
+            - text: Anderenfalls kann FhemNative eventuell keine Verbindung zu FHEM herstellen.
+         
+        - INNER_HEADER:
+            ID: external-websocket
+            text: 2. Externe Websocket
+
+        - LINK:
+            type: external
+            text: "Entwickler:"
+            linkText: ntruchsess
+            link: https://github.com/ntruchsess
+
+        - TEXT:
+            - Um diese Variante zu verwenden, wird eine zusätzliche Installation benötigt.
+            - Das FhemNative GitHub Repository hat einen zusätzlichen Ordner '00_Websocket'.
+            - Alle Inhalte des Ordners müssen in dem 'opt/fhem/FHEM' Ordner kopiert werden. 
+            - Anschließend kann mit der Installtion begonnen werden.
+
+        - LINK:
+            type: external
+            text: "Websocket Datein:"
+            linkText: Download
+            link: https://github.com/Syrex-o/FhemNative/tree/master/00_Websocket
+
+        - TEXT:
+            - "Auf der FHEM Instanz müssen einige Pakte installiert werden:"
+
+        - CODE:
+            - sudo cpan App::cpanminus
+            - sudo cpanm Protocol::WebSocket
+            - sudo cpanm JSON
+
+        - TEXT:
+            - "Danach müssen die Websocket Devices in FHEM definiert werden:"
+
+        - CODE:
+            - define wsPort websocket 8080 global
+            - define wsPort_json websocket_json
+
+        - TEXT:
+            - Der Port für FhemNative ändert sich dann auf 8080.
+
+        - NOTE:
+            - text: "Diese Variante kann in einigen Fällen schneller agieren und mehr Events absetzen."
+            - line-break:
+            - text: Reicht dir Variante 1 aus,
+            - text-bold: solltest du sie verwenden!
+            - text: Die externe Websocket wird nicht weiterentwicklt und kennt z.B. keine Umlaute.
+
+    - BLOCK:
+        - SECTION_HEADER: 
+            text: Beispiel-Konfiguration in FhemNative
+
+        - TEXT:
+            - Hier eine beispielhafte Konfiguration von den IP-Einstellungen in FhemNative.
+            - Die Einstellungen müssen an die jeweilige Konfiguration von FHEM angepasst werden.
+
+        - IMAGE:
+            ref: assets/img/connection-profile.png
+            alt: FhemNative Verbindungsprofil
+            width: 350px

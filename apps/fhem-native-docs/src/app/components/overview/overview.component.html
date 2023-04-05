@@ -1,0 +1,30 @@
+<ng-container *ngIf="itemRef$ | async as itemRef">
+    <div class="overview-container" *ngIf="itemRef.currentItem === -1">
+        <ng-container *ngFor="let item of items">
+            <a class="item" [routerLink]="item.ref" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <div class="item-container">
+                    <ion-icon [name]="item.icon"></ion-icon>
+                    <div class="card-content">
+                        <h4 class="size-e color-a">{{item.name | translate}}</h4>
+                        <p class="size-f color-b no-margin">{{item.info || '' | translate}}</p>
+                    </div>
+                </div>
+            </a>
+        </ng-container>
+    </div>
+
+    <div class="pagination-container" *ngIf="itemRef.pagination.next > -1 || itemRef.pagination.prev > -1">
+        <div class="pagination-item">
+            <a *ngIf="itemRef.pagination.prev > -1" [routerLink]="items[itemRef.pagination.prev].ref">
+                <p class="color-b size-f">{{'WEB.DICT.PREV' | translate}}</p>
+                <p class="color-a size-e">{{items[itemRef.pagination.prev].name | translate}}</p>
+            </a>
+       </div>
+       <div class="pagination-item next">
+            <a *ngIf="itemRef.pagination.next > -1" [routerLink]="items[itemRef.pagination.next].ref">
+                <p class="color-b size-f">{{'WEB.DICT.NEXT' | translate}}</p>
+                <p class="color-a size-e">{{items[itemRef.pagination.next].name | translate}}</p>
+            </a>
+       </div>
+    </div>
+</ng-container>
