@@ -342,6 +342,16 @@ export class ContextMenuComponent implements OnInit{
 
 		this.undoManager.addChange();
 		this.dismissInformer('delete');
+
+		// check if component editor is still relevant
+		const currComponentEdit = this.editor.component.getCurrentMode().componentUID;
+		if(!currComponentEdit) return;
+
+		// component still found in current registry --> not deleted
+		const componentRegistry = this.compLoader.getComponentFromRegistry(currComponentEdit);
+		if(componentRegistry) return;
+
+		this.editor.component.leaveEditMode();
 	}
 
 	async exportComponents(): Promise<void>{
