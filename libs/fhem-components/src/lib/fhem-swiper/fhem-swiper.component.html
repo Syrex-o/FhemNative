@@ -26,9 +26,11 @@
 								'border-bottom-left-radius.px': borderRadius,
 								'border-bottom-right-radius.px': borderRadius
 							}">
-							<fhem-native-component-loader [containerId]="compContainer.containerUID" [components]="compContainer.components"></fhem-native-component-loader>
+							<fhem-native-component-loader [containerId]="compContainer.containerUID" [components]="compContainer.components"/>
 						</div>
-						<fhem-native-edit-button *ngIf="(editFrom$ | async) !== compContainer.containerUID" (editBtnClicked)="switchToEditMode(compContainer)"></fhem-native-edit-button>
+						<ng-container *ngIf="(editFrom$ | async) as editFrom">
+							<fhem-native-edit-button *ngIf="editFrom !== compContainer.containerUID" (editBtnClicked)="switchToEditMode(compContainer)"/>
+						</ng-container>
 					</ng-template>
 				</ng-container>
 			</swiper>

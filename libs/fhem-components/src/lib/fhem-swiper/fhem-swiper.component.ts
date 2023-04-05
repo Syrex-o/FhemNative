@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { map, tap } from 'rxjs';
+import { map, share, tap } from 'rxjs';
 
 import { SwiperComponent, SwiperModule } from 'swiper/angular';
 import SwiperCore, { Pagination, SwiperOptions } from 'swiper';
@@ -69,7 +69,14 @@ export class FhemSwiperComponent implements AfterViewInit{
 
     // component reference
 	component: FhemComponentSettings|undefined;
-    editFrom$ = this.editor.core.getMode().pipe( tap((x)=> this.checkSwiper(x)), map(x=> x.edit ? x.editFrom : '') );
+    editFrom$ = this.editor.core.getMode().pipe( 
+        tap((x)=> this.checkSwiper(x)), 
+        map(x=> {
+            if( !this.component || this.component.components === undefined ) return null;
+            return x.edit ? x.editFrom : null;
+        }),
+        share()
+    );
 
     constructor(private editor: EditorService, private structure: StructureService){}
 
