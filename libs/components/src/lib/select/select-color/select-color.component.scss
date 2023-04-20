@@ -11,8 +11,13 @@ ion-popover.custom-select-container .select-component-color-container{
         border-radius: 50%;
         margin-right: var(--item-spacing-a);
     }
+    fhem-native-text-block,
     fhem-native-text-line{
         width: calc(100% - calc(var(--color-width) + var(--item-spacing-a)));
+    }
+    // inner text line shopuld be 100%
+    fhem-native-text-block > fhem-native-text-line{
+        width: 100%;
     }
     .selected-color{
         display: block;

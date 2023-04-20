@@ -410,7 +410,24 @@
     "DICT": {
         "SAVE": "Speichern",
         "CANCEL": "Abbrechen",
-        "CLOSE": "Schließen"
+        "CLOSE": "Schließen",
+        "COLORS": {
+            "ADD_COLOR": "Farbe hinzufügen",
+            "ERRORS": {
+                "MISSING_#": {
+                    "name": "Kein Hex Wert",
+                    "info": "Hex Farben müssen mit '#' beginnen"
+                },
+                "HEX_LENGTH": {
+                    "name": "Fehlerhafter Wert",
+                    "info": "Farbwerte können etweder 3 oder 6 Stellen lang sein"
+                },
+                "INVALID_HEX": {
+                    "name": "Falscher Wert",
+                    "info": "Der eingegebene Farbwert scheint fehlerhaft zu sein"
+                }
+            }
+        }
     },
     "BUTTONS": {
         "OKAY": "Okay",

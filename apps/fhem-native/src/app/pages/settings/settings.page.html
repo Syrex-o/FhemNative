@@ -1,0 +1,7 @@
+<fhem-native-close-btn-container #HEADER [pageHeader]="('PAGES.SETTINGS.HEAD' | translate)" (closeButtonClicked)="CORE_SETTINGS.back()"></fhem-native-close-btn-container>
+
+<ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
+    <fhem-native-settings #CORE_SETTINGS>
+        
+    </fhem-native-settings>
+</ion-content>

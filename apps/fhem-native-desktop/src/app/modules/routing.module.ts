@@ -10,7 +10,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'settings',
-		loadChildren: () => import('../pages/settings/settings.module').then( m => m.DesktopSettingsPageModule),
+		loadChildren: () => import('../pages/settings/settings.page').then( m => m.DESKTOP_SETTINGS_ROUTES),
 		providers: [DemoModeGuard],
 		canActivate: [ DemoModeGuard ]
 	},

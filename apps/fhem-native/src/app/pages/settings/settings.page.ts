@@ -5,19 +5,19 @@ import { SettingsPageModule } from '@fhem-native/pages';
 
 @Component({
 	standalone: true,
-	selector: 'fhem-native-desktop-settings',
+	selector: 'fhem-native-mobile-settings',
 	templateUrl: 'settings.page.html',
-    imports: [
+	imports: [
 		SettingsPageModule
 	]
 })
-export class DesktopSettingsPageComponent{
+export class MobileSettingsPageComponent{
     
 }
 
-export const DESKTOP_SETTINGS_ROUTES: Route[] = [
+export const MOBILE_SETTINGS_ROUTES: Route[] = [
     {
         path: '',
-        component: DesktopSettingsPageComponent
+        component: MobileSettingsPageComponent
     }
 ];

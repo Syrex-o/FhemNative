@@ -8,8 +8,10 @@
     [displayProp]="displayProp"
     [label]="label"
     [info]="info"
+    [addItems]="true"
     [searchable]="searchable"
-    [placeholder]="placeholder">
+    [placeholder]="placeholder"
+    (newItemSelected)="onNewItemSelected($event)">
 
     <!-- current colors -->
     <ng-template #VALUE_TEMPLATE let-currentValue="currentValue">
@@ -29,7 +31,15 @@
     <ng-template #ITEM_TEMPLATE let-item="item" let-index="index">
         <div class="select-component-color-container">
             <span class="selectable-color" [style.backgroundColor]="displayProp && displayProp !== '' ? item[displayProp] : item"></span>
-            <fhem-native-text-line [shorten]="true" [bold]="true" [text]="( displayProp ? item[displayProp] : item )"></fhem-native-text-line>
+            <fhem-native-text-line [shorten]="true" [bold]="true" [text]="( displayProp ? item[displayProp] : item )"/>
+        </div>
+    </ng-template>
+
+    <!-- add new color -->
+    <ng-template #ADD_ITEM_TEMPLATE let-value="value">
+        <div class="select-component-color-container">
+            <span class="selectable-color" [style.backgroundColor]="value"></span>
+            <fhem-native-text-block [shorten]="true" [label]="'DICT.COLORS.ADD_COLOR' | translate" [info]="value"/>
         </div>
     </ng-template>
 </fhem-native-select>

@@ -96,5 +96,14 @@ export function getCssGradient(colorArr: string[]): string{
 	return `linear-gradient(90deg, ${gradient.join(', ')})`;
 }
 
+/**
+ * Check string for valid hex
+ * @param str 
+ * @returns 
+ */
+export function isValidHex(str: string): boolean{
+	return (/^#([0-9A-F]{3}){1,2}$/i).test(str);
+}
+
 // color style variations
 export declare type ColorStyle = 'hex'|'#hex'|'rgb'|'hsl';
