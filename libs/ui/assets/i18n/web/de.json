@@ -26,6 +26,13 @@
 				}
 			}
 		},
+		"COMPS": {
+			"ITEMS": {
+				"OVERVIEW": {
+					"HEAD": "Übersicht"
+				}
+			}
+		},
 		"DICT": {
 			"PREV": "Zurück",
 			"NEXT": "Weiter"
