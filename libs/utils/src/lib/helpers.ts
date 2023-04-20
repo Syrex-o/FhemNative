@@ -128,3 +128,10 @@ export function animateMove(fromNum: number, toNum: number, cb: (val: number)=> 
 	}
 	frame();
 }
+
+export function toTitleCase(text: string){
+	return text.toLowerCase()
+		.split(' ')
+    	.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    	.join(' ');
+}
