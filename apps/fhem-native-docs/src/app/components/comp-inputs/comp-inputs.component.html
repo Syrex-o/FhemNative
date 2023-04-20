@@ -1,0 +1,129 @@
+<ng-container [ngSwitch]="inputType">
+    <!-- Data -->
+    <ng-container *ngSwitchCase="'data'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs}"/>
+    </ng-container>
+
+    <!-- Bool -->
+    <ng-container *ngSwitchCase="'bool'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs, bool: true}"/>
+    </ng-container>
+
+    <!-- Icon -->
+    <ng-container *ngSwitchCase="'icon'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs, icon: true}"/>
+    </ng-container>
+
+    <!-- Arr Icon -->
+    <ng-container *ngSwitchCase="'arr_icon'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs, icon: true, multi: true}"/>
+    </ng-container>
+
+    <!-- Arr Data -->
+    <ng-container *ngSwitchCase="'arr_data'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs, multi: true}"/>
+    </ng-container>
+
+    <!-- Style -->
+    <ng-container *ngSwitchCase="'style'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs, color: true}"/>
+    </ng-container>
+
+    <!-- Arr Style -->
+    <ng-container *ngSwitchCase="'arr_style'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs, color: true, multi: true}"/>
+    </ng-container>
+
+    <!-- Gradient -->
+    <ng-container *ngSwitchCase="'arr_style_grad'">
+        <ng-container *ngTemplateOutlet="TABLE; context: {$implicit: inputs, color: true, multi: true}"/>
+    </ng-container>
+</ng-container>
+
+<ng-template #TABLE let-input let-color="color" let-multi="multi" let-bool="bool" let-icon="icon">
+    <ng-container *ngFor="let row of input | keyvalue: keepOrder; trackBy: trackByFn">
+        <div class="table-wrapper">
+            <p class="size-f color-a bold">{{row.key}}</p>
+            <table class="mb-1-5">
+                <tbody>
+                    <!-- Name -->
+                    <tr>
+                        <td>
+                            <p class="size-f color-a bold no-margin">Name</p>
+                        </td>
+                        <td>
+                            <p class="size-f color-a no-margin">{{'COMPONENTS.'+ componentName +'.INPUTS.' + inputType + '.' + row.key + '.name' | translate}}</p>
+                        </td>
+                    </tr>
+                    <!-- Info -->
+                    <tr>
+                        <td>
+                            <p class="size-f color-a bold no-margin">Info</p>
+                        </td>
+                        <td>
+                            <p class="size-f color-a no-margin">{{'COMPONENTS.'+ componentName +'.INPUTS.' + inputType + '.' + row.key + '.info' | translate}}</p>
+                        </td>
+                    </tr>
+                    <!-- type -->
+                    <tr>
+                        <td>
+                            <p class="size-f color-a bold no-margin">Type</p>
+                        </td>
+                        <td>
+                            <p class="size-f color-a no-margin">
+                                {{ $any(row.value).type || (multi ? 'array' : (bool ? 'boolean' : 'string')) }}
+                            </p>
+                        </td>
+                    </tr>
+                    <!-- default -->
+                    <tr>
+                        <td>
+                            <p class="size-f color-a bold no-margin">Default</p>
+                        </td>
+                        <td>
+                            <div class="color-block-container" *ngIf="color; else ICON">
+                                <ng-container *ngIf="multi; else SINGLE_COLOR">
+                                    <ng-container *ngFor="let color of $any(row.value)">
+                                        <p class="color-block size-f color-a no-margin">
+                                            <span class="color" [style.background-color]="color"></span>
+                                            {{color}}
+                                        </p>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-template #SINGLE_COLOR>
+                                    <p class="color-block size-f color-a no-margin">
+                                        <span class="color" [style.background-color]="row.value"></span>
+                                        {{row.value}}
+                                    </p>
+                                </ng-template>
+                            </div>
+                            <ng-template #ICON>
+                                <div class="icon-block-container" *ngIf="icon; else DEFAULT">
+                                    <ng-container *ngIf="multi; else SINGLE_ICON">
+                                        <ng-container *ngFor="let icon of $any(row.value)">
+                                            <p class="icon-block size-f color-a no-margin">
+                                                <fhem-native-icon class="color-a" [icon]="icon"></fhem-native-icon>
+                                                {{icon}}
+                                            </p>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-template #SINGLE_ICON>
+                                        <p class="icon-block size-f color-a no-margin">
+                                            <fhem-native-icon class="color-a" [icon]="$any(row.value)"></fhem-native-icon>
+                                            {{row.value}}
+                                        </p>
+                                    </ng-template>
+                                </div>
+                            </ng-template>
+                            <ng-template #DEFAULT>
+                                <p class="size-f color-a no-margin">
+                                    {{ $any(row.value).value !== undefined ? $any(row.value).value : row.value }}
+                                </p>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+</ng-template>
