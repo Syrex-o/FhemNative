@@ -1,4 +1,4 @@
 <ng-container *ngIf="theme$ | async">
-    <fhem-native-text-line class="label" [text]="label" [bold]="true" [color]="_labelColor"></fhem-native-text-line>
-    <fhem-native-text-line *ngIf="info !== ''" class="info" [text]="info" [color]="_infoColor"></fhem-native-text-line>
+    <fhem-native-text-line class="label" [shorten]="shorten" [text]="label" [bold]="true" [color]="_labelColor"/>
+    <fhem-native-text-line *ngIf="info !== ''" class="info" [shorten]="shorten" [text]="info" [color]="_infoColor"/>
 </ng-container>

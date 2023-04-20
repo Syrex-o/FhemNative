@@ -18,6 +18,9 @@ export class TextBlockComponent{
 	// info --> detailed description of the setting
 	@Input() info = '';
 
+	// shorten all text lines
+	@Input() shorten = false;
+
 	@Input() labelColor: string|undefined;
 	@Input() infoColor: string|undefined;
 
