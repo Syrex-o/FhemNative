@@ -1,0 +1,28 @@
+// App specific styles
+@import 'libs/ui/styles/app/editable.scss';
+@import 'libs/ui/styles/app/sizes.scss';
+@import 'libs/ui/styles/app/colors.scss';
+@import 'libs/ui/styles/app/styles.scss';
+
+.full-container{
+    padding: 2rem 0;
+}
+.info{
+    margin-top: 0;
+}
+.comp-type{
+    display: flex;
+    align-items: center;
+    margin-top: var(--item-spacing-a);
+    ion-icon{
+        font-size: 20px;
+        margin-right: var(--item-spacing-b);
+    }
+}
+.sanbox-container{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border-radius: var(--radius-a);
+    border: 2px dotted var(--secondary);
+}

@@ -1,0 +1,50 @@
+<ng-container *ngIf="comp$ | async as comp;">
+    <ng-container *ngIf="comp; else LOADING">
+        <!-- component info -->
+        <div class="full-container">
+            <!-- component type -->
+            <div class="comp-type mb-1-5">
+                <ion-icon [name]="componentTypes[comp.type].icon" [style.color]="componentTypes[comp.type].color"></ion-icon>
+                <p class="siz-e color-b">{{'COMPONENTS.GENERAL.TYPES.' + comp.type | translate}}</p>
+            </div>
+
+            <h2 class="size-b spacing-a color-a no-margin">{{ 'COMPONENTS.'+ comp.name +'.NAME' | translate }}</h2>
+            <h3 class="info mb-1-5 size-d spacing-b color-b">{{ 'COMPONENTS.'+ comp.name +'.INFO' | translate }}</h3>
+        </div>
+
+        <div class="full-container" fhemNativeScrollManager>
+            <!-- demo -->
+            <ng-container *ngIf="sandboxComponents">
+                <fhem-native-doc-item-header header="Demo Container:" headerID="demo" [asAnchor]="true"/>
+                <div class="sanbox-container">
+                    <fhem-native-component-loader [containerId]="sandboxUID" [components]="sandboxComponents"/>
+                    <fhem-native-edit-button (editBtnClicked)="toggleEditMode()"/>
+                </div>
+            </ng-container>
+
+            <!-- Component Inputs -->
+            <div class="full-container">
+                <h3 class="mb-1-5 size-d spacing-b color-a">Inputs:</h3>
+                <ng-container *ngFor="let compInputs of comp.inputs | keyvalue: keepOrder; trackBy: trackByFn">
+                    <fhem-native-doc-item-header 
+                        [header]="'COMPONENTS.GENERAL.SETTINGS.' + compInputs.key | translate" 
+                        [headerID]="compInputs.key" [asAnchor]="true"/>
+                    <fhem-native-docs-comp-inputs 
+                        [componentName]="comp.name"
+                        [inputType]="compInputs.key" 
+                        [inputs]="compInputs.value"/>
+                </ng-container>
+            </div>
+
+            <!-- Component Dependencies -->
+            <div class="full-container" *ngIf="comp.dependencies">
+                <fhem-native-doc-item-header header="Dependencies:" headerID="dependencies" [asAnchor]="true"/>
+                <fhem-native-docs-comp-dependencies [dependencies]="comp.dependencies"/>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-template #LOADING>
+    <fhem-native-docs-skeletton-doc></fhem-native-docs-skeletton-doc>
+</ng-template>
