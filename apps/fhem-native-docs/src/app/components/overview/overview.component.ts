@@ -48,7 +48,7 @@ export class OverviewComponent implements OnInit{
     }
 
     private getItemRef(): Display{
-        const baseUrl = this.router.url.split('#')[0];
+        const baseUrl = this.router.url.split('#')[0].replace('%20', ' ');
         const activeIndex = this.items.findIndex(x=> (x.ref || []).join('/').slice(1) === baseUrl);
         let nextItem = -1, prevItem = -1
         if(activeIndex > -1){

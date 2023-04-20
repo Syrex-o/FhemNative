@@ -13,6 +13,10 @@ const routes: Routes = [
         loadChildren: ()=> import('./docs/docs.page').then(mod=> mod.DOCS_ROUTES)
     },
 	{
+        path: 'components',
+        loadChildren: ()=> import('./comps/comps.page').then(mod=> mod.COMPS_ROUTES)
+    },
+	{
         path: 'sandbox',
         loadChildren: ()=> import('./playground/playground.page').then(mod=> mod.PLAYGROUND_ROUTES)
     },
