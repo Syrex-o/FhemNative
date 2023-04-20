@@ -47,40 +47,60 @@
 <ng-template #DEFAULT_VALUE let-currentValue="currentValue">
 	<!-- multi value -->
 	<ng-template [ngIf]="multi" [ngIfElse]="SINGLE_VALUE">
-		<fhem-native-text-line [shorten]="true" [text]="multi && (currentValue && currentValue.length > 0) ? currentValue : placeholder"></fhem-native-text-line>
+		<fhem-native-text-line [shorten]="true" [text]="multi && (currentValue && currentValue.length > 0) ? currentValue : placeholder"/>
 	</ng-template>
 	<!-- single value -->
 	<ng-template #SINGLE_VALUE>
-		<fhem-native-text-line [shorten]="true" [text]="currentValue || placeholder"></fhem-native-text-line>
+		<fhem-native-text-line [shorten]="true" [text]="currentValue || placeholder"/>
 	</ng-template>
 </ng-template>
 
 <!-- Items Loop -->
 <ng-template #ITEMS_CONTAINER>
 	<div class="search-container" *ngIf="searchable" [style.height]="height">
-		<ion-searchbar (ionChange)="filterItems($any($event))"></ion-searchbar>
+		<ion-searchbar [(ngModel)]="searchInput" (ionChange)="filterItems($any($event))"/>
 	</div>
 	<div class="scroll-container" [style.height]="searchable ? 'calc(100% - '+ height +')' : '100%'">
-		<ng-container *ngFor="let item of filteredItems; let i = index">
-			<div class="selection-item" 
-				[style.height]="height"
-				[class.active]="value === ( selectProp ? item[selectProp] : item ) || checkForMultiActive(item)">
-				<button class="selection-item-btn ion-activatable" (click)="selectItem(item, i)">
+		<!-- add new option -->
+		<ng-container *ngIf="addItems && filteredItems.length === 0; else DEFAULT_ITEMS">
+			<div class="selection-item" [style.height]="height">
+				<button class="selection-item-btn ion-activatable" (click)="selectNewItem()">
 					<div class="inner-container">
 						<div class="select-value-container">
-							<ng-template *ngIf="itemTemplate" [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
-							<ng-template *ngIf="!itemTemplate" [ngTemplateOutlet]="DEFAULT_ITEM" [ngTemplateOutletContext]="{item: item, index: i}"></ng-template>
+							<ng-container *ngIf="addItemTemplate; else DEFAULT_ADD_ITEM">
+								<ng-template [ngTemplateOutlet]="addItemTemplate" [ngTemplateOutletContext]="{value: searchInput}"/>
+							</ng-container>
+							<ng-template #DEFAULT_ADD_ITEM>
+								<fhem-native-text-line [shorten]="true" [bold]="true" [text]="searchInput"/>
+							</ng-template>
 						</div>
-						<ion-icon name="checkmark-outline"></ion-icon>
 					</div>
-					<ion-ripple-effect [style.color]="_backgroundColor"/>
-				</button>
-				<button *ngIf="multi " class="deselect-multi-container ion-activatable" (click)="removeSelectedItem(item, i)">
-					<ion-icon name="trash-outline"></ion-icon>
-					<ion-ripple-effect [style.color]="_backgroundColor"/>
 				</button>
 			</div>
 		</ng-container>
+
+		<ng-template #DEFAULT_ITEMS>
+			<ng-container *ngFor="let item of filteredItems; let i = index">
+				<div class="selection-item" 
+					[style.height]="height"
+					[class.active]="value === ( selectProp ? item[selectProp] : item ) || checkForMultiActive(item)">
+					<button class="selection-item-btn ion-activatable" (click)="selectItem(item, i)">
+						<div class="inner-container">
+							<div class="select-value-container">
+								<ng-template *ngIf="itemTemplate" [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item, index: i}"/>
+								<ng-template *ngIf="!itemTemplate" [ngTemplateOutlet]="DEFAULT_ITEM" [ngTemplateOutletContext]="{item: item, index: i}"/>
+							</div>
+							<ion-icon name="checkmark-outline"/>
+						</div>
+						<ion-ripple-effect [style.color]="_backgroundColor"/>
+					</button>
+					<button *ngIf="multi " class="deselect-multi-container ion-activatable" (click)="removeSelectedItem(item, i)">
+						<ion-icon name="trash-outline"/>
+						<ion-ripple-effect [style.color]="_backgroundColor"/>
+					</button>
+				</div>
+			</ng-container>
+		</ng-template>
 	</div>
 </ng-template>
 

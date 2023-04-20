@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, ChangeDetectionStrategy, forwardRef, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, ChangeDetectionStrategy, forwardRef, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SearchbarCustomEvent } from '@ionic/angular';
 import { tap } from 'rxjs';
@@ -22,6 +22,9 @@ import { clone, getUID } from '@fhem-native/utils';
 export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 	@ViewChild('selectContainer', {read: ElementRef}) selectContainer!: ElementRef;
 
+	themeService = inject(ThemeService);
+	cssVariableService = inject(CssVariableService);
+
 	// get UID for trigger of info
 	// needed, when multiple inputs are on same page
 	public selectorTriggerID = getUID();
@@ -32,6 +35,7 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 	// own implementation, when needed
 	@ContentChild('VALUE_TEMPLATE') valueTemplate!: TemplateRef<any>;
 	@ContentChild('ITEM_TEMPLATE') itemTemplate!: TemplateRef<any>;
+	@ContentChild('ADD_ITEM_TEMPLATE') addItemTemplate!: TemplateRef<any>;
 
 	// Style of the selection --> ionic styles/custom
 	@Input() selectionType: 'accordion'|'action-sheet' = 'accordion';
@@ -44,6 +48,9 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 
 	// allow search
 	@Input() searchable = false;
+
+	// allow addign new items
+	@Input() addItems = false;
 
 	/**
 		When Items is an Array of objects, we might need the properties for
@@ -62,18 +69,20 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 	@Input() actOnCallback = false;
 
 	// Styling Inputs
-	@Input() height = this.cssVariable.getVariableValue('--item-height-b');
+	@Input() height = this.cssVariableService.getVariableValue('--item-height-b');
 	@Input() backgroundColor: string|undefined;
 
-	theme$ = this.theme.getThemePipe('--tertiary').pipe(tap(x=> this._backgroundColor = this.backgroundColor || x));
+	theme$ = this.themeService.getThemePipe('--tertiary').pipe(tap(x=> this._backgroundColor = this.backgroundColor || x));
 	_backgroundColor: string|undefined;
 	_containerMaxHeight = 250;
 
 	// value change
 	@Output() selectionChanged = new EventEmitter<{index: number, value: any}>();
+	@Output() newItemSelected = new EventEmitter<string>();
 
 	// list of filtered items from search
 	filteredItems: Array<any> = [];
+	searchInput = '';
 
 	// Current Value
 	value: any;
@@ -89,8 +98,6 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 		this.updateChanges();
 		this.sortFilteredItems();
 	}
-
-	constructor(public cssVariable: CssVariableService, public theme: ThemeService){}
 
 	ngOnInit(): void {
 		this.getContainerHeight();
@@ -167,6 +174,11 @@ export class SelectComponent implements OnInit, OnChanges, ControlValueAccessor{
 			}
 			this.selectState = false;
 		}
+	}
+
+	selectNewItem(): void{
+		this.newItemSelected.emit(this.searchInput);
+		if(!this.multi) this.selectState = false;
 	}
 
 	removeSelectedItem(item: any, index: number): void{
