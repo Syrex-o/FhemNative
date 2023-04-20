@@ -4,7 +4,7 @@
     [class.font-a]="asHeader"
     [class.shorten]="shorten"
     [style.color]="color || ''"
-    [style.white-space]="wrap ? 'normal' : 'nowrap'"
+    [style.white-space]="shorten ? 'nowrap' : (wrap ? 'normal' : 'nowrap')"
     [ngClass]="[ 
         (bold ? 'spacing-a' : 'spacing-b'), 
         (bold ? 'size-e-app' : 'size-f-app'),
