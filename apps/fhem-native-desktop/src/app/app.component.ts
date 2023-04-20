@@ -1,18 +1,14 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 // Services
 import { FhemService, ThemeService, LoaderService, StorageService, SettingsService } from '@fhem-native/services';
-
-// Plugins
-import { App } from '@capacitor/app';
 
 @Component({
 	selector: 'fhem-native-desktop-root',
 	templateUrl: 'app.component.html'
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
 	constructor(
-		private zone: NgZone,
 		private fhem: FhemService,
 		private theme: ThemeService,
 		public loader: LoaderService,
@@ -20,12 +16,6 @@ export class AppComponent implements OnInit{
 		public settings: SettingsService) {
 		// initialize app
 		this.initializeApp();
-	}
-
-	ngOnInit(): void {
-		// app pause and resume
-		App.addListener('pause', ()=> this.zone.run(()=> this.handleAppPause()) );
-		App.addListener('resume', ()=> this.zone.run(()=> this.handleAppResume()) );
 	}
 
 	private async initializeApp(): Promise<void>{
@@ -37,14 +27,5 @@ export class AppComponent implements OnInit{
 		this.theme.changeTheme(this.settings.app.theme);
 		// initialize fhem
 		this.fhem.connect();
-	}
-
-	// App events
-	private handleAppResume(): void{
-		this.fhem.reconnect();
-	}
-
-	private handleAppPause(): void{
-		this.fhem.disconnect();
 	}
 }
