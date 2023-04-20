@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, forwardRef, ViewEncapsulation, View
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { SelectComponent } from '../select.component';
-import { CssVariableService, ThemeService } from '@fhem-native/services';
+
 import { ResizedEvent } from '@fhem-native/directives';
 
 @Component({
@@ -22,10 +22,6 @@ export class SelectGradientComponent extends SelectComponent implements AfterVie
     @ViewChild('Gradient', {read: ElementRef}) canvas!: ElementRef;
 
     private innerValue: any;
-
-    constructor(public override cssVariable: CssVariableService, public override theme: ThemeService){
-        super(cssVariable, theme);
-    }
 
     ngModelChangeCallback(e: any){
         this.innerValue = e;

@@ -2,7 +2,8 @@ import { Component, ChangeDetectionStrategy, forwardRef, ViewEncapsulation } fro
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { SelectComponent } from '../select.component';
-import { CssVariableService, IconService, ThemeService } from '@fhem-native/services';
+
+import { IconService } from '@fhem-native/services';
 
 @Component({
 	selector: 'fhem-native-select-icon',
@@ -18,16 +19,12 @@ import { CssVariableService, IconService, ThemeService } from '@fhem-native/serv
 })
 
 export class SelectIconComponent extends SelectComponent {
-    constructor(
-        public icon: IconService,
-        public override cssVariable: CssVariableService, 
-        public override theme: ThemeService){
-        super(cssVariable, theme);
+    constructor(public icon: IconService){
+        super();
 
         this.selectProp = 'icon';
         this.displayProp = 'icon';
     }
-
 
     ngModelChangeCallback(e: any){
         this.onChange(e);
