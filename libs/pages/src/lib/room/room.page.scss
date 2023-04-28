@@ -44,11 +44,15 @@
         width: var(--componentCreator-width);
     }
 
+    ion-content{
+        --background: transparent;
+    }
+
     .room-container{
         display: flex;
-        position: absolute;
-        top: 60px;
-		height: calc(100% - 60px);
+        // position: absolute;
+        // top: 60px;
+		height: 100%;
 		width: 100%;
         overflow: hidden;
         .content{

@@ -26,7 +26,10 @@ export class RoomPageComponent implements OnInit{
 	@HostBinding('class.component-creator-expanded') componentCreatorMenuState = false;
 	@HostListener('window:resize') onResize(){ this.mobileMenus = window.innerWidth <= 900; }
 
-	constructor(private route: ActivatedRoute, private editor: EditorService, public structure: StructureService){}
+	constructor(
+		private route: ActivatedRoute, 
+		private editor: EditorService, 
+		public structure: StructureService){}
 
 	ngOnInit() { this.onResize(); }
 
