@@ -1,65 +1,75 @@
-<div class="flex-container">
-    <!-- logo container -->
-    <div *ngIf="mobile" class="logo-container">
-        <img src="/assets/img/icon_transparent.png" alt="FhemNative Logo">
-        <p class="bold no-margin font-a spacing-c color-a-app">FhemNative</p>
-        <button class="menu-btn keep-size no-margin ion-activatable" (click)="toggleMenu()">
-            <ion-icon name="close-outline"></ion-icon>
-            <ion-ripple-effect></ion-ripple-effect>
-        </button>
-    </div>
-
-    <!-- expander -->
-    <button *ngIf="!mobile" class="menu-btn keep-size ion-activatable" (click)="toggleMenu()">
-        <ion-icon name="resize-outline"></ion-icon>
-        <ion-ripple-effect></ion-ripple-effect>
-    </button>
-    
-    <!-- home room -> always there -->
-    <div class="menu-btn-container">
-        <button class="menu-btn ion-activatable" (click)="switchRoom(0)">
-            <ion-icon name="home-outline"></ion-icon>
-            <fhem-native-text-line text="Home" [bold]="true"></fhem-native-text-line>
-            <ion-ripple-effect></ion-ripple-effect>
-        </button>
-    </div>
-</div>
-
-<!-- user rooms -->
-<div class="scroll-container" [class.edit-mode]="(coreEditor$ | async)?.edit" cdkDropList (cdkDropListDropped)="drop($event)">
-    <ng-template [ngIf]="structure.structuredRooms.length > 0">
-        <ng-container *ngFor="let room of structure.structuredRooms; let first = first">
-            <!-- single room -->
-            <div class="menu-btn-container" *ngIf="!first" cdkDrag>
-                <!-- Drag And Drop Placeholder -->
-				<div class="custom-placeholder" *cdkDragPlaceholder></div>
-                
-                <button class="menu-btn ion-activatable" (click)="switchRoom(room.ID)">
-                    <fhem-native-icon [icon]="room.icon"></fhem-native-icon>
-                    <fhem-native-text-line [text]="room.name" [bold]="true"></fhem-native-text-line>
+<ion-header>
+    <ion-toolbar>
+        <div class="flex-container">
+            <!-- logo container -->
+            <div *ngIf="mobile" class="logo-container">
+                <img src="/assets/img/icon_transparent.png" alt="FhemNative Logo">
+                <p class="bold no-margin font-a spacing-c color-a-app">FhemNative</p>
+                <button class="menu-btn keep-size no-margin ion-activatable" (click)="toggleMenu()">
+                    <ion-icon name="close-outline"></ion-icon>
                     <ion-ripple-effect></ion-ripple-effect>
                 </button>
-
-                <div class="modify-container">
-                    <ion-button class="edit-btn"  (click)="editRoom(room)">
-                        <ion-icon name="pencil-outline"></ion-icon>
-                    </ion-button>
-                    <ion-button class="edit-btn" cdkDragHandle>
-                        <ion-icon name="menu-outline"></ion-icon>
-                    </ion-button>
-                </div>
             </div>
-        </ng-container>
-    </ng-template>
-</div>
+        
+            <!-- expander -->
+            <button *ngIf="!mobile" class="menu-btn keep-size ion-activatable" (click)="toggleMenu()">
+                <ion-icon name="resize-outline"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+            
+            <!-- home room -> always there -->
+            <div class="menu-btn-container">
+                <button class="menu-btn ion-activatable no-margin" (click)="switchRoom(0)">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <fhem-native-text-line text="Home" [shorten]="true" [bold]="true"></fhem-native-text-line>
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<!-- user rooms -->
+<ion-content>
+    <div class="scroll-container" [class.edit-mode]="(coreEditor$ | async)?.edit" cdkDropList (cdkDropListDropped)="drop($event)">
+        <ng-template [ngIf]="structure.structuredRooms.length > 0">
+            <ng-container *ngFor="let room of structure.structuredRooms; let first = first">
+                <!-- single room -->
+                <div class="menu-btn-container" *ngIf="!first" cdkDrag>
+                    <!-- Drag And Drop Placeholder -->
+                    <div class="custom-placeholder" *cdkDragPlaceholder></div>
+                    
+                    <button class="menu-btn ion-activatable" (click)="switchRoom(room.ID)">
+                        <fhem-native-icon [icon]="room.icon"></fhem-native-icon>
+                        <fhem-native-text-line [text]="room.name" [shorten]="true" [bold]="true"></fhem-native-text-line>
+                        <ion-ripple-effect></ion-ripple-effect>
+                    </button>
+    
+                    <div class="modify-container">
+                        <ion-button class="edit-btn"  (click)="editRoom(room)">
+                            <ion-icon name="pencil-outline"></ion-icon>
+                        </ion-button>
+                        <ion-button class="edit-btn" cdkDragHandle>
+                            <ion-icon name="menu-outline"></ion-icon>
+                        </ion-button>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-template>
+    </div>
+</ion-content>
 
 <!-- settings -->
-<div class="flex-container" *ngIf="(settings.demoMode | async) === false">
-    <button class="menu-btn no-margin ion-activatable" (click)="switchPage(['/', 'settings'])">
-        <ion-icon name="settings-outline"></ion-icon>
-        <fhem-native-text-line [text]="'PAGES.SETTINGS.HEAD' | translate" [shorten]="true" [bold]="true"></fhem-native-text-line>
-        <ion-ripple-effect></ion-ripple-effect>
-    </button>
-</div>
+<ion-footer>
+    <ion-toolbar>
+        <div class="flex-container" *ngIf="(settings.demoMode | async) === false">
+            <button class="menu-btn no-margin ion-activatable" (click)="switchPage(['/', 'settings'])">
+                <ion-icon name="settings-outline"></ion-icon>
+                <fhem-native-text-line [text]="'PAGES.SETTINGS.HEAD' | translate" [shorten]="true" [bold]="true"></fhem-native-text-line>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+        </div>
+    </ion-toolbar>
+</ion-footer>
 
 <span class="backdrop" (click)="toggleMenu()" *ngIf="mobile && expandState"></span>

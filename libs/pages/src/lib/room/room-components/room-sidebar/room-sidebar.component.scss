@@ -1,8 +1,17 @@
 :host{
     --outer-items: 3;
-    --item-height: 60px;
+    --item-height: 50px;
     --main-spacing: 10px;
 }
+    ion-toolbar,
+    ion-content,
+    ion-footer{
+        --background: var(--secondary);
+    }
+
+    ion-content{
+        overflow-y: auto;
+    }
 
     .flex-container{
         padding: var(--padding-a);
@@ -12,10 +21,7 @@
     }
     .scroll-container{
         width: 100%;
-        flex-grow: 1;
-        height: calc(100% - ( calc(var(--item-height) * var(--outer-items)) + calc(var(--main-spacing) * 2) ) );
-        overflow-x: hidden;
-        overflow-y: auto;
+        height: 100%;
         &.edit-mode{
             .menu-btn-container{
                 .modify-container{
@@ -103,6 +109,7 @@
         display: flex;
         align-items: center;
         position: relative;
+        margin-bottom: var(--padding-a);
         &::after{
             content: "";
             position: absolute;
