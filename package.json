@@ -15,7 +15,8 @@
     "open:desktop:fhem-native": "nx build fhem-native-desktop && nx run fhem-native-desktop:sync:electron && nx run fhem-native-desktop:open:electron",
     "build:app:ios:fhem-native": "nx build fhem-native && nx run fhem-native:sync:ios && nx run fhem-native:open:ios",
     "build:app:android:fhem-native": "nx build fhem-native && nx run fhem-native:sync:android && nx run fhem-native:open:android",
-    "build:desktop:fhem-native": "nx build fhem-native-desktop && nx run fhem-native-desktop:sync:electron && cd apps/fhem-native-desktop/electron && npm run electron:make"
+    "build:desktop:fhem-native": "nx build fhem-native-desktop && nx run fhem-native-desktop:sync:electron && cd apps/fhem-native-desktop/electron && npm run electron:make",
+    "build:web:fhem-native-docs": "nx build fhem-native-docs --prod"
   },
   "private": true,
   "dependencies": {

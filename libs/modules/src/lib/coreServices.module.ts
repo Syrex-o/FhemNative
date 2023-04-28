@@ -14,6 +14,7 @@ import {
 	UndoRedoService,
 	SettingsService,
 	StructureService,
+	BackButtonService,
 	CssVariableService,
 	SelectComponentService
 } from '@fhem-native/services';
@@ -33,6 +34,7 @@ import {
 		UndoRedoService,
 		SettingsService,
 		StructureService,
+		BackButtonService,
 		CssVariableService,
 		SelectComponentService
     ]

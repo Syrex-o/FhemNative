@@ -320,9 +320,7 @@ export class ContextMenuComponent implements OnInit{
 	}
 
 	selectAllComponents(): void{
-		this.transformationManager.transformationItems.forEach((item)=>{
-			this.selectComponent.buildSelector(item);
-		});
+		this.transformationManager.transformationItems.forEach((item)=> this.selectComponent.buildSelector(item));
 	}
 
 	copyComponents(): void{
@@ -330,10 +328,7 @@ export class ContextMenuComponent implements OnInit{
 	}
 
 	pasteComponents(): void {
-		if( this.selectComponent.pasteComponents(this.transformationManager.containerId) ){
-			this.undoManager.addChange();
-		}
-
+		if( this.selectComponent.pasteComponents(this.transformationManager.containerId) ) this.undoManager.addChange();
 		this.dismissInformer('paste');
 	}
 
