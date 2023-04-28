@@ -1,13 +1,19 @@
 :host{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: absolute;
-    width: 100%;
-    height: 60px;
-    user-select: none;
-    background-color: var(--secondary);
-    padding: var(--item-spacing-b) var(--item-spacing-a);
+    z-index: 0;
+    ion-header{
+        --height: 60px;
+        ion-toolbar{
+            --background: var(--secondary);
+            .header-container{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                user-select: none;
+                width: 100%;
+                padding: var(--item-spacing-b) var(--item-spacing-a);
+            }
+        }
+    }
     .flex-block{
         display: flex;
         align-items: center;
@@ -52,7 +58,13 @@
 
     // for breakpoint --> see room component scss
     @media only screen and (max-width: 900px) {
-        padding: var(--item-spacing-b) var(--item-spacing-a);
+        ion-header{
+            ion-toolbar{
+                .header-container{
+                    padding: var(--item-spacing-b) var(--item-spacing-a);
+                }
+            }
+        }
         .logo-container{
             display: none;
         }
