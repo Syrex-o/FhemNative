@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
@@ -29,7 +29,7 @@ import { getUID } from '@fhem-native/utils';
 	animations: [ PickerOpacity, PickerContent ]
 })
 
-export class PickerComponent implements ControlValueAccessor, OnInit, OnDestroy{
+export class PickerComponent implements ControlValueAccessor, OnDestroy{
 	private readonly handleID = getUID();
 
     // popup dimensions in percentage
@@ -56,19 +56,25 @@ export class PickerComponent implements ControlValueAccessor, OnInit, OnDestroy{
 	writeValue(value: boolean): void {
 		this.value = value;
 		this.updateChanges();
+
+		if(this.value){
+			this.removeBackBtnSub();
+			this.backBtn.handle(this.handleID, ()=> this.onDismiss() );
+		}
 	}
 
-	ngOnInit(): void {
-		this.backBtn.handle(this.handleID, ()=> this.onDismiss() );
+	private removeBackBtnSub(): void{
+		this.backBtn.removeHandle(this.handleID);
 	}
 
 	onDismiss(): void{
 		this.value = false;
 		this.updateChanges();
 		this.cancelled.emit();
+		this.removeBackBtnSub();
 	}
 
 	ngOnDestroy(): void {
-		this.backBtn.removeHandle(this.handleID);
+		this.removeBackBtnSub();
 	}
 }
