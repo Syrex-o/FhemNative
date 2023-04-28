@@ -1,7 +1,21 @@
 {
     "PAGES": {
         "HOME": {
-            
+            "IP": {
+                "INFO": {
+                    "1": "FhemNative konnte keine Konfiguration für FHEM finden.",
+                    "2": "Jetzt IP-Einstellungen konfigurieren:"
+                },
+                "BUTTON": "IP-Einstellungen"
+            },
+            "NEW": {
+                "INFO": "Neu bei FhemNative?",
+                "BUTTON": " Mehr Informationen"
+            },
+            "DEMO": {
+                "INFO": "FhemNative ohne FHEM ausprobieren:",
+                "BUTTON": "Demo Modus"
+            }
         },
         "SETTINGS": {
             "HEAD": "Einstellungen",
@@ -1945,11 +1959,11 @@
                         "name": "Breite/Höhe",
 					    "info": "Breite/Höhe des SLiders, basierend auf der Ausrichtung"
                     },
-                    "data_thumbWidth":{
+                    "thumbWidth":{
                         "name": "Thumb Breite",
                         "info": "Breite des Slider-Thumbs"
                     },
-                    "data_thumbHeight":{
+                    "thumbHeight":{
                         "name": "Thumb Höhe",
                         "info": "Höhe des Slider-Thumbs"
                     }

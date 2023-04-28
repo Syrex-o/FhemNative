@@ -7,7 +7,16 @@
 		"FOOTER": {
 
 		},
+		"HOME": {
+			"EXPLORE": "Mehr erfahren",
+			"SWIPER": {
+				"1": "Erstelle Oberflächen in Minuten",
+				"2": "Teile deine Oberflächen mit allen Geräten",
+				"3": "Über 20 Drag and Drop Smart-Home Komponenten"
+			}
+		},
 		"DOCS": {
+			"HEAD": "Dokumentation",
 			"ITEMS": {
 				"OVERVIEW": {
 					"HEAD": "Übersicht"
@@ -23,13 +32,30 @@
 				"EXTERNAL": {
 					"HEAD": "Externer Zugriff",
 					"INFO": "Außerhalb des lokalen Netzwerks über FhemNative auf FHEM zugreifen."
+				},
+				"SHORTCUTS": {
+					"HEAD": "Shortcuts",
+					"INFO": "Keyboard shortcuts in FhemNtive"
 				}
 			}
 		},
 		"COMPS": {
+			"HEAD": "Komponenten",
 			"ITEMS": {
 				"OVERVIEW": {
 					"HEAD": "Übersicht"
+				}
+			}
+		},
+		"GUIDES": {
+			"HEAD": "Guides",
+			"ITEMS": {
+				"OVERVIEW": {
+					"HEAD": "Übersicht"
+				},
+				"CREATE": {
+					"HEAD": "Erstellen",
+					"INFO": "Wie erstelle ich einen eigenen Guide oder eine Dokumentation, um anderen zu helfen"
 				}
 			}
 		},
