@@ -1,0 +1,25 @@
+<ng-container *ngIf="doc$ | async as doc;">
+    <!-- doc info -->
+    <div class="full-container">
+        <h2 class="size-b spacing-a color-a no-margin">{{ doc.META.HEAD }}</h2>
+        <h3 class="info mb-1-5 size-d spacing-b color-b">{{ doc.META.INFO }}</h3>
+    </div>
+
+    <div fhemNativeScrollManager>
+        <ng-container *ngFor="let contentItem of doc.CONTENT;">
+            <div class="full-container">
+                <fhem-native-doc-item [content]="contentItem.BLOCK"></fhem-native-doc-item>
+            </div>
+        </ng-container>
+
+        <button class="edit-btn ion-activatable" (click)="editPageOnGithub()">
+            <ion-icon class="color-a" name="logo-github"></ion-icon>
+            <p class="btn-color-a size-f">Diese Seite bearbeiten</p>
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
+    </div>
+</ng-container>
+
+<ng-template #LOADING>
+    <fhem-native-docs-skeletton-doc></fhem-native-docs-skeletton-doc>
+</ng-template>
