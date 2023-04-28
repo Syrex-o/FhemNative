@@ -9,7 +9,8 @@ import { ServiceModule } from './shared/service.module';
 import { TranslatorModule } from './shared/translator.module';
 
 import { AppComponent } from './app.component';
-import { DocHeaderComponent, DocSideMenuComponent } from '@fhem-native/docs';
+
+import { DocFooterComponent, DocHeaderComponent, DocSideMenuComponent } from '@fhem-native/docs';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { DocHeaderComponent, DocSideMenuComponent } from '@fhem-native/docs';
 		TranslatorModule,
 		// Components
 		DocHeaderComponent,
+		DocFooterComponent,
 		DocSideMenuComponent
 	],
 	providers: [

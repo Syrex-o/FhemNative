@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { DocItemCodeRawComponent } from './doc-code-raw/doc-code-raw.component';
 import { DocItemCodeComponent } from './doc-code/doc-code.component';
 import { DocItemHeaderComponent } from './doc-header/doc-header.component';
@@ -8,6 +8,7 @@ import { DocItemLinkComponent } from './doc-link/doc-link.component';
 import { DocItemListComponent } from './doc-list/doc-list.component';
 import { DocItemNoteComponent } from './doc-note/doc-note.component';
 import { DocItemTextComponent } from './doc-text/doc-text.component';
+import { APP_CONFIG } from '@fhem-native/app-config';
 
 @Component({
     standalone: true,
@@ -29,6 +30,9 @@ import { DocItemTextComponent } from './doc-text/doc-text.component';
 
                     <!-- TEXT -->
                     <fhem-native-doc-item-text *ngSwitchCase="'TEXT'" [text]="innerContentItem.value"/>
+
+                    <!-- TEXT Bold -->
+                    <fhem-native-doc-item-text *ngSwitchCase="'TEXT_BOLD'" [text]="innerContentItem.value" [bold]="true"/>
 
                     <!-- CODE -->
                     <fhem-native-doc-item-code *ngSwitchCase="'CODE'" [codeContent]="innerContentItem.value"/>
@@ -73,7 +77,9 @@ import { DocItemTextComponent } from './doc-text/doc-text.component';
 export class DocItemComponent implements OnInit{
     @Input() content!: Array<Record<string, any>>;
 
+    constructor(@Inject(APP_CONFIG) private appConfig: any){}
+
     ngOnInit(): void{
-        console.log(this.content);
+        if(!this.appConfig.production) console.log(this.content);
     }
 }

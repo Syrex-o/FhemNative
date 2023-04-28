@@ -5,6 +5,8 @@
         height: 60px;
         display: flex;
         align-items: center;
+        z-index: 1;
+        background-color: var(--primary);
         justify-content: space-between;
         &::after{
             content: "";
@@ -22,6 +24,7 @@
             overflow: hidden;
             width: 55px;
             height: 50px;
+            cursor: pointer;
             background-color: transparent;
             .line{
                 display: block;

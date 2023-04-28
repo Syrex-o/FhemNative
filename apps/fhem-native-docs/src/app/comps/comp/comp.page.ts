@@ -65,7 +65,6 @@ export class CompPageComponent{
         }),
         tap(x=> {
             if(!x) return;
-            console.log(x);
             this.sandboxComponents = this.compService.getSandboxComponents(x.name);
         })
     );

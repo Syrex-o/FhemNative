@@ -4,11 +4,11 @@
 
 <ion-menu content-id="main-content" [swipeGesture]="false">
     <ion-content>
-        <ng-container *ngTemplateOutlet="MENU"></ng-container>
+        <ng-container *ngTemplateOutlet="MENU; context: {$implicit: true}"></ng-container>
     </ion-content>
 </ion-menu>
 
-<ng-template #MENU>
+<ng-template #MENU let-closeOnClick>
     <aside class="sidebar">
         <a class="logo" [routerLink]="['/']">
             <img src="assets/img/icon_transparent.png">
@@ -19,16 +19,16 @@
                 <ul class="main-menu">
                     <ng-container *ngFor="let menuItem of menuItemsMapped; let last = last;">
                         <li [class.last-main-item]="last">
-                            <a class="main" [routerLink]="menuItem.ref || null" routerLinkActive="active" (click)="menuItem.subItems ? menuItem.state = !menuItem.state : null">
+                            <a class="main" [routerLink]="menuItem.ref || null" routerLinkActive="active" (click)="menuItem.subItems ? menuItem.state = !menuItem.state : (closeOnClick ? menuCtrl.close() : null)">
                                 <ion-icon [class.rotated]="menuItem.state" class="color-a" [name]="menuItem.subItems ? 'chevron-forward-outline' : menuItem.icon"></ion-icon>
-                                <p class="size-f" [ngClass]="menuItem.subItems ? 'color-a' : 'color-b'">{{menuItem.name}}</p>
+                                <p class="size-f" [ngClass]="menuItem.subItems ? 'color-a' : 'color-b'">{{menuItem.name | translate}}</p>
                             </a>
                             <ng-container *ngIf="menuItem.subItems">
                                 <div class="sub-menu" [class.active]="menuItem.state" [style.height.px]="menuItem.state ? subMenu.offsetHeight : 0">
                                     <ul class="sub-menu-list" #subMenu>
                                         <ng-container *ngFor="let subItem of menuItem.subItems">
                                             <li>
-                                                <a class="sub" [routerLink]="subItem.ref || null" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                                <a class="sub" [routerLink]="subItem.ref || null" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeOnClick ? menuCtrl.close() : null">
                                                     <ion-icon class="color-a" [name]="subItem.icon"></ion-icon>
                                                     <p class="color-b size-f">{{subItem.name | translate}}</p>
                                                 </a>

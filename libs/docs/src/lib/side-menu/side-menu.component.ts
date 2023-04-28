@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, MenuController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { TextBlockModule } from '@fhem-native/components';
@@ -28,6 +28,8 @@ interface NavItemMapped extends NavItem {
 export class DocSideMenuComponent implements OnInit{
     @Input() menuItems: NavItem[] = [];
     menuItemsMapped: NavItemMapped[] = [];
+
+    constructor(public menuCtrl: MenuController){}
 
     ngOnInit(): void{
         this.menuItemsMapped = this.menuItems.map(x=> Object.assign(x, {state: false}));

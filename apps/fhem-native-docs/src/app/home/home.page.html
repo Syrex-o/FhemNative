@@ -1,1 +1,59 @@
-<p class="color-a">demo</p>
+<div class="entry-container" #CANVAS_CONTAINER>
+    <canvas #CANVAS></canvas>
+
+    <div class="logo-container">
+        <img src="assets/img/icon_transparent.png">
+        <div class="info-container">
+            <h1 class="size-b color-a no-margin">FhemNative</h1>
+            <h2 class="size-d color-b no-margin">Das No-Code SmartHome</h2>
+        </div>
+
+        <div class="button-container">
+            <!-- <div class="store-btns">
+                <button class="store-btn button-web">
+                    <ion-icon name="logo-google-playstore"></ion-icon>
+                    <p class="size-f no-margin">Play Store</p>
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+                <button class="store-btn button-web">
+                    <ion-icon name="logo-apple-appstore"></ion-icon>
+                    <p class="size-f no-margin">App Store</p>
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+            </div> -->
+
+            <button class="scroll-btn button-web type-c" (click)="scrollToElem(second)">
+                <p class="size-f no-margin">{{'WEB.HOME.EXPLORE' | translate}}</p>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-container" #second>
+    <div id="swiper-left">
+        <swiper #SwiperA [pagination]="{clickable: true}" [autoplay]="{delay: 6000, disableOnInteraction: false}" [parallax]="true" (beforeTransitionStart)="onSlideChangeA($event)">
+            <ng-template swiperSlide>
+                <h2 data-swiper-parallax="-300" class="size-c spacing-c color-a">{{'WEB.HOME.SWIPER.1' | translate}}</h2>
+            </ng-template>
+            <ng-template swiperSlide>
+                <h2 data-swiper-parallax="-300" class="size-c spacing-c color-a">{{'WEB.HOME.SWIPER.2' | translate}}</h2>
+            </ng-template>
+            <ng-template swiperSlide>
+                <h2 data-swiper-parallax="-300" class="size-c spacing-c color-a">{{'WEB.HOME.SWIPER.3' | translate}}</h2>
+            </ng-template>
+        </swiper>
+    </div>
+
+    <swiper #SwiperB id="swiper-right"  (beforeTransitionStart)="onSlideChangeB($event)">
+        <ng-template swiperSlide>
+            <div class="bg-img a"></div>
+        </ng-template>
+        <ng-template swiperSlide>
+            <div class="bg-img b"></div>
+        </ng-template>
+        <ng-template swiperSlide>
+            <div class="bg-img c"></div>
+        </ng-template>
+    </swiper>
+</div>

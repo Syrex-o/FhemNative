@@ -38,8 +38,8 @@
 
             <!-- Component Dependencies -->
             <div class="full-container" *ngIf="comp.dependencies">
-                <fhem-native-doc-item-header header="Dependencies:" headerID="dependencies" [asAnchor]="true"/>
-                <fhem-native-docs-comp-dependencies [dependencies]="comp.dependencies"/>
+                <fhem-native-doc-item-header header="Dependency Tree:" headerID="dependencies" [asAnchor]="true"/>
+                <fhem-native-docs-comp-dependencies [componentName]="comp.name" [dependencies]="comp.dependencies"/>
             </div>
         </div>
     </ng-container>

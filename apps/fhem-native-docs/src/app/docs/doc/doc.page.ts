@@ -48,7 +48,7 @@ export class DocPageComponent {
 
     editPageOnGithub(): void{
         if(!this.currentDoc) return;
-        const base = 'https://github.com/Syrex-o/FhemNative/tree/main/apps/fhem-native/src/assets/i18n';
+        const base = 'https://github.com/Syrex-o/FhemNative/tree/main/apps/fhem-native-docs/src/assets/i18n';
         const lang = this.settings.app.language;
         const url = `${base}/${lang}/docs/${this.currentDoc}.yaml`;
         window.open(url, '_blank');

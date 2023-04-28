@@ -26,6 +26,26 @@ export const DOC_ITEMS: NavItem[] = [
         info: 'WEB.DOCS.ITEMS.EXTERNAL.INFO',
         icon: 'wifi-outline',
         ref: ['/', 'docs', 'external']
+    },
+    {   
+        name: 'WEB.DOCS.ITEMS.SHORTCUTS.HEAD',
+        info: 'WEB.DOCS.ITEMS.SHORTCUTS.INFO',
+        icon: 'arrow-redo-outline',
+        ref: ['/', 'docs', 'shortcuts']
+    }
+];
+
+export const GUIDE_ITEMS = [
+    {
+        name: 'WEB.GUIDES.ITEMS.OVERVIEW.HEAD',
+        icon: 'apps-outline',
+        ref: ['/', 'guides']
+    },
+    {   
+        name: 'WEB.GUIDES.ITEMS.CREATE.HEAD',
+        info: 'WEB.GUIDES.ITEMS.CREATE.INFO',
+        icon: 'pencil-outline',
+        ref: ['/', 'guides', 'create']
     }
 ];
 
@@ -33,11 +53,15 @@ export const COMP_ITEMS: NavItem[] = getCompItems();
 
 export const NAV_ITEMS: NavItem[] = [
     {
-        name: 'Docs',
+        name: 'WEB.DOCS.HEAD',
         subItems: DOC_ITEMS
     },
     {
-        name: 'Components',
+        name: 'WEB.GUIDES.HEAD',
+        subItems: GUIDE_ITEMS
+    },
+    {
+        name: 'WEB.COMPS.HEAD',
         subItems: COMP_ITEMS
     },
     {

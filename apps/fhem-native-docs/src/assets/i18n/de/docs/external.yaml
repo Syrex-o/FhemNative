@@ -230,3 +230,5 @@ CONTENT:
         - TEXT:
             - Um jetzt auch von außerhalb eures lokalen Netzwerks Zugriff auf FHEM zu haben, wird DynDNS verwendet.
             - Die Liste der Anbieter ist lang und ihr könnt euch einen aussuchen.
+            - Wenn ihr eine DynDNS Adresse habt, könnt ihr Sie in eurem Router einpflegen und auf euren FHEM Server leiten.
+            - Aschließend sollte es euch möglich sein, die externe Adresse in FhemNative inklusive Benutzername und Passwort zu verwenden.

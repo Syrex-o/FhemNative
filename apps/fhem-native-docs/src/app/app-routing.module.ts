@@ -16,9 +16,17 @@ const routes: Routes = [
         path: 'components',
         loadChildren: ()=> import('./comps/comps.page').then(mod=> mod.COMPS_ROUTES)
     },
+    {
+        path: 'guides',
+        loadChildren: ()=> import('./guides/guides.page').then(mod=> mod.GUIDES_ROUTES)
+    },
 	{
         path: 'sandbox',
         loadChildren: ()=> import('./playground/playground.page').then(mod=> mod.PLAYGROUND_ROUTES)
+    },
+    {
+        path: 'rights',
+        loadChildren: ()=> import('./rights/rights-routes').then(mod=> mod.RIGHTS_ROUTES)
     },
     {
 		path: '',

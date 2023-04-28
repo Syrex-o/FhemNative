@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
-import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from '@fhem-native/components';
+import { TranslateService } from '@ngx-translate/core';
+
+import { ThemeService } from '@fhem-native/services';
+import { ResizeManagerModule } from '@fhem-native/directives';
 import { ComponentDependency } from '@fhem-native/types/components';
 
 import * as d3 from 'd3';
 import { SimulationNodeDatum } from 'd3';
-import { ThemeService } from '@fhem-native/services';
 
 interface Node extends SimulationNodeDatum {
     id: number,
@@ -26,18 +25,13 @@ interface Link {
 @Component({
     standalone: true,
 	selector: 'fhem-native-docs-comp-dependencies',
-	templateUrl: './comp-dependencies.component.html',
+	template: `
+        <div class="dependency-wrapper" #WRAPPER fhemNativeResizeManager (resized)="resized()">
+            <svg></svg>
+        </div>
+    `,
     styleUrls: ['./comp-dependencies.component.scss'],
-    imports: [ 
-        IonicModule,
-        TranslateModule,
-
-        IconModule,
-
-        NgIf,
-        NgFor,
-        NgTemplateOutlet
-    ]
+    imports: [ ResizeManagerModule ]
 })
 export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
     @ViewChild('WRAPPER', {static: false, read: ElementRef}) dependencyWrapper: ElementRef|undefined;
@@ -47,13 +41,13 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
 
     tree: {nodes: Node[], links: Link[]} = { nodes: [], links: [] };
 
-    private width = 700;
+    private width = 857;
     private height = 600;
 
     private textColor = this.theme.getThemeColor('--text-a');
     private linkColor = '#3dbbed';
 
-    constructor(private theme: ThemeService){}
+    constructor(private theme: ThemeService, private translate: TranslateService){}
 
     ngAfterViewInit(): void {
         this.getTreeData();
@@ -61,6 +55,10 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
 
     ngOnChanges(changes: SimpleChanges): void {
         if('dependencies' in changes && this.dependencyWrapper) this.getTreeData();
+    }
+
+    resized(): void{
+        this.getTreeData();
     }
 
     private getTreeData(): void{
@@ -100,7 +98,7 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
 
                     index1 += 1;
                 }else{
-                    const i = this.tree.nodes.findIndex(x=> x.name === key);
+                    const i = this.tree.nodes.findIndex(x=> x.name === key && x.depth === 0);
                     if(!dependOnNode.dependsOn.includes(i)) dependOnNode.dependsOn.push(i);
                 }
 
@@ -143,24 +141,16 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
                 .distance(100)
                 .strength(0.9)
             )
-            .force("x", d3.forceX(300).strength(0.1))
-            .force("charge", d3.forceManyBody().strength(-1500))
-            .force(
-                "y", d3.forceY().y(node => {
-                    return this._calcPath(node as Node) * 200 - 75;
-                })
-                .strength(() => 2)
-            )
+            .force("charge", d3.forceManyBody())
+            .force('center', d3.forceCenter(this.width / 2, this.height / 2))
+            .force("x", d3.forceX(this.width / 2))
+            .force("y", d3.forceY().y(node => this._calcPath(node as Node) * 200).strength(() => 2))
             .force("collide", d3.forceCollide(50));
 
         d3.select(".dependency-wrapper").selectAll("*").remove();
 
-        function zoomed(e: any) {
-            console.log(e);
-            svg.attr(
-                "transform",
-                `translate(${e.transform.x},${e.transform.y}) scale(${e.transform.k})`
-            );
+        function handleZoom(e: any) {
+            svg.attr("transform", `translate(${e.transform.x},${e.transform.y}) scale(${e.transform.k})`);
         }
         
         const svgElem = d3.select(".dependency-wrapper")
@@ -169,10 +159,10 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
             .attr("height", this.height)
             .attr('viewBox', [0, 0, this.width, this.height])
             .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
+            .call(d3.zoom().on("zoom", handleZoom) as any);
         
-        const svg = svgElem.append('g')
-            // .call(d3.zoom().on("zoom", zoomed) as any);
-
+        const svg = svgElem.append('g');
+    
         svgElem.append("defs")
             .append("marker")
                 .attr("id", 'arrow')
@@ -195,43 +185,46 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
             .attr("stroke", this.linkColor)
             .attr("marker-end", () => `url(#arrow)`);
 
-        function dragstarted(d: any, event: any) {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            event.subject.fx = event.subject.x;
-            event.subject.fy = event.subject.y;
+        function handleDragStart(e: any){
+            simulation.alphaTarget(0.1).restart();
+            e.subject.fx = e.fx;
+            e.subject.fy = e.fy;
         }
 
-        function dragged(d: any, event: any) {
-            event.subject.fx = event.x;
-            event.subject.fy = event.y;
+        function handleDrag(e: any){
+            e.subject.fx = e.x;
+            e.subject.fy = e.y;
+            ticked();
+        };
+
+        function handleDragEnd(e: any){
+            simulation.alphaTarget(0)
+            e.subject.fx = null;
+            e.subject.fy = null;
         }
 
-        function dragended(d: any, event: any) {
-            if (!event.active) simulation.alphaTarget(0);
-            event.subject.fx = null;
-            event.subject.fy = null;
-        }
+        const drag = d3.drag()
+            .on('start', handleDragStart)
+            .on('drag', handleDrag)
+            .on('end', handleDragEnd);
 
         const node = svg.selectAll(".nodes")
             .data(this.tree.nodes)
-            .enter()
-            .append("g")
+            .join('g')
             .attr("class", "nodes")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged) as any
-            );
-
+            .style('cursor', 'grab')
+            .call(drag as any);
+            
         node.append("circle")
             .attr("r", 10)
             .style("fill", d=> {
                 if(d.depth === 0) return '#CBFFAE';
                 if(d.depth === 1) return '#FFE6B0';
                 return '#2f85ff';
-            })
+            });
 
         node.append("text")
-            .text(d => d.name)
+            .text(d => this.nameMapper(d.name))
             .style("font-size", "14px")
             .style("fill", this.textColor)
             .attr('x', 12)
@@ -242,7 +235,7 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
             node.attr("transform", d => `translate(${d.x}, ${d.y})`);
         }
 
-        simulation.on('tick', ticked);
+        simulation.on('tick', ticked).alpha(0.3);
     }
 
     private linkArc(d: any) {
@@ -256,20 +249,22 @@ export class ComponentDependencyComponent implements AfterViewInit, OnChanges{
         `;
     }
 
-    private clamp(x: number, lo: number, hi: number) {
-        return x < lo ? lo : x > hi ? hi : x;
+    private nameMapper(name: string): string{
+        const nameParts = name.split('.');
+
+        // just value
+        if(nameParts.length === 1) return nameParts[0];
+        return this.translate.instant(`COMPONENTS.${this.componentName}.INPUTS.${nameParts[0]}.${nameParts[1]}.name`);
     }
 
     private _calcPath(node: Node|undefined, length = 1): number {
         // end case
-        if (!node || !node.dependsOn || node.dependsOn.length < 1) {
-          return length;
-        }
+        if (!node || !node.dependsOn || node.dependsOn.length < 1) return length;
     
         return Math.max(
-          ...node.dependsOn.map(id =>
-            this._calcPath(this.tree.nodes.find(n => n.id === id), length + 1)
-          )
+            ...node.dependsOn.map(id =>
+                this._calcPath(this.tree.nodes.find(n => n.id === id), length + 1)
+            )
         );
-      }
+    }
 }

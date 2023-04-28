@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -36,10 +36,7 @@ import { IonicModule } from '@ionic/angular';
 	styleUrls: ['./doc-note.component.scss'],
     imports: [ IonicModule, CommonModule ]
 })
-export class DocItemNoteComponent implements OnInit{
+export class DocItemNoteComponent {
     @Input() noteContent!: Array<Record<string, string>>;
 
-    ngOnInit(){
-        console.log(this.noteContent)
-    }
 }
