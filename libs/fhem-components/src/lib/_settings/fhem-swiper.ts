@@ -32,7 +32,7 @@ export const Settings: ComponentSettings = {
 	},
 	dependencies: {
 		// header options
-		'arr_data.headerColor': {dependOn: ['bool.showHeader'], value: [true]},
+		'data.headline': {dependOn: ['bool.showHeader'], value: [true]},
 		'arr_data.headerStyle': {dependOn: ['bool.showHeader'], value: [true]},
 		'arr_data.headerPosition': {dependOn: ['bool.showHeader'], value: [true]},
 		// styles
