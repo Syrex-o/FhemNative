@@ -345,6 +345,20 @@ export class FhemService {
 				}
 			}
 		}
+		// external websocket handling
+		if (type === 'websocket'){
+			msg = JSON.parse(msg);
+			// request deivce
+			if(msg.type === 'listentry') {
+				if(msg.payload.attributes) this.deviceGetSub.next(this.deviceTransformer(msg.payload, false));
+			}
+			// update device
+			if (msg.type === 'event') {
+				if(this.listenDevices.find(x=> x.device === msg.payload.name)){
+					this.updateListenDevice(msg.payload.name, msg.payload.changed);
+				}
+			}
+		}
 	}
 
 	// device updater
@@ -431,10 +445,24 @@ export class FhemService {
 						// Exp. copy of multiple components, where some need request from server and others are already fully defined
 						// occours on copy of multiple components with missing reading in one/some of them
 					const relDevice = this.deviceExists(deviceName, readingName);
-					return relDevice ? of(relDevice) : concat(
+					if(relDevice){
+						// listen to device changes for type of websocket
+						const type = this.settings.connectionProfiles[this.currConnProfileIndex].type;
+						if(type === 'websocket') this.sendCommand({
+							type: '.*',
+							changed: '.*',
+							command: 'subscribe',
+							arg: relDevice.id, 
+							name: relDevice.device
+						});
+						
+						return of(relDevice);
+					}
+					
+					return concat(
 						of(x).pipe( filter(x=> x.device === deviceName) ),
 						of(null).pipe( delay(5_000) )
-					)
+					);
 				}),
 				take(1)
 			),
