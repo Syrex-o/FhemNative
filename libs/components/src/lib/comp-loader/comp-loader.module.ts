@@ -4,13 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ComponentLoaderComponent } from './comp-loader.component';
 
 import { GridModule } from '../grid/grid.module';
-import { ResizeManagerModule, TransformationManagerModule } from '@fhem-native/directives';
+import { TransformationManagerModule } from '@fhem-native/directives';
 
 @NgModule({
 	imports: [ 
-		CommonModule,
 		GridModule,
-		ResizeManagerModule,
+		CommonModule,
 		TransformationManagerModule
 	],
 	declarations: [ ComponentLoaderComponent ],
