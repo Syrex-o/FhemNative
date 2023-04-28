@@ -3,17 +3,17 @@ import { Theme } from '@fhem-native/types/common';
 export const bright: Theme = {
     name: 'bright',
     properties: {
-        '--primary': '#111415',
-        '--secondary': '#191d1e',
-        '--tertiary': '#272b30',
-        '--quaternary': '#45484b',
+        '--primary': 'rgb(249, 250, 254)',
+        '--secondary': 'rgb(255, 255, 255)',
+        '--tertiary': 'rgb(241, 240, 245)',
+        '--quaternary': 'rgb(181, 182, 198)',
 
-        '--text-a': '#fefefe',
-        '--text-b': '#71777e',
-        '--text-c': '#a4a3a7',
-        '--text-d': '#a0a3bd',
+        '--text-a': 'rgb(12, 31, 67)',
+        '--text-b': 'rgba(12, 31, 67, 0.5)',
+        '--text-c': 'rgb(247, 251, 250)',
+        '--text-d': 'rgba(247, 251, 250, 0.5)',
 
-        '--btn-text-a': '#E1F3F5',
+        '--btn-text-a': '#2F2A33',
         '--btn-text-b': '#3d5bf1',
         '--btn-text-c': '#000',
 
