@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 // Services
-import { FhemService, ThemeService, LoaderService, StorageService, SettingsService, StructureService } from '@fhem-native/services';
+import { FhemService, ThemeService, LoaderService, StorageService, SettingsService, StructureService, BackButtonService } from '@fhem-native/services';
 
 // Plugins
 import { App } from '@capacitor/app';
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit{
 		public loader: LoaderService,
 		private storage: StorageService,
 		public settings: SettingsService,
+		private backBtn: BackButtonService,
 		private structure: StructureService) {
 		// initialize app
 		this.initializeApp();
