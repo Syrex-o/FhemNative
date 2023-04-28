@@ -17,7 +17,7 @@ export const ThemeOptions = ['bright', 'dark'];
 */
 export const ConnectionTypes = [
     { value: 'fhemweb', display: 'Fhemweb' },
-    // { value: 'websocket', display: 'Websocket' }
+    { value: 'websocket', display: 'Websocket' }
 ];
 
 /*
