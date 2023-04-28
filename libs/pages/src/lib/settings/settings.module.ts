@@ -7,9 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SettingsPageComponent } from './settings.page';
-import { SettingsPageRoutingModule } from './settings-routing.module';
 
-import { RightsTermsComponent } from '../rights';
+import { RightsTermsComponent, RightsUsageComponent } from '../rights';
 
 import { ScrollHeaderModule } from '@fhem-native/directives';
 
@@ -23,7 +22,6 @@ import { ImportExportService } from '@fhem-native/services';
 		RouterModule,
 		CommonModule,
 		TranslateModule,
-		SettingsPageRoutingModule,
 		// Directives
 		ScrollHeaderModule,
 		// Components
@@ -36,7 +34,8 @@ import { ImportExportService } from '@fhem-native/services';
 		UI_BoxComponent,
 		UI_CategoryComponent,
 		// Rights
-		RightsTermsComponent
+		RightsTermsComponent,
+		RightsUsageComponent
 	],
 	providers: [ ImportExportService ],
 	declarations: [ SettingsPageComponent ],

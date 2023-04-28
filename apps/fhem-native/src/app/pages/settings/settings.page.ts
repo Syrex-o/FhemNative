@@ -12,12 +12,29 @@ import { SettingsPageModule } from '@fhem-native/pages';
 	]
 })
 export class MobileSettingsPageComponent{
-    
+
 }
 
 export const MOBILE_SETTINGS_ROUTES: Route[] = [
-    {
+	{
         path: '',
-        component: MobileSettingsPageComponent
+        children: [
+            {
+                path: '',
+                component: MobileSettingsPageComponent,
+            },
+            {
+                path: 'login',
+                loadChildren: () => import('@fhem-native/pages').then( m => m.LOGIN_ROUTES)
+            },
+            {
+                path: 'advanced',
+                loadChildren: () => import('@fhem-native/pages').then( m => m.ADVANCED_ROUTES)
+            },
+            {
+                path: 'support',
+                loadChildren: () => import('@fhem-native/pages').then( m => m.SUPPORT_ROUTES)
+            }
+        ]
     }
 ];

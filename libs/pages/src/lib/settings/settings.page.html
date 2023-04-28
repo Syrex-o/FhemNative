@@ -91,7 +91,7 @@
             </fhem-native-ui-box>
 
             <!-- developer -->
-            <fhem-native-ui-box [clickable]="true" class="mb-1-5" (click)="openExternal('https://fhemnative.de')">
+            <fhem-native-ui-box [clickable]="true" class="mb-1-5" (click)="openExternal('https://fhemnative.de/docs/developer')">
                 <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.SUPPORT.DEV.TEXT' | translate" [info]="'PAGES.SETTINGS.SUPPORT.DEV.INFO' | translate"></fhem-native-text-block>
                 <ion-icon class="color-a-app size-b-app" name="chevron-forward-outline"></ion-icon>
             </fhem-native-ui-box>
@@ -120,7 +120,7 @@
             </fhem-native-ui-box>
 
             <!-- data -->
-            <fhem-native-ui-box [clickable]="true" (click)="openExternal('https://fhemnative.de/rights/privacy')">
+            <fhem-native-ui-box [clickable]="true" (click)="openExternal('https://fhemnative.de/rights/datenschutz')">
                 <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.INFOS.DATA' | translate"/>
                 <ion-icon class="color-a-app size-b-app" name="globe-outline"></ion-icon>
             </fhem-native-ui-box>
@@ -158,17 +158,5 @@
     [height]="80"
     [headerAnimation]="false"
     pickerHeader="Hinweis">
-    <div content>
-        <div class="auto-container">
-            <h2 class="size-d-app color-a-app no-margin">Hinweis zur Markennutzung</h2>
-            <p class="size-e-app color-b-app">
-                FHEM ist eine unter der Registernummer 302015211004 beim Deutschen Marken- und Patentamt eingetragene Marke von Rudolf König, Neuwiesenstraße 10, 60528 Frankfurt am Main.<br>
-                Das Logo (Abbildung) ist eine unter der Nummer ... beim Deutschen Markenund Patentamt eingetragene Marke des Vereins FHEM e.V. Die Darstellung der Marken wurde vom Anbieter (Lizenznehmer) lizenziert. <br>
-                Die Markeninhaber stehen mit dem Lizenznehmer in keiner Verbindung. <br>
-                Die Darstellung der Marken stellt weder eine ausdrückliche noch stillschweigende Empfehlung der Markeninhaber zum Angebot dar, mit dem die Darstellung der Marken in Zusammenhang steht. <br>
-                Die Software FHEM ist freie Software unter der GNU Public License v2 (https://www.gnu.de/documents/gpl-2.0.de.html) und kann unentgeltlich auf der Webseite https://fhem.de bezogen werden.
-
-            </p>
-        </div>
-    </div>
+    <fhem-native-rights-usage content/>
 </fhem-native-picker>

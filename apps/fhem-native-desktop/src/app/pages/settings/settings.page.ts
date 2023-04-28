@@ -18,6 +18,23 @@ export class DesktopSettingsPageComponent{
 export const DESKTOP_SETTINGS_ROUTES: Route[] = [
     {
         path: '',
-        component: DesktopSettingsPageComponent
+        children: [
+            {
+                path: '',
+                component: DesktopSettingsPageComponent,
+            },
+            {
+                path: 'login',
+                loadChildren: () => import('@fhem-native/pages').then( m => m.LOGIN_ROUTES)
+            },
+            {
+                path: 'advanced',
+                loadChildren: () => import('@fhem-native/pages').then( m => m.ADVANCED_ROUTES)
+            },
+            {
+                path: 'support',
+                loadChildren: () => import('@fhem-native/pages').then( m => m.SUPPORT_ROUTES)
+            }
+        ]
     }
 ];

@@ -1,7 +1,7 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { BackButtonService, ImportExportService, LoggerService, SettingsService, StorageService, StructureService, ThemeService } from '@fhem-native/services';
+import { ImportExportService, LoggerService, SettingsService, StorageService, StructureService, ThemeService, BackButtonService } from '@fhem-native/services';
 
 import { getRawVersionCode, getUID } from '@fhem-native/utils';
 import { APP_CONFIG, LangOptions, ThemeOptions } from '@fhem-native/app-config';
@@ -36,12 +36,14 @@ export class SettingsPageComponent implements OnInit, OnDestroy{
 		private backBtn: BackButtonService,
 		private structure: StructureService,
 		private translate: TranslateService,
-		@Inject(APP_CONFIG) private appConfig: any,
-		private importExport: ImportExportService){
+		private importExport: ImportExportService,
+		@Inject(APP_CONFIG) private appConfig: any){
 	}
 
 	ngOnInit(): void {
-		this.backBtn.handle(this.handleID, ()=> this.back() );
+		// block default back btn action
+		// back() call results in not responding sidemenu on mobile
+		this.backBtn.handle(this.handleID, ()=> { return; });
 	}
 
 	changeAppSetting(setting: string, value: any): void{
