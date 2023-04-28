@@ -1,9 +1,10 @@
 {
   "hosting": {
     "target": "website",
-    "public": "dist/apps/fhem-native",
+    "public": "dist/apps/fhem-native-docs",
     "ignore": [
-      "**/.*"
+      "**/.*",
+      "**/node_modules/**"
     ],
     "headers": [
       {
