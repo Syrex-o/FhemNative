@@ -8,34 +8,30 @@
 
                 <div class="margin-bottom-20">
                     <p class="size-d-app bold color-b-app spacing-a">
-                        FhemNative konnte keine Konfiguration für FHEM finden. <br>
-                        Jetzt IP-Einstellungen konfigurieren:
+                        {{'PAGES.HOME.IP.INFO.1' | translate}} <br>
+                        {{'PAGES.HOME.IP.INFO.2' | translate}}
                     </p>
     
                     <button class="app-button type-a spacing-a-app bold ion-activatable" [routerLink]="['/', 'settings', 'login']">
-                        IP-Einstellungen
+                        {{'PAGES.HOME.IP.BUTTON' | translate}}
                         <ion-ripple-effect></ion-ripple-effect>
                     </button>
                 </div>
 
                 <div class="margin-bottom-20">
-                    <p class="size-d-app bold color-b-app spacing-a">
-                        Neu bei FhemNative?
-                    </p>
+                    <p class="size-d-app bold color-b-app spacing-a">{{'PAGES.HOME.NEW.INFO' | translate}} </p>
     
                     <button class="app-button type-a spacing-a-app bold ion-activatable" (click)="openWeb()">
-                        Mehr Informationen
+                        {{'PAGES.HOME.NEW.BUTTON' | translate}}
                         <ion-ripple-effect></ion-ripple-effect>
                     </button>
                 </div>
 
                 <div class="margin-bottom-20">
-                    <p class="size-d-app bold color-b-app spacing-a">
-                        FhemNative ohne FHEM ausprobieren:
-                    </p>
+                    <p class="size-d-app bold color-b-app spacing-a">{{'PAGES.HOME.DEMO.INFO' | translate}} </p>
     
                     <button class="app-button type-b spacing-a-app bold ion-activatable" [routerLink]="['/', 'sandbox']">
-                        Demo Modus
+                        {{'PAGES.HOME.DEMO.BUTTON' | translate}}
                         <ion-ripple-effect></ion-ripple-effect>
                     </button>
                 </div>

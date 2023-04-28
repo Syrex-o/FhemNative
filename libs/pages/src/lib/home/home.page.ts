@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 
-import { FhemService, SettingsService, StructureService, ToastService } from '@fhem-native/services';
+import { FhemService, SettingsService, StructureService } from '@fhem-native/services';
 
 import { ShowHide } from './animations';
 
@@ -23,15 +23,9 @@ export class HomePageComponent{
         })
     );
 
-    constructor(
-        private fhem: FhemService,
-        private toast: ToastService,
-        private settings: SettingsService,
-        private structure: StructureService){
-    }
+    constructor(private fhem: FhemService, private settings: SettingsService, private structure: StructureService){}
 
     openWeb(): void{
-        // window.open('https://fhemnative.de', "_blank");
-        this.toast.showAlert('Sorry', 'We are working hard on this part.', false);
+        window.open('https://fhemnative.de', "_blank");
     }
 }
