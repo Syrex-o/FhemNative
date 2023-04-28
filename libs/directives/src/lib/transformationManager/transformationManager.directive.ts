@@ -30,6 +30,9 @@ export class TransformationManagerDirective implements OnChanges, OnDestroy{
 	// event sub list
 	private subscriptions: Subscription[] = [];
 
+	// allow component selection via click
+	allowClickSelection = false;
+
 	// event handlers
 	dragEnd$ = merge( fromEvent<MouseEvent>(this.document, "mouseup"), fromEvent<TouchEvent>(this.document, "touchend") ).pipe( untilDestroyed(this) );
 	drag$ = merge( fromEvent<MouseEvent>(this.document, "mousemove"), fromEvent<TouchEvent>(this.document, "touchmove") ).pipe( takeUntil(this.dragEnd$) );

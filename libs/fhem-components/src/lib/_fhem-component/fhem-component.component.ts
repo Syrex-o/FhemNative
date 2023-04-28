@@ -152,7 +152,12 @@ export class FhemComponent implements AfterViewInit, OnDestroy{
 
 	onTransformationEnd(componentTransformation: ComponentTransformation): void{
 		// remove selector
-		if(!this.contextMenu.getContextMenuState()) this.selectComponent.removeSelector(this.transformationItem);
+		// depends on: 
+			// closed context menu
+			// control/mod is not pressed
+		if(!this.contextMenu.getContextMenuState() && !this.transformationManager.allowClickSelection){
+			this.selectComponent.removeSelector(this.transformationItem);
+		}
 
 		this.transformationEnd.emit(componentTransformation);
 	}
