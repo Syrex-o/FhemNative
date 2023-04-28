@@ -87,6 +87,26 @@ export class GridComponent implements AfterViewInit, OnDestroy{
 			`GRID_CONTROL_Y_${this.hotKeyUID}`, 'mod+y',
 			()=> this.undoManager.redoChange()
 		);
+
+		// control pressed for quick selection via control/strg
+		this.hotKeys.add(
+			`GRID_CONTROL_STRG_DOWN_${this.hotKeyUID}`, 'mod',
+			()=> this.handleStrgPress(),
+			'', 'keydown'
+		);
+	}
+
+	private handleStrgPress(): void{
+		this.transformationManager.allowClickSelection = true;
+
+		this.hotKeys.add(
+			`GRID_CONTROL_STRG_UP_${this.hotKeyUID}`, 'mod',
+			()=> {
+				this.transformationManager.allowClickSelection = false;
+				this.hotKeys.remove(`GRID_CONTROL_STRG_UP_${this.hotKeyUID}`);
+			},
+			'', 'keyup'
+		);
 	}
 
 	private buildGrid(): void{
@@ -149,5 +169,8 @@ export class GridComponent implements AfterViewInit, OnDestroy{
 		this.hotKeys.remove(`GRID_CONTROL_D_${this.hotKeyUID}`);
 		this.hotKeys.remove(`GRID_CONTROL_Z_${this.hotKeyUID}`);
 		this.hotKeys.remove(`GRID_CONTROL_Y_${this.hotKeyUID}`);
+
+		this.hotKeys.remove(`GRID_CONTROL_STRG_UP_${this.hotKeyUID}`);
+		this.hotKeys.remove(`GRID_CONTROL_STRG_DOWN_${this.hotKeyUID}`);
 	}
 }
