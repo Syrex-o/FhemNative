@@ -1,0 +1,51 @@
+META:
+    HEAD: Guide/Dokumentation erstellen
+    INFO: Wie erstelle ich einen eigenen Guide oder eine Dokumentation, um anderen zu helfen?
+
+CONTENT:
+    - BLOCK: 
+        - TEXT:
+            - Als erstes solltest du dir überlegen, worauf sich dein Thema bezieht.
+            - Wenn du findest, dass Punkte in einer existierenden Dokumentation fehlen, dann kannst du die Dokumentation mit den Button 'Diese Seite bearbeiten', jederzeit ändern. 
+            - Solltest du dir unsicher sein, wie eine 'yaml' Datei für die FhemNative Website funktioniert, hift dir Punkt 2 auf dieser Seite weiter.
+
+        - TEXT:
+            - "Wenn du ein neues Dokument erstellen möchtest, kannst du das auf 2 Wegen tun:"
+
+        - INNER_HEADER:
+            ID: new-guide
+            text: 1. Neuen Guide erstellen
+
+    - BLOCK:
+        - TEXT_BOLD:
+            - "Option A: Texte einreichen"
+
+        - TEXT:
+            - Wenn du vor allem daran interessiert bist anderen Usern zu helfen, dich aber nicht mit den technischen Details auseinaderzusetzen, kannst du im GitHub von FhemNative einfach ein neues 'Issue' eröffnen.
+            - In den Titel kannst du dann einfach schreiben, ob du einen Guide oder eine Dokumentation veröffentlichen möchtest.
+            - Anschließend solltest du mitteilen, worum es in deinem neuen Guide/Doku geht. 
+            - Das geht am besten, mit einer einfachen und kurzen Überschrift und einer zweiten Zeile mit etwas mehr Details.
+            - Anschließend kannst du einfach einen Block schreiben, wie du ihn dir vorstellst.
+            - Im Anschluss kümmere ich mich darum, deinen Guide in die Form für die FhemNative Website zu überführen.
+            - Wenn dein Name unter deinem Guide genannt werden soll, kannst du das gern dazu schreiben.
+
+        - LINK:
+            type: external
+            text: "GitHub Issue anlegen:"
+            linkText: Neues GitHub Issue
+            link: https://github.com/Syrex-o/FhemNative/issues/new
+
+    - BLOCK:
+        - TEXT_BOLD:
+            - "Option B: Guide selbst in FhemNative anlegen"
+
+        - TEXT:
+            - Details hierzu werden folgen.
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: guide-format
+            text: 2. Guides aus yaml erstellen
+
+        - TEXT:
+            - Details hierzu werden folgen.
