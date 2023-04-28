@@ -1,0 +1,118 @@
+META:
+    HEAD: Shortcuts
+    INFO: Keyboard Shortcuts in FhemNative
+
+CONTENT:
+    - BLOCK: 
+        - SECTION_HEADER:
+            text: "Shortcuts von FhemNative für Desktop Anwendungen:"
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: mod+a
+            text: "Strg oder Cmd + a:"
+
+        - TEXT:
+            - Dieser Shortcut ermöglicht es alle Komponenten innerhalb einer Oberfläche zu selektieren.
+        
+        - TEXT_BOLD:
+            - "Vorraussetzungen:"
+
+        - LIST:
+            - Edit Modus aktiv
+            - Raster/Grid ist sichtbar
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: mod+c
+            text: "Strg oder Cmd + c:"
+            
+        - TEXT:
+            - Dieser Shortcut ermöglicht es selektierte Komponenten zu kopieren.
+            - Kopierte Komponenten werden nicht automatisch eingefügt.
+        
+        - TEXT_BOLD:
+            - "Vorraussetzungen:"
+
+        - LIST:
+            - Edit Modus aktiv
+            - Raster/Grid ist sichtbar
+            - Komponenten zum kopieren sind ausgewählt
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: mod+v
+            text: "Strg oder Cmd + v:"
+
+        - TEXT:
+            - Dieser Shortcut ermöglicht es kopierte Komponenten einzufügen.
+        
+        - TEXT_BOLD:
+            - "Vorraussetzungen:"
+
+        - LIST:
+            - Edit Modus aktiv
+            - Raster/Grid ist sichtbar
+            - Kopierte Komponenten zum einfügen sind vorhanden
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: mod+d
+            text: "Strg oder Cmd + d:"
+
+        - TEXT:
+            - Dieser Shortcut ermöglicht es selektierte Komponenten zu löschen.
+        
+        - TEXT_BOLD:
+            - "Vorraussetzungen:"
+
+        - LIST:
+            - Edit Modus aktiv
+            - Raster/Grid ist sichtbar
+            - Komponenten zum löschen sind ausgewählt
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: mod+z
+            text: "Strg oder Cmd + z:"
+
+        - TEXT:
+            - Dieser Shortcut ermöglicht es getätigte Aktionen rückgängig zu machen.
+        
+        - TEXT_BOLD:
+            - "Vorraussetzungen:"
+
+        - LIST:
+            - Edit Modus aktiv
+            - Aktionen zum rückgängig machen sind vorhanden
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: mod+y
+            text: "Strg or Cmd + y:"
+
+        - TEXT:
+            - Dieser Shortcut ermöglicht es rückgängig gemachte Aktionen zu wiederholen.
+        
+        - TEXT_BOLD:
+            - "Vorraussetzungen:"
+
+        - LIST:
+            - Edit Modus aktiv
+            - Aktionen zum wiederholen sind vorhanden
+
+    - BLOCK:
+        - INNER_HEADER:
+            ID: mod
+            text: "Strg oder Cmd"
+
+        - TEXT:
+            - Dieser Shortcut ermöglicht es Komponenten ohne Kontext-Menü zu schnell zu selektieren.
+            - Wenn man Strg oder Cmd gedrückt hält, kann man Komponenten schnell selektieren, bis man die Taste wieder los lässt.
+        
+        - TEXT_BOLD:
+            - "Vorraussetzungen:"
+
+        - LIST:
+            - Edit Modus aktiv
+            - Raster/Grid ist sichtbar
