@@ -1,0 +1,31 @@
+:host{
+    .footer-container{
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: var(--padding-a);
+    }
+    .collection{
+        padding-right: 24px;
+        width: 50%;
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-align: left;
+            li{
+                margin-bottom: var(--item-spacing-a);
+                a{
+                    text-decoration: none;
+                    &:hover,
+                    &.active{
+                        color: var(--text-a);
+                    }
+                }
+            }
+        }
+    }
+    .bottom-container{
+        margin-top: 3rem;
+    }
+}
