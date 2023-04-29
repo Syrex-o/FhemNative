@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, map, Observable } from "rxjs";
+import { BehaviorSubject, delay, map, Observable } from "rxjs";
 
 // Themes
 import { dark, bright } from './themes';
@@ -30,13 +30,14 @@ export class ThemeService {
 		this.active.next(actualTheme);
 	}
 
-	// observalble of active theme
-	public getTheme(): Observable<Theme> { return this.active; }
-
 	// pipe of theme
 	public getThemePipe(themeValue: string): Observable<string> {
 		return this.active.pipe( map( x=> x.properties[themeValue] ) );
 	}
+
+	// observable of active theme
+	// delay theme to allow theme pipe to update before
+	public getTheme(): Observable<Theme> { return this.active.pipe( delay(10) ); }
 
     // get value from theme
     public getThemeColor(themeValue: string): string{
