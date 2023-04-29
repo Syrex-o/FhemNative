@@ -5,7 +5,10 @@ import { ConnectionProfile } from "@fhem-native/types/fhem";
 /**
  * Language Options
  */
-export const LangOptions = ['de', 'en'];
+export const LangOptions = [
+	'de', 
+	// 'en'
+];
 
 /**
  * Theme Options
