@@ -137,4 +137,12 @@ export class HomePageComponent implements AfterViewChecked, AfterContentChecked{
 		}
 		return {nodes, links};
 	}
+
+	openPlayStore(): void{
+		window.open('https://play.google.com/store/apps/details?id=de.slapapps.fhemnative', '_system');
+	}
+
+	openAppStore(): void{
+		
+	}
 }
