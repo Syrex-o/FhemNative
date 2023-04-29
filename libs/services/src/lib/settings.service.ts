@@ -24,7 +24,7 @@ export class SettingsService {
 	public appDefaultsLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 	private appDefaults: AppSetting[] = BaseAppSettings.concat([
         // app language
-		{name: 'language', default: 'de', toStorage: true, callback: (lang: string)=> {this.translate.setDefaultLang(lang || 'en');}},
+		{name: 'language', default: 'de', toStorage: true, callback: (lang: string)=> {this.translate.setDefaultLang(lang || 'de');}},
         // fhem connection profiles
 		{name: 'connectionProfiles', default: JSON.stringify([]), toStorage: false, callback: (data: any)=>{if(data.length === 0){ this.connectionProfiles = [{...DefaultConnectionProfile}]; }}},
     ]);
