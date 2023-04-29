@@ -59,7 +59,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy{
 		this.changeAppSetting('theme', theme);
 		this.theme.changeTheme(theme);
 		// update status bar color
-		if(Capacitor.isPluginAvailable('StatusBar')) StatusBar.setBackgroundColor({color: this.theme.getThemeColor('--primary-app')});
+		if(Capacitor.isPluginAvailable('StatusBar')) StatusBar.setBackgroundColor({color: this.theme.getThemeColor('--secondary')});
 	}
 
 	async downloadConfig(){
