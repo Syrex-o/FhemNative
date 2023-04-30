@@ -1,4 +1,4 @@
-import { Directive, Output, EventEmitter, Inject, AfterViewInit, ElementRef, Input } from '@angular/core';
+import { Directive, Output, EventEmitter, Inject, AfterViewInit, ElementRef, Input, NgZone } from '@angular/core';
 import { fromEvent, merge, takeUntil } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 
@@ -41,6 +41,7 @@ export class MoverDirective implements AfterViewInit{
 
 	constructor(
 		ref: ElementRef,
+		private zone: NgZone,
 		@Inject(DOCUMENT) private document: Document,
 		private transformationManager: TransformationManagerDirective){
 		this.hostEl = ref.nativeElement;
@@ -73,11 +74,11 @@ export class MoverDirective implements AfterViewInit{
 					throttle = 0;
 				}
 
-				this.whileMove.emit({
-					start: startPos, 
-					current: currPos, 
-					delta: deltaPos, 
-					triggerEvent: thresholdTriggerEvent && this.updateOnMove
+				this.zone.run(()=>{
+					this.whileMove.emit({
+						start: startPos, current: currPos, 
+						delta: deltaPos, triggerEvent: thresholdTriggerEvent && this.updateOnMove
+					});
 				});
 			});
 		
