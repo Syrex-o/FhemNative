@@ -352,6 +352,11 @@ export class ComponentLoaderService {
 	 * @param component
 	 */
 	public addFhemComponent(containerRegistry: ContainerRegistry, componentSettings: FhemComponentSettings, component: Type<any>): void{
+		// check for component with same UID and destroy
+		// could happen on initial load with shared config --> results in fake duplicate components
+		const componentRegistry = this.getComponentFromRegistry(componentSettings.UID);
+		if(componentRegistry) this.destroyComponent(componentRegistry);
+
 		// create component
 		const compRef = containerRegistry.container.createComponent(component);
 
