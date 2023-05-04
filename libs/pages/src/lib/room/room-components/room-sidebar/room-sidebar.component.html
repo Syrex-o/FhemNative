@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
     <ion-toolbar>
         <div class="flex-container">
             <!-- logo container -->
@@ -60,7 +60,7 @@
 </ion-content>
 
 <!-- settings -->
-<ion-footer>
+<ion-footer class="ion-no-border">
     <ion-toolbar>
         <div class="flex-container" *ngIf="(settings.demoMode | async) === false">
             <button class="menu-btn no-margin ion-activatable" (click)="switchPage(['/', 'settings'])">
