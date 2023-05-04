@@ -2,7 +2,13 @@
 	[UID]="UID" 
 	[position]="position"
 	[minDimensions]="{width: 150, height: 150}"
-	(initComponent)="onInitComponent()">
+	[fhemDeviceConfig]="{
+        device,
+		deviceAvailable: usePageIndexReading || false
+    }"
+	(initComponent)="onInitComponent()"
+	(initDevice)="setFhemDevice($event)"
+	(updateDevice)="setFhemDevice($event)">
 	<div class="fhem-native-swiper" [ngStyle]="{
 			'border-top-left-radius.px': borderRadius,
             'border-top-right-radius.px': borderRadius,

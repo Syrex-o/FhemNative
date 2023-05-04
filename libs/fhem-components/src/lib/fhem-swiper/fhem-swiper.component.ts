@@ -12,6 +12,7 @@ import { EditorService, StructureService } from '@fhem-native/services';
 import { getFontStyleFromSelection, getFontWeightFromSelection, TextStyle } from '@fhem-native/utils';
 
 import { ComponentPosition, FhemComponentSettings, FhemComponentContainerSettings, EditMode } from '@fhem-native/types/components';
+import { FhemDevice } from '@fhem-native/types/fhem';
 
 SwiperCore.use([Pagination]);
 @Component({
@@ -48,6 +49,9 @@ export class FhemSwiperComponent implements AfterViewInit{
 	@Input() borderRadius!: number;
     @Input() containerPages!: number;
 
+    @Input() device!: string;
+	@Input() pageIndexReading!: string;
+
 	// Selections
     @Input() headerStyle!: TextStyle;
 	@Input() headerPosition!: string;
@@ -62,6 +66,7 @@ export class FhemSwiperComponent implements AfterViewInit{
 	// Bool
     @Input() showPager!: boolean;
     @Input() showHeader!: boolean;
+    @Input() usePageIndexReading!: boolean;
 
 	// header style
 	headerFontWeight = 400;
@@ -88,6 +93,13 @@ export class FhemSwiperComponent implements AfterViewInit{
         // get component for container creation
 		const component = this.structure.getComponent(this.UID);
 		if(component && component.components) this.component = (component as FhemComponentSettings);
+	}
+
+    setFhemDevice(device: FhemDevice): void{
+        // set swiper index based on reading
+        const devicePageIndex = parseInt(device.readings[this.pageIndexReading].Value);
+        if(isNaN(devicePageIndex) || devicePageIndex > this.containerPages) return;
+        this.swiper?.swiperRef.slideTo(devicePageIndex);
 	}
 
     ngAfterViewInit(): void {

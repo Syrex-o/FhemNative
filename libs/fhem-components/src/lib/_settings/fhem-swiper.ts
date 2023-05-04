@@ -12,7 +12,10 @@ export const Settings: ComponentSettings = {
 		data: {
 			headline: {type: 'string', value: ''},
 			borderRadius: {type: 'number', value: 5},
-			containerPages: {type: 'number', value: 3}
+			containerPages: {type: 'number', value: 3},
+
+			device: {type: 'string', value: ''},
+            pageIndexReading: {type: 'string', value: 'state'},
 		},
 		arr_data: {
 			headerStyle: {items: componentTextStyles, value: 'normal'},
@@ -27,7 +30,8 @@ export const Settings: ComponentSettings = {
 		},
 		bool: {
 			showPager: true,
-			showHeader: true
+			showHeader: true,
+			usePageIndexReading: false
 		}
 	},
 	dependencies: {
@@ -35,6 +39,9 @@ export const Settings: ComponentSettings = {
 		'data.headline': {dependOn: ['bool.showHeader'], value: [true]},
 		'arr_data.headerStyle': {dependOn: ['bool.showHeader'], value: [true]},
 		'arr_data.headerPosition': {dependOn: ['bool.showHeader'], value: [true]},
+		// index reading
+		'data.device': {dependOn: ['bool.usePageIndexReading'], value: [true]},
+		'data.pageIndexReading': {dependOn: ['bool.usePageIndexReading'], value: [true]},
 		// styles
 		'style.pagerOnColor': {dependOn: ['bool.showPager'], value: [true]},
 		'style.pagerOffColor': {dependOn: ['bool.showPager'], value: [true]},
