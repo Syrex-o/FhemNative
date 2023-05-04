@@ -25,9 +25,9 @@ export const Settings: ComponentSettings = {
 			style: {items: ['toggle', 'toggle-outline'], value: 'toggle-outline'}
 		},
         style: {
-            labelColor: '#f7f8fa ',
+            labelColor: '#f7f8fa',
 			infoColor: '#a9aaab',
-			backgroundColorOn: '#2994b3 ',
+			backgroundColorOn: '#2994b3',
 			backgroundColorOff: '#a2a4ab',
             knobColorOn: '#14a9d5',
             knobColorOff: '#fff'
