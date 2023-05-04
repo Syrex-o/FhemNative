@@ -81,17 +81,18 @@ function getCompItems(): NavItem[] {
         ref: ['/', 'components']
     }];
 
-    for( const compCategory of Object.values(ComponentCategories)){
-        for(let i = 0; i < compCategory.components.length; i++){
-            const compName = compCategory.components[i];
-            compItems.push({
-                name: baseTranslateKey + compName,
-                info: 'COMPONENTS.'+ toTitleCase(compName) +'.INFO',
-                icon: 'cube-outline',
-                ref: [...baseRoute, compName.toLocaleLowerCase()]
-            });
-        }
-    }
+    const compNames = Object.values(ComponentCategories)
+        .map(x=> x.components)
+        .flat()
+        .sort();
 
+    for(let i = 0; i < compNames.length; i++){
+        compItems.push({
+            name: baseTranslateKey + compNames[i],
+            info: 'COMPONENTS.'+ toTitleCase(compNames[i]) +'.INFO',
+            icon: 'cube-outline',
+            ref: [...baseRoute, compNames[i].toLowerCase()]
+        });
+    }
     return compItems;
 }
