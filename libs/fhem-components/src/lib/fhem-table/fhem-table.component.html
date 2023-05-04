@@ -1,0 +1,42 @@
+<fhem-native-component 
+    [UID]="UID" 
+    [position]="position"
+    [minDimensions]="{width: 150, height: 50}"
+    [fhemDeviceConfig]="{
+        device,
+        deviceAvailable: true
+    }"
+    (initComponent)="getArrValues()"
+    (initDevice)="setFhemDevice($event)"
+    (updateDevice)="setFhemDevice($event)">
+    <div class="fhem-native-table">
+        <table>
+            <thead>
+                <th *ngIf="showReading">
+                    <p class="color-a-app size-e-app no-margin">{{_headerValues[0] || 'Reading'}}</p>
+                </th>
+                <th *ngIf="showValue">
+                    <p class="color-a-app size-e-app no-margin">{{_headerValues[1] || 'Value'}}</p>
+                </th>
+                <th *ngIf="showTime">
+                    <p class="color-a-app size-e-app no-margin">{{_headerValues[2] || 'Time'}}</p>
+                </th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let reading of _readingValues">
+                    <tr *ngIf="fhemDevice && fhemDevice.readings[reading] as readingVal">
+                        <td *ngIf="showReading">
+                            <p class="color-a-app size-e-app no-margin">{{reading}}</p>
+                        </td>
+                        <td *ngIf="showValue">
+                            <p class="color-a-app size-e-app no-margin">{{readingVal.Value}}</p>
+                        </td>
+                        <td *ngIf="showTime">
+                            <p class="color-a-app size-e-app no-margin">{{readingVal.Time}}</p>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</fhem-native-component>
