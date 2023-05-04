@@ -1,0 +1,22 @@
+<div class="full-container">
+    <h2 class="size-b spacing-a color-a no-margin">{{ 'WEB.CONF_CONVERTER.HEAD' | translate }}</h2>
+    <h3 class="info mb-1-5 size-e spacing-b color-b">{{ 'WEB.CONF_CONVERTER.INFO' | translate }}</h3>
+</div>
+
+<div class="full-container">
+    <div class="button-container">
+        <p class="size-e color-b">{{ 'WEB.CONF_CONVERTER.SELECT.HEAD' | translate }}</p>
+        <div class="select-container">
+            <button class="select-btn button-web type-a" (click)="uploadConfig()">
+                <ion-icon name="cloud-upload-outline"></ion-icon>
+                <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.SELECT.BUTTON_A' | translate }}</p>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+            <button class="select-btn button-web type-a" (click)="pasteConfig()">
+                <ion-icon name="clipboard-outline"></ion-icon>
+                <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.SELECT.BUTTON_B' | translate }}</p>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+        </div>
+    </div>
+</div>

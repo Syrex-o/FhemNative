@@ -1,0 +1,20 @@
+:host{
+    .button-container{
+        margin: 2rem 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .select-container{
+            display: flex;
+            gap: var(--item-spacing-a);
+            .select-btn{
+                display: flex;
+                align-items: center;
+                gap: var(--item-spacing-a);
+                ion-icon{
+                    font-size: 1.5rem;
+                }
+            }
+        }
+    }
+}

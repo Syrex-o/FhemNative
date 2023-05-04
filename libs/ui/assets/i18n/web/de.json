@@ -59,6 +59,15 @@
 				}
 			}
 		},
+		"CONF_CONVERTER": {
+			"HEAD": "Config Converter",
+			"INFO": "Convertiere deine FhemNative Konfiguration aus alten Versionen vor 4.0.0 in den aktuellen Standard.",
+			"SELECT": {
+				"HEAD": "Wie möchtest du deine Config zur Verfügung stellen?",
+				"BUTTON_A": "Config hochladen",
+				"BUTTON_B": "Config einfügen"
+			}
+		},
 		"DICT": {
 			"PREV": "Zurück",
 			"NEXT": "Weiter"
