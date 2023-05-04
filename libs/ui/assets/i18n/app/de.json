@@ -416,6 +416,7 @@
                 "SLIDER": "Slider",
                 "SWIPER": "Swiper",
                 "SWITCH": "Switch",
+                "TABLE": "Table",
                 "TABS": "Tabs",
                 "THERMOSTAT": "Thermostat"
             }
@@ -1947,6 +1948,10 @@
                         "name": "Label-Endung",
 					    "info": "Endung des Werte-Labels (Bsp. %)"
                     },
+                    "steps": {
+                        "name": "Schritte",
+					    "info": "Schritte in denen sich der Slider bewegt"
+                    },
                     "min": {
                         "name": "Min Wert",
 					    "info": "Minimal Wert des Sliders"
@@ -2046,6 +2051,14 @@
                     "containerPages": {
                         "name": "Seiten",
 					    "info": "Anzahl der Seiten für den Swiper"
+                    },
+                    "device": {
+                        "name": "Geräte Name",
+                        "info": "Name des Fhem Geräts"
+                    },
+                    "pageIndexReading": {
+                        "name": "Startseiten-Reading",
+                        "info": "Name des Fhem Readings, das die Startseite des Swipers definiert"
                     }
                 },
                 "bool": {
@@ -2056,6 +2069,10 @@
                     "showHeader": {
                         "name": "Kopfzeile anzeigen",
                         "info": "Kopfzeile anzeigen/nicht anzeigen"
+                    },
+                    "usePageIndexReading": {
+                        "name": "Startseiten Reading",
+                        "info": "Reading für die Startseite des Swipers verwenden/nicht verwenden"
                     }
                 },
                 "arr_data": {
@@ -2174,6 +2191,44 @@
                     "knobColorOff": {
                         "name": "Thumb Farbe off",
 					    "info": "Hintergrundfarbe des Thumbs im OFF Zustand"
+                    }
+                }
+            }
+        },
+        "Table": {
+            "NAME": "Table",
+            "INFO": "Eine Tabelle, die Geräte Readings aus FHEM anzeigen kann.",
+            "INPUTS": {
+                "data": {
+                    "device": {
+                        "name": "Geräte Name",
+                        "info": "Name des Fhem Geräts"
+                    },
+                    "readingValues": {
+                        "name": "Geräte Readings",
+                        "info": "Komma getrennte Liste von Readings für die Anzeige in der Tabelle"
+                    },
+                    "headerValues": {
+                        "name": "Kopfzeilen Alias",
+                        "info": "Komma getrennte Liste von Alias Werten für die Kopfzeile (max. 3 Werte)"
+                    }
+                },
+                "bool": {
+                    "showAllReadings": {
+                        "name": "Alle Readings anzeigen",
+					    "info": "Alle Werte des Geräts in der Tabelle anzeigen/nicht anzeigen"
+                    },
+                    "showReading": {
+                        "name": "Reading Namen anzeigen",
+					    "info": "Reading Namen in der Tabelle anzeigen/nicht anzeigen"
+                    },
+                    "showValue": {
+                        "name": "Werte anzeigen",
+					    "info": "Reading Werte in der Tabelle anzeigen/nicht anzeigen"
+                    },
+                    "showTime": {
+                        "name": "Zeiten anzeigen",
+					    "info": "Zeitpunkt von Änderungen der Reading Werte in der Tabelle anzeigen/nicht anzeigen"
                     }
                 }
             }
