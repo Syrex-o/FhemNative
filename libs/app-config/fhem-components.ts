@@ -15,7 +15,6 @@ export const ComponentCategories = [
 			'BUTTON MENU',
 			'BUTTON MULTISTATE',
 			'CIRCLE MENU',
-			// 'SELECT', 
 			'SWITCH'
 		]
 	},
@@ -44,7 +43,8 @@ export const ComponentCategories = [
 			'ICON',
 			'IFRAME',
 			'IMAGE',
-			'LABEL'
+			'LABEL',
+			'TABLE'
 		]
 	},
 	{
