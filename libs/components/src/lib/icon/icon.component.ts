@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import { IconService } from '@fhem-native/services';
 import { BehaviorSubject } from 'rxjs';
@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 	selector: 'fhem-native-icon',
 	templateUrl: './icon.component.html',
 	styleUrls: ['./icon.component.scss'],
+	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconComponent implements OnChanges{
