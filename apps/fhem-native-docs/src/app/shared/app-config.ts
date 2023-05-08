@@ -68,6 +68,11 @@ export const NAV_ITEMS: NavItem[] = [
         name: 'Playground',
         icon: 'dice-outline',
         ref: ['/', 'sandbox']
+    },
+    {
+        name: 'Config Converter',
+        icon: 'swap-horizontal-outline',
+        ref: ['/', 'config-converter']
     }
 ];
 

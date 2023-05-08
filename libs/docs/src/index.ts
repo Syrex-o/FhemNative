@@ -1,3 +1,4 @@
+export * from './lib/doc-item';
 export * from './lib/doc-item/doc-item.module';
 export * from './lib/doc-item/doc-item.component';
 

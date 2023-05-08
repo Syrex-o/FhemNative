@@ -59,6 +59,37 @@
 				}
 			}
 		},
+		"CONF_CONVERTER": {
+			"HEAD": "Config Converter",
+			"INFO": "Convertiere deine FhemNative Konfiguration aus alten Versionen vor 4.0.0 in den aktuellen Standard.",
+			"SELECT": {
+				"HEAD": "Wie möchtest du deine Config zur Verfügung stellen?",
+				"INFO": "Bitte beachte die Hinweise, wie eine Config aussehen sollte, damit der Converter funktioniert.",
+				"BUTTON_A": "Config hochladen",
+				"BUTTON_B": "Config einfügen",
+				"BUTTON_C": "Convertierte Config herunterladen"
+			},
+			"INFOS": {
+				"HEAD": "Hinweise für den Converter",
+				"INFO": "Beim konvertieren wird immer versucht deine Konfiguration automatisch zu erkennen. Sollte das nicht möglich sein, halte dich an folgende Hinweise:",
+				"EXAMPLE_1": {
+					"HEAD": "Was kann konvertiert werden:",
+					"CONVERTABLE": {
+						"ROOMS": "Räume",
+						"SHARED_CONFIGS": "Geteilte Konfigurationen"
+					}
+				}
+			},
+			"ERRORS": {
+				"HEAD": "Nachrichten vom konvertieren:",
+				"NO_ARRAY": "Die importierte Config ist kein Array.",
+				"FALSE_CONFIG": "Die importiere Config scheint fehlerhaft zu sein.",
+				"NO_COMPS_IN_ROOM": "Der Raum enthält keine Komponenten.",
+				"COMP_NOT_FOUND": "Komponente konnte nicht gefunden werden.",
+				"COMP_NOT_CONVERTED": "Komponente konnte nicht konvertiert werden.",
+				"NO_COMP_POSITION_PERCENTAGE": "Komponente hat keine prozentuale Position. Es wird die Mindestgröße verwendet."
+			}
+		},
 		"DICT": {
 			"PREV": "Zurück",
 			"NEXT": "Weiter"
