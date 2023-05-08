@@ -17,4 +17,21 @@
             }
         }
     }
+
+    .converter-error{
+        background-color: var(--tertiary);
+        ion-icon{
+            font-size: 1.6rem;
+        }
+        &.info{
+            ion-icon, p{
+                color: var(--warning);
+            }
+        }
+        &.error{
+            ion-icon, p{
+                color: var(--error);
+            }
+        }
+    }
 }
