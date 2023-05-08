@@ -1,0 +1,53 @@
+<div class="full-container">
+    <h2 class="size-b spacing-a color-a no-margin">{{ 'WEB.CONF_CONVERTER.HEAD' | translate }}</h2>
+    <h3 class="size-e spacing-b color-b">{{ 'WEB.CONF_CONVERTER.INFO' | translate }}</h3>
+</div>
+
+<div class="full-container mt-5">
+    <div class="button-container">
+        <p class="size-e color-a no-margin center bold">{{ 'WEB.CONF_CONVERTER.SELECT.HEAD' | translate }}</p>
+        <p class="size-f color-b no-margin center">{{ 'WEB.CONF_CONVERTER.SELECT.INFO' | translate }}</p>
+        <div class="select-container mt-1-5">
+            <button class="select-btn button-web type-a" (click)="uploadConfig()">
+                <ion-icon name="cloud-upload-outline"></ion-icon>
+                <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.SELECT.BUTTON_A' | translate }}</p>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button>
+            <!-- <button class="select-btn button-web type-a" (click)="pasteConfig()">
+                <ion-icon name="clipboard-outline"></ion-icon>
+                <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.SELECT.BUTTON_B' | translate }}</p>
+                <ion-ripple-effect></ion-ripple-effect>
+            </button> -->
+        </div>
+    </div>
+
+    <div class="converter-output mt-1-5" *ngIf="converterErrors.length">
+        <p class="size-f color-a bold">{{ 'WEB.CONF_CONVERTER.ERRORS.HEAD' | translate }}</p>
+        <ng-container *ngFor="let err of converterErrors">
+            <div class="converter-error flex f-gap-0-5 f-item-center rounded pad-tb_0-5 pad-lr-auto_2 mb-0-5" [ngClass]="err.type">
+                <ion-icon [name]="$any(err) === 'info' ? 'warning-outline' : 'alert-circle-outline'"/>
+                <p class="size-f">{{ err.noTranslate ? err.message : (err.message | translate) }}</p>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="download-container mt-1-5 center" *ngIf="convertedConfig.length">
+        <button class="button-web type-c" (click)="downloadConfig()">
+            <ion-icon name="download-outline"></ion-icon>
+            <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.SELECT.BUTTON_C' | translate }}</p>
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
+    </div>
+</div>
+
+<div class="full-container mt-5">
+    <h3 class="mb-1-5 size-e spacing-b color-a">{{ 'WEB.CONF_CONVERTER.INFOS.HEAD' | translate }}</h3>
+    <p class="size-f color-b">{{ 'WEB.CONF_CONVERTER.INFOS.INFO' | translate }}</p>
+
+    <div class="example pad-tb_0-75" *ngIf="convertableItems$ | async as convertableItems">
+        <p class="size-e color-a">{{ 'WEB.CONF_CONVERTER.INFOS.EXAMPLE_1.HEAD' | translate }}</p>
+        <fhem-native-doc-item-list  [listContent]="convertableItems"/>
+    </div>
+</div>
+
+<fhem-native-loader *ngIf="loader.displayLoader" [logoLoader]="loader.logoLoader" [loaderInfo]="loader.loaderInfo"></fhem-native-loader>

@@ -25,6 +25,10 @@ const routes: Routes = [
         loadChildren: ()=> import('./playground/playground.page').then(mod=> mod.PLAYGROUND_ROUTES)
     },
     {
+        path: 'config-converter',
+        loadChildren: ()=> import('./configConverter/configConverter.page').then(mod=> mod.CONFIG_CONVERTER_ROUTES)
+    },
+    {
         path: 'rights',
         loadChildren: ()=> import('./rights/rights-routes').then(mod=> mod.RIGHTS_ROUTES)
     },
