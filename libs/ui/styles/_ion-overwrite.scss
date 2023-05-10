@@ -7,7 +7,7 @@
 ion-select{
     --padding-start: 10px;
     font-size: var(--size-6);
-    letter-spacing: var(--sapcing-b);
+    letter-spacing: var(--spacing-b);
 }
 
 ion-backdrop{
@@ -46,11 +46,16 @@ ion-alert{
         .alert-title{
             color: var(--text-a);
             font-family: var(--font-a);
-            letter-spacing: var(--sapcing-a);
+            letter-spacing: var(--spacing-a);
         }
         .alert-message{
             color: var(--text-b);
-            letter-spacing: var(--sapcing-b);
+            letter-spacing: var(--spacing-b);
+            line-height: 22px;
+        }
+        .alert-input{
+            color: var(--text-b);
+            letter-spacing: var(--spacing-b);
             line-height: 22px;
         }
         .alert-button-group{
