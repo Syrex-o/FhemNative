@@ -9,7 +9,7 @@ import { filter, map } from "rxjs";
 import { LoaderModule } from "@fhem-native/components";
 import { DocItemListComponent } from "@fhem-native/docs";
 
-import { ComponentLoaderService, ImportExportService, LoaderService } from "@fhem-native/services";
+import { ComponentLoaderService, ImportExportService, LoaderService, ToastService } from "@fhem-native/services";
 import { WebsettingsService } from "../shared/services/webSettings.service";
 
 import { getUID, jsonImporter } from "@fhem-native/utils";
@@ -61,6 +61,7 @@ export class ConfigConverterPageComponent {
     convertedConfig: Room[] = [];
 
     constructor(
+		private toast: ToastService,
         public loader: LoaderService,
         private translate: TranslateService,
         private webSettings: WebsettingsService,
@@ -70,22 +71,63 @@ export class ConfigConverterPageComponent {
 
     async uploadConfig(): Promise<void>{
         this.loader.showLogoLoader();
+		this.prepareConverter();
         const data = await jsonImporter();
 		if(data){
-			this.importedConfig = JSON.parse(data);
-			await this.runConverter();
+			const importedData = this.validateJson(data);
+			if(importedData){
+				this.importedConfig = importedData;
+				await this.runConverter();
+			}
 		}
         this.loader.hideLoader();
     }
 
-    pasteConfig(): void{
-		
+    async pasteConfig(): Promise<void>{
+		this.loader.showLogoLoader();
+		this.prepareConverter();
+		this.toast.showAlert(
+			this.translate.instant('WEB.CONF_CONVERTER.SELECT.BUTTON_B'), 
+			'', 
+			{
+				inputs: [
+					{
+						name: 'config',
+						type: 'textarea',
+						placeholder: 'Paste Config'
+					}
+				],
+				buttons: [
+					{
+						text: this.translate.instant('WEB.CONF_CONVERTER.SELECT.BUTTON_D'),
+						role: 'save',
+						handler: async (e: any)=> {
+							if(e.config !== ''){
+								const importedData = this.validateJson(e.config);
+								if(importedData){
+									this.importedConfig = importedData;
+									await this.runConverter();
+								}
+							}
+							this.loader.hideLoader();
+						}
+					},
+					{
+						text: this.translate.instant('DICT.CANCEL'), 
+						role: 'cancel',
+						handler: ()=> this.loader.hideLoader()
+					}
+				]
+			}
+		)
     }
 
-    private async runConverter(): Promise<void> {
-        this.converterErrors = [];
+	private prepareConverter(): void{
+		this.converterErrors = [];
         this.convertedConfig = [];
+	}
 
+    private async runConverter(): Promise<void> {
         if( !Array.isArray(this.importedConfig) ){
             this.converterErrors.push({type: 'error', message: 'WEB.CONF_CONVERTER.ERRORS.NO_ARRAY'});
         }else{
@@ -233,6 +275,16 @@ export class ConfigConverterPageComponent {
 			return value;
 		}catch(e){
 			return value;
+		}
+	}
+
+	private validateJson(data: any): unknown|null{
+		try{
+			const d = JSON.parse(data);
+			return d;
+		}catch(e){
+			this.converterErrors.push({type: 'error', message: 'WEB.CONF_CONVERTER.ERRORS.NO_JSON_FORMAT'});
+			return null;
 		}
 	}
 
