@@ -13,6 +13,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
+        width: 100%;
         transform: translate(-50%, -50%);
     }
     .logo-container{
@@ -40,6 +41,7 @@
         .store-btns{
             margin-top: 2rem;
             display: flex;
+            justify-content: center;
             gap: var(--item-spacing-a);
             .store-btn{
                 display: flex;
@@ -62,7 +64,7 @@
             }
         }
         .scroll-btn{
-            margin-top: 2rem;
+            margin-top: 3rem;
             display: flex;
             align-items: center;
             justify-content: center;
