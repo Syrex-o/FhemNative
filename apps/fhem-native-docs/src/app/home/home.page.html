@@ -21,6 +21,18 @@
                     <ion-ripple-effect></ion-ripple-effect>
                 </button> -->
             </div>
+            <div class="store-btns">
+                <button class="store-btn button-web" (click)="openDesktop()">
+                    <ion-icon name="logo-windows"></ion-icon>
+                    <p class="size-f no-margin">Windows</p>
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+                <button class="store-btn button-web" (click)="openDesktop()">
+                    <ion-icon name="logo-apple"></ion-icon>
+                    <p class="size-f no-margin">MacOS</p>
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+            </div>
 
             <button class="scroll-btn button-web type-c" (click)="scrollToElem(second)">
                 <p class="size-f no-margin">{{'WEB.HOME.EXPLORE' | translate}}</p>
