@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule, MenuController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,7 +23,8 @@ interface NavItemMapped extends NavItem {
         IonicModule,
         TranslateModule,
         TextBlockModule
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocSideMenuComponent implements OnInit{
     @Input() menuItems: NavItem[] = [];
