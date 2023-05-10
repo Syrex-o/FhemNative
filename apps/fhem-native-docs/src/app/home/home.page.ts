@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterViewChecked, Component, ElementRef, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterContentChecked, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild, ViewEncapsulation } from "@angular/core";
 
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
@@ -16,16 +16,18 @@ import * as d3 from 'd3';
 	templateUrl: 'home.page.html',
 	styleUrls: ['home.page.scss'],
 	imports: [ IonicModule, TranslateModule, SwiperModule ],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomePageComponent implements AfterViewChecked, AfterContentChecked{
+export class HomePageComponent implements AfterContentChecked, OnDestroy{
 	@ViewChild('SwiperA', {read: SwiperComponent}) swiperA!: SwiperComponent;
 	@ViewChild('SwiperB', {read: SwiperComponent}) swiperB!: SwiperComponent;
 
     @ViewChild('CANVAS', {static: false, read: ElementRef}) canvas: ElementRef|undefined;
-	@ViewChild('CANVAS_CONTAINER', ) canvasContainer: ElementRef|undefined;
+	@ViewChild('CANVAS_CONTAINER', {static: false, read: ElementRef}) canvasContainer: ElementRef|undefined;
 	private animationData = this.getAnimationData();
 
+	private simulation: d3.Simulation<any, undefined>|undefined;
 	private initialized = false;
 	width = 800; height = 600;
 
@@ -33,12 +35,9 @@ export class HomePageComponent implements AfterViewChecked, AfterContentChecked{
 		el.scrollIntoView({behavior: 'smooth'});
 	}
 
-	ngAfterViewChecked(): void {
-		if(this.canvasContainer?.nativeElement.offsetWidth > 0 && !this.initialized) this.createGraph();
-	}
-
 	ngAfterContentChecked(): void {
 		if(this.swiperA) this.swiperA.swiperRef.autoplay.start();
+		if(this.canvasContainer?.nativeElement.clientWidth > 0 && !this.initialized) this.createGraph();
 	}
 
 	onSlideChangeA(e: Swiper[]): void{
@@ -56,7 +55,7 @@ export class HomePageComponent implements AfterViewChecked, AfterContentChecked{
 		if(!this.canvasContainer || !this.canvas) return;
 		this.initialized = true;
 
-		this.width = this.height = Math.max(this.canvasContainer.nativeElement.offsetWidth, this.canvasContainer.nativeElement.offsetHeight)
+		this.width = this.height = Math.max(this.canvasContainer.nativeElement.offsetWidth, this.canvasContainer.nativeElement.offsetHeight);
 
 		const links = this.animationData.links.map(d => Object.create(d));
   		const nodes = this.animationData.nodes.map(d => Object.create(d));
@@ -111,16 +110,16 @@ export class HomePageComponent implements AfterViewChecked, AfterContentChecked{
 				.on("end", dragended);
 		}
 
-		const simulation = d3.forceSimulation(nodes)
+		this.simulation = d3.forceSimulation(nodes)
 			.force("charge", d3.forceManyBody().strength(-10))
-			.force("link", d3.forceLink(links).strength(0.5).distance(20).iterations(1))
+			.force("link", d3.forceLink(links).strength(.5).distance(20).iterations(1))
 			.on("tick", ticked);
 
-		simulation.alphaDecay(0.001);
+		this.simulation.alphaDecay(0.001);
 
 		d3.select(context.canvas)
 			.call(
-				drag(simulation).subject(({x, y}) => simulation.find(x - this.width / 2, y - this.height / 2))
+				drag(this.simulation).subject(({x, y}) => this.simulation?.find(x - this.width / 2, y - this.height / 2))
 			)
 			.node()
 	}
@@ -144,5 +143,13 @@ export class HomePageComponent implements AfterViewChecked, AfterContentChecked{
 
 	openAppStore(): void{
 		
+	}
+
+	openDesktop(): void{
+		window.open('https://github.com/Syrex-o/FhemNative/releases', '_blank');
+	}
+
+	ngOnDestroy(): void {
+		this.simulation?.stop();
 	}
 }
