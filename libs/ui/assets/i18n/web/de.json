@@ -65,9 +65,10 @@
 			"SELECT": {
 				"HEAD": "Wie möchtest du deine Config zur Verfügung stellen?",
 				"INFO": "Bitte beachte die Hinweise, wie eine Config aussehen sollte, damit der Converter funktioniert.",
-				"BUTTON_A": "Config hochladen",
-				"BUTTON_B": "Config einfügen",
-				"BUTTON_C": "Convertierte Config herunterladen"
+				"BUTTON_A": "Config als JSON hochladen",
+				"BUTTON_B": "Config als Text einfügen",
+				"BUTTON_C": "Convertierte Config herunterladen",
+				"BUTTON_D": "Convertieren"
 			},
 			"INFOS": {
 				"HEAD": "Hinweise für den Converter",
@@ -84,6 +85,7 @@
 				"HEAD": "Nachrichten vom konvertieren:",
 				"NO_ARRAY": "Die importierte Config ist kein Array.",
 				"FALSE_CONFIG": "Die importiere Config scheint fehlerhaft zu sein.",
+				"NO_JSON_FORMAT": "Die importierte Config ist nicht im JSON Format.",
 				"NO_COMPS_IN_ROOM": "Der Raum enthält keine Komponenten.",
 				"COMP_NOT_FOUND": "Komponente konnte nicht gefunden werden.",
 				"COMP_NOT_CONVERTED": "Komponente konnte nicht konvertiert werden.",
