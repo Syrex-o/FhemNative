@@ -22,7 +22,8 @@ export const ComponentCategories = [
 		category: 'PICKER', components: [
 			'COLOR PICKER',
 			'INPUT',
-			'SELECT'
+			'SELECT',
+			'TIME PICKER'
 		]
 	},
 	{

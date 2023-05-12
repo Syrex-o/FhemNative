@@ -418,7 +418,8 @@
                 "SWITCH": "Switch",
                 "TABLE": "Table",
                 "TABS": "Tabs",
-                "THERMOSTAT": "Thermostat"
+                "THERMOSTAT": "Thermostat",
+                "TIME PICKER": "Time Picker"
             }
         }
     },
@@ -2305,7 +2306,7 @@
         },
         "Thermostat": {
             "NAME": "Thermostat",
-            "INFO": "Ein Thermostat, um Temperaturwerte anzeigt anzuzeigen und an FHEM zu senden.",
+            "INFO": "Ein Thermostat, um Temperaturwerte anzuzeigen und an FHEM zu senden.",
             "INPUTS": {
                 "data": {
                     "device": {
@@ -2364,11 +2365,11 @@
                 "style": {
                     "backgroundColor": {
                         "name": "Hintergrundfarbe",
-					    "info": "Hintergrundfarbe des runden Thremostats"
+					    "info": "Hintergrundfarbe des runden Thermostats"
                     },
                     "tickColor": {
                         "name": "Tick-Farbe",
-					    "info": "Tick-Farbe des runden Thremostats"
+					    "info": "Tick-Farbe des runden Thermostats"
                     },
                     "heatingColor": {
                         "name": "Aufheiz-Farbe",
@@ -2380,7 +2381,7 @@
                     },
                     "labelColor": {
                         "name": "Label-Farbe",
-					    "info": "Farbe der Labels im runden Thremostat"
+					    "info": "Farbe der Labels im runden Thermostat"
                     },
                     "gradientColor1": {
                         "name": "Verlaufsfarbe 1",
@@ -2400,11 +2401,79 @@
                     },
                     "tickGradientColor1":{
                         "name": "Verlaufsfarbe 1",
-                        "info": "Farbverlaufs-Farbe 1 des runden Thremostats"
+                        "info": "Farbverlaufs-Farbe 1 des runden Thermostats"
                     },
                     "tickGradientColor2":{
                         "name": "Verlaufsfarbe 2",
-                        "info": "Farbverlaufs-Farbe 2 des runden Thremostats"
+                        "info": "Farbverlaufs-Farbe 2 des runden Thermostats"
+                    }
+                }
+            }
+        },
+        "Time Picker": {
+            "NAME": "Time Picker",
+            "INFO": "Ein Menü, um Zeiten anzuzeigen und an FHEM zu senden.",
+            "INPUTS": {
+                "data": {
+                    "device": {
+                        "name": "Geräte Name",
+                        "info": "Name des Fhem Geräts"
+                    },
+                    "reading": {
+                        "name": "Reading Name",
+                        "info": "Name des Fhem Readings"
+                    },
+                    "setReading":{
+                        "name": "Set Reading",
+                        "info": "Name des set Befehls (falls benötigt)"
+                    },
+                    "label":{
+                        "name": "Label",
+                        "info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
+                    },
+                    "info": {
+                        "name": "Info",
+					    "info": "Anzuzeigendes Info Label"
+                    },
+                    "confirmBtn":{
+                        "name": "Bestätigungs-Button",
+                        "info": "Anzuzeigender Text im Speichern Button"
+                    },
+                    "cancelBtn": {
+                        "name": "Abbrechen-Button",
+					    "info": "Anzuzeigender Text im Abbrechen Button"
+                    },
+                    "maxHours":{
+                        "name": "Max-Stunden",
+                        "info": "Maximal Stunden für den Time Picker"
+                    },
+                    "maxMinutes":{
+                        "name": "Max-Minuten",
+                        "info": "Maximal Minuten für den Time Picker"
+                    }
+                },
+                "bool": {
+                    "customLabels": {
+                        "name": "Eigene Labels",
+					    "info": "Benutzerdefinierte Labels aktivieren/deaktivieren"
+                    },
+                    "customLabelColors": {
+                        "name": "Eigene Label-Farben",
+					    "info": "Benutzerdefinierte Label-Farben aktivieren/deaktivieren"
+                    }
+                },
+                "style": {
+                    "labelColor": {
+                        "name": "Label-Farbe",
+                        "info": "Farbe des Labels im Timepicker"
+                    },
+                    "infoColor": {
+                        "name": "Info-Farbe",
+                        "info": "Farbe des Info Labels im Timepicker"
+                    },
+                    "timeColor": {
+                        "name": "Zeit-Farbe",
+                        "info": "Farbe des Zeit-Labels im Timepicker"
                     }
                 }
             }
