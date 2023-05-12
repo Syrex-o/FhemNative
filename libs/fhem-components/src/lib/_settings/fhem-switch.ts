@@ -42,6 +42,6 @@ export const Settings: ComponentSettings = {
         'data.info': {dependOn: ['bool.customLabels'], value: [true]},
 
         'style.labelColor': {dependOn: ['bool.customLabelColors'], value: [true]},
-        'style.infoColor': {dependOn: ['bool.customLabelColors'], value: [true]}
+        'style.infoColor': {dependOn: ['bool.customLabelColors', 'bool.customLabels'], value: [true, true]}
     }
 };
