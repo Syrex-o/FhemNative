@@ -7,7 +7,7 @@
         align-items: center;
         z-index: 1;
         background-color: var(--primary);
-        justify-content: space-between;
+        justify-content: flex-end;
         &::after{
             content: "";
             position: absolute;
@@ -40,6 +40,25 @@
                 &.second{
                     width: 35px;
                     transform: translateY(calc(-50% + 5px));
+                }
+            }
+        }
+        .theme-button{
+            padding: 0;
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--text-b);
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            ion-icon{
+                transition: inherit;
+            }
+            &:hover{
+                border-color: var(--signal-a);
+                ion-icon{
+                    color: var(--signal-a);
                 }
             }
         }

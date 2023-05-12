@@ -5,6 +5,10 @@
         <ion-ripple-effect></ion-ripple-effect>
     </ion-menu-toggle>
 
+    <button class="theme-button button-web" (click)="changeTheme()">
+        <ion-icon class="color-a size-e" [name]="settings.app.theme === 'dark' ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+    </button>
+
     <!-- <button class="search-bar">
         <ion-icon class="color-b size-f" name="search-outline"></ion-icon>
         <p class="color-b size-g no-margin">Search</p>
