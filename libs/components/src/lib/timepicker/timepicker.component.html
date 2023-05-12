@@ -1,0 +1,43 @@
+<div class="timepicker-container" [class.has-info]="info !== '' && showInfoBubble" *ngIf="theme$ | async">
+    <div class="timepicker-inner-container ion-activatable" (click)="toggleTimepickerModal()">
+        <fhem-native-text-block 
+            [label]="label"
+            [info]="!showInfoBubble ? info : ''"
+            [labelColor]="labelColor"
+            [infoColor]="infoColor">
+        </fhem-native-text-block>
+        
+        <div class="timepicker-value-container">
+			<fhem-native-text-line [bold]="true" [text]="value" [color]="timeColor"/>
+		</div>
+        <ion-ripple-effect/>
+    </div>
+
+    <!-- Info Btn -->
+    <fhem-native-info-btn  *ngIf="info !== '' && showInfoBubble" [label]="label" [info]="info"></fhem-native-info-btn>
+</div>
+
+<ion-modal #Modal mode="md" [isOpen]="modalState" cssClass="timepicker-modal-container" (ionBackdropTap)="revertValue()" (willDismiss)="closeTimepickerModal()">
+    <ng-template>
+        <div class="timepicker-content">
+            <fhem-native-confirm-cancel-buttons
+                class="timepicker-buttons" 
+                [confirmText]="confirmBtn" 
+                [cancelText]="cancelBtn"
+                [showConfirmButton]="true"
+                (confirmClick)="Modal.dismiss(); changeValue()"
+                (cancelClick)="Modal.dismiss(); revertValue()">
+            </fhem-native-confirm-cancel-buttons>
+
+            <div class="timepicker-selector">
+                <ion-datetime mode="md" presentation="time" 
+                    [(ngModel)]="selectValue"
+                    locale="de-DE"
+                    hourCycle="h23"
+                    [hourValues]="timeVals.hours"
+                    [minuteValues]="timeVals.mins">
+                </ion-datetime>
+            </div>
+        </div>
+    </ng-template>
+</ion-modal>
