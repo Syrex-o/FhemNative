@@ -1,0 +1,23 @@
+:host{
+    position: relative;
+    padding: 5px 10px;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--item-spacing-a);
+    button{
+        width: 50%;
+        background-color: transparent;
+        &.save {
+            color: var(--success);
+        }
+        &.cancel {
+            color: var(--error);
+        }
+    }
+    &.single-btn button {
+        width: 100%;
+    }
+}
