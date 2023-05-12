@@ -5,7 +5,7 @@ import { BehaviorSubject, delay, map, Observable } from "rxjs";
 import { dark, bright } from './themes';
 import { CssVariableService } from "../cssVariable.service";
 
-import { Theme } from "@fhem-native/types/common";
+import { Theme, ThemeName } from "@fhem-native/types/common";
 
 @Injectable({
 	providedIn: "root"
@@ -17,7 +17,7 @@ export class ThemeService {
 	constructor(private cssServive: CssVariableService){}
 
 	// change global app theme
-	public changeTheme(theme: string): void{
+	public changeTheme(theme: ThemeName): void{
 		const actualTheme = this.availableThemes.find(x=> x.name === theme);
 		if(!actualTheme) return;
 

@@ -11,6 +11,7 @@ import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
 
 import { Room } from '@fhem-native/types/room';
+import { ThemeName } from '@fhem-native/types/common';
 
 @Component({
 	selector: 'fhem-native-settings',
@@ -55,7 +56,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy{
 		this.translate.use(lang);
 	}
 
-	changeTheme(theme: string): void{
+	changeTheme(theme: ThemeName): void{
 		this.changeAppSetting('theme', theme);
 		this.theme.changeTheme(theme);
 		// update status bar color
