@@ -35,9 +35,14 @@
             overflow-y: auto;
             height: calc(100vh - var(--logo-height));
             padding: var(--sidebar-content-padding-vertical) var(--sidebar-content-padding-horizontal);
+            .menu-item-info{
+                font-size: 1rem;
+            }
             ul{
                 li{
-                    padding-bottom: .5rem;
+                    min-height: 55px;
+                    display: flex;
+                    flex-direction: column;
                     &.last-main-item{
                         padding-bottom: 1.5rem;
                     }
@@ -62,14 +67,16 @@
                             padding: var(--nav-item-padding-vertical) var(--nav-item-padding-sub-horizontal);
                             padding-left: calc(var(--nav-item-padding-main-horizontal) + var(--nav-item-icon-gap) + var(--nav-item-padding-sub-horizontal));
                         }
-                        &.active{
+                        &:hover{
                             background-color: var(--primary);
+                        }
+                        &.active{
+                            background-color: var(--secondary);
                         }
                     }
                 }
             }
             .sub-menu{
-                height: 0px;
                 overflow: hidden;
                 opacity: 0;
                 transition: opacity 1s cubic-bezier(.25,.46,.45,.94), height .5s cubic-bezier(.25,.46,.45,.94);

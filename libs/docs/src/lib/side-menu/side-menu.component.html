@@ -10,27 +10,27 @@
 
 <ng-template #MENU let-closeOnClick>
     <aside class="sidebar">
-        <a class="logo" [routerLink]="['/']">
+        <a class="logo" [routerLink]="['/']" (click)="closeOnClick ? menuCtrl.close() : null">
             <img src="assets/img/icon_transparent.png">
             <p class="color-a size-f font-a">FhemNative Docs</p>
         </a>
         <div class="sidebar-content">
-            <nav>
+            <nav *ngIf="navEnd$ | async">
                 <ul class="main-menu">
                     <ng-container *ngFor="let menuItem of menuItemsMapped; let last = last;">
                         <li [class.last-main-item]="last">
                             <a class="main" [routerLink]="menuItem.ref || null" routerLinkActive="active" (click)="menuItem.subItems ? menuItem.state = !menuItem.state : (closeOnClick ? menuCtrl.close() : null)">
                                 <ion-icon [class.rotated]="menuItem.state" class="color-a" [name]="menuItem.subItems ? 'chevron-forward-outline' : menuItem.icon"></ion-icon>
-                                <p class="size-f" [ngClass]="menuItem.subItems ? 'color-a' : 'color-b'">{{menuItem.name | translate}}</p>
+                                <p class="menu-item-info" [ngClass]="menuItem.subItems ? 'color-a' : 'color-b'">{{menuItem.name | translate}}</p>
                             </a>
                             <ng-container *ngIf="menuItem.subItems">
-                                <div class="sub-menu" [class.active]="menuItem.state" [style.height.px]="menuItem.state ? subMenu.offsetHeight : 0">
+                                <div class="sub-menu" [class.active]="menuItem.state" [style.height.px]="menuItem.state ? (menuItem.subItems.length * 55) + 10 : 0">
                                     <ul class="sub-menu-list" #subMenu>
                                         <ng-container *ngFor="let subItem of menuItem.subItems">
                                             <li>
                                                 <a class="sub" [routerLink]="subItem.ref || null" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeOnClick ? menuCtrl.close() : null">
                                                     <ion-icon class="color-a" [name]="subItem.icon"></ion-icon>
-                                                    <p class="color-b size-f">{{subItem.name | translate}}</p>
+                                                    <p class="color-b menu-item-info">{{subItem.name | translate}}</p>
                                                 </a>
                                             </li>
                                         </ng-container>
