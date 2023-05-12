@@ -1,6 +1,7 @@
 export * from './lib/_ui';
 
 export * from './lib/add-room/add-room.component';
+export * from './lib/confirm-cancel/confirm-cancel.component';
 export * from './lib/edit-button/edit-button.component';
 
 export * from './lib/close-btn-container/close-btn/close-btn.module';
@@ -34,3 +35,4 @@ export * from './lib/state-icon/state-icon.module';
 export * from './lib/switch/switch.module';
 export * from './lib/text/block/block.module';
 export * from './lib/text/line/line.module';
+export * from './lib/timepicker/timepicker.component';
