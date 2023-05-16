@@ -12,7 +12,7 @@ import { ComponentPosition } from '@fhem-native/types/components';
 	standalone: true,
 	selector: 'fhem-native-component-label',
 	template: `
-        <fhem-native-component 
+		<fhem-native-component 
 			[UID]="UID" 
 			[position]="position"
 			[minDimensions]="{width: 60, height: 40}"
@@ -23,8 +23,8 @@ import { ComponentPosition } from '@fhem-native/types/components';
 			(initComponent)="onInitComponent()"
 			(initDevice)="setFhemDevice($event)"
 			(updateDevice)="setFhemDevice($event)">
-			<div class="fhem-native-label" [class.error]="!_label || _label === ''">
-				<ng-container *ngIf="_label && _label !== ''; else ERROR">
+			<div class="fhem-native-label" [class.error]="_label === undefined || _label === ''">
+				<ng-container *ngIf="_label !== undefined && _label !== ''; else ERROR">
 					<p class="label" 
 					[ngStyle]="{
 						'font-size.px': size, 
@@ -36,17 +36,17 @@ import { ComponentPosition } from '@fhem-native/types/components';
 					}">
 						{{_label}}{{labelExtension}}
 					</p>
-                </ng-container>
+				</ng-container>
 
 				<ng-template #ERROR>
-                    <fhem-native-text-block
-                        [label]="('COMPONENTS.Label.ERRORS.NO_LABEL.name' | translate)"
-                        [info]="('COMPONENTS.Label.ERRORS.NO_LABEL.info' | translate)">
-                    </fhem-native-text-block>
-                </ng-template>
+					<fhem-native-text-block
+						[label]="('COMPONENTS.Label.ERRORS.NO_LABEL.name' | translate)"
+						[info]="('COMPONENTS.Label.ERRORS.NO_LABEL.info' | translate)">
+					</fhem-native-text-block>
+				</ng-template>
 			</div>
 		</fhem-native-component>
-    `,
+	`,
 	styleUrls: ['./fhem-label.component.scss'],
 	imports: [FhemComponentModule, TextBlockModule]
 })
@@ -57,36 +57,37 @@ export class FhemLabelComponent{
 	
 	// Data
 	@Input() device!: string;
-    @Input() reading!: string;
-    
-    @Input() label!: string;
-    @Input() items!: string;
-    @Input() alias!: string;
+	@Input() reading!: string;
+	
+	@Input() label!: string;
+	@Input() items!: string;
+	@Input() alias!: string;
 
-    @Input() labelExtension!: string;
-    @Input() size!: number;
-    @Input() min!: number;
-    @Input() max!: number;
+	@Input() labelExtension!: string;
+	@Input() size!: number;
+	@Input() min!: number;
+	@Input() max!: number;
 
-    @Input() textStyle!: TextStyle;
-    @Input() textAlign!: TextPosition;
-
-    @Input() borderRadius!: number;
+	@Input() borderRadius!: number;
 	@Input() borderRadiusTopLeft!: number;
 	@Input() borderRadiusTopRight!: number;
 	@Input() borderRadiusBottomLeft!: number;
 	@Input() borderRadiusBottomRight!: number;
 
-    // Styling
+	// Selections
+	@Input() textStyle!: TextStyle;
+	@Input() textAlign!: TextPosition;
+
+	// Styling
 	@Input() color!: string;
-    @Input() minColor!: string;
-    @Input() maxColor!: string;
+	@Input() minColor!: string;
+	@Input() maxColor!: string;
 
 	// Bool
 	@Input() useAlias!: boolean;
 	@Input() useMinMax!: boolean;
 
-    // header style
+	// header style
 	labelFontWeight = 400;
 	labelFontStyle = 'normal';
 
@@ -97,7 +98,7 @@ export class FhemLabelComponent{
 	labelColor: string|undefined;
 	fhemDevice: FhemDevice|undefined;
 
-    onInitComponent(): void{
+	onInitComponent(): void{
 		this._label = this.label;
 		
 		if(this.useAlias){
@@ -105,17 +106,17 @@ export class FhemLabelComponent{
 			this._alias = commaListToArray(this.alias);
 		}
 
-        this.labelFontStyle = getFontStyleFromSelection(this.textStyle);
+		this.labelFontStyle = getFontStyleFromSelection(this.textStyle);
 		this.labelFontWeight = getFontWeightFromSelection(this.textStyle);
-    }
+	}
 
-    setFhemDevice(device: FhemDevice): void{
-        this.fhemDevice = device;
+	setFhemDevice(device: FhemDevice): void{
+		this.fhemDevice = device;
 		const label = device.readings[this.reading].Value;
 		// get alias
 		this._label = this.getValueLabel(label);
 		this.labelColor = this.getValueColor();
-    }
+	}
 
 	private getValueLabel(currentVal: string): unknown{
 		if(!this.useAlias) return currentVal;
