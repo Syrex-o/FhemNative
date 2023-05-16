@@ -12,5 +12,5 @@ import { TranslateModule } from '@ngx-translate/core';
     imports: [ IonicModule, RouterModule, TranslateModule ]
 })
 export class DocFooterComponent{
-
+    year = new Date().getFullYear();
 }
