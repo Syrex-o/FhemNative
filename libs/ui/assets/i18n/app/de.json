@@ -1,2482 +1,2504 @@
 {
-    "PAGES": {
-        "HOME": {
-            "IP": {
-                "INFO": {
-                    "1": "FhemNative konnte keine Konfiguration für FHEM finden.",
-                    "2": "Jetzt IP-Einstellungen konfigurieren:"
-                },
-                "BUTTON": "IP-Einstellungen"
-            },
-            "NEW": {
-                "INFO": "Neu bei FhemNative?",
-                "BUTTON": " Mehr Informationen"
-            },
-            "DEMO": {
-                "INFO": "FhemNative ohne FHEM ausprobieren:",
-                "BUTTON": "Demo Modus"
-            }
-        },
-        "SETTINGS": {
-            "HEAD": "Einstellungen",
-            "FHEM": {
-                "HEAD": "FHEM Einstellungen",
-                "SOCKET_SETTINGS": {
-                    "TEXT": "Websocket Einstellungen",
-                    "INFO": "Websocket Einstellungen ändern"
-                },
-                "EXPORT": {
-                    "TEXT": "Einstellungen exportieren",
-                    "INFO": "Export aller Raum- und Komponenten-Einstellungen"
-                },
-                "IMPORT": {
+	"PAGES": {
+		"HOME": {
+			"IP": {
+				"INFO": {
+					"1": "FhemNative konnte keine Konfiguration für FHEM finden.",
+					"2": "Jetzt IP-Einstellungen konfigurieren:"
+				},
+				"BUTTON": "IP-Einstellungen"
+			},
+			"NEW": {
+				"INFO": "Neu bei FhemNative?",
+				"BUTTON": " Mehr Informationen"
+			},
+			"DEMO": {
+				"INFO": "FhemNative ohne FHEM ausprobieren:",
+				"BUTTON": "Demo Modus"
+			}
+		},
+		"SETTINGS": {
+			"HEAD": "Einstellungen",
+			"FHEM": {
+				"HEAD": "FHEM Einstellungen",
+				"SOCKET_SETTINGS": {
+					"TEXT": "Websocket Einstellungen",
+					"INFO": "Websocket Einstellungen ändern"
+				},
+				"EXPORT": {
+					"TEXT": "Einstellungen exportieren",
+					"INFO": "Export aller Raum- und Komponenten-Einstellungen"
+				},
+				"IMPORT": {
 					"TEXT": "Einstellungen importieren",
 					"INFO": "Import der Raum- und Komponenten-Einstellungen"
-                }
-            },
-            "APP": {
-                "HEAD": "App Einstellungen",
-                "THEME": {
-                    "TEXT": "App Thema",
-                    "INFO": "App Thema ändern"
-                },
-                "LANG":{
+				}
+			},
+			"APP": {
+				"HEAD": "App Einstellungen",
+				"THEME": {
+					"TEXT": "App Thema",
+					"INFO": "App Thema ändern"
+				},
+				"LANG":{
 					"TEXT": "Sprache",
 					"INFO": "Sprache der App ändern."
 				},
-                "EDITING": {
-                    "TEXT": "Menü/Räume bearbeiten",
+				"EDITING": {
+					"TEXT": "Menü/Räume bearbeiten",
 					"INFO": "Menü- und Raumbearbeitung aktivieren/deaktivieren."
-                },
-                "TOAST":{
+				},
+				"TOAST":{
 					"TEXT": "Toast-Nachrichten",
 					"INFO": "Aktivieren/deaktivieren der Toasts von Server-Nachrichten."
 				},
-                "LOG":{
+				"LOG":{
 					"TEXT": "Log Export",
 					"INFO": "Export des Logs zur Fehlersuche"
 				}
-            },
-            "SUPPORT": {
-                "HEAD": "Unterstützung",
-                "MEMBER": {
-                    "TEXT": "Fördermitgliedschaft",
-                    "INFO": "Unterstütze die Weiterentwicklung von FhemNative"
-                },
-                "DOCS": {
-                    "TEXT": "Hilf anderen/Reporte Bugs/Feature Requests",
+			},
+			"SUPPORT": {
+				"HEAD": "Unterstützung",
+				"MEMBER": {
+					"TEXT": "Fördermitgliedschaft",
+					"INFO": "Unterstütze die Weiterentwicklung von FhemNative"
+				},
+				"DOCS": {
+					"TEXT": "Hilf anderen/Reporte Bugs/Feature Requests",
 					"INFO": "Hilf im Forum aus, reporte deine gefunden Fehler und plaziere Wünsche im FHEM Forum"
-                },
-                "DEV": {
-                    "TEXT": "Werde selbst zum Entwickler",
+				},
+				"DEV": {
+					"TEXT": "Werde selbst zum Entwickler",
 					"INFO": "Entwickle mit FhemNative und erweitere die Palette an Komponenten"
-                }
-            },
-            "INFOS": {
-                "HEAD": "Informationen",
-                "TERMS": "Nutzungsbedingungen",
-                "WEB": "Website",
-                "DATA": "Datenschutz"
-            },
-            "ADVANCED": {
-                "HEAD": "Erweitert",
-                "SETTINGS": "Erteiterte Einstellungen"
-            }
-        },
-        "MEMBER": {
-            "HEAD": "Fördermitgliedschaft",
-            "HEAD_SHORT": "Fördern",
-            "INFO": "Open-Source ist nicht selbstverständlich.",
-            "TEXT": "Die Entwicklung von FhemNative ist zeitaufwendig und mit laufenden Kosten verbunden. Damit wir FhemNative weiterhn immer up-to-date halten können und mit neuen Features füttern, kannst du uns gern mit einem kleinen Beitrag unterstützen. Schon ab 1€ kannst du uns unterstützen.",
-            "BUTTONS": {
-                "HELP": "Ja, ich helfe gerne",
-                "PAY": "Bezahlen"
-            },
-            "CHOOSE_AMOUNT": "Wähle deinen Betrag",
-            "FREQUENCY": {
-                "MONTH": "Monatlich"
-            },
-            "TERMS_SWITCH": "Ja, ich möchte die Slap Apps UG (haftungsbeschränkt) mit dem oben ausgewählten Betrag in Form einer Schenkung regelmäßig unterstützen. Die Förderung kann ich jederzeit kündigen.",
-            "LINKS": {
-                "ONE_TIME": "Ich möchte eine einmalige Zahlung leisten.",
-                "TERMS": "Es gelten die Richtlinien für Förderungen."
-            },
-            "ONE_TIME_PAYMENT": {
-                "HEAD": "Bankverbindung",
-                "INFO": "Gerne kannst du uns auch einen Betrag an folgendes Konto einrichten",
-                "OWNER": "Kontoinhaber",
-                "USE": "Verwendungszweck",
-                "ENDING": {
-                    "1": "Mit einem regelmäßigen Beitrag kannst du uns besonders nachhaltig unterstützen.",
-                    "2": "Vielen Dank für deine Unterstützung!"
-                }
-            }
-        },
-        "LOGIN":{
-            "LOGIN_INFO": "Bitte geben Sie Ihre FHEM Login Informationen ein:",
-            "CONNECTION_PROFILE": "Verbindungs-Profil",
-            "TEST_CONNECTIONS": "Teste Verbindungsprofile",
-            "PROFILE_OPTIONS": {
-                "ADD": {
-                    "TEXT": "Profil hinzufügen",
-                    "INFO": "Weiteres Verbindungsprofil hinzufügen"
-                },
-                "REMOVE": {
-                    "TEXT": "Profil löschen",
-                    "INFO": "Dieses Verbindungsprofil löschen"
-                }
-            },
-            "ERRORS": {
-                "MISSING_DATA": {
-                    "TEXT": "Verbindungsdaten unvollständig",
-                    "INFO": "Bitte tragen Sie vollständige Daten im Verbindungsprofil ein."
-                },
-                "PART_MISSING_DATA": {
-                    "TEXT": "Verbindungsdaten fehlerhaft",
-                    "INFO": "Die Daten der folgenden Verdindungsprofile sind fehlerhaft:",
-                    "INFO2": "Wollen Sie trotzdem fortfahren oder die Profile bearbeiten?"
-                },
-                "ALL_MISSING_DATA": {
-                    "TEXT": "Verbindungsdaten fehlerhaft",
-                    "INFO": "Der Test aller Verbindungsprofile ist fehlgeschalgen. Bitte bearbeiten Sie die Daten."
-                }
-            },
-            "CONNECTION":{
-                "IP": {
-                    "TEXT": "IP Adresse",
-                    "PLACEHOLDER": "IP Adresse eingeben",
-                    "INFO": "IP Adresse des FHEM Servers"
-                },
-                "PORT": {
-                    "TEXT": "Port",
-                    "PLACEHOLDER": "Port eingeben",
-                    "INFO": "Definierter Port des FHEM Servers"
-                },
-                "TYPE": {
-                    "TEXT": "Verbindungstyp",
-                    "INFO": "Auf welche Art soll sich mit FHEM verbunden werden",
-                    "PLACEHOLDER": "Typ auswählen"
-                },
-                "WSS": {
-                    "TEXT": "Sichere Verbindung",
-                    "INFO": "Sichere Verbindung über 'Secure Websockets (WSS)' aktivieren/deaktivieren"
-                },
-                "BASIC_AUTH": {
-                    "TEXT": "Basic Auth.",
-                    "INFO": "FHEM Basic Auth aktivieren/deaktivieren, um die Verbindung über Benutzername und Passwort herzustellen",
-                    "USER": {
-                        "TEXT": "Benutzername",
-                        "PLACEHOLDER": "Benutzernamen eingeben",
-                        "INFO": "Benutzername für FHEM Basic Auth."
-                    },
-                    "PASSW": {
-                        "TEXT": "Passwort",
-                        "PLACEHOLDER": "Passwort eingeben",
-                        "INFO": "Passwort für FHEM Basic Auth."
-                    }
-                }
-            }
-        },
-        "ADVANCED": {
-            "HEAD": "Erweiterte Einstellungen",
-            "HEAD_SHORT": "Erweitert",
-            "FHEM": {
-                "SHARED_CONFIG": {
-                    "HEAD": "Geteilte FhemNative Konfiguration",
-                    "INFO": "FhemNative Konfiguration in FHEM Reading hinterlegen und mit anderen Geräten teilen",
-                    "SAVE": "Konfiguration speichern",
-                    "BUTTON": {
-                        "HEAD": "Konfiguration teilen",
-                        "INFO": "Geteilte Konfiguration in FHEM Reading aktivieren/deaktivieren"
-                    },
-                    "DEVICE": {
-                        "HEAD": "FHEM Device",
+				}
+			},
+			"INFOS": {
+				"HEAD": "Informationen",
+				"TERMS": "Nutzungsbedingungen",
+				"WEB": "Website",
+				"DATA": "Datenschutz"
+			},
+			"ADVANCED": {
+				"HEAD": "Erweitert",
+				"SETTINGS": "Erteiterte Einstellungen"
+			}
+		},
+		"MEMBER": {
+			"HEAD": "Fördermitgliedschaft",
+			"HEAD_SHORT": "Fördern",
+			"INFO": "Open-Source ist nicht selbstverständlich.",
+			"TEXT": "Die Entwicklung von FhemNative ist zeitaufwendig und mit laufenden Kosten verbunden. Damit wir FhemNative weiterhn immer up-to-date halten können und mit neuen Features füttern, kannst du uns gern mit einem kleinen Beitrag unterstützen. Schon ab 1€ kannst du uns unterstützen.",
+			"BUTTONS": {
+				"HELP": "Ja, ich helfe gerne",
+				"PAY": "Bezahlen"
+			},
+			"CHOOSE_AMOUNT": "Wähle deinen Betrag",
+			"FREQUENCY": {
+				"MONTH": "Monatlich"
+			},
+			"TERMS_SWITCH": "Ja, ich möchte die Slap Apps UG (haftungsbeschränkt) mit dem oben ausgewählten Betrag in Form einer Schenkung regelmäßig unterstützen. Die Förderung kann ich jederzeit kündigen.",
+			"LINKS": {
+				"ONE_TIME": "Ich möchte eine einmalige Zahlung leisten.",
+				"TERMS": "Es gelten die Richtlinien für Förderungen."
+			},
+			"ONE_TIME_PAYMENT": {
+				"HEAD": "Bankverbindung",
+				"INFO": "Gerne kannst du uns auch einen Betrag an folgendes Konto einrichten",
+				"OWNER": "Kontoinhaber",
+				"USE": "Verwendungszweck",
+				"ENDING": {
+					"1": "Mit einem regelmäßigen Beitrag kannst du uns besonders nachhaltig unterstützen.",
+					"2": "Vielen Dank für deine Unterstützung!"
+				}
+			}
+		},
+		"LOGIN":{
+			"LOGIN_INFO": "Bitte geben Sie Ihre FHEM Login Informationen ein:",
+			"CONNECTION_PROFILE": "Verbindungs-Profil",
+			"TEST_CONNECTIONS": "Teste Verbindungsprofile",
+			"PROFILE_OPTIONS": {
+				"ADD": {
+					"TEXT": "Profil hinzufügen",
+					"INFO": "Weiteres Verbindungsprofil hinzufügen"
+				},
+				"REMOVE": {
+					"TEXT": "Profil löschen",
+					"INFO": "Dieses Verbindungsprofil löschen"
+				}
+			},
+			"ERRORS": {
+				"MISSING_DATA": {
+					"TEXT": "Verbindungsdaten unvollständig",
+					"INFO": "Bitte tragen Sie vollständige Daten im Verbindungsprofil ein."
+				},
+				"PART_MISSING_DATA": {
+					"TEXT": "Verbindungsdaten fehlerhaft",
+					"INFO": "Die Daten der folgenden Verdindungsprofile sind fehlerhaft:",
+					"INFO2": "Wollen Sie trotzdem fortfahren oder die Profile bearbeiten?"
+				},
+				"ALL_MISSING_DATA": {
+					"TEXT": "Verbindungsdaten fehlerhaft",
+					"INFO": "Der Test aller Verbindungsprofile ist fehlgeschalgen. Bitte bearbeiten Sie die Daten."
+				}
+			},
+			"CONNECTION":{
+				"IP": {
+					"TEXT": "IP Adresse",
+					"PLACEHOLDER": "IP Adresse eingeben",
+					"INFO": "IP Adresse des FHEM Servers"
+				},
+				"PORT": {
+					"TEXT": "Port",
+					"PLACEHOLDER": "Port eingeben",
+					"INFO": "Definierter Port des FHEM Servers"
+				},
+				"TYPE": {
+					"TEXT": "Verbindungstyp",
+					"INFO": "Auf welche Art soll sich mit FHEM verbunden werden",
+					"PLACEHOLDER": "Typ auswählen"
+				},
+				"WSS": {
+					"TEXT": "Sichere Verbindung",
+					"INFO": "Sichere Verbindung über 'Secure Websockets (WSS)' aktivieren/deaktivieren"
+				},
+				"BASIC_AUTH": {
+					"TEXT": "Basic Auth.",
+					"INFO": "FHEM Basic Auth aktivieren/deaktivieren, um die Verbindung über Benutzername und Passwort herzustellen",
+					"USER": {
+						"TEXT": "Benutzername",
+						"PLACEHOLDER": "Benutzernamen eingeben",
+						"INFO": "Benutzername für FHEM Basic Auth."
+					},
+					"PASSW": {
+						"TEXT": "Passwort",
+						"PLACEHOLDER": "Passwort eingeben",
+						"INFO": "Passwort für FHEM Basic Auth."
+					}
+				}
+			}
+		},
+		"ADVANCED": {
+			"HEAD": "Erweiterte Einstellungen",
+			"HEAD_SHORT": "Erweitert",
+			"FHEM": {
+				"SHARED_CONFIG": {
+					"HEAD": "Geteilte FhemNative Konfiguration",
+					"INFO": "FhemNative Konfiguration in FHEM Reading hinterlegen und mit anderen Geräten teilen",
+					"SAVE": "Konfiguration speichern",
+					"BUTTON": {
+						"HEAD": "Konfiguration teilen",
+						"INFO": "Geteilte Konfiguration in FHEM Reading aktivieren/deaktivieren"
+					},
+					"DEVICE": {
+						"HEAD": "FHEM Device",
 						"INFO": "FHEM Device für die Konfiguration"
-                    },
-                    "READING":{
-                        "HEAD": "FHEM Device Reading",
-                        "INFO": "FHEM Device Reading, dass die Konfiguration enthält/enthalten soll"
-                    },
-                    "TEST": {
-                        "BUTTON": "Konfiguration testen",
-                        "ERRORS": {
-                            "NO_CONNECTION": {
-                                "HEAD": "Keine aktive Verbindung zu FHEM",
-                                "INFO": "Um die geteilte Konfiguration testen zu können, muss eine aktive Verbindung zu FHEM bestehen."
-                            },
-                            "MISSING": {
-                                "HEAD": "Fehlende Daten",
-                                "INFO": "Bitte geben Sie sowohl Device als auch Reading für die geteilte Konfiguration an."
-                            },
-                            "DEVICE_NOT_FOUND": {
-                                "HEAD": "Device nicht gefunden",
-                                "INFO": "Das angegebene FHEM Device konnte nicht gefunden werden."
-                            },
-                            "READING_NOT_FOUND": {
-                                "HEAD": "Reading nicht gefunden",
-                                "INFO": "Das angegebene FHEM Device Reading konnte nicht gefunden werden."
-                            }
-                        }
-                    },
-                    "TRANSFER": {
-                        "BUTTON": "Konfiguration überschreiben",
-                        "HEAD": "Achtung! Bitte machen Sie vorher ein Backup!",
-                        "INFO": "Ein Transfer wird nur beim ersten erstellen oder beim Wechsel des Konfigurations-Readings benötigt. Wollen Sie das Reading wirklich überschreiben? Alle Geräte verwenden dann die aktuelle Konfiguration DIESES Geräts."
-                    }
-                }
-            }
-        },
-        "SANDBOX": {
-            "MENU": {
-                "DEVICES": "Demo Geräte anzeigen",
-                "LEAVE": "Sandbox verlassen"
-            },
-            "DEMO_DEVICES": {
-                "HEAD": "Sandbox Geräte"
-            }
-        },
-        "RIGHTS": {
-            "SUPPORT": {
-                "HEAD": "Richtlinien für Förderungen",
-                "HEAD_SHORT": "Richtlinien",
-                "1": {
-                    "HEAD": "Fördermitgliedschaft",
-                    "1": "Mit der Fördermitgliedschaft leiste ich bis zu meiner Kündigung an die Slap Apps UG (haftungsbeschränkt) (Betreiber von FhemNative) eine regelmäßige wiederkehrende Zahlung in Höhe des von mir gewählten Betrags ohne Anspruch auf eine Gegenleistung (Schenkung).",
-                    "2": "Da die Slap Apps UG (haftungsbeschränkt) nicht vom Finanzamt als gemeinnützig anerkannt ist, kann leider keine Zuwendungsbescheinigung (Spendenwuittung) ausgestellt werden."
-                },
-                "2": {
-                    "HEAD": "Zahlung",
-                    "1": "Ich verpflichte mich für die Laufzeit meiner Fördermitgliedschaft zur Zahlung des von mit gewählten Betrags.",
-                    "2": "Je nach der von mir gewählten Zahlungsart gelten die Bedingungen des von mir erteilten SEPA-Mandats bzw. des von mir gewählten Zahlungsdienstes."
-                },
-                "3": {
-                    "HEAD": "Laufzeit und Kündigung",
-                    "1": "Die Fördermitgliedschaft kann ich jederzeit kündigen. Die Kündigung erfolgt in Textform (z.B. per E-Mail)."
-                },
-                "4": {
-                    "HEAD": "Anwendbares Recht; Verhältnis zu den allgemeinen Nutzungsbedingungen von FhemNative",
-                    "1": "Es gilt deutsches Recht.",
-                    "2": "Die Nutzungsbedingungen für die FhemNative Fördermitgliedschaft gelten zusätzlich zu den allgemeinen Nutzungsbedingungen von FhemNative."
-                }
-            },
-            "TERMS": {
-                "HEAD": "Nutzungsbedingungen",
-                "HEAD_SHORT": "Nutzung",
-                "TEXT": "Die nachfolgenden Nutzungsbedingungen regeln die Nutzung von FhemNative über das Internet, mobile Dienste, Apps, andere Domains oder Kommunikationswege:",
-                "1": {
-                    "HEAD": "Nutzung von „FhemNative“",
-                    "1": "Bei der Nutzung von „FhemNative“ verpflichtest du dich, die geltenden gesetzlichen Vorschriften zu beachten. Das betrifft z.B. den Schutz der Persönlichkeitsrechte anderer Nutzer oder das Urheberrecht an Fotos. Du verpflichtest dich zudem, unsere Richtlinien und Netiquette einzuhalten.",
-                    "2": "Wir übernehmen keine Garantie oder Gewähr für Informationen innerhalb von FhemNative oder für eine bestimmte Verfügbarkeit oder Funktionalität von FhemNative.",
-                    "3": "Du bleibst Inhaber deiner Inhalte (z.B. von dir auf „FhemNative“ hochgeladene Fotos)."
-                },
-                "2": {
-                    "HEAD": "Änderung der Nutzungsbedingungen",
-                    "1": "Mit deiner Zustimmung oder wenn deine Zustimmung nach den folgenden Bestimmungen als erteilt gilt, können wir die mit dir vereinbarten Nutzungsbedingungen anpassen (z.B. bei Einführung neuer Funktionen).",
-                    "2": "Wenn wir die Nutzungsbedingungen ändern möchten, teilen wir dir dies mindestens sechs Wochen vor dem vorgeschlagenen Wirksamwerden in sog. Textform (also z.B. per Pop-up Nachricht) mit. Widersprichst du nicht innerhalb von sechs Wochen nach Zugang dieser Mitteilung in Textform, gilt deine Zustimmung zur Änderung als erteilt und die Änderungen werden zum angekündigten Zeitpunkt wirksam. Auf diese Folge weisen wir dich in der Änderungsmitteilung besonders hin."
-                },
-                "3": {
-                    "HEAD": "Alternative Streitbeilegung gemäß Verbraucherstreitbeilegungsgesetz",
-                    "1": "Wir weisen dich darauf hin, dass wir nicht bereit und nicht verpflichtet sind, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
-                },
-                "4": {
-                    "HEAD": "Anwendbares Recht",
-                    "1": "Es gilt deutsches Recht."
-                }
-            }
-        }
-    },
-    "MENUS": {
-        "CONTEXT_MENU": {
-            "NEW": {
-                "TEXT": "Neu",
-                "CONTENT": {
-                    "ROOM": "Raum hinzufügen",
-                    "COMPONENT": "Komponente hinzufügen"
-                }
-            },
-            "COMPONENT": {
-                "TEXT": "Komponente",
-                "CONTENT": {
-                    "SETTINGS": "Einstellungen",
-                    "DETAILS": "Komponenten Details"
-                }
-            },
-            "ARRANGE": {
-                "TEXT": "Ausrichten",
-                "CONTENT": {
-                    "POSITION": "Lage",
-                    "FOREGROUND": "Vordergrund",
-                    "BACKGROUND": "Hintergrund",
-                    "GROUP": "Gruppieren",
-                    "UNGROUP": "Gruppierung aufheben"
-                }
-            },
-            "EDIT": {
-                "TEXT": "Bearbeiten",
-                "CONTENT": {
-                    "SELECT": "Markieren",
-                    "SELECT_ALL": "Alle Markieren",
-                    "COPY": "Kopieren",
-                    "PASTE": "Einfügen",
-                    "DELETE": "Löschen"
-                }
-            }
-        },
-        "CREATE_ROOM": {
-            "HEADS": {
-                "NEW": "Neuer Raum",
-                "UPDATE": "Raum bearbeiten"
-            },
-            "INPUTS": {
-                "ROOM_NAME": {
-                    "TEXT": "Raum Name",
-                    "PLACEHOLDER": "Raum Namen eingeben"
-                },
-                "ROOM_ICON": "Raum Icon"
-            },
-            "BUTTONS": {
-                "CREATE_ROOM": "Raum erstellen",
-                "DELETE_ROOM": "Raum löschen",
-                "UPDATE_ROOM": "Raum speichern"
-            },
-            "ERRORS": {
-                "MISSING_NAME": {
-                    "TEXT": "Kein Raumname",
-                    "INFO": "Bitte geben Sie dem Raum einen Namen."
-                }
-            }
-        },
-        "IMPORT": {
-            "ERRORS": {
-                "FALSE_CONFIG": {
-                    "TEXT": "Fehler beim laden",
-                    "INFO": "Die Konfigurationsdatei konnte nicht geladen werden. Stelle sicher, dass der Export von einer FhemNative Version erstellt wurde, die mit dieser kompatibel ist. Die Version dieser FhemNative Installation findest du in den Einstellungen."
-                },
-                "NO_COMPONENT_CONFIG": {
-                    "TEXT": "Falsche Konfiguration",
-                    "INFO": "Bei der Konfigurationsdatei handelt es sich nicht um einen Komponenten-Export."
-                },
-                "NO_ROOM_CONFIG": {
-                    "TEXT": "Falsche Konfiguration",
-                    "INFO": "Bei der Konfigurationsdatei handelt es sich nicht um einen Raum-Export."
-                }
-            }
-        },
-        "EXPORT": {
-            "ERRORS": {
-                "FAILED_EXPORT": {
-                    "TEXT": "Fehler beim exportieren",
-                    "INFO": "Die Konfigurationsdatei konnte nicht exportiert werden."
-                }
-            }
-        },
-        "COMPONENT_DETAILS": {
-            "HEAD": "Komponenten Details",
-            "CONTENT": {
-                "QR": {
-                    "HEAD": "QR-Code",
-                    "INFO": "Scanne den QR-Code der Komponente von einem anderem Gerät mit FhemNative und importiere die Komponente automatisch."
-                }
-            }
-        },
-        "CREATE_COMPONENT": {
-            "HEADS": {
-                "NEW": "Neue Komponente",
-                "UPDATE": "Komponente bearbeiten"
-            },
-            "CATEGORIES": {
-                "OBJECTS": "Objekte",
-                "BUTTONS": "Buttons und Schalter",
-                "PICKER": "Picker & Inputs",
-                "SLIDER": "Slider",
-                "CHARTS": "Charts",
-                "GRAPHICS": "Grafiken",
-                "CONTAINERS": "Container"
-            },
-            "COMPONENT_NAMES": {
-                "BOX": "Box",
-                "BOX CONTAINER": "Box Container",
-                "BUTTON": "Button",
-                "BUTTON MENU": "Button Menu",
-                "BUTTON MULTISTATE": "Button Multistate",
-                "CIRCLE MENU": "Circle Menu",
-                "CIRCLE SLIDER": "Circle Slider",
-                "CLOCK": "Clock",
-                "COLOR PICKER": "Color Picker",
-                "HTML": "Html",
-                "ICON": "Icon",
-                "IFRAME": "IFrame",
-                "IMAGE": "Image",
-                "INPUT": "Input",
-                "LABEL": "Label",
-                "LINE": "Linie",
-                "PICKER": "Picker",
-                "POPUP": "Popup",
-                "SELECT": "Select",
-                "SLIDER": "Slider",
-                "SWIPER": "Swiper",
-                "SWITCH": "Switch",
-                "TABLE": "Table",
-                "TABS": "Tabs",
-                "THERMOSTAT": "Thermostat",
-                "TIME PICKER": "Time Picker"
-            }
-        }
-    },
-    "DICT": {
-        "SAVE": "Speichern",
-        "CANCEL": "Abbrechen",
-        "CLOSE": "Schließen",
-        "COLORS": {
-            "ADD_COLOR": "Farbe hinzufügen",
-            "ERRORS": {
-                "MISSING_#": {
-                    "name": "Kein Hex Wert",
-                    "info": "Hex Farben müssen mit '#' beginnen"
-                },
-                "HEX_LENGTH": {
-                    "name": "Fehlerhafter Wert",
-                    "info": "Farbwerte können etweder 3 oder 6 Stellen lang sein"
-                },
-                "INVALID_HEX": {
-                    "name": "Falscher Wert",
-                    "info": "Der eingegebene Farbwert scheint fehlerhaft zu sein"
-                }
-            }
-        }
-    },
-    "BUTTONS": {
-        "OKAY": "Okay",
-        "EDIT": "Bearbeiten",
-        "CONTINUE": "Fortfahren"
-    },
-    "COMPONENTS": {
-        "GENERAL": {
-            "SETTINGS": {
-                "data": "Einstellugen",
-                "bool": "Schalter",
-                "icon": "Icons",
-                "style": "Styles",
-                "arr_data": "Auswahl Einstellugen",
-                "arr_icon": "Multi Icons",
-                "arr_style": "Multi Styles",
-                "arr_style_grad": "Farbverläufe"
-            },
-            "ERRORS": {
-                "TYPE": "Fehler Level: ",
-                "LEVEL_1": {
-                    "name": "Keine Verbindung zu FHEM.",
-                    "info": "Bitte überprüfen Sie Ihre IP-Einstellungen."
-                },
-                "LEVEL_2": {
-                    "name": "Gerät nicht gefunden.",
-                    "info": "Bitte überprüfen Sie die Geräte-Definition der Komponente."
-                },
-                "LEVEL_3": {
-                    "name": "Reading nicht gefunden.",
-                    "info": "Bitte überprüfen Sie die Reding-Definition der Komponente."
-                }
-            },
-            "TYPES": {
-                "fhem": "FHEM",
-                "style": "Style",
-                "container": "Container"
-            },
-            "PREVIEW": "Vorschau",
-            "SAVE": "Komponente Speichern"
-        },
-        "Box": {
-            "NAME": "Box",
-            "INFO": "Eine einfache Box, um Komponenten in Räumen zu strukturieren.",
-            "INPUTS": {
-                "data": {
-                    "headline": {
-                        "name": "Kopfzeile",
-                        "info": "Label der Kopfzeile"
-                    },
-                    "borderRadius": {
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand der Box"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand der Box oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand der Box oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand der Box unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand der Box unten rechts"
-                    },
-                    "notchDefinition": {
-                        "name": "Notch Definition",
-                        "info": "Details unter: https://css-tricks.com/notched-boxes/"
-                    }
-                },
-                "arr_data": {
-                    "headerStyle": {
-                        "name": "Kopfzeilen Text Style",
-                        "info": "Style vom Text der Kopfzeile"
-                    },
-                    "headerPosition": {
-                        "name": "Kopfzeilen Text Position",
-                        "info": "Position vom Text dert Kopfzeile"
-                    }
-                },
-                "bool": {
-                    "showHeader":{
-                        "name": "Kopfzeile anzeigen",
-                        "info": "Kopfzeile anzeigen/nicht anzeigen"
-                    },
-                    "showShadow":{
-                        "name": "Schatten anzeigen",
-                        "info": "Schatten anzeigen/nicht anzeigen"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    },
-                    "customNotch":{
-                        "name": "Eigene Notch",
-                        "info": "Eigenen Notch für jede Ecke definieren"
-                    },
-                    "gradientBackground": {
-                        "name": "Farbverlauf verwenden",
-                        "info": "Farbverlauf für die Hintergundfarbe der Box verwenden"
-                    }
-                },
-                "style": {
-                    "headerColor":{
-                        "name": "Farbe Kopfzeile",
-                        "info": "Hintergrundfarbe der Kopfzeile"
-                    },
-                    "backgroundColor":{
-                        "name": "Hintergrundfarbe",
-                        "info": "Hintergrundfarbe des Box-Inhalts"
-                    }
-                },
-                "arr_style_grad": {
-                    "gradientBackgroundColor": {
-                        "name": "Farbverlauf Hintergrundfarbe",
-                        "info": "Farbverlauf der Hintergrundfarbe der Box"
-                    }
-                }
-            }
-        },
-        "Box Container": {
-            "NAME": "Box Container",
-            "INFO": "Eine Container Box, um Komponenten in Räumen zu strukturieren. Sie kann mit Komponenten gefüllt werden, um automatische Gruppierungen vorzunehmen.",
-            "INPUTS": {
-                "data": {
-                    "headline": {
-                        "name": "Kopfzeile",
-                        "info": "Label der Kopfzeile"
-                    },
-                    "borderRadius": {
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand der Box"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand der Box oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand der Box oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand der Box unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand der Box unten rechts"
-                    },
-                    "notchDefinition": {
-                        "name": "Notch Definition",
-                        "info": "Details unter: https://css-tricks.com/notched-boxes/"
-                    }
-                },
-                "arr_data": {
-                    "headerStyle": {
-                        "name": "Kopfzeilen Text Style",
-                        "info": "Style vom Text der Kopfzeile"
-                    },
-                    "headerPosition": {
-                        "name": "Kopfzeilen Text Position",
-                        "info": "Position vom Text dert Kopfzeile"
-                    }
-                },
-                "bool": {
-                    "showHeader":{
-                        "name": "Kopfzeile anzeigen",
-                        "info": "Kopfzeile anzeigen/nicht anzeigen"
-                    },
-                    "showShadow":{
-                        "name": "Schatten anzeigen",
-                        "info": "Schatten anzeigen/nicht anzeigen"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    },
-                    "customNotch":{
-                        "name": "Eigene Notch",
-                        "info": "Eigenen Notch für jede Ecke definieren"
-                    }
-                },
-                "style": {
-                    "headerColor":{
-                        "name": "Farbe Kopfzeile",
-                        "info": "Hintergrundfarbe der Kopfzeile"
-                    },
-                    "backgroundColor":{
-                        "name": "Hintergrundfarbe",
-                        "info": "Hintergrundfarbe des Box-Inhalts"
-                    }
-                }
-            }
-        },
-        "Button": {
-            "NAME": "Button",
-            "INFO": "Ein einfacher Button, um zwischen 2 Zuständen in FHEM zu wechseln, oder einen direkten Befehl zu senden.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "getOn":{
-                        "name": "Get on",
-                        "info": "Status des Readings im ON Zustand"
-                    },
-                    "getOff":{
-                        "name": "Get off",
-                        "info": "Status des Readings im OFF Zustand"
-                    },
-                    "setOn":{
-                        "name": "Set on",
-                        "info": "ON Wert der gesendet werden soll"
-                    },
-                    "setOff":{
-                        "name": "Set off",
-                        "info": "OFF Wert der gesendet werden soll"
-                    },
-                    "label":{
-                        "name": "Label",
-                        "info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
-                    },
-                    "iconSize":{
-                        "name": "Icon Größe",
-                        "info": "Größe des Icons im Button"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    },
-                    "sendCommand":{
-                        "name": "Sende Befehl",
-                        "info": "Ein einzelner Befefhl der an Fhem gesendet werden soll (falls benötigt)"
-                    }
-                },
-                "bool": {
-                    "iconOnly":{
-                        "name": "Nur Icon anzeigen",
-					    "info": "Aktivieren/deaktivieren, ob nur das Icon im Button angezeigt werden soll"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    }
-                },
-                "icon": {
-                    "iconOn":{
-                        "name": "Icon on",
-                        "info": "Icon im ON Zustand"
-                    },
-                    "iconOff":{
-                        "name": "Icon off",
-                        "info": "Icon im OFF Zustand"
-                    }
-                },
-                "style": {
-                    "iconColorOn":{
-                        "name": "Icon Farbe on",
-                        "info": "Icon Farbe im ON Zustand"
-                    },
-                    "iconColorOff":{
-                        "name": "Icon Farbe off",
-                        "info": "Icon Farbe im OFF Zustand"
-                    },
-                    "buttonColor":{
-                        "name": "Hintergrundfarbe",
-                        "info": "Hintergrundfarbe des Buttons"
-                    },
-                    "labelColor":{
-                        "name": "Label-Farbe",
-                        "info": "Farbe des Labels im Button"
-                    }
-                }
-            },
-            "ERRORS": {
-                "NO_COMMAND": {
-                    "name": "Kein Befehl gefunden",
-                    "info": "Es wurde kein Gerät/Command gefunden, um einen Befehl zu senden. Bitte überprüfen Sie die Einstellungen der Komponente."
-                }
-            }
-        },
-        "Button Menu": {
-            "NAME": "Button Menu",
-            "INFO": "Ein einfacher Button, um zwischen Räumen in FhemNative zu springen.",
-            "INPUTS": {
-                "data": {
-                    "room": {
-                        "name": "Raum",
-                        "info": "Raum in den gewechselt werden soll (Raumname)"
-                    },
-                    "label":{
-                        "name": "Label",
-                        "info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
-                    },
-                    "iconSize":{
-                        "name": "Icon Größe",
-                        "info": "Größe des Icons im Button"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    },
-                    "sendCommand":{
-                        "name": "Sende Befehl",
-                        "info": "Ein einzelner Befefhl der an Fhem gesendet werden soll (falls benötigt)"
-                    }
-                },
-                "bool": {
-                    "iconOnly":{
-                        "name": "Nur Icon anzeigen",
-					    "info": "Aktivieren/deaktivieren, ob nur das Icon im Button angezeigt werden soll"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    }
-                },
-                "icon": {
-                    "icon":{
-                        "name": "Icon",
-                        "info": "Icon im Button"
-                    }
-                },
-                "style": {
-                    "iconColor":{
-                        "name": "Icon Farbe",
-                        "info": "Farbe des Icons"
-                    },
-                    "buttonColor":{
-                        "name": "Hintergrundfarbe",
-                        "info": "Hintergrundfarbe des Buttons"
-                    },
-                    "labelColor":{
-                        "name": "Label-Farbe",
-                        "info": "Farbe des Labels im Button"
-                    }
-                }
-            },
-            "ERRORS": {
-                "NO_ROOM": {
-                    "name": "Raum nicht gefunden",
-                    "info": "Es wurde kein Raum zum navigieren gefunden. Bitte überprüfen Sie die Einstellungen der Komponente."
-                }
-            }
-        },
-        "Button Multistate": {
-            "NAME": "Button Multistate",
-            "INFO": "Ein Button, um zwischen verschiedenen Werten/Zuständen in FHEM zu wechseln.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "getOn":{
-                        "name": "Get on",
-                        "info": "Komma getrennte Liste von Reading Werten zum rotieren"
-                    },
-                    "setOn":{
-                        "name": "Set on",
-                        "info": "Komma getrennte Liste von set Werten zum rotieren"
-                    },
-                    "label":{
-                        "name": "Label",
-                        "info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
-                    },
-                    "iconSize":{
-                        "name": "Icon Größe",
-                        "info": "Größe des Icons im Button"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    },
-                    "sendCommand":{
-                        "name": "Sende Befehl",
-                        "info": "Ein einzelner Befefhl der an Fhem gesendet werden soll (falls benötigt)"
-                    }
-                },
-                "bool": {
-                    "iconOnly":{
-                        "name": "Nur Icon anzeigen",
-					    "info": "Aktivieren/deaktivieren, ob nur das Icon im Button angezeigt werden soll"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    }
-                },
-                "arr_icon": {
-                    "icons":{
-                        "name": "Icons",
-					    "info": "Liste von Icons zum rotieren"
-                    }
-                },
-                "arr_style": {
-                    "labelColors":{
-                        "name": "Label-Farben",
-                        "info": "Farbe des Labels im Button zum rotieren"
-                    },
-                    "buttonColors":{
-                        "name": "Hintergrundfarben",
-                        "info": "Hintergrundfarben des Buttons zum rotieren"
-                    },
-                    "iconColors":{
-                        "name": "Icon Farben",
-                        "info": "Icon Farben zum rotieren"
-                    }
-                }
-            },
-            "ERRORS": {
-                "NO_COMMAND": {
-                    "name": "Kein Befehl gefunden",
-                    "info": "Es wurde kein Gerät/Command gefunden, um einen Befehl zu senden. Bitte überprüfen Sie die Einstellungen der Komponente."
-                }
-            }
-        },
-        "Circle Menu": {
-            "NAME": "Circle Menu",
-            "INFO": "Ein Menü, dass bis zu sechs Werte halten kann und sich in die gewünschte Richtung ausbreitet.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "values":{
-                        "name": "Reading Werte",
-                        "info": "Komma getrennte Liste von Reading Werten für das Circle Menu"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    }
-                },
-                "arr_data": {
-                    "expandStyle":{
-                        "name": "Ausklapp-Richtung",
-					    "info": "Richtung in die das Multi-Menü ausklappen soll"
-                    }
-                },
-                "bool": {
-                    "useIcons":{
-                        "name": "Icons anstatt Werte",
-					    "info": "Icons anstatt Werte in Multi-Menü verwenden"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    }
-                },
-                
-                "icon": {
-                    "icon":{
-                        "name": "Icon",
-					    "info": "Icon für das Multi-Menü"
-                    }
-                },
-                "arr_icon": {
-                    "icons":{
-                        "name": "Icons",
-					    "info": "Liste von Icons zum rotieren"
-                    }
-                },
-                "style": {
-                    "iconColorOn":{
-                        "name": "Icon Farbe on",
-                        "info": "Icon Farbe im ON Zustand"
-                    },
-                    "iconColorOff":{
-                        "name": "Icon Farbe off",
-                        "info": "Icon Farbe im OFF Zustand"
-                    },
-                    "buttonColor":{
-                        "name": "Hintergrundfarbe",
-                        "info": "Hintergrundfarbe des Buttons"
-                    },
-                    "labelColor":{
-                        "name": "Label-Farbe",
-                        "info": "Farbe der Labels im Circle Menu"
-                    },
-                    "activeColor":{
-                        "name": "Aktiv-Farbe",
-					    "info": "Hintergrundfarbe des Items, dass gerdae aktiv ist"
-                    }
-                },
-                "arr_style": {
-                    "iconColors":{
-                        "name": "Icon-Farben",
-					    "info": "Eine Liste von Icon Farben für das Multi-Menü"
-                    }
-                }
-            }
-        },
-        "Circle Slider": {
-            "NAME": "Circle Slider",
-            "INFO": "Ein kreisförmiger Slider, um numerische Werte an FHEM zu senden.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Device Name",
-					    "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-					    "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-					    "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "threshold":{
-                        "name": "Schwellenwert",
-					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
-                    },
-                    "label":{
-                        "name": "Label",
-					    "info": "Label unter dem Wert im Slider"
-                    },
-                    "labelExtension":{
-                        "name": "Label-Endung",
-					    "info": "Endung des Werte-Labels (Bsp. %)"
-                    },
-                    "textSize": {
-                        "name": "Textgröße",
-					    "info": "Größe des Textes im Slider"
-                    },
-                    "labelTopPos": {
-                        "name": "Label Position Oben",
-					    "info": "Label Position in Prozent von Oben"
-                    },
-                    "labelLeftPos": {
-                        "name": "Label Position Links",
-					    "info": "Label Position in Prozent von Links"
-                    },
-                    "bottomAngle": {
-                        "name": "Unterer Winkel",
-					    "info": "Größe der Öffnung des Sliders an der unteren Seite"
-                    },
-                    "arcThickness": {
-                        "name": "Bogenbreite",
-					    "info": "Breite des Kreisbogens"
-                    },
-                    "thumbRadius": {
-                        "name": "Thumb-Radius",
-					    "info": "Radius des Slider-Thumbs"
-                    },
-                    "thumbBorder": {
-                        "name": "Thumb-Rand",
-					    "info": "Breite vom Rand des Slider-Thumbs"
-                    },
-                    "step": {
-                        "name": "Schritte",
-					    "info": "Schritte in denen sich der Slider bewegt"
-                    },
-                    "min": {
-                        "name": "Min Wert",
-					    "info": "Minimal Wert des Sliders"
-                    },
-                    "max": {
-                        "name": "Max Wert",
-					    "info": "Maximal Wert des Sliders"
-                    }
-                },
-                "bool": {
-                    "updateOnMove":{
-                        "name": "Update bei Bewegung",
-					    "info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
-                    },
-                    "customLabelPosition":{
-                        "name": "Eigene Label Position",
-					    "info": "Aktivieren/deaktivieren einer eigenen Label Position"
-                    }
-                },
-                "style": {
-                    "backgroundColor":{
-                        "name": "Bogen Hintergrundfarbe",
-					    "info": "Hintergrundfarbe des Kreisbogens"
-                    },
-                    "circleBackgroundColor":{
-                        "name": "Hintergrundfarbe",
-					    "info": "Hintergrundfarbe des inneren Kreises"
-                    },
-                    "thumbColor":{
-                        "name": "Thumb-Farbe",
-					    "info": "Hintergrundfarbe des Slider-Thumbs"
-                    },
-                    "labelColor":{
-                        "name": "Label-Farbe",
-                        "info": "Farbe des Labels im Slider"
-                    }
-                },
-                "arr_style_grad": {
-                    "fillColors": {
-                        "name": "Füllfarben",
-					    "info": "Farbverlauf des Kreisbogens"
-                    }
-                }
-            }
-        },
-        "Clock": {
-            "NAME": "Clock",
-            "INFO": "Eine Uhr, die entweder digital oder analog dargestellt werden kann.",
-            "INPUTS": {
-                "data": {
-                    "info": {
-                        "name": "Uhr Info",
-                        "info": "Information über die Komponente (der Text dient lediglich der eigenen Orientierung)"
-                    }
-                },
-                "arr_data": {
-                    "style": {
-                        "name": "Uhrentyp",
-					    "info": "Style der Uhr"
-                    },
-                    "format": {
-                        "name": "Format",
-					    "info": "Zeitformat der Uhr"
-                    }
-                },
-                "bool": {
-                    "showTicks":{
-                        "name": "Zeige Ticks",
-					    "info": "Anzeigen/nicht anzeigen der Stunden Ticks"
-                    }
-                },
-                "style": {
-                    "color":{
-                        "name": "Uhrfarbe",
-                        "info": "Primärfarbe der Uhr"
-                    },
-                    "hourColor":{
-                        "name": "Stunden-Farbe",
-					    "info": "Farbe der Stundenanzeige"
-                    },
-                    "minuteColor":{
-                        "name": "Minuten-Farbe",
-					    "info": "Farbe der Minutenanzeige"
-                    },
-                    "secondColor":{
-                        "name": "Sekunden-Farbe",
-					    "info": "Farbe der Sekundenanzeige"
-                    }
-                }
-            }
-        },
-        "Color Picker": {
-            "NAME": "Color Picker",
-            "INFO": "Ein Menü, dass Farbwerte und Helligkeit an FHEN sendet.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "threshold":{
-                        "name": "Schwellenwert",
-					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
-                    },
-                    "headline":{
-                        "name": "Kopfzeile",
-					    "info": "Kopfzeile des Popups"
-                    },
-                    "popupWidth":{
-                        "name": "Popup Breite",
-					    "info": "Breite des Colorpicker Popups"
-                    },
-                    "popupHeight":{
-                        "name": "Popup Höhe",
-					    "info": "Höhe des Colorpicker Popups"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    }
-                },
-                "arr_data": {
-                    "colorInput": {
-                        "name": "Farb-Input",
-					    "info": "Definition des Farb-Inputs"
-                    },
-                    "colorOutput": {
-                        "name": "Farb-Output",
-					    "info": "Definition des Farb-Outputs"
-                    }
-                },
-                "bool": {
-                    "usePopup":{
-                        "name": "Colorpicker in Popup",
-					    "info": "Aktivieren/deaktivieren des Colorpickers im Popup"
-                    },
-                    "showFavMenu":{
-                        "name": "Favoriten-Menü",
-					    "info": "Anzeigen/nicht anzeigen des Farb-Favoriten-Menüs"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    },
-                    "updateOnMove":{
-                        "name": "Update bei Bewegung",
-					    "info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
-                    }
-                }
-            },
-            "DICT": {
-                "FAVS": "Farb-Favoriten"
-            },
-            "ERRORS": {
-                "NO_FAVS": {
-                    "name": "Keine Favoriten",
-                    "info": "Es wurden keine Farb-Favoriten gefunden."
-                }
-            }
-        },
-        "Grouper": {
-            "NAME": "Gruppe",
-            "INFO": "Ein Container, um Komponenten gruppieren und gemeinsam bewegen oder transformieren zu können.",
-            "INPUTS": {
-                "data": {
-                    "info": {
-                        "name": "Gruppen Info",
-                        "info": "Information über die Gruppe (der Text dient lediglich der eigenen Orientierung)"
-                    }
-                }
-            }
-        },
-        "Html": {
-            "NAME": "Html",
-            "INFO": "Ein Komponente, die HTML Texte darstellen kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "rawHtml":{
-                        "name": "Raw HTML",
-                        "info": "HTML Texte direkt definieren"
-                    }
-                }
-            },
-            "ERRORS": {
-                "NO_HTML": {
-                    "name": "Kein HTML-Text gefunden",
-                    "info": "Es wurde kein HTML-Text gefunden, der dargestellt werden kann. Bitte überprüfen Sie die Einstellungen der Komponente."
-                }
-            }
-        },
-        "Icon": {
-            "NAME": "Icon",
-            "INFO": "Ein Icon, dass auf verschiedene Werte in FHEM reagieren kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "indicatorReading":{
-                        "name": "Indikator Reading Name",
-					    "info": "Name des Fhem Indikator Readings (falls benötigt)"
-                    },
-                    "getOn":{
-                        "name": "Get on",
-                        "info": "Status des Readings im ON Zustand"
-                    },
-                    "getOff":{
-                        "name": "Get off",
-                        "info": "Status des Readings im OFF Zustand"
-                    },
-                    "min":{
-                        "name": "Min Wert",
-					    "info": "Minimal Wert (falls benötigt für Min Farbe des Icons)"
-                    },
-                    "max":{
-                        "name": "Max Wert",
-					    "info": "Maximal Wert (falls benötigt für Max Farbe des Icons)"
-                    }
-                },
-                "arr_data": {
-                    "indicatorPosition":{
-                        "name": "Indikator Position",
-					    "info": "Position des Indikators, für die Anzeige eines zusätzlichen Readings"
-                    }
-                },
-                "bool": {
-                    "showIndicator":{
-                        "name": "Indikator anzeigen",
-					    "info": "Indikator für seperates Reading anzeigen/nicht anzeigen"
-                    }
-                },
-                "icon": {
-                    "iconOn":{
-                        "name": "Icon on",
-                        "info": "Icon im ON Zustand"
-                    },
-                    "iconOff":{
-                        "name": "Icon off",
-                        "info": "Icon im OFF Zustand"
-                    }
-                },
-                "style": {
-                    "iconColorOn":{
-                        "name": "Icon Farbe on",
-                        "info": "Icon Farbe im ON Zustand"
-                    },
-                    "iconColorOff":{
-                        "name": "Icon Farbe off",
-                        "info": "Icon Farbe im OFF Zustand"
-                    },
-                    "indicatorColor":{
-                        "name": "Indikator-Farbe",
-					    "info": "Schriftfarbe des Indikators"
-                    },
-                    "indicatorBackgroundColor":{
-                        "name": "Indikator Hintergrundfarbe",
-					    "info": "Hintergrundfarbe des Indikators"
-                    },
-                    "minColor":{
-                        "name": "Min Farbe",
-					    "info": "Icon Farbe für Reading Werte die kleiner als der Min Wert/gleich bei Text Readings sind"
-                    },
-                    "maxColor":{
-                        "name": "Max Farbe",
-					    "info": "Icon Farbe für Reading Werte die größer als der Max Wert/gleich bei Text Readings sind"
-                    }
-                }
-            }
-        },
-        "IFrame": {
-            "NAME": "I Frame",
-            "INFO": "Ein Rahmen, um andere Webinhalte anzeigen zu können.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "url":{
-                        "name": "Url",
-					    "info": "Externe URL (anderenfalls versucht IFrame eine URL im Reading zu finden)"
-                    }
-                },
-                "bool": {
-                    "showBorder":{
-                        "name": "Rand anzeigen",
-					    "info": "Anzeigen/nicht anzeigen des IFrame Rands"
-                    }
-                }
-            },
-            "ERRORS": {
-                "NO_SRC": {
-                    "name": "Keine URL gefunden",
-                    "info": "Es wurde keine URL gefunden, um IFrame Inhalte darzustellen. Bitte überprüfen Sie die Einstellungen der Komponente."
-                }
-            }
-        },
-        "Image": {
-            "NAME": "Image",
-            "INFO": "Eine Komponente, die Bilder aus FHEM Readings, externen URL´s oder vom Gerät anzeigen kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "url":{
-                        "name": "Url",
-					    "info": "Externe URL (anderenfalls wird versucht eine URL im Reading zu finden)"
-                    },
-                    "imageUrl":{
-                        "name": "Geräte Bild",
-					    "info": "Nach dem speichern, kann ein lokales Bild ausgewählt werden (beim Erstellen frei lassen)"
-                    },
-                    "updateInterval":{
-                        "name": "Update-Interval",
-					    "info": "Bild Updateinterval (in Kombination mit keinem Cache)"
-                    }
-                },
-                "arr_data": {
-                    "defaultImage": {
-                        "name": "Standard Bild",
-					    "info": "Standard Bild, wenn kein Bild oder URL vorliegt"
-                    }
-                },
-                "bool": {
-                    "useCache":{
-                        "name": "Cache",
-					    "info": "Aktivieren/deaktivieren des cachen von Bildern"
-                    },
-                    "useLocalImage":{
-                        "name": "Bild vom Gerät nutzen",
-                        "info": "Lokales Bild vom Gerät laden aktivieren/deaktivieren (Achtung: Lokale Bilder Können die Konfiguration von FhemNative stark aufblähen!)"
-                    },
-                    "useDefaultImage":{
-                        "name": "Standard Bild verwenden",
-					    "info": "Standard Bild verwenden aktivieren/deaktivieren"
-                    }
-                }
-            },
-            "ERRORS": {
-                "SELECT": {
-                    "name": "Bild vom Gerät",
-                    "info": "Bitte wählen Sie ein Bild von Ihrem Gerät."
-                }
-            }
-        },
-        "Input": {
-            "NAME": "Input",
-            "INFO": "Ein Input Feld, dass Werte an Fhem senden kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    }
-                },
-                "bool": {
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    },
-                    "showFavorites":{
-                        "name": "Letzte Befehle anzeigen",
-					    "info": "Letzte gesendete Befehle anzeigen/nicht anzeigen und speichern"
-                    }
-                },
-                "icon": {
-                    "sendIcon":{
-                        "name": "Senden Icon",
-					    "info": "Icon für den Senden Button"
-                    }
-                },
-                "style": {
-                    "backgroundColor":{
-                        "name": "Hintergrundfarbe",
-					    "info": "Hintergrundfarbe des Input-Felds"
-                    },
-                    "textColor":{
-                        "name": "Text Farbe",
-					    "info": "Textfarbe des Input-Felds"
-                    },
-                    "iconColor":{
-                        "name": "Icon Farbe",
-					    "info": "Icon Farbe der Buttons"
-                    },
-                    "borderColor":{
-                        "name": "Randfarbe",
-					    "info": "Randfarbe des Inputs"
-                    },
-                    "buttonColor":{
-                        "name": "Button Hintergrundfarbe",
-					    "info": "Hintergrundfarbe der Buttons"
-                    }
-                }
-            },
-            "DICT": {
-                "FAVS": "Befehl-Favoriten"
-            },
-            "ERRORS": {
-                "NO_FAVS": {
-                    "name": "Keine Favoriten",
-                    "info": "Es wurden keine Befehl-Favoriten gefunden."
-                }
-            }
-        },
-        "Label": {
-            "NAME": "Label",
-            "INFO": "Ein Label, dass FHEM Werte oder eigenen Text anzeigen kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "label":{
-                        "name": "Label",
-                        "info": "Statisches Label (wird verwendet, wenn kein Device/Reading definiert ist)"
-                    },
-                    "items":{
-                        "name": "Elemente",
-					    "info": "Manualle Liste von Elementen (Komma-separiert)"
-                    },
-                    "alias":{
-                        "name": "Alias",
-					    "info": "Liste von Alias Werten (Komma-separiert)"
-                    },
-                    "labelExtension":{
-                        "name": "Label-Endung",
-					    "info": "Endung des Werte-Labels (Bsp. %)"
-                    },
-                    "size":{
-                        "name": "Größe",
-					    "info": "Größe des Labels"
-                    },
-                    "min":{
-                        "name": "Min Wert",
-					    "info": "Minimal Wert (falls benötigt für Min Farbe)"
-                    },
-                    "max":{
-                        "name": "Max Wert",
-					    "info": "Maximal Wert (falls benötigt für Max Farbe)"
-                    }
-                },
-                "arr_data": {
-                    "textAlign": {
-                        "name": "Text-Ausrichtung",
-					    "info": "Ausrichtung des Label-Text"
-                    },
-                    "textStyle": {
-                        "name": "Text-Style",
-					    "info": "Text-Style des Labels"
-                    }
-                },
-                "bool": {
-                    "useAlias":{
-                        "name": "Alias verwenden",
-					    "info": "Alias Liste für Readings aktivieren/deaktivieren"
-                    },
-                    "useMinMax": {
-                        "name": "Min/Max verwenden",
-					    "info": "Min und Max Werte verwenden, um die Labelfarbe bei Min/Max Werten zu ändern"
-                    }
-                },
-                "style": {
-                    "color":{
-                        "name": "Farbe",
-					    "info": "Farbe des Labels"
-                    },
-                    "minColor":{
-                        "name": "Min Farbe",
-					    "info": "Farbe für < Min Wert"
-                    },
-                    "maxColor":{
-                        "name": "Max Farbe",
-					    "info": "Farbe für > Max Wert"
-                    }
-                }
-            },
-            "ERRORS": {
-                "NO_LABEL": {
-                    "name": "Kein Label gefunden",
-                    "info": "Es wurde kein Label zum anzeigen gefunden. Bitte überprüfen Sie die Einstellungen der Komponente."
-                }
-            }
-        },
-        "Line":{
-            "NAME": "Linie",
-            "INFO": "Eine Linie, die benutzt werden kann, um Räume zu strukturieren.",
-            "INPUTS": {
-                "data": {
-                    "height": {
-                        "name": "Breite/Höhe",
-                        "info": "Breite/Höhe der Linie (abhängig von ihrer Ausrichtung)"
-                    },
-                    "rotation":{
-                        "name": "Rotation",
-                        "info": "Rotation der Linie in Grad"
-                    },
-                    "curvePercentage":{
-                        "name": "Kurve",
-                        "info": "Prozentangabe der Biegung"
-                    }
-                },
-                "arr_data": {
-                    "orientation":{
-                        "name": "Orientierung",
-                        "info": "Ausrichtung der Linie"
-                    }
-                },
-                "style": {
-                    "color":{
-                        "name": "Farbe",
-                        "info": "Hintergrundfarbe der Linie"
-                    }
-                }
-            }
-        },
-        "Picker": {
-            "NAME": "Picker",
-            "INFO": "Ein Picker, der mit anderen Komponenten gefüllt werden kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "getOn":{
-                        "name": "Get on",
-                        "info": "Status des Readings im ON Zustand"
-                    },
-                    "headline":{
-                        "name": "Kopfzeile",
-					    "info": "Label der Kopfzeile im Picker"
-                    },
-                    "height":{
-                        "name": "Picker Höhe",
-					    "info": "Höhe des Picker in %"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    }
-                },
-                "bool": {
-                    "openOnReading":{
-                        "name": "Öffnen bei Reading",
-					    "info": "Aktivieren/deaktivieren des automatischen öffnens bei Reading"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    }
-                },
-                "icon": {
-                    "iconOn":{
-                        "name": "Icon on",
-                        "info": "Icon im ON Zustand"
-                    },
-                    "iconOff":{
-                        "name": "Icon off",
-                        "info": "Icon im OFF Zustand"
-                    }
-                },
-                "style": {
-                    "iconColorOn":{
-                        "name": "Icon Farbe on",
-                        "info": "Icon Farbe im ON Zustand"
-                    },
-                    "iconColorOff":{
-                        "name": "Icon Farbe off",
-                        "info": "Icon Farbe im OFF Zustand"
-                    },
-                    "backgroundColorOn":{
-                        "name": "Hintergrundfarbe on",
-					    "info": "Hintergrundfarbe im ON Zustand"
-                    },
-                    "backgroundColorOff":{
-                        "name": "Hintergrundfarbe off",
-					    "info": "Hintergrundfarbe im OFF Zustand"
-                    }
-                }
-            }
-        },
-        "Popup": {
-            "NAME": "Popup",
-            "INFO": "Ein Popup, dass mit anderen Komponenten gefüllt werden kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "getOn":{
-                        "name": "Get on",
-                        "info": "Status des Readings im ON Zustand"
-                    },
-                    "headline":{
-                        "name": "Kopfzeile",
-					    "info": "Label der Kopfzeile im Popup"
-                    },
-                    "width":{
-                        "name": "Popup Breite",
-					    "info": "Breite des Popups in %"
-                    },
-                    "height":{
-                        "name": "Popup Höhe",
-					    "info": "Höhe des Popups in %"
-                    },
-                    "borderRadius":{
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand des Buttons"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand des Buttons oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand des Buttons oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand des Buttons unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand des Buttons unten rechts"
-                    }
-                },
-                "bool": {
-                    "openOnReading":{
-                        "name": "Öffnen bei Reading",
-					    "info": "Aktivieren/deaktivieren des automatischen öffnens bei Reading"
-                    },
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    }
-                },
-                "icon": {
-                    "iconOn":{
-                        "name": "Icon on",
-                        "info": "Icon im ON Zustand"
-                    },
-                    "iconOff":{
-                        "name": "Icon off",
-                        "info": "Icon im OFF Zustand"
-                    }
-                },
-                "style": {
-                    "iconColorOn":{
-                        "name": "Icon Farbe on",
-                        "info": "Icon Farbe im ON Zustand"
-                    },
-                    "iconColorOff":{
-                        "name": "Icon Farbe off",
-                        "info": "Icon Farbe im OFF Zustand"
-                    },
-                    "backgroundColorOn":{
-                        "name": "Hintergrundfarbe on",
-					    "info": "Hintergrundfarbe im ON Zustand"
-                    },
-                    "backgroundColorOff":{
-                        "name": "Hintergrundfarbe off",
-					    "info": "Hintergrundfarbe im OFF Zustand"
-                    }
-                }
-            }
-        },
-        "Select": {
-            "NAME": "Select",
-            "INFO": "Ein Selektionsmenü, dass FHEM oder manuelle Listen dargestellen kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "options":{
-                        "name": "Optionen Reading",
-                        "info": "FHEM Reading mit der Liste an verfügbaren Select-Optionen"
-                    },
-                    "seperator":{
-                        "name": "Trennzeichen",
-					    "info": "Trennzeichen der Liste"
-                    },
-                    "items":{
-                        "name": "Elemente",
-					    "info": "Manualle Liste von Elementen"
-                    },
-                    "alias":{
-                        "name": "Alias",
-					    "info": "Liste von Alias Werten"
-                    },
-                    "placehoder":{
-                        "name": "Platzhalter",
-					    "info": "Platzhalter, falls kein aktueller Zustand verfügbar ist"
-                    }
-                },
-                "style": {
-                    "selectColor":{
-                        "name": "Hintergrundfarbe",
-					    "info": "Hintergrundfarbe der Select-Komponente"
-                    },
-                    "selectActiveColor":{
-                        "name": "Aktiv-Farbe",
-					    "info": "Hintergrundfarbe des Items, dass gerdae aktiv ist"
-                    },
-                    "labelColor":{
-                        "name": "Label-Farbe",
-                        "info": "Farbe der Labels in der Select-Komponente"
-                    },
-                    "iconColor":{
-                        "name": "Icon Farben",
-                        "info": "Farbe der Icons in der Select-Komponente"
-                    }
-                }
-            },
-            "ERRORS": {
-                "NO_ITEMS": {
-                    "name": "Keine Optionen gefunden",
-                    "info": "Es wurde keine Liste an verfügbaren Select-Optionen gefunden. Bitte überprüfen Sie die Einstellungen der Komponente."
-                }
-            }
-        },
-        "Slider": {
-            "NAME": "Slider",
-            "INFO": "Ein Slider, der numerische und Zeit Werte ändern kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "threshold":{
-                        "name": "Schwellenwert",
-					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
-                    },
-                    "labelExtension":{
-                        "name": "Label-Endung",
-					    "info": "Endung des Werte-Labels (Bsp. %)"
-                    },
-                    "steps": {
-                        "name": "Schritte",
-					    "info": "Schritte in denen sich der Slider bewegt"
-                    },
-                    "min": {
-                        "name": "Min Wert",
-					    "info": "Minimal Wert des Sliders"
-                    },
-                    "max": {
-                        "name": "Max Wert",
-					    "info": "Maximal Wert des Sliders"
-                    },
-                    "sliderHeight":{
-                        "name": "Breite/Höhe",
-					    "info": "Breite/Höhe des SLiders, basierend auf der Ausrichtung"
-                    },
-                    "thumbWidth":{
-                        "name": "Thumb Breite",
-                        "info": "Breite des Slider-Thumbs"
-                    },
-                    "thumbHeight":{
-                        "name": "Thumb Höhe",
-                        "info": "Höhe des Slider-Thumbs"
-                    }
-                },
-                "arr_data": {
-                    "sliderType": {
-                        "name": "Style",
-					    "info": "Style des Sliders"
-                    },
-                    "orientation": {
-                        "name": "Orientierung",
-					    "info": "Ausrichtung des Sliders"
-                    }
-                },
-                "bool": {
-                    "updateOnMove":{
-                        "name": "Update bei Bewegung",
-					    "info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
-                    },
-                    "showPin": {
-                        "name": "Zeige Pin",
-					    "info": "Anzeigen/nicht anzeigen des Slider Pins"
-                    },
-                    "showValueInThumb": {
-                        "name": "Zeige Wert im Thumb",
-					    "info": "Anzeigen/nicht anzeigen des aktuellen Wertes im Thumb"
-                    }
-                },
-                "icon": {
-                    "sliderIcon":{
-                        "name": "Slider Icon",
-					    "info": "Icon im Slider (für Style im ios-Modus)"
-                    }
-                },
-                "style": {
-                    "backgroundColor":{
-                        "name": "Hintergrundfarbe",
-                        "info": "Hintergrundfarbe des Sliders"
-                    },
-                    "boxBackgroundColor": {
-                        "name": "Box Hintergrundfarbe",
-                        "info": "Hintergrundfarbe der Slider-Box"
-                    },
-                    "thumbColor":{
-                        "name": "Thumb-Farbe",
-					    "info": "Hintergrundfarbe des Slider-Thumbs"
-                    },
-                    "thumbValueColor":{
-                        "name": "Thumb-Wert Farbe",
-					    "info": "Farbe des Wertes im Thumb"
-                    },
-                    "fillColor":{
-                        "name": "Füllfarbe",
-					    "info": "Füllfarbe des Sliders"
-                    },
-                    "iconColor": {
-                        "name": "Icon-Farbe",
-					    "info": "Farbe des Slider Icons"
-                    },
-                    "buttonColor": {
-                        "name": "Hintergrundfarbe",
-					    "info": "Hintergrundfarbe der Buttons"
-                    }
-                }
-            }
-        },
-        "Swiper": {
-            "NAME": "Swiper",
+					},
+					"READING":{
+						"HEAD": "FHEM Device Reading",
+						"INFO": "FHEM Device Reading, dass die Konfiguration enthält/enthalten soll"
+					},
+					"TEST": {
+						"BUTTON": "Konfiguration testen",
+						"ERRORS": {
+							"NO_CONNECTION": {
+								"HEAD": "Keine aktive Verbindung zu FHEM",
+								"INFO": "Um die geteilte Konfiguration testen zu können, muss eine aktive Verbindung zu FHEM bestehen."
+							},
+							"MISSING": {
+								"HEAD": "Fehlende Daten",
+								"INFO": "Bitte geben Sie sowohl Device als auch Reading für die geteilte Konfiguration an."
+							},
+							"DEVICE_NOT_FOUND": {
+								"HEAD": "Device nicht gefunden",
+								"INFO": "Das angegebene FHEM Device konnte nicht gefunden werden."
+							},
+							"READING_NOT_FOUND": {
+								"HEAD": "Reading nicht gefunden",
+								"INFO": "Das angegebene FHEM Device Reading konnte nicht gefunden werden."
+							}
+						}
+					},
+					"TRANSFER": {
+						"BUTTON": "Konfiguration überschreiben",
+						"HEAD": "Achtung! Bitte machen Sie vorher ein Backup!",
+						"INFO": "Ein Transfer wird nur beim ersten erstellen oder beim Wechsel des Konfigurations-Readings benötigt. Wollen Sie das Reading wirklich überschreiben? Alle Geräte verwenden dann die aktuelle Konfiguration DIESES Geräts."
+					}
+				}
+			}
+		},
+		"SANDBOX": {
+			"MENU": {
+				"DEVICES": "Demo Geräte anzeigen",
+				"LEAVE": "Sandbox verlassen"
+			},
+			"DEMO_DEVICES": {
+				"HEAD": "Sandbox Geräte"
+			}
+		},
+		"RIGHTS": {
+			"SUPPORT": {
+				"HEAD": "Richtlinien für Förderungen",
+				"HEAD_SHORT": "Richtlinien",
+				"1": {
+					"HEAD": "Fördermitgliedschaft",
+					"1": "Mit der Fördermitgliedschaft leiste ich bis zu meiner Kündigung an die Slap Apps UG (haftungsbeschränkt) (Betreiber von FhemNative) eine regelmäßige wiederkehrende Zahlung in Höhe des von mir gewählten Betrags ohne Anspruch auf eine Gegenleistung (Schenkung).",
+					"2": "Da die Slap Apps UG (haftungsbeschränkt) nicht vom Finanzamt als gemeinnützig anerkannt ist, kann leider keine Zuwendungsbescheinigung (Spendenwuittung) ausgestellt werden."
+				},
+				"2": {
+					"HEAD": "Zahlung",
+					"1": "Ich verpflichte mich für die Laufzeit meiner Fördermitgliedschaft zur Zahlung des von mit gewählten Betrags.",
+					"2": "Je nach der von mir gewählten Zahlungsart gelten die Bedingungen des von mir erteilten SEPA-Mandats bzw. des von mir gewählten Zahlungsdienstes."
+				},
+				"3": {
+					"HEAD": "Laufzeit und Kündigung",
+					"1": "Die Fördermitgliedschaft kann ich jederzeit kündigen. Die Kündigung erfolgt in Textform (z.B. per E-Mail)."
+				},
+				"4": {
+					"HEAD": "Anwendbares Recht; Verhältnis zu den allgemeinen Nutzungsbedingungen von FhemNative",
+					"1": "Es gilt deutsches Recht.",
+					"2": "Die Nutzungsbedingungen für die FhemNative Fördermitgliedschaft gelten zusätzlich zu den allgemeinen Nutzungsbedingungen von FhemNative."
+				}
+			},
+			"TERMS": {
+				"HEAD": "Nutzungsbedingungen",
+				"HEAD_SHORT": "Nutzung",
+				"TEXT": "Die nachfolgenden Nutzungsbedingungen regeln die Nutzung von FhemNative über das Internet, mobile Dienste, Apps, andere Domains oder Kommunikationswege:",
+				"1": {
+					"HEAD": "Nutzung von „FhemNative“",
+					"1": "Bei der Nutzung von „FhemNative“ verpflichtest du dich, die geltenden gesetzlichen Vorschriften zu beachten. Das betrifft z.B. den Schutz der Persönlichkeitsrechte anderer Nutzer oder das Urheberrecht an Fotos. Du verpflichtest dich zudem, unsere Richtlinien und Netiquette einzuhalten.",
+					"2": "Wir übernehmen keine Garantie oder Gewähr für Informationen innerhalb von FhemNative oder für eine bestimmte Verfügbarkeit oder Funktionalität von FhemNative.",
+					"3": "Du bleibst Inhaber deiner Inhalte (z.B. von dir auf „FhemNative“ hochgeladene Fotos)."
+				},
+				"2": {
+					"HEAD": "Änderung der Nutzungsbedingungen",
+					"1": "Mit deiner Zustimmung oder wenn deine Zustimmung nach den folgenden Bestimmungen als erteilt gilt, können wir die mit dir vereinbarten Nutzungsbedingungen anpassen (z.B. bei Einführung neuer Funktionen).",
+					"2": "Wenn wir die Nutzungsbedingungen ändern möchten, teilen wir dir dies mindestens sechs Wochen vor dem vorgeschlagenen Wirksamwerden in sog. Textform (also z.B. per Pop-up Nachricht) mit. Widersprichst du nicht innerhalb von sechs Wochen nach Zugang dieser Mitteilung in Textform, gilt deine Zustimmung zur Änderung als erteilt und die Änderungen werden zum angekündigten Zeitpunkt wirksam. Auf diese Folge weisen wir dich in der Änderungsmitteilung besonders hin."
+				},
+				"3": {
+					"HEAD": "Alternative Streitbeilegung gemäß Verbraucherstreitbeilegungsgesetz",
+					"1": "Wir weisen dich darauf hin, dass wir nicht bereit und nicht verpflichtet sind, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+				},
+				"4": {
+					"HEAD": "Anwendbares Recht",
+					"1": "Es gilt deutsches Recht."
+				}
+			}
+		}
+	},
+	"MENUS": {
+		"CONTEXT_MENU": {
+			"NEW": {
+				"TEXT": "Neu",
+				"CONTENT": {
+					"ROOM": "Raum hinzufügen",
+					"COMPONENT": "Komponente hinzufügen"
+				}
+			},
+			"COMPONENT": {
+				"TEXT": "Komponente",
+				"CONTENT": {
+					"SETTINGS": "Einstellungen",
+					"DETAILS": "Komponenten Details"
+				}
+			},
+			"ARRANGE": {
+				"TEXT": "Ausrichten",
+				"CONTENT": {
+					"POSITION": "Lage",
+					"FOREGROUND": "Vordergrund",
+					"BACKGROUND": "Hintergrund",
+					"GROUP": "Gruppieren",
+					"UNGROUP": "Gruppierung aufheben"
+				}
+			},
+			"EDIT": {
+				"TEXT": "Bearbeiten",
+				"CONTENT": {
+					"SELECT": "Markieren",
+					"SELECT_ALL": "Alle Markieren",
+					"COPY": "Kopieren",
+					"PASTE": "Einfügen",
+					"DELETE": "Löschen"
+				}
+			}
+		},
+		"CREATE_ROOM": {
+			"HEADS": {
+				"NEW": "Neuer Raum",
+				"UPDATE": "Raum bearbeiten"
+			},
+			"INPUTS": {
+				"ROOM_NAME": {
+					"TEXT": "Raum Name",
+					"PLACEHOLDER": "Raum Namen eingeben"
+				},
+				"ROOM_ICON": "Raum Icon"
+			},
+			"BUTTONS": {
+				"CREATE_ROOM": "Raum erstellen",
+				"DELETE_ROOM": "Raum löschen",
+				"UPDATE_ROOM": "Raum speichern"
+			},
+			"ERRORS": {
+				"MISSING_NAME": {
+					"TEXT": "Kein Raumname",
+					"INFO": "Bitte geben Sie dem Raum einen Namen."
+				}
+			}
+		},
+		"IMPORT": {
+			"ERRORS": {
+				"FALSE_CONFIG": {
+					"TEXT": "Fehler beim laden",
+					"INFO": "Die Konfigurationsdatei konnte nicht geladen werden. Stelle sicher, dass der Export von einer FhemNative Version erstellt wurde, die mit dieser kompatibel ist. Die Version dieser FhemNative Installation findest du in den Einstellungen."
+				},
+				"NO_COMPONENT_CONFIG": {
+					"TEXT": "Falsche Konfiguration",
+					"INFO": "Bei der Konfigurationsdatei handelt es sich nicht um einen Komponenten-Export."
+				},
+				"NO_ROOM_CONFIG": {
+					"TEXT": "Falsche Konfiguration",
+					"INFO": "Bei der Konfigurationsdatei handelt es sich nicht um einen Raum-Export."
+				}
+			}
+		},
+		"EXPORT": {
+			"ERRORS": {
+				"FAILED_EXPORT": {
+					"TEXT": "Fehler beim exportieren",
+					"INFO": "Die Konfigurationsdatei konnte nicht exportiert werden."
+				}
+			}
+		},
+		"COMPONENT_DETAILS": {
+			"HEAD": "Komponenten Details",
+			"CONTENT": {
+				"QR": {
+					"HEAD": "QR-Code",
+					"INFO": "Scanne den QR-Code der Komponente von einem anderem Gerät mit FhemNative und importiere die Komponente automatisch."
+				}
+			}
+		},
+		"CREATE_COMPONENT": {
+			"HEADS": {
+				"NEW": "Neue Komponente",
+				"UPDATE": "Komponente bearbeiten"
+			},
+			"CATEGORIES": {
+				"OBJECTS": "Objekte",
+				"BUTTONS": "Buttons und Schalter",
+				"PICKER": "Picker & Inputs",
+				"SLIDER": "Slider",
+				"CHARTS": "Charts",
+				"GRAPHICS": "Grafiken",
+				"CONTAINERS": "Container"
+			},
+			"COMPONENT_NAMES": {
+				"BOX": "Box",
+				"BOX CONTAINER": "Box Container",
+				"BUTTON": "Button",
+				"BUTTON MENU": "Button Menu",
+				"BUTTON MULTISTATE": "Button Multistate",
+				"CIRCLE MENU": "Circle Menu",
+				"CIRCLE SLIDER": "Circle Slider",
+				"CLOCK": "Clock",
+				"COLOR PICKER": "Color Picker",
+				"HTML": "Html",
+				"ICON": "Icon",
+				"IFRAME": "IFrame",
+				"IMAGE": "Image",
+				"INPUT": "Input",
+				"LABEL": "Label",
+				"LINE": "Linie",
+				"PICKER": "Picker",
+				"POPUP": "Popup",
+				"SELECT": "Select",
+				"SLIDER": "Slider",
+				"SWIPER": "Swiper",
+				"SWITCH": "Switch",
+				"TABLE": "Table",
+				"TABS": "Tabs",
+				"THERMOSTAT": "Thermostat",
+				"TIME PICKER": "Time Picker"
+			}
+		}
+	},
+	"DICT": {
+		"SAVE": "Speichern",
+		"CANCEL": "Abbrechen",
+		"CLOSE": "Schließen",
+		"COLORS": {
+			"ADD_COLOR": "Farbe hinzufügen",
+			"ERRORS": {
+				"MISSING_#": {
+					"name": "Kein Hex Wert",
+					"info": "Hex Farben müssen mit '#' beginnen"
+				},
+				"HEX_LENGTH": {
+					"name": "Fehlerhafter Wert",
+					"info": "Farbwerte können etweder 3 oder 6 Stellen lang sein"
+				},
+				"INVALID_HEX": {
+					"name": "Falscher Wert",
+					"info": "Der eingegebene Farbwert scheint fehlerhaft zu sein"
+				}
+			}
+		}
+	},
+	"BUTTONS": {
+		"OKAY": "Okay",
+		"EDIT": "Bearbeiten",
+		"CONTINUE": "Fortfahren"
+	},
+	"COMPONENTS": {
+		"GENERAL": {
+			"SETTINGS": {
+				"data": "Einstellugen",
+				"bool": "Schalter",
+				"icon": "Icons",
+				"style": "Styles",
+				"arr_data": "Auswahl Einstellugen",
+				"arr_icon": "Multi Icons",
+				"arr_style": "Multi Styles",
+				"arr_style_grad": "Farbverläufe"
+			},
+			"ERRORS": {
+				"TYPE": "Fehler Level: ",
+				"LEVEL_1": {
+					"name": "Keine Verbindung zu FHEM.",
+					"info": "Bitte überprüfen Sie Ihre IP-Einstellungen."
+				},
+				"LEVEL_2": {
+					"name": "Gerät nicht gefunden.",
+					"info": "Bitte überprüfen Sie die Geräte-Definition der Komponente."
+				},
+				"LEVEL_3": {
+					"name": "Reading nicht gefunden.",
+					"info": "Bitte überprüfen Sie die Reding-Definition der Komponente."
+				}
+			},
+			"TYPES": {
+				"fhem": "FHEM",
+				"style": "Style",
+				"container": "Container"
+			},
+			"PREVIEW": "Vorschau",
+			"SAVE": "Komponente Speichern"
+		},
+		"Box": {
+			"NAME": "Box",
+			"INFO": "Eine einfache Box, um Komponenten in Räumen zu strukturieren.",
+			"INPUTS": {
+				"data": {
+					"headline": {
+						"name": "Kopfzeile",
+						"info": "Label der Kopfzeile"
+					},
+					"borderRadius": {
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand der Box"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand der Box oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand der Box oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand der Box unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand der Box unten rechts"
+					},
+					"notchDefinition": {
+						"name": "Notch Definition",
+						"info": "Details unter: https://css-tricks.com/notched-boxes/"
+					}
+				},
+				"arr_data": {
+					"headerStyle": {
+						"name": "Kopfzeilen Text Style",
+						"info": "Style vom Text der Kopfzeile"
+					},
+					"headerPosition": {
+						"name": "Kopfzeilen Text Position",
+						"info": "Position vom Text dert Kopfzeile"
+					}
+				},
+				"bool": {
+					"showHeader":{
+						"name": "Kopfzeile anzeigen",
+						"info": "Kopfzeile anzeigen/nicht anzeigen"
+					},
+					"showShadow":{
+						"name": "Schatten anzeigen",
+						"info": "Schatten anzeigen/nicht anzeigen"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					},
+					"customNotch":{
+						"name": "Eigene Notch",
+						"info": "Eigenen Notch für jede Ecke definieren"
+					},
+					"gradientBackground": {
+						"name": "Farbverlauf verwenden",
+						"info": "Farbverlauf für die Hintergundfarbe der Box verwenden"
+					}
+				},
+				"style": {
+					"headerColor":{
+						"name": "Farbe Kopfzeile",
+						"info": "Hintergrundfarbe der Kopfzeile"
+					},
+					"backgroundColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Box-Inhalts"
+					}
+				},
+				"arr_style_grad": {
+					"gradientBackgroundColor": {
+						"name": "Farbverlauf Hintergrundfarbe",
+						"info": "Farbverlauf der Hintergrundfarbe der Box"
+					}
+				}
+			}
+		},
+		"Box Container": {
+			"NAME": "Box Container",
+			"INFO": "Eine Container Box, um Komponenten in Räumen zu strukturieren. Sie kann mit Komponenten gefüllt werden, um automatische Gruppierungen vorzunehmen.",
+			"INPUTS": {
+				"data": {
+					"headline": {
+						"name": "Kopfzeile",
+						"info": "Label der Kopfzeile"
+					},
+					"borderRadius": {
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand der Box"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand der Box oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand der Box oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand der Box unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand der Box unten rechts"
+					},
+					"notchDefinition": {
+						"name": "Notch Definition",
+						"info": "Details unter: https://css-tricks.com/notched-boxes/"
+					}
+				},
+				"arr_data": {
+					"headerStyle": {
+						"name": "Kopfzeilen Text Style",
+						"info": "Style vom Text der Kopfzeile"
+					},
+					"headerPosition": {
+						"name": "Kopfzeilen Text Position",
+						"info": "Position vom Text dert Kopfzeile"
+					}
+				},
+				"bool": {
+					"showHeader":{
+						"name": "Kopfzeile anzeigen",
+						"info": "Kopfzeile anzeigen/nicht anzeigen"
+					},
+					"showShadow":{
+						"name": "Schatten anzeigen",
+						"info": "Schatten anzeigen/nicht anzeigen"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					},
+					"customNotch":{
+						"name": "Eigene Notch",
+						"info": "Eigenen Notch für jede Ecke definieren"
+					}
+				},
+				"style": {
+					"headerColor":{
+						"name": "Farbe Kopfzeile",
+						"info": "Hintergrundfarbe der Kopfzeile"
+					},
+					"backgroundColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Box-Inhalts"
+					}
+				}
+			}
+		},
+		"Button": {
+			"NAME": "Button",
+			"INFO": "Ein einfacher Button, um zwischen 2 Zuständen in FHEM zu wechseln, oder einen direkten Befehl zu senden.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"getOn":{
+						"name": "Get on",
+						"info": "Status des Readings im ON Zustand"
+					},
+					"getOff":{
+						"name": "Get off",
+						"info": "Status des Readings im OFF Zustand"
+					},
+					"setOn":{
+						"name": "Set on",
+						"info": "ON Wert der gesendet werden soll"
+					},
+					"setOff":{
+						"name": "Set off",
+						"info": "OFF Wert der gesendet werden soll"
+					},
+					"label":{
+						"name": "Label",
+						"info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
+					},
+					"iconSize":{
+						"name": "Icon Größe",
+						"info": "Größe des Icons im Button"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					},
+					"sendCommand":{
+						"name": "Sende Befehl",
+						"info": "Ein einzelner Befefhl der an Fhem gesendet werden soll (falls benötigt)"
+					}
+				},
+				"bool": {
+					"iconOnly":{
+						"name": "Nur Icon anzeigen",
+						"info": "Aktivieren/deaktivieren, ob nur das Icon im Button angezeigt werden soll"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					}
+				},
+				"icon": {
+					"iconOn":{
+						"name": "Icon on",
+						"info": "Icon im ON Zustand"
+					},
+					"iconOff":{
+						"name": "Icon off",
+						"info": "Icon im OFF Zustand"
+					}
+				},
+				"style": {
+					"iconColorOn":{
+						"name": "Icon Farbe on",
+						"info": "Icon Farbe im ON Zustand"
+					},
+					"iconColorOff":{
+						"name": "Icon Farbe off",
+						"info": "Icon Farbe im OFF Zustand"
+					},
+					"buttonColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Buttons"
+					},
+					"labelColor":{
+						"name": "Label-Farbe",
+						"info": "Farbe des Labels im Button"
+					}
+				}
+			},
+			"ERRORS": {
+				"NO_COMMAND": {
+					"name": "Kein Befehl gefunden",
+					"info": "Es wurde kein Gerät/Command gefunden, um einen Befehl zu senden. Bitte überprüfen Sie die Einstellungen der Komponente."
+				}
+			}
+		},
+		"Button Menu": {
+			"NAME": "Button Menu",
+			"INFO": "Ein einfacher Button, um zwischen Räumen in FhemNative zu springen.",
+			"INPUTS": {
+				"data": {
+					"room": {
+						"name": "Raum",
+						"info": "Raum in den gewechselt werden soll (Raumname)"
+					},
+					"label":{
+						"name": "Label",
+						"info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
+					},
+					"iconSize":{
+						"name": "Icon Größe",
+						"info": "Größe des Icons im Button"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					},
+					"sendCommand":{
+						"name": "Sende Befehl",
+						"info": "Ein einzelner Befefhl der an Fhem gesendet werden soll (falls benötigt)"
+					}
+				},
+				"bool": {
+					"iconOnly":{
+						"name": "Nur Icon anzeigen",
+						"info": "Aktivieren/deaktivieren, ob nur das Icon im Button angezeigt werden soll"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					}
+				},
+				"icon": {
+					"icon":{
+						"name": "Icon",
+						"info": "Icon im Button"
+					}
+				},
+				"style": {
+					"iconColor":{
+						"name": "Icon Farbe",
+						"info": "Farbe des Icons"
+					},
+					"buttonColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Buttons"
+					},
+					"labelColor":{
+						"name": "Label-Farbe",
+						"info": "Farbe des Labels im Button"
+					}
+				}
+			},
+			"ERRORS": {
+				"NO_ROOM": {
+					"name": "Raum nicht gefunden",
+					"info": "Es wurde kein Raum zum navigieren gefunden. Bitte überprüfen Sie die Einstellungen der Komponente."
+				}
+			}
+		},
+		"Button Multistate": {
+			"NAME": "Button Multistate",
+			"INFO": "Ein Button, um zwischen verschiedenen Werten/Zuständen in FHEM zu wechseln.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"getOn":{
+						"name": "Get on",
+						"info": "Komma getrennte Liste von Reading Werten zum rotieren"
+					},
+					"setOn":{
+						"name": "Set on",
+						"info": "Komma getrennte Liste von set Werten zum rotieren"
+					},
+					"label":{
+						"name": "Label",
+						"info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
+					},
+					"iconSize":{
+						"name": "Icon Größe",
+						"info": "Größe des Icons im Button"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					},
+					"sendCommand":{
+						"name": "Sende Befehl",
+						"info": "Ein einzelner Befefhl der an Fhem gesendet werden soll (falls benötigt)"
+					}
+				},
+				"bool": {
+					"iconOnly":{
+						"name": "Nur Icon anzeigen",
+						"info": "Aktivieren/deaktivieren, ob nur das Icon im Button angezeigt werden soll"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					}
+				},
+				"arr_icon": {
+					"icons":{
+						"name": "Icons",
+						"info": "Liste von Icons zum rotieren"
+					}
+				},
+				"arr_style": {
+					"labelColors":{
+						"name": "Label-Farben",
+						"info": "Farbe des Labels im Button zum rotieren"
+					},
+					"buttonColors":{
+						"name": "Hintergrundfarben",
+						"info": "Hintergrundfarben des Buttons zum rotieren"
+					},
+					"iconColors":{
+						"name": "Icon Farben",
+						"info": "Icon Farben zum rotieren"
+					}
+				}
+			},
+			"ERRORS": {
+				"NO_COMMAND": {
+					"name": "Kein Befehl gefunden",
+					"info": "Es wurde kein Gerät/Command gefunden, um einen Befehl zu senden. Bitte überprüfen Sie die Einstellungen der Komponente."
+				}
+			}
+		},
+		"Circle Menu": {
+			"NAME": "Circle Menu",
+			"INFO": "Ein Menü, dass bis zu sechs Werte halten kann und sich in die gewünschte Richtung ausbreitet.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"values":{
+						"name": "Reading Werte",
+						"info": "Komma getrennte Liste von Reading Werten für das Circle Menu"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					}
+				},
+				"arr_data": {
+					"expandStyle":{
+						"name": "Ausklapp-Richtung",
+						"info": "Richtung in die das Multi-Menü ausklappen soll"
+					}
+				},
+				"bool": {
+					"useIcons":{
+						"name": "Icons anstatt Werte",
+						"info": "Icons anstatt Werte in Multi-Menü verwenden"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					}
+				},
+				
+				"icon": {
+					"icon":{
+						"name": "Icon",
+						"info": "Icon für das Multi-Menü"
+					}
+				},
+				"arr_icon": {
+					"icons":{
+						"name": "Icons",
+						"info": "Liste von Icons zum rotieren"
+					}
+				},
+				"style": {
+					"iconColorOn":{
+						"name": "Icon Farbe on",
+						"info": "Icon Farbe im ON Zustand"
+					},
+					"iconColorOff":{
+						"name": "Icon Farbe off",
+						"info": "Icon Farbe im OFF Zustand"
+					},
+					"buttonColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Buttons"
+					},
+					"labelColor":{
+						"name": "Label-Farbe",
+						"info": "Farbe der Labels im Circle Menu"
+					},
+					"activeColor":{
+						"name": "Aktiv-Farbe",
+						"info": "Hintergrundfarbe des Items, dass gerdae aktiv ist"
+					}
+				},
+				"arr_style": {
+					"iconColors":{
+						"name": "Icon-Farben",
+						"info": "Eine Liste von Icon Farben für das Multi-Menü"
+					}
+				}
+			}
+		},
+		"Circle Slider": {
+			"NAME": "Circle Slider",
+			"INFO": "Ein kreisförmiger Slider, um numerische Werte an FHEM zu senden.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Device Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"threshold":{
+						"name": "Schwellenwert",
+						"info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+					},
+					"label":{
+						"name": "Label",
+						"info": "Label unter dem Wert im Slider"
+					},
+					"labelExtension":{
+						"name": "Label-Endung",
+						"info": "Endung des Werte-Labels (Bsp. %)"
+					},
+					"textSize": {
+						"name": "Textgröße",
+						"info": "Größe des Textes im Slider"
+					},
+					"labelTopPos": {
+						"name": "Label Position Oben",
+						"info": "Label Position in Prozent von Oben"
+					},
+					"labelLeftPos": {
+						"name": "Label Position Links",
+						"info": "Label Position in Prozent von Links"
+					},
+					"bottomAngle": {
+						"name": "Unterer Winkel",
+						"info": "Größe der Öffnung des Sliders an der unteren Seite"
+					},
+					"arcThickness": {
+						"name": "Bogenbreite",
+						"info": "Breite des Kreisbogens"
+					},
+					"thumbRadius": {
+						"name": "Thumb-Radius",
+						"info": "Radius des Slider-Thumbs"
+					},
+					"thumbBorder": {
+						"name": "Thumb-Rand",
+						"info": "Breite vom Rand des Slider-Thumbs"
+					},
+					"step": {
+						"name": "Schritte",
+						"info": "Schritte in denen sich der Slider bewegt"
+					},
+					"min": {
+						"name": "Min Wert",
+						"info": "Minimal Wert des Sliders"
+					},
+					"max": {
+						"name": "Max Wert",
+						"info": "Maximal Wert des Sliders"
+					}
+				},
+				"bool": {
+					"updateOnMove":{
+						"name": "Update bei Bewegung",
+						"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+					},
+					"customLabelPosition":{
+						"name": "Eigene Label Position",
+						"info": "Aktivieren/deaktivieren einer eigenen Label Position"
+					}
+				},
+				"style": {
+					"backgroundColor":{
+						"name": "Bogen Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Kreisbogens"
+					},
+					"circleBackgroundColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des inneren Kreises"
+					},
+					"thumbColor":{
+						"name": "Thumb-Farbe",
+						"info": "Hintergrundfarbe des Slider-Thumbs"
+					},
+					"labelColor":{
+						"name": "Label-Farbe",
+						"info": "Farbe des Labels im Slider"
+					}
+				},
+				"arr_style_grad": {
+					"fillColors": {
+						"name": "Füllfarben",
+						"info": "Farbverlauf des Kreisbogens"
+					}
+				}
+			}
+		},
+		"Clock": {
+			"NAME": "Clock",
+			"INFO": "Eine Uhr, die entweder digital oder analog dargestellt werden kann.",
+			"INPUTS": {
+				"data": {
+					"info": {
+						"name": "Uhr Info",
+						"info": "Information über die Komponente (der Text dient lediglich der eigenen Orientierung)"
+					}
+				},
+				"arr_data": {
+					"style": {
+						"name": "Uhrentyp",
+						"info": "Style der Uhr"
+					},
+					"format": {
+						"name": "Format",
+						"info": "Zeitformat der Uhr"
+					}
+				},
+				"bool": {
+					"showTicks":{
+						"name": "Zeige Ticks",
+						"info": "Anzeigen/nicht anzeigen der Stunden Ticks"
+					}
+				},
+				"style": {
+					"color":{
+						"name": "Uhrfarbe",
+						"info": "Primärfarbe der Uhr"
+					},
+					"hourColor":{
+						"name": "Stunden-Farbe",
+						"info": "Farbe der Stundenanzeige"
+					},
+					"minuteColor":{
+						"name": "Minuten-Farbe",
+						"info": "Farbe der Minutenanzeige"
+					},
+					"secondColor":{
+						"name": "Sekunden-Farbe",
+						"info": "Farbe der Sekundenanzeige"
+					}
+				}
+			}
+		},
+		"Color Picker": {
+			"NAME": "Color Picker",
+			"INFO": "Ein Menü, dass Farbwerte und Helligkeit an FHEN sendet.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"threshold":{
+						"name": "Schwellenwert",
+						"info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+					},
+					"headline":{
+						"name": "Kopfzeile",
+						"info": "Kopfzeile des Popups"
+					},
+					"popupWidth":{
+						"name": "Popup Breite",
+						"info": "Breite des Colorpicker Popups"
+					},
+					"popupHeight":{
+						"name": "Popup Höhe",
+						"info": "Höhe des Colorpicker Popups"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					}
+				},
+				"arr_data": {
+					"colorInput": {
+						"name": "Farb-Input",
+						"info": "Definition des Farb-Inputs"
+					},
+					"colorOutput": {
+						"name": "Farb-Output",
+						"info": "Definition des Farb-Outputs"
+					}
+				},
+				"bool": {
+					"usePopup":{
+						"name": "Colorpicker in Popup",
+						"info": "Aktivieren/deaktivieren des Colorpickers im Popup"
+					},
+					"showFavMenu":{
+						"name": "Favoriten-Menü",
+						"info": "Anzeigen/nicht anzeigen des Farb-Favoriten-Menüs"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					},
+					"updateOnMove":{
+						"name": "Update bei Bewegung",
+						"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+					}
+				}
+			},
+			"DICT": {
+				"FAVS": "Farb-Favoriten"
+			},
+			"ERRORS": {
+				"NO_FAVS": {
+					"name": "Keine Favoriten",
+					"info": "Es wurden keine Farb-Favoriten gefunden."
+				}
+			}
+		},
+		"Grouper": {
+			"NAME": "Gruppe",
+			"INFO": "Ein Container, um Komponenten gruppieren und gemeinsam bewegen oder transformieren zu können.",
+			"INPUTS": {
+				"data": {
+					"info": {
+						"name": "Gruppen Info",
+						"info": "Information über die Gruppe (der Text dient lediglich der eigenen Orientierung)"
+					}
+				}
+			}
+		},
+		"Html": {
+			"NAME": "Html",
+			"INFO": "Ein Komponente, die HTML Texte darstellen kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"rawHtml":{
+						"name": "Raw HTML",
+						"info": "HTML Texte direkt definieren"
+					}
+				},
+				"arr_data": {
+					"textAlign": {
+						"name": "Text-Ausrichtung",
+						"info": "Ausrichtung der HTML Komponente"
+					},
+					"textStyle": {
+						"name": "Text-Style",
+						"info": "Text-Style der HTML Komponente"
+					}
+				},
+				"style": {
+					"textColor":{
+						"name": "Textfarbe",
+						"info": "TExtfarbe der HTML Komponente"
+					}
+				},
+				"bool": {
+					"customTextProperties": {
+						"name": "Erweiterte Textoptionen",
+						"info": "Erweiterte Textoptionen zum einstellen der HTML Komponente aktivieren/deaktvieren"
+					}
+				}
+			},
+			"ERRORS": {
+				"NO_HTML": {
+					"name": "Kein HTML-Text gefunden",
+					"info": "Es wurde kein HTML-Text gefunden, der dargestellt werden kann. Bitte überprüfen Sie die Einstellungen der Komponente."
+				}
+			}
+		},
+		"Icon": {
+			"NAME": "Icon",
+			"INFO": "Ein Icon, dass auf verschiedene Werte in FHEM reagieren kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"indicatorReading":{
+						"name": "Indikator Reading Name",
+						"info": "Name des Fhem Indikator Readings (falls benötigt)"
+					},
+					"getOn":{
+						"name": "Get on",
+						"info": "Status des Readings im ON Zustand"
+					},
+					"getOff":{
+						"name": "Get off",
+						"info": "Status des Readings im OFF Zustand"
+					},
+					"min":{
+						"name": "Min Wert",
+						"info": "Minimal Wert (falls benötigt für Min Farbe des Icons)"
+					},
+					"max":{
+						"name": "Max Wert",
+						"info": "Maximal Wert (falls benötigt für Max Farbe des Icons)"
+					}
+				},
+				"arr_data": {
+					"indicatorPosition":{
+						"name": "Indikator Position",
+						"info": "Position des Indikators, für die Anzeige eines zusätzlichen Readings"
+					}
+				},
+				"bool": {
+					"showIndicator":{
+						"name": "Indikator anzeigen",
+						"info": "Indikator für seperates Reading anzeigen/nicht anzeigen"
+					}
+				},
+				"icon": {
+					"iconOn":{
+						"name": "Icon on",
+						"info": "Icon im ON Zustand"
+					},
+					"iconOff":{
+						"name": "Icon off",
+						"info": "Icon im OFF Zustand"
+					}
+				},
+				"style": {
+					"iconColorOn":{
+						"name": "Icon Farbe on",
+						"info": "Icon Farbe im ON Zustand"
+					},
+					"iconColorOff":{
+						"name": "Icon Farbe off",
+						"info": "Icon Farbe im OFF Zustand"
+					},
+					"indicatorColor":{
+						"name": "Indikator-Farbe",
+						"info": "Schriftfarbe des Indikators"
+					},
+					"indicatorBackgroundColor":{
+						"name": "Indikator Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Indikators"
+					},
+					"minColor":{
+						"name": "Min Farbe",
+						"info": "Icon Farbe für Reading Werte die kleiner als der Min Wert/gleich bei Text Readings sind"
+					},
+					"maxColor":{
+						"name": "Max Farbe",
+						"info": "Icon Farbe für Reading Werte die größer als der Max Wert/gleich bei Text Readings sind"
+					}
+				}
+			}
+		},
+		"IFrame": {
+			"NAME": "I Frame",
+			"INFO": "Ein Rahmen, um andere Webinhalte anzeigen zu können.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"url":{
+						"name": "Url",
+						"info": "Externe URL (anderenfalls versucht IFrame eine URL im Reading zu finden)"
+					}
+				},
+				"bool": {
+					"showBorder":{
+						"name": "Rand anzeigen",
+						"info": "Anzeigen/nicht anzeigen des IFrame Rands"
+					}
+				}
+			},
+			"ERRORS": {
+				"NO_SRC": {
+					"name": "Keine URL gefunden",
+					"info": "Es wurde keine URL gefunden, um IFrame Inhalte darzustellen. Bitte überprüfen Sie die Einstellungen der Komponente."
+				}
+			}
+		},
+		"Image": {
+			"NAME": "Image",
+			"INFO": "Eine Komponente, die Bilder aus FHEM Readings, externen URL´s oder vom Gerät anzeigen kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"url":{
+						"name": "Url",
+						"info": "Externe URL (anderenfalls wird versucht eine URL im Reading zu finden)"
+					},
+					"imageUrl":{
+						"name": "Geräte Bild",
+						"info": "Nach dem speichern, kann ein lokales Bild ausgewählt werden (beim Erstellen frei lassen)"
+					},
+					"updateInterval":{
+						"name": "Update-Interval",
+						"info": "Bild Updateinterval (in Kombination mit keinem Cache)"
+					}
+				},
+				"arr_data": {
+					"defaultImage": {
+						"name": "Standard Bild",
+						"info": "Standard Bild, wenn kein Bild oder URL vorliegt"
+					}
+				},
+				"bool": {
+					"useCache":{
+						"name": "Cache",
+						"info": "Aktivieren/deaktivieren des cachen von Bildern"
+					},
+					"useLocalImage":{
+						"name": "Bild vom Gerät nutzen",
+						"info": "Lokales Bild vom Gerät laden aktivieren/deaktivieren (Achtung: Lokale Bilder Können die Konfiguration von FhemNative stark aufblähen!)"
+					},
+					"useDefaultImage":{
+						"name": "Standard Bild verwenden",
+						"info": "Standard Bild verwenden aktivieren/deaktivieren"
+					}
+				}
+			},
+			"ERRORS": {
+				"SELECT": {
+					"name": "Bild vom Gerät",
+					"info": "Bitte wählen Sie ein Bild von Ihrem Gerät."
+				}
+			}
+		},
+		"Input": {
+			"NAME": "Input",
+			"INFO": "Ein Input Feld, dass Werte an Fhem senden kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					}
+				},
+				"bool": {
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					},
+					"showFavorites":{
+						"name": "Letzte Befehle anzeigen",
+						"info": "Letzte gesendete Befehle anzeigen/nicht anzeigen und speichern"
+					}
+				},
+				"icon": {
+					"sendIcon":{
+						"name": "Senden Icon",
+						"info": "Icon für den Senden Button"
+					}
+				},
+				"style": {
+					"backgroundColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Input-Felds"
+					},
+					"textColor":{
+						"name": "Text Farbe",
+						"info": "Textfarbe des Input-Felds"
+					},
+					"iconColor":{
+						"name": "Icon Farbe",
+						"info": "Icon Farbe der Buttons"
+					},
+					"borderColor":{
+						"name": "Randfarbe",
+						"info": "Randfarbe des Inputs"
+					},
+					"buttonColor":{
+						"name": "Button Hintergrundfarbe",
+						"info": "Hintergrundfarbe der Buttons"
+					}
+				}
+			},
+			"DICT": {
+				"FAVS": "Befehl-Favoriten"
+			},
+			"ERRORS": {
+				"NO_FAVS": {
+					"name": "Keine Favoriten",
+					"info": "Es wurden keine Befehl-Favoriten gefunden."
+				}
+			}
+		},
+		"Label": {
+			"NAME": "Label",
+			"INFO": "Ein Label, dass FHEM Werte oder eigenen Text anzeigen kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"label":{
+						"name": "Label",
+						"info": "Statisches Label (wird verwendet, wenn kein Device/Reading definiert ist)"
+					},
+					"items":{
+						"name": "Elemente",
+						"info": "Manualle Liste von Elementen (Komma-separiert)"
+					},
+					"alias":{
+						"name": "Alias",
+						"info": "Liste von Alias Werten (Komma-separiert)"
+					},
+					"labelExtension":{
+						"name": "Label-Endung",
+						"info": "Endung des Werte-Labels (Bsp. %)"
+					},
+					"size":{
+						"name": "Größe",
+						"info": "Größe des Labels"
+					},
+					"min":{
+						"name": "Min Wert",
+						"info": "Minimal Wert (falls benötigt für Min Farbe)"
+					},
+					"max":{
+						"name": "Max Wert",
+						"info": "Maximal Wert (falls benötigt für Max Farbe)"
+					}
+				},
+				"arr_data": {
+					"textAlign": {
+						"name": "Text-Ausrichtung",
+						"info": "Ausrichtung des Label-Text"
+					},
+					"textStyle": {
+						"name": "Text-Style",
+						"info": "Text-Style des Labels"
+					}
+				},
+				"bool": {
+					"useAlias":{
+						"name": "Alias verwenden",
+						"info": "Alias Liste für Readings aktivieren/deaktivieren"
+					},
+					"useMinMax": {
+						"name": "Min/Max verwenden",
+						"info": "Min und Max Werte verwenden, um die Labelfarbe bei Min/Max Werten zu ändern"
+					}
+				},
+				"style": {
+					"color":{
+						"name": "Farbe",
+						"info": "Farbe des Labels"
+					},
+					"minColor":{
+						"name": "Min Farbe",
+						"info": "Farbe für < Min Wert"
+					},
+					"maxColor":{
+						"name": "Max Farbe",
+						"info": "Farbe für > Max Wert"
+					}
+				}
+			},
+			"ERRORS": {
+				"NO_LABEL": {
+					"name": "Kein Label gefunden",
+					"info": "Es wurde kein Label zum anzeigen gefunden. Bitte überprüfen Sie die Einstellungen der Komponente."
+				}
+			}
+		},
+		"Line":{
+			"NAME": "Linie",
+			"INFO": "Eine Linie, die benutzt werden kann, um Räume zu strukturieren.",
+			"INPUTS": {
+				"data": {
+					"height": {
+						"name": "Breite/Höhe",
+						"info": "Breite/Höhe der Linie (abhängig von ihrer Ausrichtung)"
+					},
+					"rotation":{
+						"name": "Rotation",
+						"info": "Rotation der Linie in Grad"
+					},
+					"curvePercentage":{
+						"name": "Kurve",
+						"info": "Prozentangabe der Biegung"
+					}
+				},
+				"arr_data": {
+					"orientation":{
+						"name": "Orientierung",
+						"info": "Ausrichtung der Linie"
+					}
+				},
+				"style": {
+					"color":{
+						"name": "Farbe",
+						"info": "Hintergrundfarbe der Linie"
+					}
+				}
+			}
+		},
+		"Picker": {
+			"NAME": "Picker",
+			"INFO": "Ein Picker, der mit anderen Komponenten gefüllt werden kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"getOn":{
+						"name": "Get on",
+						"info": "Status des Readings im ON Zustand"
+					},
+					"headline":{
+						"name": "Kopfzeile",
+						"info": "Label der Kopfzeile im Picker"
+					},
+					"height":{
+						"name": "Picker Höhe",
+						"info": "Höhe des Picker in %"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					}
+				},
+				"bool": {
+					"openOnReading":{
+						"name": "Öffnen bei Reading",
+						"info": "Aktivieren/deaktivieren des automatischen öffnens bei Reading"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					}
+				},
+				"icon": {
+					"iconOn":{
+						"name": "Icon on",
+						"info": "Icon im ON Zustand"
+					},
+					"iconOff":{
+						"name": "Icon off",
+						"info": "Icon im OFF Zustand"
+					}
+				},
+				"style": {
+					"iconColorOn":{
+						"name": "Icon Farbe on",
+						"info": "Icon Farbe im ON Zustand"
+					},
+					"iconColorOff":{
+						"name": "Icon Farbe off",
+						"info": "Icon Farbe im OFF Zustand"
+					},
+					"backgroundColorOn":{
+						"name": "Hintergrundfarbe on",
+						"info": "Hintergrundfarbe im ON Zustand"
+					},
+					"backgroundColorOff":{
+						"name": "Hintergrundfarbe off",
+						"info": "Hintergrundfarbe im OFF Zustand"
+					}
+				}
+			}
+		},
+		"Popup": {
+			"NAME": "Popup",
+			"INFO": "Ein Popup, dass mit anderen Komponenten gefüllt werden kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"getOn":{
+						"name": "Get on",
+						"info": "Status des Readings im ON Zustand"
+					},
+					"headline":{
+						"name": "Kopfzeile",
+						"info": "Label der Kopfzeile im Popup"
+					},
+					"width":{
+						"name": "Popup Breite",
+						"info": "Breite des Popups in %"
+					},
+					"height":{
+						"name": "Popup Höhe",
+						"info": "Höhe des Popups in %"
+					},
+					"borderRadius":{
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Buttons"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand des Buttons oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand des Buttons oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand des Buttons unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand des Buttons unten rechts"
+					}
+				},
+				"bool": {
+					"openOnReading":{
+						"name": "Öffnen bei Reading",
+						"info": "Aktivieren/deaktivieren des automatischen öffnens bei Reading"
+					},
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					}
+				},
+				"icon": {
+					"iconOn":{
+						"name": "Icon on",
+						"info": "Icon im ON Zustand"
+					},
+					"iconOff":{
+						"name": "Icon off",
+						"info": "Icon im OFF Zustand"
+					}
+				},
+				"style": {
+					"iconColorOn":{
+						"name": "Icon Farbe on",
+						"info": "Icon Farbe im ON Zustand"
+					},
+					"iconColorOff":{
+						"name": "Icon Farbe off",
+						"info": "Icon Farbe im OFF Zustand"
+					},
+					"backgroundColorOn":{
+						"name": "Hintergrundfarbe on",
+						"info": "Hintergrundfarbe im ON Zustand"
+					},
+					"backgroundColorOff":{
+						"name": "Hintergrundfarbe off",
+						"info": "Hintergrundfarbe im OFF Zustand"
+					}
+				}
+			}
+		},
+		"Select": {
+			"NAME": "Select",
+			"INFO": "Ein Selektionsmenü, dass FHEM oder manuelle Listen dargestellen kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"options":{
+						"name": "Optionen Reading",
+						"info": "FHEM Reading mit der Liste an verfügbaren Select-Optionen"
+					},
+					"seperator":{
+						"name": "Trennzeichen",
+						"info": "Trennzeichen der Liste"
+					},
+					"items":{
+						"name": "Elemente",
+						"info": "Manualle Liste von Elementen"
+					},
+					"alias":{
+						"name": "Alias",
+						"info": "Liste von Alias Werten"
+					},
+					"placehoder":{
+						"name": "Platzhalter",
+						"info": "Platzhalter, falls kein aktueller Zustand verfügbar ist"
+					}
+				},
+				"style": {
+					"selectColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe der Select-Komponente"
+					},
+					"selectActiveColor":{
+						"name": "Aktiv-Farbe",
+						"info": "Hintergrundfarbe des Items, dass gerdae aktiv ist"
+					},
+					"labelColor":{
+						"name": "Label-Farbe",
+						"info": "Farbe der Labels in der Select-Komponente"
+					},
+					"iconColor":{
+						"name": "Icon Farben",
+						"info": "Farbe der Icons in der Select-Komponente"
+					}
+				}
+			},
+			"ERRORS": {
+				"NO_ITEMS": {
+					"name": "Keine Optionen gefunden",
+					"info": "Es wurde keine Liste an verfügbaren Select-Optionen gefunden. Bitte überprüfen Sie die Einstellungen der Komponente."
+				}
+			}
+		},
+		"Slider": {
+			"NAME": "Slider",
+			"INFO": "Ein Slider, der numerische und Zeit Werte ändern kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"threshold":{
+						"name": "Schwellenwert",
+						"info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+					},
+					"labelExtension":{
+						"name": "Label-Endung",
+						"info": "Endung des Werte-Labels (Bsp. %)"
+					},
+					"steps": {
+						"name": "Schritte",
+						"info": "Schritte in denen sich der Slider bewegt"
+					},
+					"min": {
+						"name": "Min Wert",
+						"info": "Minimal Wert des Sliders"
+					},
+					"max": {
+						"name": "Max Wert",
+						"info": "Maximal Wert des Sliders"
+					},
+					"sliderHeight":{
+						"name": "Breite/Höhe",
+						"info": "Breite/Höhe des SLiders, basierend auf der Ausrichtung"
+					},
+					"thumbWidth":{
+						"name": "Thumb Breite",
+						"info": "Breite des Slider-Thumbs"
+					},
+					"thumbHeight":{
+						"name": "Thumb Höhe",
+						"info": "Höhe des Slider-Thumbs"
+					}
+				},
+				"arr_data": {
+					"sliderType": {
+						"name": "Style",
+						"info": "Style des Sliders"
+					},
+					"orientation": {
+						"name": "Orientierung",
+						"info": "Ausrichtung des Sliders"
+					}
+				},
+				"bool": {
+					"updateOnMove":{
+						"name": "Update bei Bewegung",
+						"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+					},
+					"showPin": {
+						"name": "Zeige Pin",
+						"info": "Anzeigen/nicht anzeigen des Slider Pins"
+					},
+					"showValueInThumb": {
+						"name": "Zeige Wert im Thumb",
+						"info": "Anzeigen/nicht anzeigen des aktuellen Wertes im Thumb"
+					}
+				},
+				"icon": {
+					"sliderIcon":{
+						"name": "Slider Icon",
+						"info": "Icon im Slider (für Style im ios-Modus)"
+					}
+				},
+				"style": {
+					"backgroundColor":{
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des Sliders"
+					},
+					"boxBackgroundColor": {
+						"name": "Box Hintergrundfarbe",
+						"info": "Hintergrundfarbe der Slider-Box"
+					},
+					"thumbColor":{
+						"name": "Thumb-Farbe",
+						"info": "Hintergrundfarbe des Slider-Thumbs"
+					},
+					"thumbValueColor":{
+						"name": "Thumb-Wert Farbe",
+						"info": "Farbe des Wertes im Thumb"
+					},
+					"fillColor":{
+						"name": "Füllfarbe",
+						"info": "Füllfarbe des Sliders"
+					},
+					"iconColor": {
+						"name": "Icon-Farbe",
+						"info": "Farbe des Slider Icons"
+					},
+					"buttonColor": {
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe der Buttons"
+					}
+				}
+			}
+		},
+		"Swiper": {
+			"NAME": "Swiper",
 			"INFO": "Ein Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
-            "INPUTS": {
-                "data": {
-                    "headline": {
-                        "name": "Kopfzeile",
-					    "info": "Label der Kopfzeile"
-                    },
-                    "borderRadius": {
-                        "name": "Rand-Radius",
-					    "info": "Radius vom Rand des Swipers"
-                    },
-                    "containerPages": {
-                        "name": "Seiten",
-					    "info": "Anzahl der Seiten für den Swiper"
-                    },
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "pageIndexReading": {
-                        "name": "Startseiten-Reading",
-                        "info": "Name des Fhem Readings, das die Startseite des Swipers definiert"
-                    }
-                },
-                "bool": {
-                    "showPager": {
-                        "name": "Seiten-Indikator",
-					    "info": "Anzeigen/nicht anzeigen des Seiten-Indikators"
-                    },
-                    "showHeader": {
-                        "name": "Kopfzeile anzeigen",
-                        "info": "Kopfzeile anzeigen/nicht anzeigen"
-                    },
-                    "usePageIndexReading": {
-                        "name": "Startseiten Reading",
-                        "info": "Reading für die Startseite des Swipers verwenden/nicht verwenden"
-                    }
-                },
-                "arr_data": {
-                    "headerStyle": {
-                        "name": "Kopfzeilen Text Style",
-                        "info": "Style vom Text der Kopfzeile"
-                    },
-                    "headerPosition": {
-                        "name": "Kopfzeilen Text Position",
-                        "info": "Position vom Text dert Kopfzeile"
-                    },
-                    "orientation": {
-                        "name": "Orientierung",
-					    "info": "Ausrichtung des Swipers"
-                    }
-                },
-                "style": {
-                    "headerColor": {
-                        "name": "Kopfzeile Farbe",
-					    "info": "Hintergrundfarbe der Kopfzeile"
-                    },
-                    "backgroundColor": {
-                        "name": "Hintergrundfarbe",
-					    "info": "Hintergrundfarbe der Swiper-Seiten"
-                    },
-                    "pagerOnColor": {
-                        "name": "Seiten-Indikator On-Farbe",
-					    "info": "On-Farbe des Seiten-Indikators"
-                    },
-                    "pagerOffColor":{
-                        "name": "Seiten-Indikator Off-Farbe",
-                        "info": "Off-Farbe des Seiten-Indikators"
-                    }
-                }
-            }
-        },
-        "Switch": {
-            "NAME": "Switch",
-            "INFO": "Ein einfacher Switch, der zwischen zwei Zuständen in FHEM wechseln kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "getOn":{
-                        "name": "Get on",
-                        "info": "Status des Readings im ON Zustand"
-                    },
-                    "getOff":{
-                        "name": "Get off",
-                        "info": "Status des Readings im OFF Zustand"
-                    },
-                    "setOn":{
-                        "name": "Set on",
-                        "info": "ON Wert der gesendet werden soll"
-                    },
-                    "setOff":{
-                        "name": "Set off",
-                        "info": "OFF Wert der gesendet werden soll"
-                    },
-                    "label":{
-                        "name": "Label",
-                        "info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
-                    },
-                    "info": {
-                        "name": "Info",
-					    "info": "Anzuzeigendes Info Label"
-                    }
-                },
-                "bool": {
-                    "customLabels": {
-                        "name": "Eigene Labels",
-					    "info": "Benutzerdefinierte Labels aktivieren/deaktivieren"
-                    },
-                    "customLabelColors": {
-                        "name": "Eigene Label-Farben",
-					    "info": "Benutzerdefinierte Label-Farben aktivieren/deaktivieren"
-                    }
-                },
-                "arr_data": {
-                    "style": {
-                        "name": "Switch Style",
-					    "info": "Style des Switch"
-                    }
-                },
-                "style": {
-                    "labelColor": {
-                        "name": "Label-Farbe",
-                        "info": "Farbe des Labels im Switch"
-                    },
-                    "infoColor": {
-                        "name": "Info-Farbe",
-                        "info": "Farbe des Info Labels im Switch"
-                    },
-                    "backgroundColorOn": {
-                        "name": "Hintergrundfarbe on",
-					    "info": "Hintergrundfarbe des Switch im ON Zustand"
-                    },
-                    "backgroundColorOff": {
-                        "name": "Hintergrundfarbe off",
-					    "info": "Hintergrundfarbe des Switch im OFF Zustand"
-                    },
-                    "knobColorOn": {
-                        "name": "Thumb Farbe on",
-					    "info": "Hintergrundfarbe des Thumbs im ON Zustand"
-                    },
-                    "knobColorOff": {
-                        "name": "Thumb Farbe off",
-					    "info": "Hintergrundfarbe des Thumbs im OFF Zustand"
-                    }
-                }
-            }
-        },
-        "Table": {
-            "NAME": "Table",
-            "INFO": "Eine Tabelle, die Geräte Readings aus FHEM anzeigen kann.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "readingValues": {
-                        "name": "Geräte Readings",
-                        "info": "Komma getrennte Liste von Readings für die Anzeige in der Tabelle"
-                    },
-                    "headerValues": {
-                        "name": "Kopfzeilen Alias",
-                        "info": "Komma getrennte Liste von Alias Werten für die Kopfzeile (max. 3 Werte)"
-                    }
-                },
-                "bool": {
-                    "showAllReadings": {
-                        "name": "Alle Readings anzeigen",
-					    "info": "Alle Werte des Geräts in der Tabelle anzeigen/nicht anzeigen"
-                    },
-                    "showReading": {
-                        "name": "Reading Namen anzeigen",
-					    "info": "Reading Namen in der Tabelle anzeigen/nicht anzeigen"
-                    },
-                    "showValue": {
-                        "name": "Werte anzeigen",
-					    "info": "Reading Werte in der Tabelle anzeigen/nicht anzeigen"
-                    },
-                    "showTime": {
-                        "name": "Zeiten anzeigen",
-					    "info": "Zeitpunkt von Änderungen der Reading Werte in der Tabelle anzeigen/nicht anzeigen"
-                    }
-                }
-            }
-        },
-        "Tabs": {
-            "NAME": "Tabs",
-            "INFO": "Ein Tabs-Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
-            "INPUTS": {
-                "data": {
-                    "containerPages": {
-                        "name": "Seiten",
-					    "info": "Anzahl der Tabs"
-                    },
-                    "borderRadius": {
-                        "name": "Rand-Radius",
-                        "info": "Radius vom Rand der Tabs Komponente"
-                    },
-                    "borderRadiusTopLeft":{
-                        "name": "Rand-Radius oben links",
-                        "info": "Radius vom Rand der Tabs Komponente oben links"
-                    },
-                    "borderRadiusTopRight":{
-                        "name": "Rand-Radius oben rechts",
-                        "info": "Radius vom Rand der Tabs Komponente oben rechts"
-                    },
-                    "borderRadiusBottomLeft":{
-                        "name": "Rand-Radius unten links",
-                        "info": "Radius vom Rand der Tabs Komponente unten links"
-                    },
-                    "borderRadiusBottomRight":{
-                        "name": "Rand-Radius unten rechts",
-                        "info": "Radius vom Rand der Tabs Komponente unten rechts"
-                    }
-                },
-                "bool": {
-                    "customBorder":{
-                        "name": "Eigener Rand-Radius",
-                        "info": "Eigenen Rand-Radius für jede Ecke definieren"
-                    }
-                },
-                "arr_data": {
-                    "tabPosition": {
-                        "name": "Tabs Position",
-					    "info": "Position der Tab-Selektion"
-                    }
-                },
-                "arr_icon": {
-                    "icons":{
-                        "name": "Icons",
-					    "info": "Liste von Icons für die Tab-Selektion"
-                    }
-                },
-                "style": {
-                    "activeTabColor": {
-                        "name": "Aktiv-Farbe",
-					    "info": "Hintergrundfarbe des Tabs, der gerdae aktiv ist"
-                    }
-                },
-                "arr_style": {
-                    "iconColors":{
-                        "name": "Icon Farben",
-                        "info": "Icon Farben der Tabs"
-                    },
-                    "headerColors": {
-                        "name": "Kopfzeilen-Farben",
-                        "info": "Kopfzeilen-Farben der Tabs"
-                    },
-                    "backgroundColors": {
-                        "name": "Hintergrundfarben",
-                        "info": "Hintergrundfarben der Tabs"
-                    }
-                }
-            }
-        },
-        "Thermostat": {
-            "NAME": "Thermostat",
-            "INFO": "Ein Thermostat, um Temperaturwerte anzuzeigen und an FHEM zu senden.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings (bsp. desired-temp)"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt, bsp. desired-temp)"
-                    },
-                    "displayReading": {
-                        "name": "Anzeige-Reading",
-                        "info": "Reading Wert der Angezeigt werden soll (bsp. measured-temp)"
-                    },
-                    "threshold":{
-                        "name": "Schwellenwert",
-					    "info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
-                    },
-                    "labelExtension":{
-                        "name": "Label-Endung",
-					    "info": "Endung des Werte-Labels (Bsp. %)"
-                    },
-                    "steps": {
-                        "name": "Schritte",
-					    "info": "Schritte in denen sich das Thermostat bewegt"
-                    },
-                    "min": {
-                        "name": "Min Wert",
-					    "info": "Minimal Wert des Thermostats"
-                    },
-                    "max": {
-                        "name": "Max Wert",
-					    "info": "Maximal Wert des Thermostats"
-                    }
-                },
-                "bool": {
-                    "updateOnMove":{
-                        "name": "Update bei Bewegung",
-					    "info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
-                    },
-                    "enableAnimation": {
-                        "name": "Thermostat Animation",
-					    "info": "Aktivieren/deaktivieren der Thermostat-Animation"
-                    }
-                },
-                "arr_data": {
-                    "sliderType": {
-                        "name": "Style",
-					    "info": "Style des Thermostats"
-                    }
-                },
-                "style": {
-                    "backgroundColor": {
-                        "name": "Hintergrundfarbe",
-					    "info": "Hintergrundfarbe des runden Thermostats"
-                    },
-                    "tickColor": {
-                        "name": "Tick-Farbe",
-					    "info": "Tick-Farbe des runden Thermostats"
-                    },
-                    "heatingColor": {
-                        "name": "Aufheiz-Farbe",
-                        "info": "Farbe, während der Aufheiz-Phase"
-                    },
-                    "coolingColor": {
-                        "name": "Abkühlungs-Farbe",
-                        "info": "Farbe, während der Abkühlungs-Phase"
-                    },
-                    "labelColor": {
-                        "name": "Label-Farbe",
-					    "info": "Farbe der Labels im runden Thermostat"
-                    },
-                    "gradientColor1": {
-                        "name": "Verlaufsfarbe 1",
-					    "info": "Farbverlaufs-Farbe 1"
-                    },
-                    "gradientColor2":{
-                        "name": "Verlaufsfarbe 2",
-                        "info": "Farbverlaufs-Farbe 2"
-                    },
-                    "gradientColor3":{
-                        "name": "Verlaufsfarbe 3",
-                        "info": "Farbverlaufs-Farbe 3"
-                    },
-                    "gradientColor4":{
-                        "name": "Verlaufsfarbe 4",
-                        "info": "Farbverlaufs-Farbe 4"
-                    },
-                    "tickGradientColor1":{
-                        "name": "Verlaufsfarbe 1",
-                        "info": "Farbverlaufs-Farbe 1 des runden Thermostats"
-                    },
-                    "tickGradientColor2":{
-                        "name": "Verlaufsfarbe 2",
-                        "info": "Farbverlaufs-Farbe 2 des runden Thermostats"
-                    }
-                }
-            }
-        },
-        "Time Picker": {
-            "NAME": "Time Picker",
-            "INFO": "Ein Menü, um Zeiten anzuzeigen und an FHEM zu senden.",
-            "INPUTS": {
-                "data": {
-                    "device": {
-                        "name": "Geräte Name",
-                        "info": "Name des Fhem Geräts"
-                    },
-                    "reading": {
-                        "name": "Reading Name",
-                        "info": "Name des Fhem Readings"
-                    },
-                    "setReading":{
-                        "name": "Set Reading",
-                        "info": "Name des set Befehls (falls benötigt)"
-                    },
-                    "label":{
-                        "name": "Label",
-                        "info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
-                    },
-                    "info": {
-                        "name": "Info",
-					    "info": "Anzuzeigendes Info Label"
-                    },
-                    "confirmBtn":{
-                        "name": "Bestätigungs-Button",
-                        "info": "Anzuzeigender Text im Speichern Button"
-                    },
-                    "cancelBtn": {
-                        "name": "Abbrechen-Button",
-					    "info": "Anzuzeigender Text im Abbrechen Button"
-                    },
-                    "maxHours":{
-                        "name": "Max-Stunden",
-                        "info": "Maximal Stunden für den Time Picker"
-                    },
-                    "maxMinutes":{
-                        "name": "Max-Minuten",
-                        "info": "Maximal Minuten für den Time Picker"
-                    }
-                },
-                "bool": {
-                    "customLabels": {
-                        "name": "Eigene Labels",
-					    "info": "Benutzerdefinierte Labels aktivieren/deaktivieren"
-                    },
-                    "customLabelColors": {
-                        "name": "Eigene Label-Farben",
-					    "info": "Benutzerdefinierte Label-Farben aktivieren/deaktivieren"
-                    }
-                },
-                "style": {
-                    "labelColor": {
-                        "name": "Label-Farbe",
-                        "info": "Farbe des Labels im Timepicker"
-                    },
-                    "infoColor": {
-                        "name": "Info-Farbe",
-                        "info": "Farbe des Info Labels im Timepicker"
-                    },
-                    "timeColor": {
-                        "name": "Zeit-Farbe",
-                        "info": "Farbe des Zeit-Labels im Timepicker"
-                    }
-                }
-            }
-        }
-    }
+			"INPUTS": {
+				"data": {
+					"headline": {
+						"name": "Kopfzeile",
+						"info": "Label der Kopfzeile"
+					},
+					"borderRadius": {
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand des Swipers"
+					},
+					"containerPages": {
+						"name": "Seiten",
+						"info": "Anzahl der Seiten für den Swiper"
+					},
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"pageIndexReading": {
+						"name": "Startseiten-Reading",
+						"info": "Name des Fhem Readings, das die Startseite des Swipers definiert"
+					}
+				},
+				"bool": {
+					"showPager": {
+						"name": "Seiten-Indikator",
+						"info": "Anzeigen/nicht anzeigen des Seiten-Indikators"
+					},
+					"showHeader": {
+						"name": "Kopfzeile anzeigen",
+						"info": "Kopfzeile anzeigen/nicht anzeigen"
+					},
+					"usePageIndexReading": {
+						"name": "Startseiten Reading",
+						"info": "Reading für die Startseite des Swipers verwenden/nicht verwenden"
+					}
+				},
+				"arr_data": {
+					"headerStyle": {
+						"name": "Kopfzeilen Text Style",
+						"info": "Style vom Text der Kopfzeile"
+					},
+					"headerPosition": {
+						"name": "Kopfzeilen Text Position",
+						"info": "Position vom Text dert Kopfzeile"
+					},
+					"orientation": {
+						"name": "Orientierung",
+						"info": "Ausrichtung des Swipers"
+					}
+				},
+				"style": {
+					"headerColor": {
+						"name": "Kopfzeile Farbe",
+						"info": "Hintergrundfarbe der Kopfzeile"
+					},
+					"backgroundColor": {
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe der Swiper-Seiten"
+					},
+					"pagerOnColor": {
+						"name": "Seiten-Indikator On-Farbe",
+						"info": "On-Farbe des Seiten-Indikators"
+					},
+					"pagerOffColor":{
+						"name": "Seiten-Indikator Off-Farbe",
+						"info": "Off-Farbe des Seiten-Indikators"
+					}
+				}
+			}
+		},
+		"Switch": {
+			"NAME": "Switch",
+			"INFO": "Ein einfacher Switch, der zwischen zwei Zuständen in FHEM wechseln kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"getOn":{
+						"name": "Get on",
+						"info": "Status des Readings im ON Zustand"
+					},
+					"getOff":{
+						"name": "Get off",
+						"info": "Status des Readings im OFF Zustand"
+					},
+					"setOn":{
+						"name": "Set on",
+						"info": "ON Wert der gesendet werden soll"
+					},
+					"setOff":{
+						"name": "Set off",
+						"info": "OFF Wert der gesendet werden soll"
+					},
+					"label":{
+						"name": "Label",
+						"info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
+					},
+					"info": {
+						"name": "Info",
+						"info": "Anzuzeigendes Info Label"
+					}
+				},
+				"bool": {
+					"customLabels": {
+						"name": "Eigene Labels",
+						"info": "Benutzerdefinierte Labels aktivieren/deaktivieren"
+					},
+					"customLabelColors": {
+						"name": "Eigene Label-Farben",
+						"info": "Benutzerdefinierte Label-Farben aktivieren/deaktivieren"
+					}
+				},
+				"arr_data": {
+					"style": {
+						"name": "Switch Style",
+						"info": "Style des Switch"
+					}
+				},
+				"style": {
+					"labelColor": {
+						"name": "Label-Farbe",
+						"info": "Farbe des Labels im Switch"
+					},
+					"infoColor": {
+						"name": "Info-Farbe",
+						"info": "Farbe des Info Labels im Switch"
+					},
+					"backgroundColorOn": {
+						"name": "Hintergrundfarbe on",
+						"info": "Hintergrundfarbe des Switch im ON Zustand"
+					},
+					"backgroundColorOff": {
+						"name": "Hintergrundfarbe off",
+						"info": "Hintergrundfarbe des Switch im OFF Zustand"
+					},
+					"knobColorOn": {
+						"name": "Thumb Farbe on",
+						"info": "Hintergrundfarbe des Thumbs im ON Zustand"
+					},
+					"knobColorOff": {
+						"name": "Thumb Farbe off",
+						"info": "Hintergrundfarbe des Thumbs im OFF Zustand"
+					}
+				}
+			}
+		},
+		"Table": {
+			"NAME": "Table",
+			"INFO": "Eine Tabelle, die Geräte Readings aus FHEM anzeigen kann.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"readingValues": {
+						"name": "Geräte Readings",
+						"info": "Komma getrennte Liste von Readings für die Anzeige in der Tabelle"
+					},
+					"headerValues": {
+						"name": "Kopfzeilen Alias",
+						"info": "Komma getrennte Liste von Alias Werten für die Kopfzeile (max. 3 Werte)"
+					}
+				},
+				"bool": {
+					"showAllReadings": {
+						"name": "Alle Readings anzeigen",
+						"info": "Alle Werte des Geräts in der Tabelle anzeigen/nicht anzeigen"
+					},
+					"showReading": {
+						"name": "Reading Namen anzeigen",
+						"info": "Reading Namen in der Tabelle anzeigen/nicht anzeigen"
+					},
+					"showValue": {
+						"name": "Werte anzeigen",
+						"info": "Reading Werte in der Tabelle anzeigen/nicht anzeigen"
+					},
+					"showTime": {
+						"name": "Zeiten anzeigen",
+						"info": "Zeitpunkt von Änderungen der Reading Werte in der Tabelle anzeigen/nicht anzeigen"
+					}
+				}
+			}
+		},
+		"Tabs": {
+			"NAME": "Tabs",
+			"INFO": "Ein Tabs-Container mit mehreren Seiten, der mit Komponenten gefüllt werden kann.",
+			"INPUTS": {
+				"data": {
+					"containerPages": {
+						"name": "Seiten",
+						"info": "Anzahl der Tabs"
+					},
+					"borderRadius": {
+						"name": "Rand-Radius",
+						"info": "Radius vom Rand der Tabs Komponente"
+					},
+					"borderRadiusTopLeft":{
+						"name": "Rand-Radius oben links",
+						"info": "Radius vom Rand der Tabs Komponente oben links"
+					},
+					"borderRadiusTopRight":{
+						"name": "Rand-Radius oben rechts",
+						"info": "Radius vom Rand der Tabs Komponente oben rechts"
+					},
+					"borderRadiusBottomLeft":{
+						"name": "Rand-Radius unten links",
+						"info": "Radius vom Rand der Tabs Komponente unten links"
+					},
+					"borderRadiusBottomRight":{
+						"name": "Rand-Radius unten rechts",
+						"info": "Radius vom Rand der Tabs Komponente unten rechts"
+					}
+				},
+				"bool": {
+					"customBorder":{
+						"name": "Eigener Rand-Radius",
+						"info": "Eigenen Rand-Radius für jede Ecke definieren"
+					}
+				},
+				"arr_data": {
+					"tabPosition": {
+						"name": "Tabs Position",
+						"info": "Position der Tab-Selektion"
+					}
+				},
+				"arr_icon": {
+					"icons":{
+						"name": "Icons",
+						"info": "Liste von Icons für die Tab-Selektion"
+					}
+				},
+				"style": {
+					"activeTabColor": {
+						"name": "Aktiv-Farbe",
+						"info": "Hintergrundfarbe des Tabs, der gerdae aktiv ist"
+					}
+				},
+				"arr_style": {
+					"iconColors":{
+						"name": "Icon Farben",
+						"info": "Icon Farben der Tabs"
+					},
+					"headerColors": {
+						"name": "Kopfzeilen-Farben",
+						"info": "Kopfzeilen-Farben der Tabs"
+					},
+					"backgroundColors": {
+						"name": "Hintergrundfarben",
+						"info": "Hintergrundfarben der Tabs"
+					}
+				}
+			}
+		},
+		"Thermostat": {
+			"NAME": "Thermostat",
+			"INFO": "Ein Thermostat, um Temperaturwerte anzuzeigen und an FHEM zu senden.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings (bsp. desired-temp)"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt, bsp. desired-temp)"
+					},
+					"displayReading": {
+						"name": "Anzeige-Reading",
+						"info": "Reading Wert der Angezeigt werden soll (bsp. measured-temp)"
+					},
+					"threshold":{
+						"name": "Schwellenwert",
+						"info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
+					},
+					"labelExtension":{
+						"name": "Label-Endung",
+						"info": "Endung des Werte-Labels (Bsp. %)"
+					},
+					"steps": {
+						"name": "Schritte",
+						"info": "Schritte in denen sich das Thermostat bewegt"
+					},
+					"min": {
+						"name": "Min Wert",
+						"info": "Minimal Wert des Thermostats"
+					},
+					"max": {
+						"name": "Max Wert",
+						"info": "Maximal Wert des Thermostats"
+					}
+				},
+				"bool": {
+					"updateOnMove":{
+						"name": "Update bei Bewegung",
+						"info": "Aktivieren/deaktivieren des kontinuierlichen sendens bei Bewegung"
+					},
+					"enableAnimation": {
+						"name": "Thermostat Animation",
+						"info": "Aktivieren/deaktivieren der Thermostat-Animation"
+					}
+				},
+				"arr_data": {
+					"sliderType": {
+						"name": "Style",
+						"info": "Style des Thermostats"
+					}
+				},
+				"style": {
+					"backgroundColor": {
+						"name": "Hintergrundfarbe",
+						"info": "Hintergrundfarbe des runden Thermostats"
+					},
+					"tickColor": {
+						"name": "Tick-Farbe",
+						"info": "Tick-Farbe des runden Thermostats"
+					},
+					"heatingColor": {
+						"name": "Aufheiz-Farbe",
+						"info": "Farbe, während der Aufheiz-Phase"
+					},
+					"coolingColor": {
+						"name": "Abkühlungs-Farbe",
+						"info": "Farbe, während der Abkühlungs-Phase"
+					},
+					"labelColor": {
+						"name": "Label-Farbe",
+						"info": "Farbe der Labels im runden Thermostat"
+					},
+					"gradientColor1": {
+						"name": "Verlaufsfarbe 1",
+						"info": "Farbverlaufs-Farbe 1"
+					},
+					"gradientColor2":{
+						"name": "Verlaufsfarbe 2",
+						"info": "Farbverlaufs-Farbe 2"
+					},
+					"gradientColor3":{
+						"name": "Verlaufsfarbe 3",
+						"info": "Farbverlaufs-Farbe 3"
+					},
+					"gradientColor4":{
+						"name": "Verlaufsfarbe 4",
+						"info": "Farbverlaufs-Farbe 4"
+					},
+					"tickGradientColor1":{
+						"name": "Verlaufsfarbe 1",
+						"info": "Farbverlaufs-Farbe 1 des runden Thermostats"
+					},
+					"tickGradientColor2":{
+						"name": "Verlaufsfarbe 2",
+						"info": "Farbverlaufs-Farbe 2 des runden Thermostats"
+					}
+				}
+			}
+		},
+		"Time Picker": {
+			"NAME": "Time Picker",
+			"INFO": "Ein Menü, um Zeiten anzuzeigen und an FHEM zu senden.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					},
+					"reading": {
+						"name": "Reading Name",
+						"info": "Name des Fhem Readings"
+					},
+					"setReading":{
+						"name": "Set Reading",
+						"info": "Name des set Befehls (falls benötigt)"
+					},
+					"label":{
+						"name": "Label",
+						"info": "Anzuzeigendes Label (Standard: Fhem Geräte Name)"
+					},
+					"info": {
+						"name": "Info",
+						"info": "Anzuzeigendes Info Label"
+					},
+					"confirmBtn":{
+						"name": "Bestätigungs-Button",
+						"info": "Anzuzeigender Text im Speichern Button"
+					},
+					"cancelBtn": {
+						"name": "Abbrechen-Button",
+						"info": "Anzuzeigender Text im Abbrechen Button"
+					},
+					"maxHours":{
+						"name": "Max-Stunden",
+						"info": "Maximal Stunden für den Time Picker"
+					},
+					"maxMinutes":{
+						"name": "Max-Minuten",
+						"info": "Maximal Minuten für den Time Picker"
+					}
+				},
+				"bool": {
+					"customLabels": {
+						"name": "Eigene Labels",
+						"info": "Benutzerdefinierte Labels aktivieren/deaktivieren"
+					},
+					"customLabelColors": {
+						"name": "Eigene Label-Farben",
+						"info": "Benutzerdefinierte Label-Farben aktivieren/deaktivieren"
+					}
+				},
+				"style": {
+					"labelColor": {
+						"name": "Label-Farbe",
+						"info": "Farbe des Labels im Timepicker"
+					},
+					"infoColor": {
+						"name": "Info-Farbe",
+						"info": "Farbe des Info Labels im Timepicker"
+					},
+					"timeColor": {
+						"name": "Zeit-Farbe",
+						"info": "Farbe des Zeit-Labels im Timepicker"
+					}
+				}
+			}
+		}
+	}
 }
