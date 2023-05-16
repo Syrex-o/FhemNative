@@ -7,7 +7,7 @@
         align-items: center;
         z-index: 1;
         background-color: var(--primary);
-        justify-content: flex-end;
+        justify-content: space-between;
         &::after{
             content: "";
             position: absolute;
