@@ -45,7 +45,7 @@ export class AppComponent implements OnInit{
 		this.theme.changeTheme(this.settings.app.theme);
 		// hide splash
 		this.platform.ready().then(()=>{
-			if(Capacitor.isPluginAvailable('StatusBar')) StatusBar.setBackgroundColor({color: this.theme.getThemeColor('--secondary')});
+			if(Capacitor.isPluginAvailable('StatusBar')) setTimeout(()=> StatusBar.setBackgroundColor({color: this.theme.getThemeColor('--secondary')}), 100);
 			SplashScreen.hide({ fadeOutDuration: 250 });
 		});
 		// initialize fhem
