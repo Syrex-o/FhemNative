@@ -8,7 +8,7 @@ import { FhemService } from '@fhem-native/services';
 import { FhemDevice } from '@fhem-native/types/fhem';
 import { ComponentPosition } from '@fhem-native/types/components';
 
-import { animateMove, getValuePercentage, toValueNumber } from '@fhem-native/utils';
+import { animateMove, getNumberOrDefault, getValuePercentage, toValueNumber } from '@fhem-native/utils';
 
 @Component({
 	standalone: true,
@@ -99,7 +99,7 @@ export class FhemCircleSliderComponent{
 
     setFhemDevice(device: FhemDevice): void{
 		this.fhemDevice = device;
-        this.value = device.readings[this.reading].Value || this.min;
+        this.value = getNumberOrDefault(device.readings[this.reading].Value, this.min);
         this.invalidate();
 		animateMove(this.min, this.value, (num)=> {
 			this.value = num;
@@ -109,7 +109,7 @@ export class FhemCircleSliderComponent{
 
     updateFhemDevice(device: FhemDevice): void{
         this.fhemDevice = device;
-		const updateValue = this.fhemDevice.readings[this.reading].Value;
+		const updateValue = getNumberOrDefault(device.readings[this.reading].Value, this.min);
 		const oldValue: number = this.value;
 		if (updateValue !== this.value) {
 			this.value = updateValue;

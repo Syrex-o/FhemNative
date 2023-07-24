@@ -6,7 +6,7 @@ import { IconModule } from '@fhem-native/components';
 
 import { FhemService } from '@fhem-native/services';
 
-import { animateMove, minToTime, toValueNumber } from '@fhem-native/utils';
+import { animateMove, getNumberOrDefault, isTime, minToTime, secToTime, timeToSec, toValueNumber } from '@fhem-native/utils';
 
 import { FhemDevice } from '@fhem-native/types/fhem';
 import { ComponentPosition } from '@fhem-native/types/components';
@@ -129,7 +129,7 @@ export class FhemSliderComponent{
 
 	setFhemDevice(device: FhemDevice): void{
 		this.fhemDevice = device;
-		this.value = device.readings[this.reading].Value || this.min;
+		this.value = getNumberOrDefault(device.readings[this.reading].Value, this.min);
 		animateMove(this.min, this.value, (num)=> {
 			this.value = num;
 			this.styles['move'] = num;
@@ -138,7 +138,7 @@ export class FhemSliderComponent{
 
 	updateFhemDevice(device: FhemDevice): void{
 		this.fhemDevice = device;
-		const updateValue = this.fhemDevice.readings[this.reading].Value;
+		const updateValue = getNumberOrDefault(this.fhemDevice.readings[this.reading].Value, this.min);
 		const oldValue: number = this.value;
 		if (updateValue !== this.value) {
 			this.value = updateValue;

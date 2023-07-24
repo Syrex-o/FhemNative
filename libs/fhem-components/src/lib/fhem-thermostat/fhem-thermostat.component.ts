@@ -6,7 +6,7 @@ import { IconModule } from '@fhem-native/components';
 
 import { FhemService } from '@fhem-native/services';
 
-import { animateMove, getValuePercentage, restrictToRange, toValueNumber } from '@fhem-native/utils';
+import { animateMove, getNumberOrDefault, getValuePercentage, restrictToRange, toValueNumber } from '@fhem-native/utils';
 
 import { FhemDevice } from '@fhem-native/types/fhem';
 import { ComponentPosition } from '@fhem-native/types/components';
@@ -103,7 +103,7 @@ export class FhemThermostatComponent{
 
 	setFhemDevice(device: FhemDevice): void{
 		this.fhemDevice = device;
-		this.value = device.readings[this.reading].Value || this.min;
+		this.value = getNumberOrDefault(device.readings[this.reading].Value, this.min);
 
         this.getCurrentValue();
         if(this.sliderType === 'tick') this.getSVGforTick();
@@ -119,7 +119,7 @@ export class FhemThermostatComponent{
 
 	updateFhemDevice(device: FhemDevice): void{
 		this.fhemDevice = device;
-		const updateValue = this.fhemDevice.readings[this.reading].Value;
+		const updateValue = getNumberOrDefault(device.readings[this.reading].Value, this.min);
 		const oldValue: number = this.value;
 		
         this.value = updateValue;
