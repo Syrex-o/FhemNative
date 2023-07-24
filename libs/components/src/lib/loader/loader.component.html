@@ -1,6 +1,6 @@
-<div class="loader-container" @ShowHide>
+<div class="loader-container" @ShowHide *ngIf="displayLoader$ | async as loader">
 	<div class="inner-container">
-		<ng-template [ngIf]="logoLoader" [ngIfElse]="DEFAULT">
+		<ng-template [ngIf]="loader.logoLoader" [ngIfElse]="DEFAULT">
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1365.333 1365.333">
 				<defs>
 				  <linearGradient [attr.id]="logoLoaderId + '-c'" x1="0" x2="1" y1="0" y2="0" gradientTransform="scale(603.331) rotate(60 -1.644 .263)" gradientUnits="userSpaceOnUse" spreadMethod="pad">
@@ -33,7 +33,7 @@
 			</span>
 		</ng-template>
 	
-		<p class="loader-info" *ngIf="loaderInfo && loaderInfo !== ''">{{loaderInfo}}</p>
+		<p class="loader-info" *ngIf="loader.loaderInfo !== ''">{{loader.loaderInfo}}</p>
 	</div>
 
 	<span class="loader-backdrop"></span>

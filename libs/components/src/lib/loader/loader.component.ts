@@ -1,6 +1,8 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input, inject } from '@angular/core';
 
 import { getUID } from '@fhem-native/utils';
+import { LoaderService } from '@fhem-native/services';
+
 import { ShowHide } from './animations';
 
 @Component({
@@ -11,11 +13,9 @@ import { ShowHide } from './animations';
 })
 
 export class LoaderComponent {
-	@Input() logoLoader = false;
-	@Input() loaderInfo!: string;
+	logoLoaderId = getUID();
+	displayLoader$ = inject(LoaderService).displayLoader;
 
 	@Input() fixed = true;
 	@HostBinding('class.fixed') get fState(){ return this.fixed; }
-
-	logoLoaderId = getUID();
 }

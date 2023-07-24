@@ -1,4 +1,4 @@
 <ion-app>
 	<ion-router-outlet></ion-router-outlet>
-	<fhem-native-loader *ngIf="loader.displayLoader" [logoLoader]="loader.logoLoader" [loaderInfo]="loader.loaderInfo"></fhem-native-loader>
+	<fhem-native-loader *ngIf="loader.loaderState | async"/>
 </ion-app>
