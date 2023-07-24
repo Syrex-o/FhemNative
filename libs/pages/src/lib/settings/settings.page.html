@@ -79,7 +79,7 @@
         <fhem-native-text-line name [wrap]="false"> {{'PAGES.SETTINGS.SUPPORT.HEAD' | translate}}</fhem-native-text-line>
         <div content>
             <!-- support -->
-            <!-- <fhem-native-ui-box [clickable]="true" [routerLink]="['support']">
+            <!-- <fhem-native-ui-box [clickable]="true" [routerLink]="['support']" *ngIf="appConfig.platform === 'mobile'">
                 <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.SUPPORT.MEMBER.TEXT' | translate" [info]="'PAGES.SETTINGS.SUPPORT.MEMBER.INFO' | translate"></fhem-native-text-block>
                 <ion-icon class="color-a-app size-b-app" name="heart-outline"></ion-icon>
             </fhem-native-ui-box> -->

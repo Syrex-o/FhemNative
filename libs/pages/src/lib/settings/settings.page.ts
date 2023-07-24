@@ -38,7 +38,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy{
 		private structure: StructureService,
 		private translate: TranslateService,
 		private importExport: ImportExportService,
-		@Inject(APP_CONFIG) private appConfig: any){
+		@Inject(APP_CONFIG) public appConfig: any){
 	}
 
 	ngOnInit(): void {

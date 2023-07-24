@@ -37,8 +37,9 @@ export class SupportPageComponent implements OnInit, OnDestroy{
 
     showSupport = false;
     termsAccepted = false;
-    readonly availableAmounts = [1, 3, 5, 10];
+
     selectedAmount = 3;
+    readonly availableAmounts = [1, 3, 5, 10];
     
     showGuidelines = false;
     showPaymentDetails = false;
