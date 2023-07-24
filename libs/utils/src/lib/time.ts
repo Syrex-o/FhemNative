@@ -30,6 +30,11 @@ export function pad(num: number, size: number): string {
 	return ('000' + num).slice(size * -1);
 }
 
+export function isTime(val: any): boolean {
+    if(val.toString().substring(2,3) === ':') return true;
+    return false;
+}
+
 /**
  * returns time in obj (h,m,minutes) from HH:MM string
  * @param time 
@@ -71,6 +76,16 @@ export function secToTime(sec: any): string{
     const s = Math.floor(t - m * 60);
 
     return (pad(h, 2) === '00' ? '' : pad(h, 2) + ':') + pad(m, 2) + ':' + pad(s, 2);
+}
+
+/**
+ * return seconds from time HH:MM or HH:MM:SS 
+ * @param time hh:mm:ss
+ * @returns seconds
+ */
+export function timeToSec(time: string): number{
+    if(time.length > 5) return (parseInt(time.substring(0,2)) * 60 * 60) + (parseInt(time.substring(3,5)) * 60) + parseInt(time.substring(6,time.length));
+    return (parseInt(time.substring(0,2)) * 60 * 60) + (parseInt(time.substring(3, time.length)) * 60);
 }
 
 /**

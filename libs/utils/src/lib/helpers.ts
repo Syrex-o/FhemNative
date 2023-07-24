@@ -31,6 +31,16 @@ export function decimalRounder(value: number, step: number) {
 }
 
 /**
+ * Check for number input or get default number back
+ * @param val
+ * @param defaultNumber 
+ * @returns 
+ */
+export function getNumberOrDefault(val: any, defaultNumber: number): number{
+	return isNaN(val) ? defaultNumber : val;
+}
+
+/**
  * Get value of object, by string reference (Exp. 'name.first' for: { name: { first: 'Neo' } }; )
  * @param obj Object to search
  * @param path dot seperated string path
