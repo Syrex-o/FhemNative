@@ -1,6 +1,10 @@
-<ion-content [fullscreen]="true" class="background-a-ion">
-    <div class="page-container" *ngIf="renderer$ | async as renderer">
-
+<ion-header>
+    <ion-toolbar>
+        <p class="center size-d-app bold color-b-app spacing-b">{{'PAGES.HOME.WELCOME.1' | translate}}</p>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="background-a-ion">
+    <div class="auto-container" *ngIf="renderer$ | async as renderer">
         <ng-container *ngIf="renderer.showHelper">
             <div class="center" @ShowHide>
                 <img src="assets/img/icon_transparent.png">

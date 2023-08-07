@@ -1,4 +1,7 @@
 :host{
+    ion-toolbar{
+        --background: var(--secondary);
+    }
     img{
         position: relative;
         width: 50%;

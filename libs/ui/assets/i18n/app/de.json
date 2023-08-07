@@ -1,6 +1,9 @@
 {
 	"PAGES": {
 		"HOME": {
+			"WELCOME": {
+				"1": "Willkommen bei FhemNative"
+			},
 			"IP": {
 				"INFO": {
 					"1": "FhemNative konnte keine Konfiguration für FHEM finden.",
