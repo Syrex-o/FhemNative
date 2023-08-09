@@ -23,9 +23,9 @@ ion-popover.add-room-popover{
 
     fhem-native-input,
     fhem-native-select-icon{
-        width: 50%;
-        max-width: 300px;
-        min-width: 150px;
+        max-width: 350px;
+        min-width: 200px;
+        width: 100%;
     }
 
     .app-button{
@@ -39,7 +39,6 @@ ion-popover.add-room-popover{
         &.col{
             align-items: center;
             flex-direction: column;
-            justify-content: center;
         }
         &.center{
             align-items: center;
