@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 
 // websocket 
-import { Subject, BehaviorSubject, timeout, take, tap, ReplaySubject, takeUntil, timer, share, toArray, distinct, switchMap, of, Observable, concat, delay, merge, map, filter, throttleTime } from 'rxjs';
+import { Subject, BehaviorSubject, timeout, take, tap, ReplaySubject, takeUntil, timer, share, toArray, distinct, switchMap, of, Observable, concat, delay, merge, map, filter, throttleTime, shareReplay } from 'rxjs';
 import { WebSocketSubject } from 'rxjs/webSocket';
 
 // Services
@@ -400,7 +400,7 @@ export class FhemService {
 		if(!this.deviceRequestCombiner){
 			this.deviceRequestCombiner = new ReplaySubject();
 			this.deviceGetter = this.deviceRequestCombiner.pipe(
-				takeUntil( timer(100).pipe( take(1) ) ),
+				takeUntil( timer(50).pipe( take(1) ) ),
 				// build unique array of device and reading
 				// important for requests, where device is already in app, but new reading was requested, that wasn´t present in device before
 				distinct(x=> x.deviceName + x.readingName), toArray(),

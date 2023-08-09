@@ -9,9 +9,9 @@ import { SharedConfigSettingsPageComponent } from "./shared-config/shared-config
 
 import { ScrollHeaderModule } from "@fhem-native/directives";
 
-import { CloseBtnContainerModule, TextBlockModule, UI_BoxComponent, UI_CategoryComponent } from "@fhem-native/components";
+import { CloseBtnContainerModule, SwitchModule, TextBlockModule, UI_BoxComponent, UI_CategoryComponent } from "@fhem-native/components";
 
-import { BackButtonService, SettingsService, ThemeService } from "@fhem-native/services";
+import { BackButtonService, SettingsService, StorageService, ThemeService } from "@fhem-native/services";
 
 import { clone, getUID } from "@fhem-native/utils";
 
@@ -29,6 +29,7 @@ import { clone, getUID } from "@fhem-native/utils";
         CloseBtnContainerModule,
         ScrollHeaderModule,
 
+        SwitchModule,
         TextBlockModule,
         UI_BoxComponent,
         UI_CategoryComponent
@@ -36,7 +37,7 @@ import { clone, getUID } from "@fhem-native/utils";
 })
 export class AdvancedSettingsPageComponent implements OnInit, OnDestroy{
     private handleID = getUID();
-
+    
     primaryColor$ = this.theme.getThemePipe('--primary');
 
     showSharedConfig = false;
@@ -47,6 +48,7 @@ export class AdvancedSettingsPageComponent implements OnInit, OnDestroy{
     constructor(
         private theme: ThemeService,
         private navCtrl: NavController,
+        private storage: StorageService,
         public settings: SettingsService,
         private backBtn: BackButtonService){
     }
@@ -54,6 +56,13 @@ export class AdvancedSettingsPageComponent implements OnInit, OnDestroy{
     ngOnInit(): void {
 		this.backBtn.handle(this.handleID, ()=> this.closePage());
 	}
+
+    changeExperimentalSetting(jsonKey: string, value: any){
+        if(!(jsonKey in this.settings.app.experimentalFeatures)) return;
+        this.settings.app.experimentalFeatures[jsonKey] = value;
+
+        this.storage.changeSetting({name: 'experimentalFeatures', change: JSON.stringify(this.settings.app.experimentalFeatures)});
+    }
 
     closePage(): void{
         this.navCtrl.back();

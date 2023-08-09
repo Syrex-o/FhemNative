@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BaseAppSettings, DefaultConnectionProfile } from '@fhem-native/app-config';
 
 import { StorageService } from './storage.service';
+import { getDelay } from '@fhem-native/utils';
 
 import { AppSetting } from '@fhem-native/types/storage';
 import { ConnectionProfile } from '@fhem-native/types/fhem';
@@ -27,69 +28,56 @@ export class SettingsService {
 		{name: 'language', default: 'de', toStorage: true, callback: (lang: string)=> {this.translate.setDefaultLang(lang || 'de');}},
         // fhem connection profiles
 		{name: 'connectionProfiles', default: JSON.stringify([]), toStorage: false, callback: (data: any)=>{if(data.length === 0){ this.connectionProfiles = [{...DefaultConnectionProfile}]; }}},
-    ]);
+		// experimental features
+		{name: 'experimentalFeatures', toStorage: true, default: JSON.stringify({
+			chunkLoad: false
+		})}
+	]);
 
     constructor(protected storage: StorageService, protected translate: TranslateService){}
 
     // load app defaults
-	public loadDefaults(): Promise<any>{
-		return new Promise((resolve)=>{
-			this.appDefaults.forEach((setting: AppSetting, index: number)=>{
-				this.storage.setAndGetSetting({
-					name: setting.name,
-					default: setting.default
-				}).then((res:any)=>{
+	public async loadDefaults(): Promise<void>{
+		for(const setting of this.appDefaults){
+			const res = await this.storage.setAndGetSetting({name: setting.name, default: setting.default});
+
+			if(setting.toStorage){
+				// loading to desired storage
+				this.app[setting.name] = res;
+			}else{
+				// loading to dedicated variable
+				(this as any)[setting.name] = res;
+			}
+
+			// check if new props added to a json setting
+			if(this.storage.testJSON(setting.default)){
+				// default json options detected
+				const jsonSetting = JSON.parse(setting.default as any);
+				let newProperties = false;
+				for (const [key, value] of Object.entries(jsonSetting)) {
+					if(res[key] === undefined){
+						// new property found
+						newProperties = true;
+						if(setting.toStorage){
+							this.app[setting.name][key] = value;
+						}else{
+							(this as any)[setting.name][key] = value;
+						}
+					}
+				}
+				if(newProperties){
 					if(setting.toStorage){
-						// loading to desired storage
-						this.app[setting.name] = res;
+						this.storage.changeSetting({name: setting.name, change: JSON.stringify(this.app[setting.name])});
 					}else{
-						// loading to dedicated variable
-						(this as any)[setting.name] = res;
+						this.storage.changeSetting({name: setting.name,change: JSON.stringify((this as any)[setting.name])});
 					}
-					// check if new props added to a json setting
-					if(this.storage.testJSON(setting.default)){
-						// default json options detected
-						const jsonSetting = JSON.parse(setting.default as any);
-						let newProperties = false;
-						for (const [key, value] of Object.entries(jsonSetting)) {
-							if(res[key] === undefined){
-								// new property found
-								newProperties = true;
-								if(setting.toStorage){
-									this.app[setting.name][key] = value;
-								}else{
-									(this as any)[setting.name][key] = value;
-								}
-							}
-						}
-						if(newProperties){
-							if(setting.toStorage){
-								this.storage.changeSetting({
-									name: setting.name,
-									change: JSON.stringify(this.app[setting.name])
-								});
-							}else{
-								this.storage.changeSetting({
-									name: setting.name,
-									change: JSON.stringify((this as any)[setting.name])
-								});
-							}
-						}
-					}
-					// determine callbacks
-					if(setting.callback){
-						setting.callback( (setting.toStorage ? this.app[setting.name] : (this as any)[setting.name]) );
-					}
-					//
-					if(index === this.appDefaults.length -1){
-						// secure timeout, to ensure all settings are fully loaded
-						setTimeout(()=>{
-							this.appDefaultsLoaded.next(true);
-							resolve(true);
-						}, 0);
-					}
-				});
-			});
-		});
+				}
+			}
+			// determine callbacks
+			if(setting.callback) setting.callback( (setting.toStorage ? this.app[setting.name] : (this as any)[setting.name]) );
+		}
+		// secure timeout, to ensure all settings are fully loaded
+		await getDelay(0);
+		this.appDefaultsLoaded.next(true);
 	}
 }

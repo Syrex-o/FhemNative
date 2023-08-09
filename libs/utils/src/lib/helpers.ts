@@ -155,3 +155,26 @@ export function toTitleCase(text: string){
     	.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     	.join(' ');
 }
+
+/**
+ * Get Array in chunks
+ * @param arr 
+ * @param chunkSize 
+ * @returns 
+ */
+export function getArrayInChunks(arr: any[], chunkSize: number){
+	const chunks = [];
+	for (let i = 0; i < arr.length; i += chunkSize) {
+		chunks.push( arr.slice(i, i + chunkSize) )
+	}
+	return chunks;
+}
+
+/**
+ * Create awitable delay
+ * @param time 
+ * @returns 
+ */
+export function getDelay(time: number){
+	return new Promise(resolve => setTimeout(resolve, time));
+}

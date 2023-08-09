@@ -1,6 +1,7 @@
 import { ComponentRef, Injectable, Type, ViewContainerRef } from '@angular/core';
 
-import { clone, getUID } from '@fhem-native/utils';
+import { SettingsService } from './settings.service';
+import { clone, getArrayInChunks, getDelay, getUID } from '@fhem-native/utils';
 
 import { ComponentContainerComponent, ComponentSettings, ContainerRegistry, FhemComponentContainerSettings, FhemComponentSettings } from '@fhem-native/types/components';
 
@@ -11,6 +12,8 @@ export class ComponentLoaderService {
 	 * Flat list of containers --> overwrites when container is created with same id
 	*/
 	public componentContainerRegistry: ContainerRegistry[] = [];
+
+	constructor(private settings: SettingsService){}
 
 	/**
 	 * Register new container in registry
@@ -368,14 +371,10 @@ export class ComponentLoaderService {
 		// add component to registry
 		containerRegistry.components.push({ component: compRef, componentUID: componentSettings.UID, containerId: containerRegistry.containerId });
 	}
-   
-   /**
-	* Load components of certain registry to room
-	* @param components 
-	* @param containerRegistry
-	*/
-	public async loadContainerComponents(components: FhemComponentSettings[], containerRegistry: ContainerRegistry): Promise<void>{
-		for(let componentSettings of components){
+
+	private async loadContainerComponentsChunk(componentsChunk: FhemComponentSettings[], containerRegistry: ContainerRegistry): Promise<void>{
+		for(let componentSettings of componentsChunk){
+			// await this.delay(50);
 			// load dynamic component
 			const component = await this.importFhemComponent(componentSettings.name);
 
@@ -384,6 +383,22 @@ export class ComponentLoaderService {
 
 			// add component to view
 			this.addFhemComponent(containerRegistry, componentSettings, component);
+		}
+	}
+   
+   /**
+	* Load components of certain registry to room
+	* @param components 
+	* @param containerRegistry
+	*/
+	public async loadContainerComponents(components: FhemComponentSettings[], containerRegistry: ContainerRegistry): Promise<void>{
+		if(this.settings.app.experimentalFeatures.chunkLoad){
+			for(const componentsChunk of getArrayInChunks(components, 20)){
+				await this.loadContainerComponentsChunk(componentsChunk, containerRegistry);
+				await getDelay(50);
+			}
+		}else{
+			await this.loadContainerComponentsChunk(components, containerRegistry);
 		}
 	}
 }

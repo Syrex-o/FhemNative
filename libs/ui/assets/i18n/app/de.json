@@ -227,6 +227,13 @@
 						"INFO": "Ein Transfer wird nur beim ersten erstellen oder beim Wechsel des Konfigurations-Readings benötigt. Wollen Sie das Reading wirklich überschreiben? Alle Geräte verwenden dann die aktuelle Konfiguration DIESES Geräts."
 					}
 				}
+			},
+			"EXPERIMENTAL": {
+				"HEAD": "Experimentelle Features",
+				"CHUNK_LOAD": {
+					"HEAD": "Komponenten in Blöcken laden",
+					"INFO": "Komponenten in Blöcken von 20 Stück laden. Diese Option kann Probleme beim laden von einzelnen Räumen mit vielen Komponenten lösen."
+				}
 			}
 		},
 		"SANDBOX": {

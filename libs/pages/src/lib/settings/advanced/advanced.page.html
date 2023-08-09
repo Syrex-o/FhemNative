@@ -9,10 +9,27 @@
 
             <div content>
                 <!-- shared config -->
-                <fhem-native-ui-box [clickable]="true" [routerLink]="['shared-config']">
+                <fhem-native-ui-box [clickable]="true" [routerLink]="['shared-config']" class="mb-1-5">
                     <fhem-native-text-block class="w-100" [label]="'PAGES.ADVANCED.FHEM.SHARED_CONFIG.HEAD' | translate" [info]="'PAGES.ADVANCED.FHEM.SHARED_CONFIG.INFO' | translate"/>
                     <ion-icon class="color-a-app size-b-app" name="pencil-outline"></ion-icon>
                 </fhem-native-ui-box>
+            </div>
+        </fhem-native-ui-category>
+
+        <fhem-native-ui-category *ngIf="settings.appDefaultsLoaded | async">
+            <fhem-native-text-line name [wrap]="false"> {{'PAGES.ADVANCED.EXPERIMENTAL.HEAD' | translate}}</fhem-native-text-line>
+
+            <div content>
+                <!-- allow editing -->
+                    <fhem-native-switch
+                        [boxed]="true"
+                        [showInfoBubble]="false"
+                        [backgroundColorOff]="(primaryColor$ | async ) || undefined"
+                        [label]="'PAGES.ADVANCED.EXPERIMENTAL.CHUNK_LOAD.HEAD' | translate" 
+                        [info]="'PAGES.ADVANCED.EXPERIMENTAL.CHUNK_LOAD.INFO' | translate"
+                        [(ngModel)]="settings.app.experimentalFeatures.chunkLoad"
+                        (clicked)="changeExperimentalSetting('chunkLoad', $event)">
+                </fhem-native-switch>
             </div>
         </fhem-native-ui-category>
     </div>
