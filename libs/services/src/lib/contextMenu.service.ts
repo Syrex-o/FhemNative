@@ -9,11 +9,11 @@ export class ContextMenuService {
 
     constructor(private popoverCtrl: PopoverController){}
 
-    public async createContextMenu(comp: Type<any>, event: Event, dismissOnSelect: boolean, componentProps: ConextMenuProbs) {
+    public async createContextMenu(comp: Type<any>, event: Event|Touch, dismissOnSelect: boolean, componentProps: ConextMenuProbs) {
         this.contextMenuState = true;
 
         const popover = await this.popoverCtrl.create({
-			component: comp, event: event,
+			component: comp, event: (event as Event),
 			mode: 'md', reference: 'event',
 			dismissOnSelect: dismissOnSelect, 
             cssClass: 'context-menu-popover',

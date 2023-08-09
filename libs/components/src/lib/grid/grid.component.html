@@ -1,4 +1,4 @@
-<div #Grid class="grid-wrapper">
+<div #Grid class="grid-wrapper" fhemNativeContextClick (contextClick)="createContextMenu($event)">
 	<div class="grid-height-container" [style.height.px]="gridHeight">
 		<span *ngFor="let w of gridW; let i = index; trackBy: trackByFn;" 
 			class="grid-line w" 

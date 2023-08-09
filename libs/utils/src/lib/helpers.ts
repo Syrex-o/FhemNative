@@ -16,6 +16,16 @@ export function getMouseDelta(start: {x: number, y: number}, e: any): {x: number
 }
 
 /**
+ * Chech if mouse move delta is smaller then limit
+ * @param delta 
+ * @param limiter 
+ * @returns 
+ */
+export function deltaMovedLimit(delta: {x: number, y: number}, limiter: number): boolean{
+	return Math.abs(delta.x) <= limiter && Math.abs(delta.y) <= limiter;
+}
+
+/**
  * Round decimal to certain point
  * decimalRounder(2.74, 0.1) = 2.7
  * decimalRounder(2.74, 0.25) = 2.75

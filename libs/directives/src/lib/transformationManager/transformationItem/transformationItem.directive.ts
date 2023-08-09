@@ -1,11 +1,13 @@
-import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
-import { fromEvent } from 'rxjs';
+import { Directive, ElementRef, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { combineLatest, filter, first, fromEvent, map, merge, switchMap, timer } from 'rxjs';
 
 import { TransformationManagerDirective } from '../transformationManager.directive';
 import { ScaleManagerDirective } from '../scaleManager/scaleManager.directive';
 import { MoveManagerDirective } from '../moveManager/moveManager.directive';
 
-import { getMousePosition } from '@fhem-native/utils';
+import { deltaMovedLimit, getMouseDelta, getMousePosition } from '@fhem-native/utils';
+import { APP_CONFIG, AppConfig } from '@fhem-native/app-config';
 import { ComponentTransformation } from '@fhem-native/types/components';
 
 @Directive({
@@ -18,9 +20,9 @@ export class TransformationItemDirective implements OnInit, OnChanges, OnDestroy
 	@Input() minDimensionsPercentage!: {width: number, height: number};
 
 	// Events
-	@Output() contextMenuClick: EventEmitter<PointerEvent> = new EventEmitter<PointerEvent>();
-	@Output() beginTransformation: EventEmitter<ComponentTransformation> = new EventEmitter<ComponentTransformation>();
-	@Output() endTransformation: EventEmitter<ComponentTransformation> = new EventEmitter<ComponentTransformation>();
+	@Output() contextMenuClick = new EventEmitter<PointerEvent|Touch>();
+	@Output() beginTransformation = new EventEmitter<ComponentTransformation>();
+	@Output() endTransformation = new EventEmitter<ComponentTransformation>();
 
 	// detemine if component is selected or not
 	selected = false;
@@ -39,9 +41,13 @@ export class TransformationItemDirective implements OnInit, OnChanges, OnDestroy
 	moveManager: MoveManagerDirective|undefined;
 	scaleManager: ScaleManagerDirective|undefined;
 
+	private readonly contextClickThreshold = 500;
+
     constructor(
         ref: ElementRef,
 		private renderer: Renderer2,
+		@Inject(DOCUMENT) private document: Document,
+		@Inject(APP_CONFIG) private appConfig: AppConfig,
         private transformationManager: TransformationManagerDirective){
         this.hostEl = ref.nativeElement;
     }
@@ -133,10 +139,41 @@ export class TransformationItemDirective implements OnInit, OnChanges, OnDestroy
 
 	private attatchContextMenu(): void{
 		if(this.transformationRect){
-			fromEvent<PointerEvent>(this.transformationRect, "contextmenu").subscribe(async (startEvent)=>{
-				startEvent.preventDefault();
-				this.contextMenuClick.emit(startEvent);
-			});
+			// context menu trigger on desktop platforms
+			if(this.appConfig.platform === 'desktop'){
+				fromEvent<PointerEvent>(this.transformationRect, "contextmenu").subscribe((startEvent)=>{
+					startEvent.preventDefault();
+					this.contextMenuClick.emit(startEvent);
+				});
+			}else{
+				// long press trigger on mobile platforms
+				const touchEnd = fromEvent<TouchEvent>(this.transformationRect, 'touchend');
+				fromEvent<TouchEvent>(this.transformationRect, 'touchstart').pipe(
+					switchMap((start)=>{
+						start.preventDefault();
+						return merge(
+							combineLatest([
+								timer(this.contextClickThreshold),
+								merge(
+									timer(this.contextClickThreshold),
+									fromEvent<TouchEvent>(this.document, 'touchmove').pipe(
+										map(move=> {
+											const delta = getMouseDelta(getMousePosition(start), move);
+											return {delta, move};
+										})
+									)
+								)
+							]),
+							touchEnd.pipe( map(()=> null) ),
+						).pipe( 
+							first(),
+							map(x=> Array.isArray(x) ? ( x[1] || {delta: {x: 0, y: 0}, move: start}) : null )
+						)
+					}),
+					map(x=> x && deltaMovedLimit(x.delta, 10) ? x.move : null),
+					filter(x=> x !== null),
+				).subscribe(x=> x ? this.contextMenuClick.emit(x.touches[0]) : null);
+			}
 		}
 	}
 

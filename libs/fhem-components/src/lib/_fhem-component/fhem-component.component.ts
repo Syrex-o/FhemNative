@@ -163,7 +163,7 @@ export class FhemComponent implements AfterViewInit, OnDestroy{
 	}
 
 	// create context menu
-	async onContextClick(event: MouseEvent|TouchEvent): Promise<void>{
+	async onContextClick(event: PointerEvent|Touch): Promise<void>{
 		const { role, data } = await this.contextMenu.createContextMenu(ContextMenuComponent, event, false, {
 			source: 'component', 
 			componentId: this.UID, 

@@ -122,13 +122,11 @@ export class GridComponent implements AfterViewInit, OnDestroy{
 		fromEvent<TouchEvent|MouseEvent>(this.grid.nativeElement, 'click').subscribe(()=>{
 			this.selectComponent.removeAllSelectors();
 		});
+	}
 
-		fromEvent<TouchEvent|MouseEvent>(this.grid.nativeElement, "contextmenu").subscribe(async (startEvent)=>{
-			startEvent.preventDefault();
-
-			await this.contextMenu.createContextMenu(ContextMenuComponent, startEvent, true, {
-				source: 'grid', transformationManager: this.transformationManager
-			});
+	async createContextMenu(event: Event|Touch): Promise<void>{
+		await this.contextMenu.createContextMenu(ContextMenuComponent, event, true, {
+			source: 'grid', transformationManager: this.transformationManager
 		});
 	}
 
