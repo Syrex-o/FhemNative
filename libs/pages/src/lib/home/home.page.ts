@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, merge, of, switchMap } from 'rxjs';
 
 import { FhemService, SettingsService, StructureService } from '@fhem-native/services';
 
@@ -12,15 +12,18 @@ import { ShowHide } from './animations';
     animations: [ ShowHide ]
 })
 export class HomePageComponent{
-    renderer$: Observable<{showHelper: boolean, loaded: boolean}> = this.settings.appDefaultsLoaded.pipe(
-        switchMap(loaded=>{
-            if(!loaded) return of({loaded: false, showHelper: false});
-            // check for valid profile
-            if(!this.fhem.checkPreConnect()) return of({loaded: true, showHelper: true});
-            // valid config --> navigate to initial room
-            this.structure.loadRooms(true);
-            return of({loaded: true, showHelper: false});
-        })
+    renderer$: Observable<{showHelper: boolean, loaded: boolean}> = merge(
+        of({loaded: false, showHelper: false}),
+        this.settings.appDefaultsLoaded.pipe(
+            switchMap(loaded=>{
+                if(!loaded) return of({loaded: false, showHelper: false});
+                // check for valid profile
+                if(!this.fhem.checkPreConnect()) return of({loaded: true, showHelper: true});
+                // valid config --> navigate to initial room
+                this.structure.loadRooms(true);
+                return of({loaded: true, showHelper: false});
+            })
+        )
     );
 
     constructor(private fhem: FhemService, private settings: SettingsService, private structure: StructureService){}

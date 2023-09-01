@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, share } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, share } from 'rxjs';
 
 interface Loader {
     show: boolean,
@@ -9,12 +9,13 @@ interface Loader {
 
 @Injectable({providedIn: 'root'})
 export class LoaderService {
-    private loader$ = new BehaviorSubject<Loader>({show: false, logoLoader: false, loaderInfo: ''});
-    public displayLoader = this.loader$.asObservable();
-    public loaderState = this.displayLoader.pipe( map(x=> x.show), share() );
+    private loader = new BehaviorSubject<Loader>({show: false, logoLoader: false, loaderInfo: ''});
+    
+    public loader$ = this.loader.pipe( distinctUntilChanged() );
+    public loaderState = this.loader$.pipe( map(x=> x.show), share() );
 
     public showLoader(logoLoader?: boolean, info?: string): void{
-        this.loader$.next({
+        this.loader.next({
             show: true,
             logoLoader: logoLoader || false,
             loaderInfo: info || ''
@@ -26,7 +27,7 @@ export class LoaderService {
     }
 
     public hideLoader(): void{
-        this.loader$.next({
+        this.loader.next({
             show: false,
             logoLoader: false,
             loaderInfo: ''

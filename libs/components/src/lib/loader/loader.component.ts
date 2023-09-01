@@ -14,7 +14,7 @@ import { ShowHide } from './animations';
 
 export class LoaderComponent {
 	logoLoaderId = getUID();
-	displayLoader$ = inject(LoaderService).displayLoader;
+	public displayLoader$ = inject(LoaderService).loader$;
 
 	@Input() fixed = true;
 	@HostBinding('class.fixed') get fState(){ return this.fixed; }
