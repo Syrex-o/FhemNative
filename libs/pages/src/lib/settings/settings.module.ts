@@ -13,7 +13,6 @@ import { RightsTermsComponent, RightsUsageComponent } from '../rights';
 import { ScrollHeaderModule } from '@fhem-native/directives';
 
 import { CloseBtnContainerModule, PickerComponent, SelectModule, SwitchModule, TextBlockModule, UI_BoxComponent, UI_CategoryComponent } from '@fhem-native/components';
-import { ImportExportService } from '@fhem-native/services';
 
 @NgModule({
 	imports: [
@@ -37,7 +36,6 @@ import { ImportExportService } from '@fhem-native/services';
 		RightsTermsComponent,
 		RightsUsageComponent
 	],
-	providers: [ ImportExportService ],
 	declarations: [ SettingsPageComponent ],
 	exports: [ 
 		IonicModule,

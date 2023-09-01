@@ -1,27 +1,37 @@
-import { Inject, Injectable } from "@angular/core";
+import { Inject, Injectable, inject } from "@angular/core";
+import { AlertController, AlertOptions } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 
-import { ToastService } from "./toast.service";
 import { LoaderService } from "./loader.service";
 
-import { APP_CONFIG } from "@fhem-native/app-config";
+import { APP_CONFIG, AppConfig } from "@fhem-native/app-config";
+import { jsonImporter, JsonExportData, getRawVersionCode } from "@fhem-native/utils";
 
 import { Room } from "@fhem-native/types/room";
 import { FhemComponentSettings } from "@fhem-native/types/components";
 
-import { jsonImporter, JsonExportData, exportToJson, getRawVersionCode } from "@fhem-native/utils";
-
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ImportExportService {
+    readonly baseFileName = 'FhemNative-Export';
     private readonly componentExportType = 'Components';
     private readonly componentExportFileName = 'ComponentSettings';
 
     private readonly roomExportType = 'Rooms';
     private readonly roomExportFileName = 'RoomSettings';
 
-    constructor(private toast: ToastService, private loader: LoaderService, @Inject(APP_CONFIG) private appConfig: any){}
+    private loader = inject(LoaderService);
+    private alertCtrl = inject(AlertController);
+    private translate = inject(TranslateService);
+
+    constructor(@Inject(APP_CONFIG) protected appConfig: AppConfig){}
+
+    // overwritten function from platform specific services
+    public async exportToJson(exportData: JsonExportData, fileNameEnding: string): Promise<boolean>{
+        return false;
+    }
 
     async exportComponents(componentSettings: FhemComponentSettings[]) {
-        const success = await exportToJson(
+        const success = await this.exportToJson(
             { type: this.componentExportType, versionCode: getRawVersionCode(this.appConfig.versionCode), data: componentSettings }, 
             this.componentExportFileName
         );
@@ -38,11 +48,7 @@ export class ImportExportService {
             if(importedData && importedData.type === this.componentExportType){
                 formattedData = importedData.data;
             }else{
-                this.toast.showTranslatedAlert(
-                    'MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.TEXT',
-                    'MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.INFO',
-                    false
-                );
+                this.showAlert('MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.TEXT', 'MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.INFO');
             }
         }
         this.loader.hideLoader();
@@ -50,7 +56,7 @@ export class ImportExportService {
     }
 
     async exportRooms(rooms: Room[]) {
-        const success = await exportToJson( 
+        const success = await this.exportToJson( 
             { type: this.roomExportType, versionCode: getRawVersionCode(this.appConfig.versionCode), data: rooms }, 
             this.roomExportFileName
         );
@@ -67,11 +73,7 @@ export class ImportExportService {
             if(importedData && importedData.type === this.roomExportType){
                 formattedData = importedData.data;
             }else{
-                this.toast.showTranslatedAlert(
-                    'MENUS.IMPORT.ERRORS.NO_ROOM_CONFIG.TEXT', 
-                    'MENUS.IMPORT.ERRORS.NO_ROOM_CONFIG.INFO', 
-                    false
-                );
+                this.showAlert('MENUS.IMPORT.ERRORS.NO_ROOM_CONFIG.TEXT', 'MENUS.IMPORT.ERRORS.NO_ROOM_CONFIG.INFO');
             }
         }
         this.loader.hideLoader();
@@ -89,11 +91,52 @@ export class ImportExportService {
     }
 
     private falseConfigToast(): null{
-        this.toast.showTranslatedAlert('MENUS.IMPORT.ERRORS.FALSE_CONFIG.TEXT', 'MENUS.IMPORT.ERRORS.FALSE_CONFIG.INFO', false);
+        this.showAlert('MENUS.IMPORT.ERRORS.FALSE_CONFIG.TEXT', 'MENUS.IMPORT.ERRORS.FALSE_CONFIG.INFO');
         return null;
     }
 
     private exportFailedToast(){
-        this.toast.showTranslatedAlert('MENUS.EXPORT.ERRORS.FAILED_EXPORT.TEXT', 'MENUS.EXPORT.ERRORS.FAILED_EXPORT.INFO', false);
+        this.showAlert('MENUS.EXPORT.ERRORS.FAILED_EXPORT.TEXT', 'MENUS.EXPORT.ERRORS.FAILED_EXPORT.INFO');
     }
+
+    public exportFromBrowser(fileName: string, data: any): boolean{
+        const blobDataStr = JSON.stringify(data);
+        const bytes = new TextEncoder().encode(blobDataStr);
+        const blob = new Blob([bytes], { type: "application/json;charset=utf-8" });
+
+        try{
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+
+            a.href = url;
+            a.download = fileName;
+
+            const clickHandler = () => {
+                setTimeout(() => {
+                    URL.revokeObjectURL(url);
+                    removeEventListener('click', clickHandler);
+                }, 150);
+            };
+
+            a.addEventListener('click', clickHandler, false);
+            a.click();
+            a.remove();
+
+            return true;
+        }catch(err){
+            return false;
+        }
+    }
+
+    private async showAlert(head: string, message: string) {
+		const opts: AlertOptions = {
+			header: this.translate.instant(head),
+			message: this.translate.instant(message),
+			mode: 'md',
+			buttons: [{text: this.translate.instant('BUTTONS.OKAY'), role: 'cancel'}]
+		};
+		// create new alert
+		const alert = await this.alertCtrl.create(opts);
+  		await alert.present();
+	}
 }

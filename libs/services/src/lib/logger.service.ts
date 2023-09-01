@@ -1,7 +1,9 @@
-import { ErrorHandler, Inject, Injectable } from '@angular/core';
+import { ErrorHandler, Inject, Injectable, inject } from '@angular/core';
 
-import { exportToJson, getRawVersionCode } from '@fhem-native/utils';
+import { ImportExportService } from './importExport.service';
+
 import { APP_CONFIG } from '@fhem-native/app-config';
+import { getRawVersionCode } from '@fhem-native/utils';
 
 declare type LogType = 'SUCCESS'|'INFO'|'ERROR';
 
@@ -9,6 +11,8 @@ declare type LogType = 'SUCCESS'|'INFO'|'ERROR';
 export class LoggerService {
     private readonly maxLogLength = 50;
     private currLogs: string[] = [];
+
+    private importExport = inject(ImportExportService);
 
     constructor(@Inject(APP_CONFIG) private appConfig: any) { }
 
@@ -25,7 +29,7 @@ export class LoggerService {
     }
 
     public exportLogs(): void{
-        exportToJson( { type: 'Logs', versionCode: getRawVersionCode(this.appConfig.versionCode), data: this.currLogs }, 'Logs' );
+        this.importExport.exportToJson( { type: 'Logs', versionCode: getRawVersionCode(this.appConfig.versionCode), data: this.currLogs }, 'Logs' );
     }
 
     public success(success: any): void{

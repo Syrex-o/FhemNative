@@ -1,3 +1,5 @@
+export * from './lib/platform-specific';
+
 export * from './lib/theme/theme.service';
 export * from './lib/back-button.service';
 export * from './lib/color.service';

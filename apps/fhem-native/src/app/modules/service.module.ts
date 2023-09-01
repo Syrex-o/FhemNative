@@ -1,10 +1,10 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 
-// core services
+// core services bundled in module
 import { CoreServicesModule } from '@fhem-native/modules';
 
-// error handler
-import { ErrorHandlerService } from '@fhem-native/services';
+// additional services and platform replacements
+import { ErrorHandlerService, ImportExportService, ImportExportServiceMobile } from '@fhem-native/services';
 
 // env provider
 import { APP_CONFIG } from '@fhem-native/app-config';
@@ -14,7 +14,10 @@ import { environment } from '../../environments/environment';
 	imports: [ CoreServicesModule ],
 	providers: [ 
 		{ provide: APP_CONFIG, useValue: environment },
-		{ provide: ErrorHandler, useClass: ErrorHandlerService }
+		{ provide: ErrorHandler, useClass: ErrorHandlerService },
+		
+		// platform specific services
+		{ provide: ImportExportService, useClass: ImportExportServiceMobile }
 	]
 })
 export class ServiceModule {}
