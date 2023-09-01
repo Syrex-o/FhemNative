@@ -107,7 +107,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "apps/fhem-native/src/**/*.ts",
@@ -116,8 +116,8 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/fhem-native"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/fhem-native"],
       "options": {
         "jestConfig": "apps/fhem-native/jest.config.ts",
         "passWithNoTests": true

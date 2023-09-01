@@ -6,15 +6,15 @@
   "prefix": "fhem-native",
   "targets": {
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/directives"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/directives"],
       "options": {
         "jestConfig": "libs/directives/jest.config.ts",
         "passWithNoTests": true
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/directives/**/*.ts",

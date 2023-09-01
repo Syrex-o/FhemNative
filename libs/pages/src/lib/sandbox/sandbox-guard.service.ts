@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+
 
 import { SandboxStorageService } from './services/sandbox-storage.service';
 import { SandboxStructureService } from './services/sandbox-structure.service';
@@ -7,7 +7,7 @@ import { SandboxStructureService } from './services/sandbox-structure.service';
 import { SettingsService } from '@fhem-native/services';
 
 @Injectable()
-export class SandboxGuardService implements CanActivate {
+export class SandboxGuardService  {
     constructor(
         private settings: SettingsService,
         private storage: SandboxStorageService,

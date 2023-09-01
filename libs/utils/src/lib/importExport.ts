@@ -2,7 +2,7 @@
 import { getFileDate } from "./helpers";
 
 // Plugins
-import { FileSharer } from '@byteowls/capacitor-filesharer';
+// import { FileSharer } from '@byteowls/capacitor-filesharer';
 import { FilePicker, PickFilesResult } from '@capawesome/capacitor-file-picker';
 
 const baseFileName = 'FhemNative-Export';
@@ -19,13 +19,14 @@ export interface JsonExportData {
  * @param fileNameEnding 
  */
 export async function exportToJson(exportData: JsonExportData, fileNameEnding: string): Promise<boolean>{
-    const res = await FileSharer.share({
-        filename: `${baseFileName}-${fileNameEnding}-${getFileDate()}.json`,
-        contentType: 'application/json',
-        base64Data: window.btoa( JSON.stringify(exportData) )
-    }).then(()=> true).catch(()=> false);
+    // const res = await FileSharer.share({
+    //     filename: `${baseFileName}-${fileNameEnding}-${getFileDate()}.json`,
+    //     contentType: 'application/json',
+    //     base64Data: window.btoa( JSON.stringify(exportData) )
+    // }).then(()=> true).catch(()=> false);
 
-    return res;
+    // return res;
+    return false;
 }
 
 export async function fileImporter(types: string[]): Promise<PickFilesResult|null >{

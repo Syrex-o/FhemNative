@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { StructureService } from '@fhem-native/services';
 
 @Injectable()
-export class RoomGuardService implements CanActivate {
+export class RoomGuardService  {
     constructor(private structure: StructureService, private router: Router) {}
 
     canActivate(): boolean {
