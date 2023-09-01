@@ -64,9 +64,10 @@ ion-button.editor-trigger-btn{
 
 ion-popover.editor-container-popover{
 	--width: auto;
+    --min-width: 120px;
     --background: var(--secondary);
     &::part(content){
-        padding: 10px;
+        padding: 8px;
         align-items: stretch;
     }
 
