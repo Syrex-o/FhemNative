@@ -12,9 +12,15 @@ import { imageImporter } from '@fhem-native/utils';
 import { FhemDevice } from '@fhem-native/types/fhem';
 import { ComponentPosition } from '@fhem-native/types/components';
 
+interface ImgSrc {
+	source: 'default'|'local'|'config',
+	src: string
+}
+
 @Component({
 	standalone: true,
 	selector: 'fhem-native-component-image',
+	imports: [FhemComponentModule, IonicModule, TextBlockModule],
 	template: `
 		<fhem-native-component 
 			[UID]="UID" 
@@ -28,16 +34,19 @@ import { ComponentPosition } from '@fhem-native/types/components';
 			(initDevice)="setFhemDevice($event)"
 			(updateDevice)="setFhemDevice($event)">
 			<div class="fhem-native-image">
-				<ng-container *ngIf="src$ | async as src; else SELECT">
-					<ng-container *ngIf="useLocalImage; else STANDARD_IMAGE">
-						<div *ngIf="src !== ''; else SELECT" class="img-bg" [style.background-image]="src"></div>
+				<ng-container *ngIf="src$ | async as srcData;">
+					<!-- local image -->
+					<ng-container *ngIf="srcData.source === 'local'; else STANDARD_IMAGE">
+						<div *ngIf="srcData.src !== ''; else SELECT" class="img-bg" [style.background-image]="srcData.src"></div>
 					</ng-container>
 
+					<!-- standard image load -->
 					<ng-template #STANDARD_IMAGE>
-						<img [src]="src" (error)="imgSrcError()">
+						<img [src]="srcData.src" (error)="imgSrcError()">
 					</ng-template>
 				</ng-container>
 
+				<!-- select local image -->
 				<ng-template #SELECT>
 					<div class="select-container">
 						<button class="app-button type-a ion-activatable" (click)="importImage()">
@@ -53,8 +62,7 @@ import { ComponentPosition } from '@fhem-native/types/components';
 			</div>
 		</fhem-native-component>
 	`,
-	styleUrls: ['./fhem-image.component.scss'],
-	imports: [FhemComponentModule, IonicModule, TextBlockModule]
+	styleUrls: ['./fhem-image.component.scss']
 })
 export class FhemImageComponent{
 	// meta
@@ -75,8 +83,8 @@ export class FhemImageComponent{
 	// Bool
 	@Input() useCache!: boolean;
 	@Input() useLocalImage!: boolean;
-
-	src$: Observable<string>|undefined;
+	
+	src$: Observable<ImgSrc>|undefined;
 	fhemDevice: FhemDevice|undefined;
 
 	constructor(private loader: LoaderService, private structure: StructureService){}
@@ -95,7 +103,7 @@ export class FhemImageComponent{
 
 	// prevent continious errors
 	imgSrcError(): void{
-		this.src$ = of('assets/img/app/' + this.defaultImage);
+		this.src$ = of({source: 'default', src: 'assets/img/app/' + this.defaultImage});
 	}
 
 	async importImage() {
@@ -116,22 +124,23 @@ export class FhemImageComponent{
 
 	// create stream
 	private updateImageData(src: string) {
-		// prevent empty src to prevent SELECT template, when useLocalImage is false
-		const srcNotEmpty = src === '' ? ' ' : src;
-
 		if(this.useCache || this.useLocalImage){
-			this.src$ = of(srcNotEmpty);
+			this.src$ = of({source: this.useLocalImage ? 'local' : 'config', src: src});
 			return;
 		}
 
 		this.src$ = merge(
-			of(srcNotEmpty),
+			of(src),
 			interval(this.updateInterval).pipe(
 				map(()=>{
 					const srcMod = '?dummy=' + new Date().getTime();
-					return srcNotEmpty + srcMod;
+					return src + srcMod;
 				})
 			)
-		);
+		).pipe(
+			map((x)=>{
+				return {source: 'config', src: x}
+			})
+		)
 	}
 }

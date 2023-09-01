@@ -24,7 +24,7 @@ export const Settings: ComponentSettings = {
         }
 	},
     dependencies: {
-        'data.updateInterval': {dependOn: ['bool.useCache'], value: [false]},
+        'data.updateInterval': {dependOn: ['bool.useCache', 'bool.useLocalImage'], value: [false, false]},
 
         // local image
         'data.device': {dependOn: ['bool.useLocalImage'], value: [false]},
