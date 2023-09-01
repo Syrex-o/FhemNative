@@ -5,9 +5,8 @@
     </div>
 
     <ng-container *ngIf="componentConfigEditor$ | async as compConfigEditor">
-        <div class="scroll-container" [class.select-component]="!compConfigEditor.componentConfig">
-            <!-- default selection, when no component is selected -->
-            <ng-template [ngIf]="!compConfigEditor.componentConfig" [ngIfElse]="COMP_MODIFIER">
+        <ng-template [ngIf]="!compConfigEditor.componentConfig" [ngIfElse]="COMP_MODIFIER">
+            <div class="scroll-container select-component">
                 <ng-container *ngFor="let comp of componentCategories">
                     <fhem-native-ui-category class="mb-1-5">
                         <!-- category header -->
@@ -24,8 +23,8 @@
                         </div>
                     </fhem-native-ui-category>
                 </ng-container>
-            </ng-template>
-        </div>
+            </div>
+        </ng-template>
         
         <div class="save-container flex-container outer end" *ngIf="compConfigEditor.componentConfig">
             <button *ngIf="compEditor.componentUID" class="preview-btn app-button info ion-activatable" (click)="previewComponent()">
@@ -42,154 +41,156 @@
 </div>
 
 <ng-template #COMP_MODIFIER>
-    <ng-container *ngIf="componentConfigEditor$ | async as compConfigEditor">
-        <ng-container *ngIf="compConfigEditor.componentConfig as currentComponentConfig">
-            <!-- component description -->
-            <div class="comp-settings-container comp-info">
-                <fhem-native-text-block 
-                    [label]="('COMPONENTS.'+ currentComponentConfig?.name +'.NAME' | translate)" 
-                    [info]="('COMPONENTS.'+ currentComponentConfig?.name +'.INFO' | translate)">
-                </fhem-native-text-block>
-                
-                <div class="comp-type" *ngIf="currentComponentConfig">
-                    <ion-icon [name]="componentTypes[currentComponentConfig.type].icon" [style.color]="componentTypes[currentComponentConfig.type].color"></ion-icon>
-                    <fhem-native-text-line [text]="('COMPONENTS.GENERAL.TYPES.' + currentComponentConfig.type | translate)"></fhem-native-text-line>
+    <div class="scroll-container">
+        <ng-container *ngIf="componentConfigEditor$ | async as compConfigEditor">
+            <ng-container *ngIf="compConfigEditor.componentConfig as currentComponentConfig">
+                <!-- component description -->
+                <div class="comp-settings-container comp-info">
+                    <fhem-native-text-block 
+                        [label]="('COMPONENTS.'+ currentComponentConfig?.name +'.NAME' | translate)" 
+                        [info]="('COMPONENTS.'+ currentComponentConfig?.name +'.INFO' | translate)">
+                    </fhem-native-text-block>
+                    
+                    <div class="comp-type" *ngIf="currentComponentConfig">
+                        <ion-icon [name]="componentTypes[currentComponentConfig.type].icon" [style.color]="componentTypes[currentComponentConfig.type].color"></ion-icon>
+                        <fhem-native-text-line [text]="('COMPONENTS.GENERAL.TYPES.' + currentComponentConfig.type | translate)"></fhem-native-text-line>
+                    </div>
                 </div>
-            </div>
-            <!-- component inputs -->
-            <ng-container *ngIf="currentComponentConfig">
-                <div class="comp-settings-container comp-inputs">
-                    <ng-container *ngFor="let compInputs of currentComponentConfig?.inputs | keyvalue: keepOrder; trackBy: trackByFn">
-                        <fhem-native-ui-category class="mb-1-5">
-                            <!-- settings section header -->
-                            <ng-container name *ngTemplateOutlet="CONFIG_HEADER; context: {$implicit: compInputs.key}"></ng-container>
-                        
-                            <div content>
-                                <!-- data values -->
-                                <ng-container *ngIf="compInputs.key === 'data'">
-                                    <ng-container *ngFor="let dataInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('data', dataInput.key)">
-                                            <fhem-native-input
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.data.' + dataInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.data.' + dataInput.key + '.info' | translate)"
-                                                [inputType]="currentComponentConfig.inputs.data[dataInput.key].type"
-                                                [(ngModel)]="currentComponentConfig.inputs.data[dataInput.key].value">
-                                            </fhem-native-input>
-                                        </div>
+                <!-- component inputs -->
+                <ng-container *ngIf="currentComponentConfig">
+                    <div class="comp-settings-container comp-inputs">
+                        <ng-container *ngFor="let compInputs of currentComponentConfig?.inputs | keyvalue: keepOrder; trackBy: trackByFn">
+                            <fhem-native-ui-category class="mb-1-5">
+                                <!-- settings section header -->
+                                <ng-container name *ngTemplateOutlet="CONFIG_HEADER; context: {$implicit: compInputs.key}"></ng-container>
+                            
+                                <div content>
+                                    <!-- data values -->
+                                    <ng-container *ngIf="compInputs.key === 'data'">
+                                        <ng-container *ngFor="let dataInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('data', dataInput.key)">
+                                                <fhem-native-input
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.data.' + dataInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.data.' + dataInput.key + '.info' | translate)"
+                                                    [inputType]="currentComponentConfig.inputs.data[dataInput.key].type"
+                                                    [(ngModel)]="currentComponentConfig.inputs.data[dataInput.key].value">
+                                                </fhem-native-input>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-    
-                                <!-- bool values -->
-                                <ng-container *ngIf="compInputs.key === 'bool' && currentComponentConfig.inputs.bool">
-                                    <ng-container *ngFor="let boolInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('bool', boolInput.key)">
-                                            <fhem-native-switch
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.bool.' + boolInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.bool.' + boolInput.key + '.info' | translate)"
-                                                [(ngModel)]="currentComponentConfig.inputs.bool[boolInput.key]">
-                                            </fhem-native-switch>
-                                        </div>
+        
+                                    <!-- bool values -->
+                                    <ng-container *ngIf="compInputs.key === 'bool' && currentComponentConfig.inputs.bool">
+                                        <ng-container *ngFor="let boolInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('bool', boolInput.key)">
+                                                <fhem-native-switch
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.bool.' + boolInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.bool.' + boolInput.key + '.info' | translate)"
+                                                    [(ngModel)]="currentComponentConfig.inputs.bool[boolInput.key]">
+                                                </fhem-native-switch>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-    
-                                <!-- array data values -->
-                                <ng-container *ngIf="compInputs.key === 'arr_data' && currentComponentConfig.inputs.arr_data">
-                                    <ng-container *ngFor="let arrDataInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_data', arrDataInput.key)">
-                                            <fhem-native-select
-                                                [searchable]="true"
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_data.' + arrDataInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_data.' + arrDataInput.key + '.info' | translate)"
-                                                [items]="arrDataInput.value.items"
-                                                [(ngModel)]="currentComponentConfig.inputs.arr_data[arrDataInput.key].value">
-                                            </fhem-native-select>
-                                        </div>
+        
+                                    <!-- array data values -->
+                                    <ng-container *ngIf="compInputs.key === 'arr_data' && currentComponentConfig.inputs.arr_data">
+                                        <ng-container *ngFor="let arrDataInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_data', arrDataInput.key)">
+                                                <fhem-native-select
+                                                    [searchable]="true"
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_data.' + arrDataInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_data.' + arrDataInput.key + '.info' | translate)"
+                                                    [items]="arrDataInput.value.items"
+                                                    [(ngModel)]="currentComponentConfig.inputs.arr_data[arrDataInput.key].value">
+                                                </fhem-native-select>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-    
-                                <!-- icon values -->
-                                <ng-container *ngIf="compInputs.key === 'icon' && currentComponentConfig.inputs.icon">
-                                    <ng-container *ngFor="let iconInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('icon', iconInput.key)">
-                                            <fhem-native-select-icon
-                                                [searchable]="true"
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.icon.' + iconInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.icon.' + iconInput.key + '.info' | translate)"
-                                                [items]="icon.icons"
-                                                [(ngModel)]="currentComponentConfig.inputs.icon[iconInput.key]">
-                                            </fhem-native-select-icon>
-                                        </div>
+        
+                                    <!-- icon values -->
+                                    <ng-container *ngIf="compInputs.key === 'icon' && currentComponentConfig.inputs.icon">
+                                        <ng-container *ngFor="let iconInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('icon', iconInput.key)">
+                                                <fhem-native-select-icon
+                                                    [searchable]="true"
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.icon.' + iconInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.icon.' + iconInput.key + '.info' | translate)"
+                                                    [items]="icon.icons"
+                                                    [(ngModel)]="currentComponentConfig.inputs.icon[iconInput.key]">
+                                                </fhem-native-select-icon>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-    
-                                <!-- style values -->
-                                <ng-container *ngIf="compInputs.key === 'style' && currentComponentConfig.inputs.style">
-                                    <ng-container *ngFor="let styleInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('style', styleInput.key)">
-                                            <fhem-native-select-color
-                                                [searchable]="true"
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.style.' + styleInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.style.' + styleInput.key + '.info' | translate)"
-                                                [items]="colors.componentColors"
-                                                [(ngModel)]="currentComponentConfig.inputs.style[styleInput.key]">
-                                            </fhem-native-select-color>
-                                        </div>
+        
+                                    <!-- style values -->
+                                    <ng-container *ngIf="compInputs.key === 'style' && currentComponentConfig.inputs.style">
+                                        <ng-container *ngFor="let styleInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('style', styleInput.key)">
+                                                <fhem-native-select-color
+                                                    [searchable]="true"
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.style.' + styleInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.style.' + styleInput.key + '.info' | translate)"
+                                                    [items]="colors.componentColors"
+                                                    [(ngModel)]="currentComponentConfig.inputs.style[styleInput.key]">
+                                                </fhem-native-select-color>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-    
-                                <!-- array icon values -->
-                                <ng-container *ngIf="compInputs.key === 'arr_icon' && currentComponentConfig.inputs.arr_icon">
-                                    <ng-container *ngFor="let arrIconInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_icon', arrIconInput.key)">
-                                            <fhem-native-select-icon
-                                                [multi]="true"
-                                                [searchable]="true"
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_icon.' + arrIconInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_icon.' + arrIconInput.key + '.info' | translate)"
-                                                [(ngModel)]="currentComponentConfig.inputs.arr_icon[arrIconInput.key]">
-                                            </fhem-native-select-icon>
-                                        </div>
+        
+                                    <!-- array icon values -->
+                                    <ng-container *ngIf="compInputs.key === 'arr_icon' && currentComponentConfig.inputs.arr_icon">
+                                        <ng-container *ngFor="let arrIconInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_icon', arrIconInput.key)">
+                                                <fhem-native-select-icon
+                                                    [multi]="true"
+                                                    [searchable]="true"
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_icon.' + arrIconInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_icon.' + arrIconInput.key + '.info' | translate)"
+                                                    [(ngModel)]="currentComponentConfig.inputs.arr_icon[arrIconInput.key]">
+                                                </fhem-native-select-icon>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-    
-                                <!-- array style values -->
-                                <ng-container *ngIf="compInputs.key === 'arr_style' && currentComponentConfig.inputs.arr_style">
-                                    <ng-container *ngFor="let arrStyleInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_style', arrStyleInput.key)">
-                                            <fhem-native-select-color
-                                                [multi]="true"
-                                                [searchable]="true"
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style.' + arrStyleInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style.' + arrStyleInput.key + '.info' | translate)"
-                                                [items]="colors.componentColors"
-                                                [(ngModel)]="currentComponentConfig.inputs.arr_style[arrStyleInput.key]">
-                                            </fhem-native-select-color>
-                                        </div>
+        
+                                    <!-- array style values -->
+                                    <ng-container *ngIf="compInputs.key === 'arr_style' && currentComponentConfig.inputs.arr_style">
+                                        <ng-container *ngFor="let arrStyleInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_style', arrStyleInput.key)">
+                                                <fhem-native-select-color
+                                                    [multi]="true"
+                                                    [searchable]="true"
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style.' + arrStyleInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style.' + arrStyleInput.key + '.info' | translate)"
+                                                    [items]="colors.componentColors"
+                                                    [(ngModel)]="currentComponentConfig.inputs.arr_style[arrStyleInput.key]">
+                                                </fhem-native-select-color>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-                        
-                                <!-- gradient style values -->
-                                <ng-container *ngIf="compInputs.key === 'arr_style_grad' && currentComponentConfig.inputs.arr_style_grad">
-                                    <ng-container *ngFor="let arrGradInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
-                                        <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_style_grad', arrGradInput.key)">
-                                            <fhem-native-select-gradient
-                                                [multi]="true"
-                                                [searchable]="true"
-                                                [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style_grad.' + arrGradInput.key + '.name' | translate)"
-                                                [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style_grad.' + arrGradInput.key + '.info' | translate)"
-                                                [items]="colors.componentColors"
-                                                [(ngModel)]="currentComponentConfig.inputs.arr_style_grad[arrGradInput.key]">
-                                            </fhem-native-select-gradient>
-                                        </div>
+                            
+                                    <!-- gradient style values -->
+                                    <ng-container *ngIf="compInputs.key === 'arr_style_grad' && currentComponentConfig.inputs.arr_style_grad">
+                                        <ng-container *ngFor="let arrGradInput of compInputs.value | keyvalue: keepOrder; trackBy: trackByFn">
+                                            <div class="comp-input-check-container" [class.hide]="checkForHideSetting('arr_style_grad', arrGradInput.key)">
+                                                <fhem-native-select-gradient
+                                                    [multi]="true"
+                                                    [searchable]="true"
+                                                    [label]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style_grad.' + arrGradInput.key + '.name' | translate)"
+                                                    [info]="('COMPONENTS.'+ currentComponentConfig.name +'.INPUTS.arr_style_grad.' + arrGradInput.key + '.info' | translate)"
+                                                    [items]="colors.componentColors"
+                                                    [(ngModel)]="currentComponentConfig.inputs.arr_style_grad[arrGradInput.key]">
+                                                </fhem-native-select-gradient>
+                                            </div>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-                            </div>
-                        </fhem-native-ui-category>
-                    </ng-container>
-                </div>
+                                </div>
+                            </fhem-native-ui-category>
+                        </ng-container>
+                    </div>
+                </ng-container>
             </ng-container>
         </ng-container>
-    </ng-container>
+    </div>
 </ng-template>
 
 <!-- settings entry header -->

@@ -39,7 +39,6 @@ export async function fileImporter(types: string[]): Promise<PickFilesResult|nul
  */
 export async function imageImporter(): Promise<{data: string, mimeType: string} | null> {
     const result = await fileImporter(['image/gif', 'image/jpeg', 'image/png']);
-    console.log(result);
     if(result && result.files[0] && result.files[0].data){
         return { data: result.files[0].data, mimeType: result.files[0].mimeType  };
     }
