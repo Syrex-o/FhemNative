@@ -13,7 +13,7 @@ export const bright: Theme = {
         '--text-c': 'rgb(247, 251, 250)',
         '--text-d': 'rgba(247, 251, 250, 0.5)',
 
-        '--btn-text-a': '#2F2A33',
+        '--btn-text-a': '#E1F3F5',
         '--btn-text-b': '#3d5bf1',
         '--btn-text-c': '#000',
 
