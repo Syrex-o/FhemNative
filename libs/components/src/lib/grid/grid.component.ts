@@ -24,7 +24,7 @@ export class GridComponent implements AfterViewInit, OnDestroy{
 	gridW: Array<number> = [];
 	gridH: Array<number> = [];
 
-	trackByFn(index:any){ return index; }
+	trackByFn(index: number){ return index; }
 
     constructor(
 		private cdr: ChangeDetectorRef,

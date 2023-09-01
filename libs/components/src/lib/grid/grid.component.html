@@ -6,7 +6,7 @@
 			[ngClass]="(i+1) % 7 === 0 ? 'bold' : ''">
 		</span>
 	</div>
-	<span *ngFor="let h of gridH; let i = index;" 
+	<span *ngFor="let h of gridH; let i = index; trackBy: trackByFn;" 
 		class="grid-line h" 
 		[style.top.%]="h"
 		[ngClass]="(i+1) % 7 === 0 ? 'bold' : ''">
