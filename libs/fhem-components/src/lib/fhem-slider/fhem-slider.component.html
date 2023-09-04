@@ -45,6 +45,7 @@
 							(whileMove)="whileMove($event)" 
 							(endMove)="endMove()"
 							[ngStyle]="{
+								'background-color': backgroundColor,
 								'height': orientation === 'horizontal' ? sliderHeight+'px' : '100%',
 								'width': orientation === 'vertical' ? sliderHeight+'px' : '100%'
 							}">
@@ -66,7 +67,7 @@
 						(startMove)="startMove()" 
 						(whileMove)="whileMove($event)" 
 						(endMove)="endMove()"
-						[style.background-color]="boxBackgroundColor">
+						[style.background-color]="backgroundColor">
 						<ng-container *ngTemplateOutlet="SLIDER_ACTIVE; context: {$implicit: 'ios-slider', thumb: false, pin: false}"/>
 						<fhem-native-icon [icon]="sliderIcon" [style.color]="iconColor"/>
 					</div>

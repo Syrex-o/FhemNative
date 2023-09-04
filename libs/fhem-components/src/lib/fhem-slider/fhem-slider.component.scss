@@ -35,6 +35,7 @@
 					border-radius: 50%;
 					z-index: 2;
 					cursor: pointer;
+                    user-select: none;
 					box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
 					.thumb-value{
 						position: absolute;
@@ -114,12 +115,11 @@
             &.type--ios-slider{
                 width: 100%;
                 height: 100%;
-
                 --icon-size: 30px;
                 fhem-native-icon{
                     position: absolute;
-					width: auto;
-					height: auto;
+					width: var(--icon-size);
+					height: var(--icon-size);
                     font-size: var(--icon-size);
 					z-index: 2;
                 }
