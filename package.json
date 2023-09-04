@@ -8,14 +8,13 @@
     "test": "nx test",
     "show:deps": "nx dep-graph",
     "init:firebase": "nx g @angular/fire:ng-add",
-    "serve:web:fhem-native-docs": "nx serve fhem-native-docs",
-    "serve:web:fhem-native": "nx serve fhem-native",
-    "serve:web:fhem-native-desktop": "nx serve fhem-native-desktop",
-    "open:desktop:fhem-native": "nx build fhem-native-desktop && nx run fhem-native-desktop:sync:electron && nx run fhem-native-desktop:open:electron",
-    "build:app:ios:fhem-native": "nx build fhem-native && nx run fhem-native:sync:ios && nx run fhem-native:open:ios",
-    "build:app:android:fhem-native": "nx build fhem-native && nx run fhem-native:sync:android && nx run fhem-native:open:android && cd apps/fhem-native && npm install",
-    "build:desktop:fhem-native": "nx build fhem-native-desktop && nx run fhem-native-desktop:sync:electron && cd apps/fhem-native-desktop && npm install && cd ./electron && npm run electron:make",
-    "build:web:fhem-native-docs": "nx build fhem-native-docs --prod"
+    "serve:web:docs": "nx serve fhem-native-docs",
+    "serve:web:mobile": "nx serve fhem-native",
+    "serve:web:desktop": "nx serve fhem-native-desktop",
+    "build:web:docs": "nx build fhem-native-docs --prod",
+    "build:app:desktop": "cd apps/fhem-native-desktop && npm run build && npm run sync && npm run build:electron",
+    "build:app:ios": "nx build fhem-native && nx run fhem-native:sync:ios && nx run fhem-native:open:ios && cd apps/fhem-native && npm install",
+    "build:app:android": "nx build fhem-native && nx run fhem-native:sync:android && nx run fhem-native:open:android && cd apps/fhem-native && npm install"
   },
   "private": true,
   "dependencies": {
