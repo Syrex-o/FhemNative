@@ -129,19 +129,32 @@ export function restrictToRange(val: number, min: number, max: number): number{
 	return val;
 }
 
+function getAnimationStep(fromNum: number, toNum: number, step: number): number{
+	return step * (fromNum > toNum ? -1 : 1);
+}
+
 export function animateMove(fromNum: number, toNum: number, cb: (val: number)=> void): void{
 	let interval: any;
 	let pos = fromNum;
 	const orginalValue = toNum;
 
+	const maxSteps = 60;
+	const delta = Math.max(fromNum, toNum) - Math.min(fromNum, toNum);
+
+	const stepCount = Math.floor(delta / Math.min(delta, maxSteps));
+	let countDirection = getAnimationStep(pos, toNum, stepCount);
+
 	const frame = ()=>{
-		const count = (pos > toNum) ? - 1 : 1;
 		interval = setInterval(()=>{
+			const restDelta = Math.max(pos, toNum) - Math.min(pos, toNum);
+			// reduce counter at end
+			if(restDelta <= stepCount && stepCount !== 1) countDirection = getAnimationStep(pos, toNum, 1);
+
 			if ( Math.round(pos) === Math.round(toNum)  ) {
 				cb(orginalValue);
 				clearInterval(interval);
 			}else{
-				pos = parseFloat( (pos + count).toFixed(1) );
+				pos = parseFloat( (pos + countDirection).toFixed(1) );
 				cb(pos);
 			}
 		}, 5);
