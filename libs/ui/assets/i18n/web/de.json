@@ -70,6 +70,10 @@
 				"BUTTON_C": "Convertierte Config herunterladen",
 				"BUTTON_D": "Convertieren"
 			},
+			"DOWNLOAD": {
+				"ROOMS": "Convertierte Räume herunterladen",
+				"COMPS": "Convertierte Komponenten herunterladen"
+			},
 			"INFOS": {
 				"HEAD": "Hinweise für den Converter",
 				"INFO": "Beim konvertieren wird immer versucht deine Konfiguration automatisch zu erkennen. Sollte das nicht möglich sein, halte dich an folgende Hinweise:",
@@ -77,6 +81,7 @@
 					"HEAD": "Was kann konvertiert werden:",
 					"CONVERTABLE": {
 						"ROOMS": "Räume",
+						"COMP_LISTS": "Eine Liste von Komponenten",
 						"SHARED_CONFIGS": "Geteilte Konfigurationen"
 					}
 				}
