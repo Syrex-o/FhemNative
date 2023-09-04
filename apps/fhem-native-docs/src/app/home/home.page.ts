@@ -142,7 +142,7 @@ export class HomePageComponent implements AfterContentChecked, OnDestroy{
 	}
 
 	openAppStore(): void{
-		
+		window.open('https://apps.apple.com/us/app/fhemnative/id6458731220', '_system');
 	}
 
 	openDesktop(): void{
