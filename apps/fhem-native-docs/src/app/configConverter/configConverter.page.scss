@@ -24,11 +24,13 @@
             font-size: 1.6rem;
         }
         &.info{
+            background-color: var(--warning-b);
             ion-icon, p{
                 color: var(--warning);
             }
         }
         &.error{
+            background-color: var(--error-b);
             ion-icon, p{
                 color: var(--error);
             }

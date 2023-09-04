@@ -50,7 +50,8 @@ export class ConfigConverterPageComponent {
         map(()=> {
             return [
                 'WEB.CONF_CONVERTER.INFOS.EXAMPLE_1.CONVERTABLE.ROOMS',
-                'WEB.CONF_CONVERTER.INFOS.EXAMPLE_1.CONVERTABLE.SHARED_CONFIGS'
+                'WEB.CONF_CONVERTER.INFOS.EXAMPLE_1.CONVERTABLE.COMP_LISTS',
+				'WEB.CONF_CONVERTER.INFOS.EXAMPLE_1.CONVERTABLE.SHARED_CONFIGS'
             ].map(x=> this.translate.instant(x) );
         })
     );
@@ -59,6 +60,7 @@ export class ConfigConverterPageComponent {
     
     converterErrors: ConverterError[] = [];
     convertedConfig: Room[] = [];
+	convertedComponents: FhemComponentSettings[] = [];
 
     constructor(
 		private toast: ToastService,
@@ -125,17 +127,23 @@ export class ConfigConverterPageComponent {
 	private prepareConverter(): void{
 		this.converterErrors = [];
         this.convertedConfig = [];
+		this.convertedComponents = [];
 	}
 
     private async runConverter(): Promise<void> {
         if( !Array.isArray(this.importedConfig) ){
             this.converterErrors.push({type: 'error', message: 'WEB.CONF_CONVERTER.ERRORS.NO_ARRAY'});
         }else{
-            if( !('components' in this.importedConfig[0])){
+			const firstItem = this.importedConfig[0];
+			// check if first item is a component
+			if('ID' in firstItem && 'attributes' in firstItem) return this.singleRoomConverter(this.importedConfig);
+
+			// 
+            if( !('components' in firstItem)){
                 this.converterErrors.push({type: 'error', message: 'WEB.CONF_CONVERTER.ERRORS.FALSE_CONFIG'});
             }else{
                 // check for rooms
-                if('ID' in this.importedConfig[0] && 'UID' in this.importedConfig[0]){
+                if('ID' in firstItem && 'UID' in firstItem){
 					this.roomsConverter(this.importedConfig);
 				}
             }
@@ -171,10 +179,23 @@ export class ConfigConverterPageComponent {
 					}
 				}
 			}
-			convertedRooms.push(updatedRoom)
+			convertedRooms.push(updatedRoom);
 		}
 		this.convertedConfig = convertedRooms;
     }
+
+	private async singleRoomConverter(importedComponents: Array<any>): Promise<void>{
+		const convertedComponents: FhemComponentSettings[] = [];
+
+		for(let i = 0; i < importedComponents.length; i++){
+			let convertedComponent = await this.convertComponent(importedComponents[i]);
+			if(convertedComponent) {
+				convertedComponent = await this.componentLoader.getCompressedFhemComponentConfig(convertedComponent);
+				convertedComponents.push(convertedComponent);
+			}
+		}
+		this.convertedComponents = convertedComponents;
+	}
 
     private async convertComponent(importedComponent: any): Promise<FhemComponentSettings|null>{
 		try{
@@ -288,9 +309,13 @@ export class ConfigConverterPageComponent {
 		}
 	}
 
-    downloadConfig(): void{
+    downloadRooms(): void{
         this.importExport.exportRooms(this.convertedConfig);
     }
+
+	downloadComponents(): void{
+		this.importExport.exportComponents(this.convertedComponents);
+	}
 }
 
 export const CONFIG_CONVERTER_ROUTES: Route[] = [

@@ -31,10 +31,20 @@
         </ng-container>
     </div>
 
+    <!-- Conveted Rooms Button -->
     <div class="download-container mt-1-5 center" *ngIf="convertedConfig.length">
-        <button class="button-web type-c" (click)="downloadConfig()">
+        <button class="button-web type-c" (click)="downloadRooms()">
             <ion-icon name="download-outline"></ion-icon>
-            <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.SELECT.BUTTON_C' | translate }}</p>
+            <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.DOWNLOAD.ROOMS' | translate }}</p>
+            <ion-ripple-effect></ion-ripple-effect>
+        </button>
+    </div>
+
+    <!-- Conveted Components Button -->
+    <div class="download-container mt-1-5 center" *ngIf="convertedComponents.length">
+        <button class="button-web type-c" (click)="downloadComponents()">
+            <ion-icon name="download-outline"></ion-icon>
+            <p class="size-f no-margin">{{ 'WEB.CONF_CONVERTER.DOWNLOAD.COMPS' | translate }}</p>
             <ion-ripple-effect></ion-ripple-effect>
         </button>
     </div>
@@ -50,4 +60,4 @@
     </div>
 </div>
 
-<fhem-native-loader *ngIf="loader.displayLoader" [logoLoader]="loader.logoLoader" [loaderInfo]="loader.loaderInfo"></fhem-native-loader>
+<fhem-native-loader *ngIf="loader.loaderState | async"></fhem-native-loader>
