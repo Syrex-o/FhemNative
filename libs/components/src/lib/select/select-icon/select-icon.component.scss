@@ -8,12 +8,15 @@ ion-popover.custom-select-container .select-component-icon-container{
         display: block;
         width: var(--icon-width);
         height: var(--icon-width);
+        color: var(--text-a);
         margin-right: var(--item-spacing-a);
+
     }
     .selected-icon{
         display: block;
         width: var(--icon-width);
         height: var(--icon-width);
+        color: var(--text-b);
         margin-right: var(--item-spacing-b);
     }
 }
