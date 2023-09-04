@@ -12,7 +12,7 @@ import { ToastService, ToastStyle } from './toast.service';
 import { ComponentLoaderService } from './component-loader.service';
 import { StructureService } from './structure.service';
 
-import { APP_CONFIG } from '@fhem-native/app-config';
+import { APP_CONFIG, AppConfig } from '@fhem-native/app-config';
 
 import { getRawVersionCode, IsJsonString } from '@fhem-native/utils';
 
@@ -65,7 +65,7 @@ export class FhemService {
 		protected settings: SettingsService,
 		protected structure: StructureService,
 		protected compLoader: ComponentLoaderService,
-		@Inject(APP_CONFIG) protected appConfig: any){
+		@Inject(APP_CONFIG) protected appConfig: AppConfig){
 		
 		let timeout: any;
 		let toastDevices: string[] = [];
@@ -95,7 +95,6 @@ export class FhemService {
 	 */
 	private fhemToaster(message: string, level: ToastStyle): void{
 		if(this.settings.app.allowToasts) return this.toast.addToast('FHEM', message, level);
-
 		// just log if no toasts are allowd
 		this.logger[level](message);
 	}
@@ -332,16 +331,19 @@ export class FhemService {
 					// evaluation of changes
 					// device got an update
 					const device: string = JSON.parse(lines[0])[0];
-					const change: any = {};
-	
-					if(this.listenDevices.find(x=> x.device === device)){
-						for (let i = 1; i < lines.length; i += 2) {
-							const prop = JSON.parse(lines[i])[0].match(/([^-]+(?=))$/)[0];
-							const value = JSON.parse(lines[i])[1];
+					if(!this.listenDevices.find(x=> x.device === device)) return;
+
+					const change: Record<string, string> = {};
+					for (let i = 1; i < lines.length; i += 2) {
+						const line = lines[i];
+						if(line !== undefined && line !== '' && line.endsWith(']')){
+							const [id, value, html] = JSON.parse(line);
+							// remove device from id
+							const prop = id.slice(device.length + 1);
 							change[prop] = value;
 						}
-						this.updateListenDevice(device, change);
 					}
+					this.updateListenDevice(device, change);
 				}
 			}
 		}
