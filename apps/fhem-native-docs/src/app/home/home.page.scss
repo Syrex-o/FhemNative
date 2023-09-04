@@ -33,6 +33,7 @@
 
     .button-container{
         display: flex;
+        align-items: center;
         flex-direction: column;
         button{
             border-radius: 20px;
@@ -46,19 +47,8 @@
                 display: flex;
                 align-items: center;
                 gap: var(--item-spacing-a);
-                background-color: transparent;
-                border: 2px solid var(--signal-a);
-                color: var(--signal-a);
                 ion-icon{
                     font-size: 1.5rem;
-                }
-                &:hover{
-                    color: var(--signal-a);
-                    background-color: var(--signal-a);
-                    ion-icon,
-                    p{
-                        color: var(--primary);
-                    }
                 }
             }
         }
