@@ -9,7 +9,7 @@
         </div>
         <div class="picker-inner-content">
             <ng-container *ngIf="!headerAnimation; else ANIMATED_HEADER">
-                <ion-content [class.add-padding]="addPaddingToContent" [scrollEvents]="true" class="background-a-ion">
+                <ion-content [class.add-padding]="addPaddingToContent" class="background-a-ion">
                     <ng-content select="[content]"></ng-content>
                 </ion-content>
             </ng-container>
