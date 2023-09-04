@@ -11,8 +11,8 @@
                 </div>
             </div>
             
-            <div class="flex-block">
-                <p class="spacing-b color-b-app">{{room.name | uppercase}}</p>
+            <div class="flex-block room-name" [class.editing]="editMode$ | async">
+                <p class="spacing-b color-b-app shorten">{{room.name | uppercase}}</p>
             </div>
             
             <div class="flex-block">

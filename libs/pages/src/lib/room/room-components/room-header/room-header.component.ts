@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { map } from 'rxjs';
+
+import { EditorService } from '@fhem-native/services';
 
 import { Room } from '@fhem-native/types/room';
 
@@ -13,6 +16,8 @@ export class RoomHeaderComponent{
 	@Input() expandState = false;
 
 	@Output() burgerClick: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+	editMode$ = inject(EditorService).core.getMode().pipe( map(x=> x.edit) );
 
 	toggleMenu(){
 		this.expandState = !this.expandState;
