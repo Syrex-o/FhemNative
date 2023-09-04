@@ -13,6 +13,7 @@ export const Settings: ComponentSettings = {
 		},
 		arr_data: {
 			style: {items: ['digital', 'analog'], value: 'digital'},
+			digitalStyle: {items: ['standard', 'alarm'], value: 'standard'},
 			format: {items: ['HH:mm:ss', 'HH:mm'], value: 'HH:mm:ss'}
 		},
 		style: {
@@ -26,6 +27,7 @@ export const Settings: ComponentSettings = {
 		}
 	},
 	dependencies: {
-		'bool.showTicks': {dependOn: ['arr_data.style'], value: ['analog']}
+		'bool.showTicks': {dependOn: ['arr_data.style'], value: ['analog']},
+		'arr_data.digitalStyle': {dependOn: ['arr_data.style'], value: ['digital']}
 	}
 };

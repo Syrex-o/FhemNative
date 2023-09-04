@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { interval, map, Observable, shareReplay } from 'rxjs';
+import { interval, map, shareReplay } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -28,6 +28,7 @@ export class FhemClockComponent{
 
 	// Selections
 	@Input() style!: string;
+	@Input() digitalStyle!: string;
 	@Input() format!: string;
 
 	// Styling
@@ -43,10 +44,22 @@ export class FhemClockComponent{
 	@Input() showTicks!: boolean;
 
 	private date$ = interval(250).pipe( untilDestroyed(this), map(()=> local()), shareReplay() );
-    digitalClock$: Observable<{HH: string, mm: string, ss: string}> = this.date$.pipe(
+
+	digitalClockStandard$ = this.date$.pipe(
 		map(t=> { return {HH: t.hour, mm: t.minute, ss: t.second } })
 	);
-	analogClock$: Observable<{HH: number, mm: number, ss: number}> = this.date$.pipe(
+
+	digitalClockAlarm$ = this.date$.pipe(
+		map(t=>{
+			return {
+				hours: [ this.getOpacity(parseInt(t.hour[0])), this.getOpacity(parseInt(t.hour[1])) ],
+				minutes: [ this.getOpacity(parseInt(t.minute[0])), this.getOpacity(parseInt(t.minute[1])) ],
+				seconds: [ this.getOpacity(parseInt(t.second[0])), this.getOpacity(parseInt(t.second[1])) ]
+			};
+		})
+	);
+
+	analogClock$ = this.date$.pipe(
 		map(t=> { 
 			return {
 				HH: parseInt(t.hour) * 30 + parseInt(t.minute) * (360/720),
@@ -55,9 +68,29 @@ export class FhemClockComponent{
 			}
 		})
 	);
-	
 
-    displayValue(str: string): boolean{
+	private getOpacity(n: number){
+		const numbers = [
+			[1, 1, 1, 0, 1, 1, 1], // 0
+			[0, 0, 1, 0, 0, 1, 0], // 1
+			[1, 0, 1, 1, 1, 0, 1], // 2
+			[1, 0, 1, 1, 0, 1, 1], // 3
+			[0, 1, 1, 1, 0, 1, 0], // 4
+			[1, 1, 0, 1, 0, 1, 1], // 5
+			[1, 1, 0, 1, 1, 1, 1], // 6
+			[1, 0, 1, 0, 0, 1, 0], // 7
+			[1, 1, 1, 1, 1, 1, 1], // 8
+			[1, 1, 1, 1, 0, 1, 1]  // 9
+		];
+
+		const res = [];
+		for(let i = 0; i < numbers[n].length; i++){
+			res.push( numbers[n][i] === 0 ? 0.125 : 1 );
+		}
+		return res;
+	}
+
+	displayValue(str: string): boolean{
 		const re = new RegExp(str, 'g');
 		const match: RegExpMatchArray|null = this.format.match(re);
 		return match !== null ? true : false;
