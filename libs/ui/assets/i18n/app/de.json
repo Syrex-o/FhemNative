@@ -1163,6 +1163,10 @@
 						"name": "Uhrentyp",
 						"info": "Style der Uhr"
 					},
+					"digitalStyle": {
+						"name": "Digitaler Uhrentyp",
+						"info": "Style des digitalen Uhrentyps"
+					},
 					"format": {
 						"name": "Format",
 						"info": "Zeitformat der Uhr"
@@ -2039,7 +2043,7 @@
 				"style": {
 					"backgroundColor":{
 						"name": "Hintergrundfarbe",
-						"info": "Hintergrundfarbe des Sliders"
+						"info": "Hintergrundfarbe des inaktiven Teils vom Slider"
 					},
 					"boxBackgroundColor": {
 						"name": "Box Hintergrundfarbe",
@@ -2055,15 +2059,15 @@
 					},
 					"fillColor":{
 						"name": "Füllfarbe",
-						"info": "Füllfarbe des Sliders"
+						"info": "Füllfarbe des aktiven Teils vom Slider"
 					},
 					"iconColor": {
 						"name": "Icon-Farbe",
 						"info": "Farbe des Slider Icons"
 					},
 					"buttonColor": {
-						"name": "Hintergrundfarbe",
-						"info": "Hintergrundfarbe der Buttons"
+						"name": "Button Hintergrundfarbe",
+						"info": "Hintergrundfarbe der Slider-Buttons"
 					}
 				}
 			}
