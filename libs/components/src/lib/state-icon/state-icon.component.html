@@ -1,9 +1,9 @@
-<ng-container *ngIf="(theme$ | async) && icon === 'plus'">
+<ng-container *ngIf="iconColor$ | async as buttonColor">
     <ng-container [ngSwitch]="icon">
         <!-- plus state icon -->
         <ng-container *ngSwitchCase="'plus'">
-            <span class="line one" [style.background-color]="_iconColor"></span>
-            <span class="line two" [style.background-color]="_iconColor"></span>
+            <span class="line one" [style.background-color]="buttonColor"></span>
+            <span class="line two" [style.background-color]="buttonColor"></span>
         </ng-container>
     </ng-container>
 </ng-container>

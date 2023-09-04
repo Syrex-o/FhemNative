@@ -1,6 +1,6 @@
 import { Component, forwardRef, HostBinding, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { tap } from 'rxjs';
+import { map } from 'rxjs';
 
 import { ThemeService } from '@fhem-native/services';
 
@@ -23,8 +23,7 @@ export class StateIconComponent {
     @HostBinding('class') get class(){ return [this.icon, ( this.value ? 'active' : 'inactive' ) ]; };
 
     value = false;
-	theme$ = this.theme.getThemePipe('--btn-text-a').pipe(tap(x=> this._iconColor = this.iconColor || x));
-	_iconColor: string|undefined;
+	iconColor$ = this.theme.getThemePipe('--text-a').pipe( map(x=>  this.iconColor || x) );
 
 	constructor(private theme: ThemeService){}
 

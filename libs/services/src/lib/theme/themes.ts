@@ -5,11 +5,11 @@ export const bright: Theme = {
     properties: {
         '--primary': 'rgb(249, 250, 254)',
         '--secondary': 'rgb(255, 255, 255)',
-        '--tertiary': 'rgb(241, 240, 245)',
+        '--tertiary': 'rgb(244, 244, 245)',
         '--quaternary': 'rgb(181, 182, 198)',
 
-        '--text-a': 'rgb(12, 31, 67)',
-        '--text-b': 'rgba(12, 31, 67, 0.5)',
+        '--text-a': 'rgb(9, 9, 11)',
+        '--text-b': 'rgba(9, 9, 11, 0.5)',
         '--text-c': 'rgb(247, 251, 250)',
         '--text-d': 'rgba(247, 251, 250, 0.5)',
 
