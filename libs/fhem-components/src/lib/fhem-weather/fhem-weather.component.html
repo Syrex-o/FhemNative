@@ -13,18 +13,20 @@
 					<ng-template swiperSlide let-data>
 						<div class="data-page">
 							<!-- temp data -->
-							<ngx-charts-area-chart class="weather-chart"
-								*ngIf="(displayCharts$ | async) && forecastDay.hourData.temp[0].series.length"
-								[scheme]="tempColorScheme"
-								[gradient]="true"
-								[curve]="curve"
-								[xAxis]="true"
-								[yAxis]="true"
-								[showGridLines]="false"
-								[yAxisTickFormatting]="tempyAxisTickFormatting"
-								[xAxisTickFormatting]="formatAreaXAxis"
-								[results]="forecastDay.hourData.temp">
-							</ngx-charts-area-chart>
+							<ng-container *ngIf="forecastDay.hourData.temp[0].series.length; else NO_DATA">
+								<ngx-charts-area-chart class="weather-chart"
+									*ngIf="(displayCharts$ | async)"
+									[scheme]="tempColorScheme"
+									[gradient]="true"
+									[curve]="curve"
+									[xAxis]="true"
+									[yAxis]="true"
+									[showGridLines]="false"
+									[yAxisTickFormatting]="tempyAxisTickFormatting"
+									[xAxisTickFormatting]="formatAreaXAxis"
+									[results]="forecastDay.hourData.temp">
+								</ngx-charts-area-chart>
+							</ng-container>
 						</div>
 					</ng-template>
 				</ng-container>
@@ -48,4 +50,13 @@
 			</ng-container>
 		</div>
 	</div>
+
+	<ng-template #NO_DATA>
+		<div class="no-data-container">
+			<fhem-native-text-block
+				[label]="('COMPONENTS.Weather.ERRORS.NO_DATA.name' | translate)"
+				[info]="('COMPONENTS.Weather.ERRORS.NO_DATA.info' | translate)">
+			</fhem-native-text-block>
+		</div>
+	</ng-template>
 </fhem-native-component>

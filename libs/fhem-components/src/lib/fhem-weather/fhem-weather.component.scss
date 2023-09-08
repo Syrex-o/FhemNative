@@ -2,77 +2,85 @@
 @import 'swiper/scss';
 
 .fhem-native-weather{
-    --chart-gap: 10px;
-    --day-height: 120px;
+	--chart-gap: 10px;
+	--day-height: 120px;
 
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
-    .charts-container{
-        position: relative;
-        width: 100%;
-        height: calc( calc(100% - var(--day-height)) - var(--chart-gap) );
-        .data-swiper{
-            position: relative;
-            pointer-events: all;
-            width: 100%;
-            height: 100%;
-        }
-        .data-page{
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-    }
-    .days-container{
-        width: 100%;
-        height: var(--day-height);
-        display: flex;
-        gap: 10px;
-        overflow-x: auto;
-        .day-container{
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            min-width: 80px;
-            height: 100px;
-            flex-grow: 1;
-            flex-shrink: 0;
-            user-select: none;
-            pointer-events: all;
-            border-radius: 16px;
-            padding: 7px;
-            gap: 5px;
-            cursor: pointer;
-            overflow: hidden;
-            align-items: center;
-            justify-content: center;
-            &.active{
-                background-color: var(--secondary);
-            }
-            .icon-container{
-                img{
-                    height: 35px;
-                    width: auto;
-                }
-            }
-            .temp-container{
-                display: flex;
-                gap: 5px;
-                flex-direction: row;
-            }
-        }
-    }
+	.charts-container{
+		position: relative;
+		width: 100%;
+		height: calc( calc(100% - var(--day-height)) - var(--chart-gap) );
+		.data-swiper{
+			position: relative;
+			pointer-events: all;
+			width: 100%;
+			height: 100%;
+		}
+		.data-page{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+	}
+	.days-container{
+		width: 100%;
+		height: var(--day-height);
+		display: flex;
+		gap: 10px;
+		overflow-x: auto;
+		.day-container{
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			min-width: 80px;
+			height: 100px;
+			flex-grow: 1;
+			flex-shrink: 0;
+			user-select: none;
+			pointer-events: all;
+			border-radius: 16px;
+			padding: 7px;
+			gap: 5px;
+			cursor: pointer;
+			overflow: hidden;
+			align-items: center;
+			justify-content: center;
+			&.active{
+				background-color: var(--secondary);
+			}
+			.icon-container{
+				img{
+					height: 35px;
+					width: auto;
+				}
+			}
+			.temp-container{
+				display: flex;
+				gap: 5px;
+				flex-direction: row;
+			}
+		}
+	}
+
+	.no-data-container{
+		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+	}
 }
 
 ngx-charts-area-chart.weather-chart {
-    .axis text {
-        fill: var(--text-a);
-    }
+	.axis text {
+		fill: var(--text-a);
+	}
 }

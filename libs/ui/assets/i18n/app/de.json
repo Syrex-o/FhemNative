@@ -2531,6 +2531,12 @@
 						"info": "Typ des Fhem Wetter Moduls"
 					}
 				}
+			},
+			"ERRORS": {
+				"NO_DATA":{
+					"name": "Keine Daten",
+					"info": "Es sind keine Daten für den ausgewählten Zeitraum verfügbar."
+				}
 			}
 		}
 	}

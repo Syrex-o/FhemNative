@@ -66,12 +66,9 @@ export class FhemTimepickerComponent{
 	fhemDevice = new Subject<FhemDevice>();
 
 	curve = curveMonotoneX;
+	formatAreaXAxis = (date: Date)=> { return timeFormat("%H:%M")(date); }
 	tempColorScheme = {domain: ['#f7c703']} as Color;
 	tempyAxisTickFormatting(d: number){ return d + '°'; }
-
-	formatAreaXAxis = (date: Date)=> {
-		return timeFormat("%H")(date);
-	}
 
 	// ngx charts do not detect resize in container --> manually trigger
 	private displayCharts = new BehaviorSubject(false);
