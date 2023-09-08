@@ -429,7 +429,8 @@
 				"TABLE": "Table",
 				"TABS": "Tabs",
 				"THERMOSTAT": "Thermostat",
-				"TIME PICKER": "Time Picker"
+				"TIME PICKER": "Time Picker",
+				"WEATHER": "Wetter (Alpha)"
 			}
 		}
 	},
@@ -2510,6 +2511,24 @@
 					"timeColor": {
 						"name": "Zeit-Farbe",
 						"info": "Farbe des Zeit-Labels im Timepicker"
+					}
+				}
+			}
+		},
+		"Weather": {
+			"NAME": "Wetter (Alpha)",
+			"INFO": "Eine Komponente, die den Wetterbericht aus FHEM Modulen anzeigt.",
+			"INPUTS": {
+				"data": {
+					"device": {
+						"name": "Geräte Name",
+						"info": "Name des Fhem Geräts"
+					}
+				},
+				"arr_data": {
+					"fhemModule": {
+						"name": "Fhem Modul",
+						"info": "Typ des Fhem Wetter Moduls"
 					}
 				}
 			}
