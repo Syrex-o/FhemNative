@@ -191,3 +191,7 @@ export function getArrayInChunks(arr: any[], chunkSize: number){
 export function getDelay(time: number){
 	return new Promise(resolve => setTimeout(resolve, time));
 }
+
+export function inputIsNotNullOrUndefined<T>(input: null | undefined | T): input is T {
+	return input !== null && input !== undefined;
+}
