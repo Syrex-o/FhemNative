@@ -2,11 +2,11 @@
  * Main version code
  */
 export const MobileVersionCode: Version = {
-	major: 4, minor: 3, patch: 1
+	major: 4, minor: 3, patch: 2
 }
 
 export const DesktopVersionCode: Version = {
-	major: 4, minor: 3, patch: 1
+	major: 4, minor: 3, patch: 2
 }
 
 export interface Version {
