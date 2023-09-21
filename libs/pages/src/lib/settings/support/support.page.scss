@@ -9,6 +9,7 @@
         overflow-x: auto;
         border-radius: 8px;
         justify-content: center;
+        user-select: none;
         .amount-select-container{
             border-radius: 12px;
             border: 1px solid var(--tertiary);
