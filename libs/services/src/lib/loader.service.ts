@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, distinctUntilChanged, map, share } from 'rxjs';
 
-interface Loader {
+export interface Loader {
     show: boolean,
     logoLoader: boolean,
     loaderInfo: string
