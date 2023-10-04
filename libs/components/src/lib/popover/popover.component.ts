@@ -1,17 +1,27 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import { ThemeService } from '@fhem-native/services';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
+	standalone: true,
 	selector: 'fhem-native-popover',
-	templateUrl: './popover.component.html',
+	template: `
+		<ion-popover cssClass="fhem-native-popover"
+			[showBackdrop]="true"
+			[isOpen]="value"
+			(didDismiss)="onDismiss()">
+			<ng-template>
+				<ng-content></ng-content>
+			</ng-template>
+		</ion-popover>
+	`,
 	styleUrls: ['./popover.component.scss'],
 	providers: [{
 		provide: NG_VALUE_ACCESSOR,
 		useExisting: forwardRef(()=> PopoverComponent),
 		multi: true
-	}]
+	}],
+	imports: [ IonicModule ]
 })
 
 export class PopoverComponent implements ControlValueAccessor{
@@ -32,8 +42,6 @@ export class PopoverComponent implements ControlValueAccessor{
 		this.value = value;
 		this.updateChanges();
 	}
-
-	constructor(private theme: ThemeService){}
 
 	onDismiss(): void{
 		this.value = false;
