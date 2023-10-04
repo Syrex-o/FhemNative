@@ -22,6 +22,12 @@ interface DataSeries {
 	series: {name: Date, value: number}[]
 }
 
+interface HourData {
+	min: number,
+	max: number,
+	data: DataSeries[]
+}
+
 interface ForecastDay{
 	date: string,
 	rain: number,
@@ -29,7 +35,9 @@ interface ForecastDay{
 	tempMin: number
 	weatherIcon: string,
 	hourData: {
-		temp: DataSeries[]
+		temp: HourData,
+		rain: HourData,
+		wind: HourData
 	}
 }
 
@@ -49,8 +57,8 @@ interface ForecastDay{
 	encapsulation: ViewEncapsulation.None
 })
 export class FhemTimepickerComponent{
-	@ViewChild('Swiper', {read: SwiperComponent}) swiper: SwiperComponent|undefined;
-	swiperConfig: SwiperOptions = { loop: false, spaceBetween: 0 };
+	@ViewChild('Swiper', {read: SwiperComponent, static: false}) swiper: SwiperComponent|undefined;
+	swiperConfig: SwiperOptions = { loop: false, spaceBetween: 10 };
 
     // meta
 	@Input() UID!: string;
@@ -61,14 +69,23 @@ export class FhemTimepickerComponent{
 
 	// Selections
 	@Input() fhemModule!: string;
-	// @Input() weatherType!: string;
+	@Input() displayType!: string;
 
 	fhemDevice = new Subject<FhemDevice>();
 
+	currentChartItem$ = new BehaviorSubject(0);
+	chartItems = ['TEMP', 'RAIN', 'WIND'];
+
 	curve = curveMonotoneX;
 	formatAreaXAxis = (date: Date)=> { return timeFormat("%H:%M")(date); }
+
 	tempColorScheme = {domain: ['#f7c703']} as Color;
+	rainColorScheme = {domain: ['#8ab4f8']} as Color;
+	windColorScheme = {domain: ['#aebfcf']} as Color;
+
 	tempyAxisTickFormatting(d: number){ return d + '°'; }
+	rainyAxisTickFormatting(d: number){ return d + 'l/m2'; }
+	windyAxisTickFormatting(d: number){ return d + 'km/h'; }
 
 	// ngx charts do not detect resize in container --> manually trigger
 	private displayCharts = new BehaviorSubject(false);
@@ -87,8 +104,20 @@ export class FhemTimepickerComponent{
 
 	constructor(private cdr: ChangeDetectorRef){}
 
-    setFhemDevice(device: FhemDevice): void{ this.fhemDevice.next(device); }
+    setFhemDevice(device: FhemDevice): void{
+		this.getCurrChartItem();
+		this.fhemDevice.next(device);
+	}
+
 	updateCharts(): void{ this.displayCharts.next(false); }
+
+	private getCurrChartItem(){
+		if(this.displayType === 'details' || this.displayType === 'cards') return;
+
+		// detailed chart views
+		if(this.displayType === 'only-rain') return this.selectChart(1);
+		if(this.displayType === 'only-wind') return this.selectChart(2);
+	}
 
 	private proplantaDataMapper(readings: Record<string, any>){
 		const forecast: ForecastDay[] = [];
@@ -111,7 +140,7 @@ export class FhemTimepickerComponent{
 				if(date) forecastDay['date'] =  timeFormat("%d.%m")( date );
 			}
 			// rain
-			if(readings[`${prefix}rain`]) forecastDay['rain'] = readings[`${prefix}rain`].Value;
+			forecastDay['rain'] = readings[`${prefix}rain`] ? readings[`${prefix}rain`].Value : 0;
 			// tempMax
 			if(readings[`${prefix}tempMax`]) forecastDay['tempMax'] = readings[`${prefix}tempMax`].Value;
 			// tempMin
@@ -137,7 +166,7 @@ export class FhemTimepickerComponent{
 			}).filter(inputIsNotNullOrUndefined);
 
 			// temp values
-			forecastDay['hourData']['temp'] = [{
+			const tempSeries = [{
 				name: 'Temp',
 				series: timeVals.map((hourVal, i)=>{
 					return {
@@ -146,10 +175,52 @@ export class FhemTimepickerComponent{
 					}
 				}).filter(x=> x.value !== null)
 			}];
+			const tempData: HourData = {
+				min: Math.min(...tempSeries[0].series.map(x=> x.value)) -1, max: Math.max(...tempSeries[0].series.map(x=> x.value)),
+				data: tempSeries
+			};
+			
+			// rain values
+			const rainSeries = [{
+				name: 'Rain',
+				series: timeVals.map((hourVal, i)=>{
+					return {
+						name: timestamps[i].date,
+						value: readings[`${prefix}rain${hourVal}`] ? readings[`${prefix}rain${hourVal}`].Value : null
+					}
+				}).filter(x=> x.value !== null)
+			}];
+			const rainData: HourData = {
+				min: 0, max: Math.max(1, Math.max(...rainSeries[0].series.map(x=> x.value))),
+				data: rainSeries
+			};
+
+			// wind values
+			const windSeries = [{
+				name: 'Wind',
+				series: timeVals.map((hourVal, i)=>{
+					return {
+						name: timestamps[i].date,
+						value: readings[`${prefix}wind${hourVal}`] ? readings[`${prefix}wind${hourVal}`].Value : null
+					}
+				}).filter(x=> x.value !== null)
+			}];
+			const windData: HourData = {
+				min: Math.min(...windSeries[0].series.map(x=> x.value)) -1, max: Math.max(...windSeries[0].series.map(x=> x.value)),
+				data: windSeries
+			};
+
+			forecastDay['hourData']['temp'] = tempData;
+			forecastDay['hourData']['rain'] = rainData;
+			forecastDay['hourData']['wind'] = windData;
 
 			forecast.push(forecastDay as ForecastDay);
 		}
 		return forecast;
+	}
+
+	selectChart(chartItemIndex: number): void{
+		this.currentChartItem$.next(chartItemIndex);
 	}
 
 	switchSelectedForecastDay(dayIndex: number, fromSwiper?: boolean): void{

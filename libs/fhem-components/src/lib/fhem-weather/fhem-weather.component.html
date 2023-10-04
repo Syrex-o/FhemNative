@@ -7,56 +7,124 @@
 	(updateDevice)="setFhemDevice($event)"
 	(resized)="updateCharts()">
 	<div class="fhem-native-weather" *ngIf="forecast$ | async as forecast">
-		<div class="charts-container">
+		<ng-container [ngSwitch]="displayType">
+			<ng-container *ngSwitchCase="['details', 'only-temp', 'only-rain', 'only-wind'].includes(displayType) ? displayType : !displayType" [ngTemplateOutlet]="DETAILS"/>
+			<ng-container *ngSwitchCase="'cards'" [ngTemplateOutlet]="CARDS"/>
+		</ng-container>
+
+		<!-- Weather Details -->
+		<ng-template #DETAILS>
+			<div class="chart-item-switch-container" *ngIf="displayType === 'details'">
+				<ng-container *ngFor="let chartItem of chartItems; let i = index;">
+					<button *ngIf="'COMPONENTS.Weather.DICT.' as p" class="chart-item-button size-d color-b-app ion-activatable" [class.active]="i === (currentChartItem$ | async)" (click)="selectChart(i)">
+						{{p + chartItem | translate}}
+						<ion-ripple-effect></ion-ripple-effect>
+					</button>
+				</ng-container>
+			</div>
+			<div class="charts-container" [class.no-switch-container]="displayType !== 'details'">
+				<ng-container [ngTemplateOutlet]="CHART_SWIPER"/>
+			</div>
+			<div class="days-container">
+				<ng-container *ngFor="let forecastDay of forecast; let i = index">
+					<div class="day-container ion-activatable" [class.active]="i === (selectedForecastDay$ | async)" (click)="switchSelectedForecastDay(i)">
+						<div class="date-container">
+							<fhem-native-text-line [text]="forecastDay.date"/>
+						</div>
+						<div class="icon-container">
+							<img [src]="forecastDay.weatherIcon">
+						</div>
+						<div class="temp-container">
+							<fhem-native-text-line [bold]="true" [text]="forecastDay.tempMax + '&deg;'"/>
+							<fhem-native-text-line [text]="forecastDay.tempMin + '&deg;'"/>
+						</div>
+						<ion-ripple-effect/>
+					</div>
+				</ng-container>
+			</div>
+		</ng-template>
+
+		<!-- chart swiper -->
+		<ng-template #CHART_SWIPER>
 			<swiper #Swiper [config]="swiperConfig" class="data-swiper" (slideChange)="updateSelectedForecastDay($event)">
 				<ng-container *ngFor="let forecastDay of forecast; let i = index">
 					<ng-template swiperSlide let-data>
 						<div class="data-page">
-							<!-- temp data -->
-							<ng-container *ngIf="forecastDay.hourData.temp[0].series.length; else NO_DATA">
-								<ngx-charts-area-chart class="weather-chart"
-									*ngIf="(displayCharts$ | async)"
-									[scheme]="tempColorScheme"
-									[gradient]="true"
-									[curve]="curve"
-									[xAxis]="true"
-									[yAxis]="true"
-									[showGridLines]="false"
-									[yAxisTickFormatting]="tempyAxisTickFormatting"
-									[xAxisTickFormatting]="formatAreaXAxis"
-									[results]="forecastDay.hourData.temp">
-								</ngx-charts-area-chart>
+							<ng-container [ngSwitch]="currentChartItem$ | async">
+								<!-- temp chart -->
+								<ng-container *ngSwitchCase="0">
+									<ng-container *ngTemplateOutlet="AREA_CHART; context: {$implicit: forecastDay.hourData.temp, colorScheme: tempColorScheme, yAxisFormatting: tempyAxisTickFormatting}"/> 
+								</ng-container>
+								<!-- rain chart -->
+								<ng-container *ngSwitchCase="1">
+									<ng-container *ngTemplateOutlet="AREA_CHART; context: {$implicit: forecastDay.hourData.rain, colorScheme: rainColorScheme, yAxisFormatting: rainyAxisTickFormatting}"/> 
+								</ng-container>
+								<!-- wind chart -->
+								<ng-container *ngSwitchCase="2">
+									<ng-container *ngTemplateOutlet="AREA_CHART; context: {$implicit: forecastDay.hourData.wind, colorScheme: windColorScheme, yAxisFormatting: windyAxisTickFormatting}"/> 
+								</ng-container>
 							</ng-container>
 						</div>
 					</ng-template>
 				</ng-container>
 			</swiper>
-		</div>
-		<div class="days-container">
-			<ng-container *ngFor="let forecastDay of forecast; let i = index">
-				<div class="day-container ion-activatable" [class.active]="i === (selectedForecastDay$ | async)" (click)="switchSelectedForecastDay(i)">
-					<div class="date-container">
-						<fhem-native-text-line [text]="forecastDay.date"/>
-					</div>
-					<div class="icon-container">
-						<img [src]="forecastDay.weatherIcon">
-					</div>
-					<div class="temp-container">
-						<fhem-native-text-line [bold]="true" [text]="forecastDay.tempMax + '&deg;'"/>
-						<fhem-native-text-line [text]="forecastDay.tempMin + '&deg;'"/>
-					</div>
-					<ion-ripple-effect/>
-				</div>
+		</ng-template>
+
+		<!-- area chart -->
+		<ng-template #AREA_CHART let-relData let-colorScheme="colorScheme" let-yAxisFormatting="yAxisFormatting">
+			<ng-container *ngIf="relData.data[0].series.length; else NO_DATA">
+				<ngx-charts-area-chart class="weather-chart"
+					*ngIf="(displayCharts$ | async)"
+					[scheme]="colorScheme"
+					[gradient]="true"
+					[curve]="curve"
+					[xAxis]="true"
+					[yAxis]="true"
+					[showGridLines]="false"
+					[yAxisTickFormatting]="yAxisFormatting"
+					[xAxisTickFormatting]="formatAreaXAxis"
+					[results]="relData.data"
+					[yScaleMin]="relData.min"
+					[yScaleMax]="relData.max">
+				</ngx-charts-area-chart>
 			</ng-container>
-		</div>
+		</ng-template>
+
+		<!-- Weather Cards -->
+		<ng-template #CARDS>
+			<div class="cards-container">
+				<swiper #Swiper [config]="swiperConfig" class="card-swiper">
+					<ng-container *ngFor="let forecastDay of forecast; let i = index">
+						<ng-template swiperSlide>
+							<div class="card-page">
+								<div class="card-inner">
+									<div class="date-container">
+										<fhem-native-text-line [text]="forecastDay.date" [bold]="true"/>
+									</div>
+									<div class="icon-container">
+										<img [src]="forecastDay.weatherIcon">
+									</div>
+									<div class="temp-container">
+										<p class="color-a-app max">{{forecastDay.tempMax}}&deg;</p>
+										<p class="color-b-app min">/</p>
+										<p class="color-b-app min">{{forecastDay.tempMin}}&deg;</p>
+									</div>
+									<div class="info-container">
+										<ion-icon class="color-b-app" name="water-outline"/>
+										<fhem-native-text-line [text]="forecastDay.rain + 'l/m2'"/>
+									</div>
+								</div>
+							</div>
+						</ng-template>
+					</ng-container>
+				</swiper>
+			</div>
+		</ng-template>
 	</div>
 
 	<ng-template #NO_DATA>
 		<div class="no-data-container">
-			<fhem-native-text-block
-				[label]="('COMPONENTS.Weather.ERRORS.NO_DATA.name' | translate)"
-				[info]="('COMPONENTS.Weather.ERRORS.NO_DATA.info' | translate)">
-			</fhem-native-text-block>
+			<fhem-native-text-block *ngIf="'COMPONENTS.Weather.ERRORS.NO_DATA.' as p" [label]="(p + 'name' | translate)" [info]="( p + 'info' | translate)"/>
 		</div>
 	</ng-template>
 </fhem-native-component>

@@ -4,6 +4,7 @@
 .fhem-native-weather{
 	--chart-gap: 10px;
 	--day-height: 120px;
+	--switch-height: 60px;
 
 	width: 100%;
 	height: 100%;
@@ -11,23 +12,152 @@
 	position: relative;
 
 	display: flex;
+	user-select: none;
 	flex-direction: column;
 	justify-content: space-between;
+
+	.chart-item-switch-container{
+		position: relative;
+		height: var(--switch-height);
+		display: flex;
+		gap: 10px;
+		flex-direction: row;
+		.chart-item-button{
+			position: relative;
+			overflow: hidden;
+			height: 100%;
+			padding: var(--padding-a) var(--padding-b);
+			background-color: transparent;
+			pointer-events: all;
+			&.active{
+				color: var(--text-a);
+				font-weight: 600;
+			}
+		}
+	}
 
 	.charts-container{
 		position: relative;
 		width: 100%;
-		height: calc( calc(100% - var(--day-height)) - var(--chart-gap) );
+		height: calc( calc( calc(100% - var(--day-height)) - var(--chart-gap) ) - var(--switch-height));
+		// &.no-days-container{
+		// 	height: calc( calc( 100% - var(--chart-gap) ) - var(--switch-height));
+		// }
+		&.no-switch-container{
+			height: calc( calc( 100% - var(--chart-gap) ) - var(--day-height));
+		}
 		.data-swiper{
 			position: relative;
 			pointer-events: all;
 			width: 100%;
 			height: 100%;
+			cursor: grab;
 		}
 		.data-page{
 			position: absolute;
 			width: 100%;
 			height: 100%;
+		}
+	}
+	.cards-container{
+		position: relative;
+		width: 100%;
+		height: 100%;
+		.card-swiper{
+			position: relative;
+			pointer-events: all;
+			width: 100%;
+			height: 100%;
+			cursor: grab;
+			border-radius: var(--radius-b);
+		}
+		.card-page{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			.card-inner{
+				position: relative;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				gap: 10px;
+				padding: var(--padding-b);
+				align-items: center;
+				flex-direction: column;
+				justify-content: space-between;
+				border-radius: var(--radius-b);
+				background-color: var(--secondary);
+			}
+			.icon-container{
+				width: 50%;
+				min-width: 50px;
+				max-width: 150px;
+				img{
+					width: 100%;
+					height: auto;
+				}
+			}
+			.temp-container,
+			.info-container{
+				display: flex;
+				gap: 5px;
+				flex-direction: row;
+			}
+			.temp-container{
+				p{
+					margin: 0;
+					font-size: 25px;
+					line-height: 25px;
+					&.min{
+						font-size: 18px;
+					}
+				}
+			}
+
+
+			.left-side{
+				width: 40%;
+				min-width: 60px;
+				flex-shrink: 0;
+				.icon-container{
+					width: 100%;
+					img{
+						width: 100%;
+						height: auto;
+					}
+				}
+			}
+			.right-side{
+				width: 100%;
+				height: 100%;
+				padding: var(--padding-a);
+				display: flex;
+				gap: 10px;
+				flex-direction: column;
+				.temp-container,
+				.info-container{
+					display: flex;
+					gap: 5px;
+					flex-direction: row;
+				}
+				.temp-container{
+					p{
+						margin: 0;
+						font-size: 25px;
+						line-height: 25px;
+						&.min{
+							font-size: 18px;
+						}
+					}
+				}
+			}
+			
+			// .temp-container{
+			// 	display: flex;
+			// 	gap: 5px;
+			// 	align-items: start;
+			// 	flex-direction: column;
+			// }
 		}
 	}
 	.days-container{

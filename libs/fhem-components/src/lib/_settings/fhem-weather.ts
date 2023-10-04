@@ -13,7 +13,7 @@ export const Settings: ComponentSettings = {
 		},
 		arr_data: {
 			fhemModule: {items: ['Proplanta'], value: 'Proplanta'},
-			// weatherType: {items: ['forecast', 'today'], value: 'forecast'}
+			displayType: {items: ['details', 'cards', 'only-temp', 'only-rain', 'only-wind'], value: 'details'}
 		}
 	}
 };
