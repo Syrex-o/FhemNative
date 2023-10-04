@@ -14,11 +14,23 @@
 
         <div class="full-container" fhemNativeScrollManager>
             <!-- demo -->
-            <ng-container *ngIf="sandboxComponents">
+            <ng-container *ngIf="sandboxComponents$ | async as sandboxComponents">
                 <fhem-native-doc-item-header header="Demo Container:" headerID="demo" [asAnchor]="true"/>
-                <div class="sanbox-container">
-                    <fhem-native-component-loader [containerId]="sandboxUID" [components]="sandboxComponents"/>
-                    <fhem-native-edit-button (editBtnClicked)="toggleEditMode()"/>
+                <div class="sanbox-container" *ngIf="sandboxUID$ | async as sandboxUID">
+                    <ng-container *ngIf="sandboxComponents.loading; else SANDBOX_CONTENT">
+                        <fhem-native-loader [fixed]="false" [manualLoader]="{show: true, logoLoader: false, loaderInfo: ''}"></fhem-native-loader>
+                    </ng-container>
+
+                    <ng-template #SANDBOX_CONTENT>
+                        <ng-container *ngIf="sandboxComponents.comps.length; else NO_DEMO_COMPS">
+                            <fhem-native-component-loader [containerId]="sandboxUID" [components]="sandboxComponents.comps"/>
+                            <fhem-native-edit-button (editBtnClicked)="toggleEditMode(sandboxUID)"/>
+                        </ng-container>
+
+                        <ng-template #NO_DEMO_COMPS>
+                            <fhem-native-doc-item-text class="center" [text]="'Es sind keine Demo-Komponenten verfügbar.'"></fhem-native-doc-item-text>
+                        </ng-template>
+                    </ng-template>
                 </div>
             </ng-container>
 
