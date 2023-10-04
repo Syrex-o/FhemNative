@@ -1,33 +1,38 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation, inject } from '@angular/core';
 
 
 import { ColorService, ComponentLoaderService, EditorService, IconService, SettingsService, StructureService } from '@fhem-native/services';
 
 import { leaf } from '@fhem-native/utils';
+
 import { ComponentCategories, ComponentTypes } from '@fhem-native/app-config';
 import { FhemComponentSettings } from '@fhem-native/types/components';
+
+import { IonPickerAnimationService } from '@fhem-native/animations';
 
 @Component({
 	selector: 'fhem-native-room-component-creator',
 	templateUrl: './component-creator.component.html',
 	styleUrls: ['./component-creator.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 })
 
 export class RoomComponentCreatorComponent{
+    private modalAnimations = inject(IonPickerAnimationService);
+	enterAnimation = this.modalAnimations.getAnimation('fromRightIn');
+	leaveAnimation = this.modalAnimations.getAnimation('fromRightOut');
+
     componentTypes = ComponentTypes;
     componentCategories = ComponentCategories;
-    // newComponent: Type<any>|undefined;
 
     componentEditor$ = this.editor.component.getMode();
     componentConfigEditor$ = this.editor.getComponentConfigEditor();
 
-    @Input() expandState = false;
+    @Input() mobile = false;
 
     trackByFn(index:any){ return index; }
     keepOrder = (a: any, b: any) => {return a;}
-
-    @HostBinding('class.expanded') get expandBinding(){ return this.expandState; }
 
     constructor(
         public icon: IconService,

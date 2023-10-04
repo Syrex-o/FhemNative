@@ -1,28 +1,38 @@
-:host{
-	--outer-items: 2;
+.comp-creator-modal{
 	--item-height: 60px;
-	--main-spacing: 5px;
-	ion-toolbar{
-		--border-color: var(--quaternary);
-        --background: var(--secondary);
-    }
-	.content{
-		position: relative;
-		width: 100%;
-		height: 100%;
-		opacity: 0;
-		transition: all 0s ease;
-		transition-delay: 0s;
-		user-select: none;
 
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+	--height: 100%;
+	--width: 400px;
+	
+	pointer-events: none;
+	justify-content: flex-end;
+
+	top: var(--room-content-top-spacing);
+	height: var(--room-content-height);
+	&.mobile{
+		--width: 100%;
 	}
 
-	.flex-container,
-	.scroll-container{
+	&::part(backdrop){
+		display: none;
+	}
+
+	.header-container,
+	.scroll-content,
+	.save-container{
+		position: relative;
+	}
+
+	.flex-container{
 		padding: var(--padding-a);
+	}
+
+	.scroll-content{
+		--padding-top: var(--padding-b);
+		--padding-bottom: var(--padding-b);
+		
+		--padding-end: var(--padding-a);
+		--padding-start: var(--padding-a);
 	}
 
 	.flex-container{
@@ -41,52 +51,37 @@
 		}
 	}
 
-	.header-container,
-	.save-container{
-		position: relative;
+	ion-content{
+		--background: var(--secondary);
 	}
 
-	.scroll-container{
-		left: 0;
+	ion-toolbar{
+		--border-color: var(--quaternary);
+        --background: var(--secondary);
+    }
+
+	.category-item{
+		position: relative;
+		text-align: left;
 		width: 100%;
-		height: calc(100% - ( calc(var(--item-height) * var(--outer-items)) + calc(var(--padding-a) * var(--outer-items)) + calc(var(--main-spacing) * 2) ) );
-		overflow-x: hidden;
-		overflow-y: auto;
-		position: relative;
-		&.select-component{
-			height: calc(100% - ( calc(var(--item-height) * calc(var(--outer-items) - 1)) + calc(var(--padding-a) * calc(var(--outer-items) - 1)) + calc(var(--main-spacing) * 2) ) );
+		height: var(--item-height);
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		padding: 0 var(--padding-a);
+		justify-content: flex-start;
+		background-color: var(--primary);
+		border-top-left-radius: var(--radius-c);
+		border-top-right-radius: var(--radius-c);
+		&.content-item{
+			background-color: transparent;
+			border-radius: var(--radius-a);
 		}
-		.category-item{
-			position: relative;
-			text-align: left;
-			width: 100%;
-			height: var(--item-height);
-			overflow: hidden;
-			display: flex;
-			align-items: center;
-			padding: 0 var(--padding-a);
-			justify-content: flex-start;
-			background-color: var(--primary);
-			border-top-left-radius: var(--radius-c);
-			border-top-right-radius: var(--radius-c);
-			&.content-item{
-				background-color: transparent;
-				border-radius: var(--radius-a);
-			}
-		}
-	}
-
-	.app-button{
-		padding: 0 16px;
-		font-size: 13px;
-		margin-left: var(--item-spacing-a);
-		border-radius: var(--radius-b);
 	}
 
 	// settings
 	.comp-settings-container{
 		position: relative;
-		padding: var(--padding-a) 0;
 		&.comp-info{
 			.comp-type{
 				display: flex;
@@ -106,14 +101,12 @@
 		}
 	}
 
-	&.expanded{
-		.content{
-			transition: opacity 0.2s ease;
-			transition-delay: 0.3s;
-			opacity: 1;
-		}
+	.app-button{
+		padding: 0 16px;
+		font-size: 13px;
+		margin-left: var(--item-spacing-a);
+		border-radius: var(--radius-b);
 	}
-
 
 	// for breakpoint --> see room component scss
     @media only screen and (max-width: 900px) {
