@@ -5,6 +5,7 @@ import { map, tap } from 'rxjs';
 import { EditorService, StructureService } from '@fhem-native/services';
 
 import { pageTransition } from './animations';
+import { IonPickerAnimationService } from '@fhem-native/animations';
 
 @Component({
 	selector: 'fhem-native-room',
@@ -14,22 +15,25 @@ import { pageTransition } from './animations';
 export class RoomPageComponent implements OnInit{
 	// room switch animation
 	contentTransition = pageTransition;
+	// mobile sidebar animations
+	enterAnimation = this.modalAnimations.getAnimation('fromLeftIn');
+	leaveAnimation = this.modalAnimations.getAnimation('fromLeftOut');
 
 	// keep track of router
 	paramsTracker$ = this.route.queryParams.pipe( tap(x=> this.initRoom(x)) );
 	// keep track of editors
 	editComponents$ = this.editor.core.getMode().pipe( map(x=> x.editComponents) );
-	componentEditor$ = this.editor.component.getMode().pipe( tap(x=> this.componentCreatorMenuState = x.edit) );
 
 	@HostBinding('class.mobile') mobileMenus = false;
 	@HostBinding('class.sidebar-expanded') sidebarMenuState = false;
-	@HostBinding('class.component-creator-expanded') componentCreatorMenuState = false;
 	@HostListener('window:resize') onResize(){ this.mobileMenus = window.innerWidth <= 900; }
 
 	constructor(
 		private route: ActivatedRoute, 
 		private editor: EditorService, 
-		public structure: StructureService){}
+		public structure: StructureService,
+		private modalAnimations: IonPickerAnimationService){
+	}
 
 	ngOnInit() { this.onResize(); }
 
@@ -39,6 +43,8 @@ export class RoomPageComponent implements OnInit{
 		if('UID' in params){
 			// filling current room in structure
 			this.structure.getCurrentRoom(params['UID']);
+			// check if room exists --> room might be deleted --> cant go back to this room
+			if(!this.structure.currentRoom) setTimeout(()=> this.structure.changeRoom(this.structure.rooms[0]), 0);
 		}else{
 			if(this.structure.currentRoom) return this.structure.getCurrentRoom(this.structure.currentRoom.UID);
 			// fallback to first/initial room

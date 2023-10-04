@@ -16,6 +16,8 @@ import { RoomComponentCreatorComponent } from './room-components/component-creat
 import { CloseBtnModule, ComponentLoaderModule, IconModule, InputModule, SelectModule, SwitchModule, TextBlockModule, TextLineModule, SelectIconModule, SelectColorModule, EditButtonComponent, UI_CategoryComponent, SelectGradientModule } from '@fhem-native/components';
 import { RoomHeaderUndoRedoComponent } from './room-components/room-header/editor/undo-redo/undo-redo.component';
 
+import { IonPickerAnimationService } from '@fhem-native/animations';
+
 @NgModule({
 	imports: [
 		ComponentLoaderModule,
@@ -57,6 +59,6 @@ import { RoomHeaderUndoRedoComponent } from './room-components/room-header/edito
 		RoomHeaderEditorComponent,
 		RoomComponentCreatorComponent
 	],
-	providers: [RoomGuardService]
+	providers: [RoomGuardService, IonPickerAnimationService]
 })
 export class RoomPageModule {}
