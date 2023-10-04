@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 // Services
-import { FhemService, ThemeService, LoaderService, StorageService, SettingsService, StructureService } from '@fhem-native/services';
+import { FhemService, ThemeService, LoaderService, StorageService, SettingsService, StructureService, BackButtonService } from '@fhem-native/services';
 
 // Plugins
 import { App } from '@capacitor/app';
@@ -23,18 +23,21 @@ export class AppComponent implements OnInit{
 		public loader: LoaderService,
 		private storage: StorageService,
 		public settings: SettingsService,
+		private backBtn: BackButtonService,
 		private structure: StructureService) {
 		// initialize app
 		this.initializeApp();
 	}
 
-	ngOnInit(): void {
+	async ngOnInit() {
 		// app pause and resume
 		App.addListener('pause', ()=> this.zone.run(()=> this.handleAppPause()) );
 		App.addListener('resume', ()=> this.zone.run(()=> this.handleAppResume()) );
 	}
 
 	private async initializeApp(): Promise<void>{
+		// initialize back button
+		this.backBtn.initialize();
 		// initialize storage
 		await this.storage.initStorage();
 		// Load App Defaults
