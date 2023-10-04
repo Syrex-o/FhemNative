@@ -4,6 +4,10 @@
 			"WELCOME": {
 				"1": "Willkommen bei FhemNative"
 			},
+			"CLOSE_TOAST": {
+				"HEAD": "App schließen",
+				"INFO": "Erneut zurück klicken, um App zu beenden"
+			},
 			"IP": {
 				"INFO": {
 					"1": "FhemNative konnte keine Konfiguration für FHEM finden.",
@@ -430,7 +434,7 @@
 				"TABS": "Tabs",
 				"THERMOSTAT": "Thermostat",
 				"TIME PICKER": "Time Picker",
-				"WEATHER": "Wetter (Alpha)"
+				"WEATHER": "Wetter"
 			}
 		}
 	},
@@ -1738,13 +1742,21 @@
 						"name": "Get on",
 						"info": "Status des Readings im ON Zustand"
 					},
+					"getOff":{
+						"name": "Get off",
+						"info": "Status des Readings im OFF Zustand"
+					},
 					"headline":{
 						"name": "Kopfzeile",
 						"info": "Label der Kopfzeile im Picker"
 					},
+					"width":{
+						"name": "Picker Breite",
+						"info": "Breite des Pickers in %"
+					},
 					"height":{
 						"name": "Picker Höhe",
-						"info": "Höhe des Picker in %"
+						"info": "Höhe des Pickers in %"
 					},
 					"borderRadius":{
 						"name": "Rand-Radius",
@@ -1823,6 +1835,10 @@
 					"getOn":{
 						"name": "Get on",
 						"info": "Status des Readings im ON Zustand"
+					},
+					"getOff":{
+						"name": "Get off",
+						"info": "Status des Readings im OFF Zustand"
 					},
 					"headline":{
 						"name": "Kopfzeile",
@@ -2362,6 +2378,10 @@
 						"name": "Anzeige-Reading",
 						"info": "Reading Wert der Angezeigt werden soll (bsp. measured-temp)"
 					},
+					"alias":{
+						"name": "Alias",
+						"info": "Alias für den Gerätenamen"
+					},
 					"threshold":{
 						"name": "Schwellenwert",
 						"info": "Aktions-Drosselung. Nur jeden 'n'ten Befehl an FHEM senden (in Kombination mit 'Update bei Bewegung')"
@@ -2516,7 +2536,7 @@
 			}
 		},
 		"Weather": {
-			"NAME": "Wetter (Alpha)",
+			"NAME": "Wetter",
 			"INFO": "Eine Komponente, die den Wetterbericht aus FHEM Modulen anzeigt.",
 			"INPUTS": {
 				"data": {
@@ -2529,8 +2549,17 @@
 					"fhemModule": {
 						"name": "Fhem Modul",
 						"info": "Typ des Fhem Wetter Moduls"
+					},
+					"displayType": {
+						"name": "Style",
+						"info": "Darstellung der Wetter Komponente"
 					}
 				}
+			},
+			"DICT": {
+				"TEMP": "Temperatur",
+				"RAIN": "Niederschlag",
+				"WIND": "Wind"
 			},
 			"ERRORS": {
 				"NO_DATA":{
