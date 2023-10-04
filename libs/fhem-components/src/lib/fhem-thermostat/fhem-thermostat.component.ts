@@ -31,6 +31,8 @@ export class FhemThermostatComponent{
 	@Input() setReading!: string;
     @Input() displayReading!: string;
 
+	@Input() alias!: string;
+
 	@Input() threshold!: number;
 	@Input() labelExtension!: string;
 
@@ -75,6 +77,7 @@ export class FhemThermostatComponent{
 		tickAmount: 150,
 		tickDeg: 300,
 		offsetDegrees: 0,
+		fontSize: 1,
 		currentPos: [],
 		tickDrawPos: [0, 0],
 		tickPoints: [],
@@ -146,11 +149,25 @@ export class FhemThermostatComponent{
 		ticks = ticks % 2 === 0 ? ticks : ticks -1;
 		this.styles['tickAmount'] = ticks;
 		this.drawTicks();
+		this.getFontSize(container);
     }
 
     private getViewbox(container: DOMRect): number{
-        return Math.max(container.width, container.height);
+        return Math.min(container.width, container.height);
     }
+
+	private getFontSize(container: DOMRect): void{
+		const min = Math.min(container.width, container.height);
+		let fSize = 0.7;
+
+		if(min > 150) fSize= 0.9;
+		if(min > 200) fSize= 1.2;
+		if(min > 250) fSize= 1.4;
+		if(min > 300) fSize= 1.6;
+		if(min > 350) fSize= 1.8;
+
+		this.styles['fontSize'] = fSize;
+	}
 
     private drawTicks(): void{
         const container = this.component?.elem?.nativeElement.getBoundingClientRect();
@@ -326,8 +343,6 @@ export class FhemThermostatComponent{
 	}
 
     updateScales(): void{
-        if(this.sliderType === 'tick'){
-            this.getSVGforTick();
-        }
+        if(this.sliderType === 'tick') this.getSVGforTick();
     }
 }

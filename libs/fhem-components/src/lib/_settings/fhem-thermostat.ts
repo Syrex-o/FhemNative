@@ -14,6 +14,8 @@ export const Settings: ComponentSettings = {
             setReading: {type: 'string', value: ''},
             displayReading: {type: 'string', value: ''},
 
+            alias: {type: 'string', value: ''},
+
             threshold: {type: 'number', value: 20},
             labelExtension: {type: 'string', value: '\xB0C'},
 
@@ -55,9 +57,10 @@ export const Settings: ComponentSettings = {
         'style.gradientColor3': {dependOn: ['arr_data.sliderType'], value: ['thermostat']},
         'style.gradientColor4': {dependOn: ['arr_data.sliderType'], value: ['thermostat']},
         // Tick
-        'style.backgroundColor': {dependOn: ['arr_data.sliderType'], value: ['tick']},
+        'data.alias': {dependOn: ['arr_data.sliderType'], value: ['tick']},
         'style.tickColor': {dependOn: ['arr_data.sliderType'], value: ['tick']},
         'style.labelColor': {dependOn: ['arr_data.sliderType'], value: ['tick']},
+        'style.backgroundColor': {dependOn: ['arr_data.sliderType'], value: ['tick']},
         'style.tickGradientColor1': {dependOn: ['arr_data.sliderType'], value: ['tick']},
         'style.tickGradientColor2': {dependOn: ['arr_data.sliderType'], value: ['tick']},
     }

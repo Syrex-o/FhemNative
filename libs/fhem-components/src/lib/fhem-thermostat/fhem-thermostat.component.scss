@@ -20,7 +20,7 @@
 				}
 				text{
 					user-select: none;
-					font-size: 1.4em;
+					font-size: 1.2em;
 					position: absolute;
 					transform: translate3d(10px,0,0);
 					text-anchor: middle;
@@ -70,14 +70,6 @@
 					user-select: none;
 					pointer-events: none;
 					text-anchor: middle;
-				}
-				.value{
-					font-size: 1.8em;
-					transform: translate(0, -10px);
-				}
-                .device{
-					font-size: 1em;
-					transform: translate(0, 20px);
 				}
 				.current-temp{
 					font-weight: 500;

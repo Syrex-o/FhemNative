@@ -49,8 +49,8 @@
                             [style.transform]="'translateY('+ (styles['factor'] - styles['move'])+'%)'">
                             <ellipse cx="50" cy="145" rx="50" ry="40"/>
                             <path class="dragTip" d="M315.5,556.76,299.24,540.5l16.26-16.26,36.26,16.26Z"/>
-                            <text class="label" font-weight="bold" x="40" y="140" [class.center]="value === current">{{value + labelExtension}}</text>
-                            <text class="label" font-weight="bold" x="40" y="170" 
+                            <text class="label" font-weight="bold" x="40" y="137" [class.center]="value === current">{{value + labelExtension}}</text>
+                            <text class="label" font-weight="bold" x="40" y="163"
                                 [class.hide]="value === current"
                                 [attr.fill]="(current > value) ? coolingColor : (current < value ? heatingColor : '#000')">
                                 {{current + labelExtension}}
@@ -76,7 +76,7 @@
             </ng-container>
             <!-- tick thermostat -->
             <ng-container *ngSwitchCase="'tick'">
-                <svg class="tick" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" [attr.viewBox]="styles['viewBox']">
+                <svg class="tick" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" [attr.viewBox]="styles['viewBox']">
 					<defs>
 						<linearGradient id="outer-thermostat" x1="0%" y1="0%" x2="0%" y2="100%">  
 							<stop [attr.stop-color]="tickGradientColor1" offset="0%"/>
@@ -98,10 +98,32 @@
 					<g class="ticks drag-item">
 						<path *ngFor="let tick of styles['ticks']" [attr.d]="tick.d" [attr.fill]="tick.class ? tickColor : 'rgb(221 221 221 / 40%)'"></path>
 					</g>
-					<text [style.fill]="labelColor"  class="current-temp" alignment-baseline="central" [attr.x]="styles['tickDrawPos'][0]" [attr.y]="styles['tickDrawPos'][1]" [class.hide]="value === current">{{current}}</text>
+					<text 
+                        class="current-temp"
+                        [style.fill]="labelColor"
+                        [style.font-size]="(styles['fontSize'] - 0.2) + 'em'"
+                        alignment-baseline="central" 
+                        [attr.x]="styles['tickDrawPos'][0]" 
+                        [attr.y]="styles['tickDrawPos'][1]" 
+                        [class.hide]="value === current">
+                        {{current}}
+                    </text>
 
-					<text [style.fill]="labelColor"  class="value" [attr.x]="styles['radius']" [attr.y]="styles['radius']">{{value + labelExtension}}</text>
-                    <text [style.fill]="labelColor"  class="device" [attr.x]="styles['radius']" [attr.y]="styles['radius']">{{device}}</text>
+					<text class="value"
+                        [style.fill]="labelColor"
+                        [style.font-size]="(styles['fontSize'] + 0.2) + 'em'"
+                        [attr.x]="styles['radius']" 
+                        [attr.y]="styles['radius']">
+                        {{value + labelExtension}}
+                    </text>
+                    <text class="device"
+                        [style.fill]="labelColor"
+                        [style.font-size]="(styles['fontSize'] - 0.2) + 'em'"
+                        [style.transform]="'translate(0,'+(styles['fontSize'] * 10)+'%)'"
+                        [attr.x]="styles['radius']" 
+                        [attr.y]="styles['radius']">
+                        {{alias !== '' ? alias : device}}
+                    </text>
 				</svg>
             </ng-container>
         </ng-container>
