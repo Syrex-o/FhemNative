@@ -15,6 +15,7 @@ export const Settings: ComponentSettings = {
             getOff: {type: 'string', value: ''},
 
 			headline: {type: 'string', value: ''},
+			width: {type: 'number', value: 80},
 			height: {type: 'number', value: 80},
 
             borderRadius: {type: 'number', value: 5},

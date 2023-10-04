@@ -149,7 +149,7 @@
     [(ngModel)]="showTerms"
     [height]="80"
     [headerAnimation]="false"
-    [pickerHeader]="('PAGES.RIGHTS.TERMS.HEAD_SHORT' | translate)">
+    [modalHeader]="('PAGES.RIGHTS.TERMS.HEAD_SHORT' | translate)">
     <fhem-native-rights-terms content/>
 </fhem-native-picker>
 
@@ -157,6 +157,6 @@
     [(ngModel)]="showTrademarks"
     [height]="80"
     [headerAnimation]="false"
-    pickerHeader="Hinweis">
+    modalHeader="Hinweis">
     <fhem-native-rights-usage content/>
 </fhem-native-picker>

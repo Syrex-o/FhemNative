@@ -1,4 +1,4 @@
-:host{
+.fhem-native-component-picker{
     .fhem-native-picker-button{
         width: 100%;
 		height: 100%;
@@ -16,7 +16,16 @@
     }
 }
 
-.fhem-native-picker-conent{
-    width: 100%;
-    height: 100%;
+.fhem-native-component-picker-modal{
+	top: var(--room-content-top-spacing);
+	height: var(--room-content-height);
+
+	// overwrite base comp style
+	--max-width: 100% !important;
+	--max-height: 100% !important;
+
+	.picker-modal-content{
+		width: 100%;
+		height: 100%;
+	}
 }

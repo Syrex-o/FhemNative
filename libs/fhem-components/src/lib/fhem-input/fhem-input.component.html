@@ -37,7 +37,7 @@
     [(ngModel)]="favMenuState"
     [height]="60"
     [headerAnimation]="false"
-    [pickerHeader]="'COMPONENTS.Input.DICT.FAVS' | translate">
+    [modalHeader]="'COMPONENTS.Input.DICT.FAVS' | translate">
     <div content>
         <ng-container *ngIf="commandFavs && commandFavs.length > 0; else NO_FAVS">
             <ng-container *ngFor="let commandFav of commandFavs; let i = index">

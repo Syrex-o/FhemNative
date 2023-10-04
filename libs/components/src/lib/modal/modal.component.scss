@@ -1,0 +1,21 @@
+ion-modal.modal-component-modal{
+	--width: 100%;
+    user-select: none;
+	.modal-inner-content{
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+	ion-content{
+		&.add-padding{
+			--padding-start: var(--padding-b);
+			--padding-end: var(--padding-b);
+		}
+	}
+	&::part(content){
+		background-color: var(--primary);
+	}
+	&::part(backdrop){
+		--backdrop-opacity: var(--backdrop-op);
+	}
+}

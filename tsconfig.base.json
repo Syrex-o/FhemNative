@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@fhem-native/animations": ["libs/animations/src/index.ts"],
       "@fhem-native/app-config": ["libs/app-config/index.ts"],
       "@fhem-native/components": ["libs/components/src/index.ts"],
       "@fhem-native/directives": ["libs/directives/src/index.ts"],

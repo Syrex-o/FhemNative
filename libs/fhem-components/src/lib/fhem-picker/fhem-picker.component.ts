@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { map, of, tap } from 'rxjs';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { map, tap } from 'rxjs';
 
 import { FhemComponentModule } from '../_fhem-component/fhem-component.module';
 import { ComponentLoaderModule, EditButtonComponent, IconModule, PickerComponent } from '@fhem-native/components';
@@ -19,21 +19,24 @@ import { FhemDevice } from '@fhem-native/types/fhem';
 		PickerComponent,
 		FhemComponentModule,
 		EditButtonComponent,
-        ComponentLoaderModule
-	]
+		ComponentLoaderModule
+	],
+	encapsulation: ViewEncapsulation.None
 })
-export class FhemPickerComponent{
+export class FhemPickerComponent {
 	// meta
 	@Input() UID!: string;
 	@Input() position!: ComponentPosition;
 	
 	// Data
-    @Input() device!: string;
-    @Input() reading!: string;
-    @Input() getOn!: string;
-    @Input() getOff!: string;
+	@Input() device!: string;
+	@Input() reading!: string;
+	@Input() getOn!: string;
+	@Input() getOff!: string;
 
 	@Input() headline!: string;
+
+	@Input() width!: number;
 	@Input() height!: number;
 
 	@Input() borderRadius!: number;
@@ -42,21 +45,21 @@ export class FhemPickerComponent{
 	@Input() borderRadiusBottomLeft!: number;
 	@Input() borderRadiusBottomRight!: number;
 
-    // Icons
-    @Input() iconOn!: string;
-    @Input() iconOff!: string;
+	// Icons
+	@Input() iconOn!: string;
+	@Input() iconOff!: string;
 
 	// Styling
 	@Input() iconColorOn!: string;
 	@Input() iconColorOff!: string;
-    @Input() backgroundColorOn!: string;
+	@Input() backgroundColorOn!: string;
 	@Input() backgroundColorOff!: string;
 
 	// Bool
 	@Input() openOnReading!: boolean;
 	@Input() customBorder!: boolean;
 
-    pickerState = false;
+	pickerState = false;
 	buttonState = false;
 
 	// component reference
@@ -65,7 +68,7 @@ export class FhemPickerComponent{
 		tap(()=> this.getContainer()),
 		map(x=>{
 			if( !this.component || this.component.components === undefined ) return false;
-			return x.edit && x.editFrom !== this.component.components[0].containerUID
+			return x.edit && x.editFrom !== this.component.components[0].containerUID;
 		})
 	);
 
@@ -77,16 +80,16 @@ export class FhemPickerComponent{
 		if(component && component.components) this.component = (component as FhemComponentSettings);
 	}
 
-    setFhemDevice(device: FhemDevice): void{
+	setFhemDevice(device: FhemDevice): void{
 		this.buttonState = this.fhem.deviceReadingActive(device, this.reading, this.getOn);
 		if(this.openOnReading) this.pickerState = this.buttonState;
-    }
+	}
 
-    switchToEditMode(): void{
+	switchToEditMode(): void{
 		if(this.component && this.component.components) this.editor.core.enterEditMode(this.component.components[0].containerUID);
-    }
+	}
 
-    togglePicker(): void{
+	togglePicker(): void{
 		this.pickerState = !this.pickerState;
-    }
+	}
 }

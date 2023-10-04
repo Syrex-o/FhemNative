@@ -22,7 +22,7 @@
     [(ngModel)]="demoDeviceState"
     [height]="80"
     [headerAnimation]="false"
-    [pickerHeader]="'PAGES.SANDBOX.DEMO_DEVICES.HEAD' | translate">
+    [modalHeader]="'PAGES.SANDBOX.DEMO_DEVICES.HEAD' | translate">
     <div content>
         <ng-container *ngFor="let fhemDevice of fhem.devices">
             <fhem-native-ui-category>

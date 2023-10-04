@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { map, tap } from 'rxjs';
 
 import { FhemComponentModule } from '../_fhem-component/fhem-component.module';
@@ -20,7 +20,8 @@ import { FhemDevice } from '@fhem-native/types/fhem';
 		FhemComponentModule,
 		EditButtonComponent,
         ComponentLoaderModule
-	]
+	],
+	encapsulation: ViewEncapsulation.None
 })
 export class FhemPopupComponent{
 	// meta
