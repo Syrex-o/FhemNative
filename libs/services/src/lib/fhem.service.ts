@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 
 // websocket 
-import { Subject, BehaviorSubject, timeout, take, tap, ReplaySubject, takeUntil, timer, share, toArray, distinct, switchMap, of, Observable, concat, delay, merge, map, filter, throttleTime, shareReplay } from 'rxjs';
+import { Subject, BehaviorSubject, timeout, take, tap, ReplaySubject, takeUntil, timer, share, toArray, distinct, switchMap, of, Observable, concat, delay, merge, map, filter } from 'rxjs';
 import { WebSocketSubject } from 'rxjs/webSocket';
 
 // Services
@@ -70,7 +70,7 @@ export class FhemService {
 		let timeout: any;
 		let toastDevices: string[] = [];
 
-		this.deviceUpdateSub.pipe( throttleTime(50) ).subscribe((fhemDevice)=>{
+		this.deviceUpdateSub.subscribe((fhemDevice)=>{
 			toastDevices.push(fhemDevice.device);
 
 			for(const listenDevice of this.listenDevices){
@@ -155,7 +155,6 @@ export class FhemService {
 	 */
 	public async testConnectionProfile(profile: ConnectionProfile): Promise<boolean>{
 		return new Promise((resolve)=>{
-
 			const testSocket = new WebSocketSubject({
 				url: this.getConnectionUrl(profile),
 				protocol: profile.type === 'websocket' ? 'json' : '',
@@ -326,6 +325,18 @@ export class FhemService {
 					if(IsJsonString(msg)) {
 						msg = JSON.parse(msg);
 						msg.Results.forEach((result:any)=> this.deviceGetSub.next(this.deviceTransformer(result, true)) );
+					}else{
+						// used for: readingProxy
+						// evaluation of changes
+						// device got an update
+						const [device, value, html] = JSON.parse(lines[0]);
+						if(!this.listenDevices.find(x=> x.device === device)) return;
+
+						const change: Record<string, string> = {};
+						const prop = device.slice(device.length + 1) || 'state';
+						change[prop] = value;
+
+						this.updateListenDevice(device, change);
 					}
 				}else{
 					// evaluation of changes
@@ -339,7 +350,7 @@ export class FhemService {
 						if(line !== undefined && line !== '' && line.endsWith(']')){
 							const [id, value, html] = JSON.parse(line);
 							// remove device from id
-							const prop = id.slice(device.length + 1);
+							const prop = id.slice(device.length + 1) || 'state';
 							change[prop] = value;
 						}
 					}
