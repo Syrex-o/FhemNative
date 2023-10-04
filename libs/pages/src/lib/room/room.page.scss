@@ -1,130 +1,86 @@
 :host{
-    --sibear-width: 80px;
-    --sidebar-expanded-width: 280px;
+	--mobile-breakPoint: 900px;
 
-    --componentCreator-width: 0px;
-    --componentCreator-expanded-width: 400px;
-
-    --sidemenu-main-spacings: 10px;
-
-    --mobile-breakPoint: 900px;
-
-    position: absolute;
+	position: absolute;
 	width: 100%;
 	height: 100%;
 	top: 0;
 	left: 0;
 	overflow: hidden;
 
-    fhem-native-room-sidebar,
-    fhem-native-room-component-creator{
-        position: relative;
-        z-index: 1;
-        margin-top: var(--sidemenu-main-spacings);
-        background-color: var(--secondary);
-        height: calc(100% - calc(var(--sidemenu-main-spacings) * 2));
+	.desktop-sidebar fhem-native-room-sidebar{
+		position: relative;
+		z-index: 1;
+		margin-top: var(--room-sidebar-spacings-desktop);
+		background-color: var(--secondary);
+		height: calc(100% - calc(var(--room-sidebar-spacings-desktop) * 2));
 
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 
-    fhem-native-room-sidebar,
-    fhem-native-room-component-creator,
-    .room-container .content{
-        will-change: width;
-        transition: width 0.2s ease, transform 0.2s ease;
-    }
+	.desktop-sidebar fhem-native-room-sidebar,
+	.room-container .content{
+		will-change: width;
+		transition: width 0.2s ease, transform 0.2s ease;
+	}
 
-    fhem-native-room-sidebar{
-        width: var(--sibear-width);
-    }
+	.desktop-sidebar fhem-native-room-sidebar{
+		width: var(--room-sidebar-width-folded-desktop);
+	}
 
-    fhem-native-room-component-creator{
-        width: var(--componentCreator-width);
-    }
+	ion-content{
+		--background: transparent;
+	}
 
-    ion-content{
-        --background: transparent;
-    }
-
-    .room-container{
-        display: flex;
-        // position: absolute;
-        // top: 60px;
+	.room-container{
+		display: flex;
 		height: 100%;
 		width: 100%;
-        overflow: hidden;
-        .content{
-            position: relative;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+		overflow: hidden;
+		.content{
+			position: relative;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
 
-        }
-    }
+		}
+	}
 
-    // individual menus
-    &.sidebar-expanded{
-        fhem-native-room-sidebar{
-            width: var(--sidebar-expanded-width);
-        }
-        .room-container .content{
-            width: calc(100% - var(--sidebar-expanded-width));
-        }
-    }
-    &.component-creator-expanded{
-        fhem-native-room-component-creator{
-            width: var(--componentCreator-expanded-width);
-        }
-        .room-container .content{
-            width: calc(100% - var(--sibear-width) - var(--componentCreator-expanded-width));
-        }
-    }  
-    // both menus visible
-    &.sidebar-expanded.component-creator-expanded{
-        .room-container .content{
-            width: calc(100% - var(--sidebar-expanded-width) - var(--componentCreator-expanded-width));
-        }
-    }
+	// individual menus
+	&.sidebar-expanded{
+		.desktop-sidebar fhem-native-room-sidebar{
+			width: var(--room-sidebar-width-expanded);
+		}
+		.room-container .content{
+			width: calc(100% - var(--room-sidebar-width-expanded));
+		}
+	}
 
-    // mobile trigger
-    &.mobile{
-        .room-container .content{
-            width: 100% !important;
-        }
+	// mobile trigger
+	&.mobile{
+		.room-container .content{
+			width: 100% !important;
+		}
+	}
+}
 
-        fhem-native-room-sidebar,
-        fhem-native-room-component-creator{
-            position: fixed;
-            margin: 0;
-            top: 0;
-            height: 100%;
-        }
+.mobile-sidebar-modal{
+	--height: 100%;
+	--width: var(--room-sidebar-width-expanded);
+	--background: var(--secondary);
+	
+	pointer-events: none;
+	justify-content: flex-start;
 
-        fhem-native-room-sidebar{
-            width: var(--sidebar-expanded-width);
-            transform: translateX(-100%);
-        }
-
-        fhem-native-room-component-creator{
-            right: 0;
-            width: 100%;
-            transform: translateX(100%);
-        }
-
-        &.sidebar-expanded{
-            fhem-native-room-sidebar{
-                transform: translateX(0);
-            }
-        }
-        &.component-creator-expanded{
-            fhem-native-room-component-creator{
-                transform: translateX(0);
-            }
-        }
-    }
+	fhem-native-room-sidebar{
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 }

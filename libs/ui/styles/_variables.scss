@@ -107,4 +107,14 @@
 
 	--size-7: 12px;
 	--lHeight-7: 18px;
+
+	// Specific Variables
+	// Room Variables
+	--room-header-height: 64px;
+	--room-content-height: calc(100% - var(--room-content-top-spacing));
+	--room-content-top-spacing: calc( var(--room-header-height) + var(--ion-safe-area-top, 0) );
+	
+	--room-sidebar-width-folded-desktop: 80px;
+	--room-sidebar-width-expanded: 280px;
+	--room-sidebar-spacings-desktop: 10px;
 }
