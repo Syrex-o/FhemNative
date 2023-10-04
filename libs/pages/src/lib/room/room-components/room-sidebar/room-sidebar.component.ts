@@ -47,7 +47,7 @@ export class RoomSidebarComponent {
 
 	switchPage(ref: string[]): void{
 		this.toggleMobileMenu();
-		setTimeout(()=> this.router.navigate(ref, {replaceUrl: true}), 50);
+		this.router.navigate(ref);
 	}
 
 	toggleMenu(): void{
