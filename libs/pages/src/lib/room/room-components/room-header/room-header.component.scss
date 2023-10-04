@@ -1,7 +1,9 @@
 :host{
     z-index: 0;
+    position: relative;
+    height: var(--room-header-height);
     ion-header{
-        --height: 60px;
+        --height: 100%;
         ion-toolbar{
             --background: var(--secondary);
             .header-container{
