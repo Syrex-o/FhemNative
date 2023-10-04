@@ -3,7 +3,7 @@ import { RightsImprintComponent } from "@fhem-native/pages";
 
 @Component({
     standalone: true,
-	selector: 'fhem-native-website-rights-usage',
+	selector: 'fhem-native-website-rights-imprint',
 	template: `<fhem-native-rights-imprint/>`,
     styleUrls: ['./rights-styles.scss'],
     encapsulation: ViewEncapsulation.None,

@@ -8,7 +8,7 @@ import { COMP_ITEMS } from "../shared/app-config";
 
 @Component({
     standalone: true,
-	selector: 'fhem-native-website-docs',
+	selector: 'fhem-native-website-comps',
 	templateUrl: 'comps.page.html',
 	styleUrls: ['comps.page.scss'],
     imports: [
