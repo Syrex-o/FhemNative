@@ -392,13 +392,13 @@ export class ComponentLoaderService {
 	* @param containerRegistry
 	*/
 	public async loadContainerComponents(components: FhemComponentSettings[], containerRegistry: ContainerRegistry): Promise<void>{
-		if(this.settings.app.experimentalFeatures.chunkLoad){
-			for(const componentsChunk of getArrayInChunks(components, 20)){
-				await this.loadContainerComponentsChunk(componentsChunk, containerRegistry);
-				await getDelay(50);
-			}
-		}else{
-			await this.loadContainerComponentsChunk(components, containerRegistry);
+		const chunkLoad = this.settings.app.experimentalFeatures || false;
+		if(!chunkLoad) return await this.loadContainerComponentsChunk(components, containerRegistry);
+		
+		// chhunk loading
+		for(const componentsChunk of getArrayInChunks(components, 20)){
+			await this.loadContainerComponentsChunk(componentsChunk, containerRegistry);
+			await getDelay(50);
 		}
 	}
 }
