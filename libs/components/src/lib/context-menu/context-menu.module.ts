@@ -4,12 +4,12 @@ import { CoreAndTranslateModule } from '@fhem-native/modules';
 import { ContextMenuComponent } from './context-menu.component';
 
 import { IconModule } from '../icon/icon.module';
-import { PopoverModule } from '../popover/popover.module';
+import { PopoverComponent } from '../popover/popover.component';
 
 @NgModule({
 	imports: [
 		IconModule,
-		PopoverModule,
+		PopoverComponent,
 		CoreAndTranslateModule
 	],
 	declarations: [ ContextMenuComponent ],

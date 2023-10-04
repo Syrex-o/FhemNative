@@ -36,7 +36,6 @@ import { TranslatorModule } from './modules/translator.module';
 		HotkeyModule.forRoot()
 	],
 	providers: [
-		{ provide: APP_CONFIG, useValue: environment },
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
 	],
 	bootstrap: [AppComponent],

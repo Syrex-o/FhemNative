@@ -14,11 +14,11 @@ export class ScrollHeaderDirective implements AfterViewInit{
 
     ngAfterViewInit(): void {
         this._header = this.header?.nativeElement;
-        this.domCtrl.write(()=> this.renderer.setStyle(this._header, 'transform', 'translateY(100px)') );
+        if(this._header) this.domCtrl.write(()=> this.renderer.setStyle(this._header, 'transform', 'translateY(100px)') );
     }
 
     @HostListener('ionScroll', ['$event']) onContentScroll(event: any) {
         const threshold = this.offset + event.detail.scrollTop * -1;
-        this.domCtrl.write(() => this.renderer.setStyle(this._header, 'transform', `translateY(${ (threshold >= 0 ? threshold : 0) }px)`) );
+        if(this._header) this.domCtrl.write(() => this.renderer.setStyle(this._header, 'transform', `translateY(${ (threshold >= 0 ? threshold : 0) }px)`) );
     }
 }

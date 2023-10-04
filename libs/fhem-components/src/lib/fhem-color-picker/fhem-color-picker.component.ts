@@ -34,6 +34,8 @@ export class FhemColorPickerComponent {
 	@ViewChild('COLOR_SELECTOR', { read: ElementRef, static: false }) colorSelector: ElementRef|undefined;
 	@ViewChild('COMPONENT', { read: FhemComponent, static: false }) component: FhemComponent|undefined;
 
+	@ViewChild('POPUP', { read: PopupComponent, static: false }) popup: PopupComponent|undefined;
+
 	// meta
 	@Input() UID!: string;
 	@Input() position!: ComponentPosition;
@@ -104,27 +106,30 @@ export class FhemColorPickerComponent {
 	}
 
 	private getDimSize(): void {
-		const relDimensions = this.usePopup ?
-			{w: window.innerWidth * (this.popupWidth / 100), h: (window.innerHeight - 100) * (this.popupHeight/ 100)} :
-			{w: this.component?.elem?.nativeElement.clientWidth, h: this.component?.elem?.nativeElement.clientHeight};
+		let relDimensions = {w: this.component?.elem?.nativeElement.clientWidth, h: this.component?.elem?.nativeElement.clientHeight};
+		if(this.usePopup){
+			relDimensions = this.popup
+				? this.popup.getDimensions()
+				: {w: this.component?.elem?.nativeElement.clientWidth, h: this.component?.elem?.nativeElement.clientHeight}
+		}
 
 		this.dimSize = (this.showFavMenu ? 
-			Math.min( (relDimensions.w || 0) * 0.95, (relDimensions.h || 0) * 0.8) : 
+			Math.min( relDimensions.w || 0, (relDimensions.h || 0) * 0.7) - 50 : 
 			Math.min( relDimensions.w || 0, relDimensions.h || 0)
-		) - 20;
+		) - 10;
 	}
 
 	private getDeviceState(device: FhemDevice): void {
 		this.fhemDevice = device;
-		if (device.readings[this.reading]){
-			this.color = colorSelector(this.colorInput, 'hex', device.readings[this.reading].Value.toString());
-			// get relevant gradient for outer circle
-			this.getOuterGradientColor();
-			// get outer roation angle
-			this.getOuterRotation();
-			// get inner position
-			this.getInnerPosition();
-		}
+		if(!device.readings[this.reading]) return;
+		
+		this.color = colorSelector(this.colorInput, 'hex', device.readings[this.reading].Value.toString());
+		// get relevant gradient for outer circle
+		this.getOuterGradientColor();
+		// get outer roation angle
+		this.getOuterRotation();
+		// get inner position
+		this.getInnerPosition();
 	}
 
 	private drawColorWheel(): void {

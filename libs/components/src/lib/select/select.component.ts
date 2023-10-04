@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, ChangeDetectionStrategy, forwardRef, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, ChangeDetectionStrategy, forwardRef, ViewChild, ElementRef, OnChanges, OnInit, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SearchbarCustomEvent } from '@ionic/angular';
 import { tap } from 'rxjs';

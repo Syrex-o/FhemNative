@@ -23,20 +23,18 @@
                     'border-bottom-left-radius.px': customBorder ? borderRadiusBottomLeft : borderRadius,
                     'border-bottom-right-radius.px': customBorder ? borderRadiusBottomRight : borderRadius
                 }">
-
                 <ion-ripple-effect></ion-ripple-effect>
             </button>
             
             <!-- popup -->
-            <fhem-native-popup 
+            <fhem-native-popup #POPUP
                 [(ngModel)]="popupState"
                 [width]="popupWidth"
                 [height]="popupHeight"
-                [headerAnimation]="false" 
-                [popupHeader]="headline">
-                <div content>
-                    <ng-container *ngTemplateOutlet="COLOR_PICKER"></ng-container>
-                </div>
+                [headerAnimation]="false"
+                [addPaddingToContent]="false"
+                [modalHeader]="headline">
+                <ng-container content *ngTemplateOutlet="COLOR_PICKER"></ng-container>
             </fhem-native-popup>
         </ng-container>
     </div>
@@ -96,7 +94,7 @@
     [(ngModel)]="favMenuState"
     [height]="60"
     [headerAnimation]="false"
-    [pickerHeader]="'COMPONENTS.Color Picker.DICT.FAVS' | translate">
+    [modalHeader]="'COMPONENTS.Color Picker.DICT.FAVS' | translate">
     <div content>
         <ng-container *ngIf="colorFavs && colorFavs.length > 0; else NO_FAVS">
             <ng-container *ngFor="let colorFav of colorFavs; let i = index">
