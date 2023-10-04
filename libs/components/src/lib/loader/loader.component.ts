@@ -1,7 +1,8 @@
-import { Component, HostBinding, Input, inject } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, inject } from '@angular/core';
+import { of } from 'rxjs';
 
 import { getUID } from '@fhem-native/utils';
-import { LoaderService } from '@fhem-native/services';
+import { Loader, LoaderService } from '@fhem-native/services';
 
 import { ShowHide } from './animations';
 
@@ -12,10 +13,16 @@ import { ShowHide } from './animations';
 	animations: [ ShowHide ]
 })
 
-export class LoaderComponent {
+export class LoaderComponent implements OnInit{
 	logoLoaderId = getUID();
 	public displayLoader$ = inject(LoaderService).loader$;
 
+	@Input() manualLoader: Loader|undefined;
+
 	@Input() fixed = true;
 	@HostBinding('class.fixed') get fState(){ return this.fixed; }
+
+	ngOnInit(): void {
+		if(this.manualLoader) this.displayLoader$ = of(this.manualLoader);
+	}
 }
