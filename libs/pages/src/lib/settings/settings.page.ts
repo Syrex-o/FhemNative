@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ImportExportService, LoggerService, SettingsService, StorageService, StructureService, ThemeService, BackButtonService } from '@fhem-native/services';
 
-import { getRawVersionCode, getUID } from '@fhem-native/utils';
+import { getRawVersionCode } from '@fhem-native/utils';
 import { APP_CONFIG, LangOptions, ThemeOptions } from '@fhem-native/app-config';
 
 // Plugins
@@ -18,9 +18,7 @@ import { ThemeName } from '@fhem-native/types/common';
 	templateUrl: 'settings.page.html',
 	styleUrls: ['../pages.style.scss', 'settings.page.scss']
 })
-export class SettingsPageComponent implements OnInit, OnDestroy{
-	private readonly handleID = getUID();
-
+export class SettingsPageComponent{
 	langOptions = LangOptions;
 	themeOptions = ThemeOptions;
 	currentVersion = getRawVersionCode(this.appConfig.versionCode);
@@ -39,12 +37,6 @@ export class SettingsPageComponent implements OnInit, OnDestroy{
 		private translate: TranslateService,
 		private importExport: ImportExportService,
 		@Inject(APP_CONFIG) public appConfig: any){
-	}
-
-	ngOnInit(): void {
-		// block default back btn action
-		// back() call results in not responding sidemenu on mobile
-		this.backBtn.handle(this.handleID, ()=> { return; });
 	}
 
 	changeAppSetting(setting: string, value: any): void{
@@ -83,9 +75,5 @@ export class SettingsPageComponent implements OnInit, OnDestroy{
 	async back(){
 		if(!this.structure.currentRoom) await this.structure.loadRooms();
 		this.structure.changeRoom( this.structure.currentRoom || this.structure.rooms[0], true );
-	}
-
-	ngOnDestroy(): void {
-		this.backBtn.removeHandle(this.handleID);
 	}
 }
