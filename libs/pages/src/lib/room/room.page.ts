@@ -1,5 +1,6 @@
-import { Component, HostBinding, HostListener, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { IonModal } from '@ionic/angular';
 import { map, tap } from 'rxjs';
 
 import { EditorService, StructureService } from '@fhem-native/services';
@@ -13,6 +14,7 @@ import { IonPickerAnimationService } from '@fhem-native/animations';
 	styleUrls: ['../pages.style.scss', 'room.page.scss']
 })
 export class RoomPageComponent implements OnInit{
+	@ViewChild('MOBILE_SIDEBAR', {read: IonModal}) mobileSidebar: IonModal|undefined;
 	// room switch animation
 	contentTransition = pageTransition;
 	// mobile sidebar animations
@@ -36,6 +38,11 @@ export class RoomPageComponent implements OnInit{
 	}
 
 	ngOnInit() { this.onResize(); }
+
+	toggleSidebar(toState: boolean){
+		this.sidebarMenuState = toState;
+		if(this.mobileMenus && this.mobileSidebar) this.mobileSidebar.dismiss();
+	}
 
 	// initialize room
 	private initRoom(params: Params): void{

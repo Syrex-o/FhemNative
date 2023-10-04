@@ -13,12 +13,12 @@
 
 <ng-template #SIDEBAR>
 	<ng-container *ngIf="mobileMenus; else DESKTOP_SIDEBAR">
-		<ion-modal class="mobile-sidebar-modal" (didDismiss)="sidebarMenuState = false"
+		<ion-modal #MOBILE_SIDEBAR class="mobile-sidebar-modal" (didDismiss)="sidebarMenuState = false"
 			[isOpen]="sidebarMenuState"
 			[enterAnimation]="enterAnimation"
 			[leaveAnimation]="leaveAnimation">
 			<ng-template>
-				<fhem-native-room-sidebar (backdropClick)="sidebarMenuState = $event" [expandState]="sidebarMenuState" [mobile]="mobileMenus"/>
+				<fhem-native-room-sidebar (backdropClick)="toggleSidebar($event)" [expandState]="sidebarMenuState" [mobile]="mobileMenus"/>
 			</ng-template>
 		</ion-modal>
 	</ng-container>

@@ -39,24 +39,25 @@ export class RoomSidebarComponent {
 	 * @param ID
 	 */
 	switchRoom(ID: number): void{
-		this.toggleMobileMenu();
+		this.closeMobileMenu();
 
 		const relRoom = this.structure.rooms.find(x=> x.ID === ID);
 		if(relRoom) this.structure.changeRoom(relRoom);
 	}
 
 	switchPage(ref: string[]): void{
-		this.toggleMobileMenu();
+		this.closeMobileMenu();
+
 		this.router.navigate(ref);
 	}
 
-	toggleMenu(): void{
-		this.expandState = !this.expandState;
+	toggleMenu(toState?: boolean): void{
+		this.expandState = toState !== undefined ? toState : !this.expandState;
 		this.backdropClick.emit(this.expandState);
 	}
 
-	private toggleMobileMenu(): void{
-		if(this.mobile) this.toggleMenu();
+	private closeMobileMenu(): void{
+		if(this.mobile) this.toggleMenu(false);
 	}
 
 	drop(e: CdkDragDrop<string[]>): void {
