@@ -6,7 +6,7 @@
     "build:electron": "cd ./electron && npm run electron:make"
   },
   "dependencies": {
-    "@capacitor-community/electron": "^4.1.2",
+    "@capacitor-community/electron": "^5.0.1",
     "@capacitor/app": "^4.1.1",
     "@capacitor/core": "^4.8.1",
     "@capacitor/haptics": "^4.1.0",
