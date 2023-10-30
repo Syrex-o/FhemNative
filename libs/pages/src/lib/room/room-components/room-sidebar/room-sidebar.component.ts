@@ -7,6 +7,7 @@ import { AddRoomComponent } from '@fhem-native/components';
 import { EditorService, SettingsService, StructureService, UndoRedoService } from '@fhem-native/services';
 
 import { Room } from '@fhem-native/types/room';
+import { getDelay } from '@fhem-native/utils';
 
 @Component({
 	selector: 'fhem-native-room-sidebar',
@@ -45,9 +46,13 @@ export class RoomSidebarComponent {
 		if(relRoom) this.structure.changeRoom(relRoom);
 	}
 
-	switchPage(ref: string[]): void{
-		this.closeMobileMenu();
+	async switchPage(ref: string[]){
+		if(this.editor.core.getCurrentMode().editComponents){
+			this.editor.core.switchGridMode(false);
+			await getDelay(10);
+		}
 
+		this.closeMobileMenu();
 		this.router.navigate(ref);
 	}
 
