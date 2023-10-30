@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 export interface Icon {
-	type: 'ion'|'fas', 
+	type: 'ion'|'fas'|'mdi',
 	icon: string
 }
 
@@ -75,7 +75,12 @@ export class IconService {
 		{type: 'fas', icon: 'leaf'}, {type: 'fas', icon: 'seedling'}, 
 		{type: 'fas', icon: 'water'}, {type: 'fas', icon: 'faucet'},
 		{type: 'fas', icon: 'swimming-pool'}, {type: 'fas', icon: 'shower'},
-		{type: 'fas', icon: 'tint'}
+		{type: 'fas', icon: 'tint'},
+
+		// MDI
+		{type: 'mdi', icon: 'window-open-variant'}, {type: 'mdi', icon: 'window-closed-variant'},
+		{type: 'mdi', icon: 'roller-shade'}, {type: 'mdi', icon: 'roller-shade-closed'},
+		{type: 'mdi', icon: 'curtains'}, {type: 'mdi', icon: 'curtains-closed'},
 	];
 	
 	// search for icon
