@@ -2,7 +2,7 @@ import { Component, OnDestroy, Output, EventEmitter, Input, ViewChild, ContentCh
 import { delay, distinctUntilChanged, map, merge, Observable, of, switchMap, tap} from 'rxjs';
 
 import { ContextMenuComponent } from '@fhem-native/components';
-import { TransformationItemDirective, TransformationManagerDirective } from '@fhem-native/directives';
+import { ResizedEvent, TransformationItemDirective, TransformationManagerDirective } from '@fhem-native/directives';
 import { ContextMenuService, FhemService, SelectComponentService, StructureService } from '@fhem-native/services';
 
 import { FhemDevice } from '@fhem-native/types/fhem';
@@ -54,7 +54,7 @@ export class FhemComponent implements AfterViewInit, OnDestroy{
 	/**
 	 * Component Transformation events
 	 */
-	@Output() resized = new EventEmitter<void>();
+	@Output() resized = new EventEmitter<ResizedEvent>();
 	@Output() transformationStart = new EventEmitter<ComponentTransformation>();
 	@Output() transformationEnd = new EventEmitter<ComponentTransformation>();
 
@@ -175,10 +175,10 @@ export class FhemComponent implements AfterViewInit, OnDestroy{
 	}
 
 	// get minimal sizes on resizing of component
-	calcMinSizes(): void{
+	calcMinSizes(event: ResizedEvent): void{
 		this.minWidthPercentage = this.structure.getGridPercentage(this.minDimensions.width, this.transformationManager.container.offsetWidth);
 		this.minHeightPercentage = this.structure.getGridPercentage(this.minDimensions.height, this.transformationManager.container.offsetHeight);
-		this.resized.emit();
+		this.resized.emit(event);
 	}
 
 	ngOnDestroy(): void {
