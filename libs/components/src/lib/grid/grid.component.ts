@@ -5,7 +5,7 @@ import { ContextMenuComponent } from '../context-menu/context-menu.component';
 
 import { TransformationManagerDirective } from '@fhem-native/directives';
 
-import { ContextMenuService, HotKeyService, SelectComponentService, StructureService, UndoRedoService } from '@fhem-native/services';
+import { ContextMenuService, HotKeyService, SelectComponentService,  StructureService, UndoRedoService } from '@fhem-native/services';
 import { getUID } from '@fhem-native/utils';
 
 @Component({
@@ -110,7 +110,7 @@ export class GridComponent implements AfterViewInit, OnDestroy{
 	}
 
 	private buildGrid(): void{
-		const gridDim = 100 / this.structure.getGridDecimal();
+		const gridDim = 100 / this.structure.getGridDim();
 
 		this.gridW = this.getElems(gridDim);
 		this.gridH = this.getElems(gridDim);
@@ -140,8 +140,8 @@ export class GridComponent implements AfterViewInit, OnDestroy{
 		const newHeight = (Math.max(...heights) + 100);
 		if(newHeight !== this.gridHeight){
 			// create new items for scrollHeight > clientHeight (Exp. top: 102%)
-			const baseGridDim = 100 / this.structure.getGridDecimal();
-			const gridDim = Math.round(((newHeight / this.transformationManager.container.clientHeight) * 100) / this.structure.getGridDecimal());
+			const baseGridDim = 100 / this.structure.getGridDim();
+			const gridDim = Math.round(((newHeight / this.transformationManager.container.clientHeight) * 100) / this.structure.getGridDim());
 
 			this.gridH = this.getElems( (gridDim > baseGridDim ? gridDim : baseGridDim), baseGridDim);
 
