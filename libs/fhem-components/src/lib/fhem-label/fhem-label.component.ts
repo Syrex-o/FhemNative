@@ -32,7 +32,8 @@ import { ComponentPosition } from '@fhem-native/types/components';
 						'font-weight': labelFontWeight,
 						'font-style': labelFontStyle,
 						'text-align': textAlign,
-						'color': fhemDevice ? labelColor : color
+						'color': fhemDevice ? labelColor : color,
+						'transform': 'rotate('+rotation+'deg)'
 					}">
 						{{_label}}{{labelExtension}}
 					</p>
@@ -64,6 +65,7 @@ export class FhemLabelComponent{
 	@Input() alias!: string;
 
 	@Input() labelExtension!: string;
+	@Input() rotation!: number;
 	@Input() size!: number;
 	@Input() min!: number;
 	@Input() max!: number;

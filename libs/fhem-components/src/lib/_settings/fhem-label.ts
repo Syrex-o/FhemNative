@@ -18,6 +18,7 @@ export const Settings: ComponentSettings = {
             labelExtension: {type: 'string', value: ''},
 
 			size: {type: 'number', value: 16},
+			rotation: {type: 'number', value: 0},
 			min: {type: 'number', value: 0},
 			max: {type: 'number', value: 100},
 		},
