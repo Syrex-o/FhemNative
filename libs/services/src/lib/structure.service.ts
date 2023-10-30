@@ -345,8 +345,13 @@ export class StructureService {
 	}
 
 	public getGridDecimal(): number{
-		const n: number = this.settings.app.grid.gridSize;
-		return 10 / (100 / (this.settings.app.grid.enabled ? n : 1));
+		const n: number = this.settings.app.grid.enabled ? this.settings.app.grid.gridSize : 1;
+		return this.getGridDim(n);
+	}
+
+	public getGridDim(gridSize?: number): number{
+		const gSize = gridSize ? gridSize : this.settings.app.grid.gridSize;
+		return 10 / (100 / gSize);
 	}
 
 	public getGridPercentage(partDim: number, fullDim: number){

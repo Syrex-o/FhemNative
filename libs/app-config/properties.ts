@@ -11,6 +11,13 @@ export const LangOptions = [
 ];
 
 /**
+ * Grid Size Options
+ */
+export const GridSizeOptions = [
+	5, 10, 20, 30
+];
+
+/**
  * Theme Options
  */
 export const ThemeOptions = ['bright', 'dark'];

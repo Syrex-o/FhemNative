@@ -14,3 +14,9 @@ export interface StorageSetting {
 	default?: unknown,
 	change?: unknown
 }
+
+// Storage Change Listener
+export interface StorageChange {
+	name: string,
+	change: unknown
+}
