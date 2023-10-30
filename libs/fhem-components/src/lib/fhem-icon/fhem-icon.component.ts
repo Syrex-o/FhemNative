@@ -34,7 +34,7 @@ import { ComponentPosition } from '@fhem-native/types/components';
                     <p class="no-margin size-e-app bold">{{indicatorValue}}</p>
                 </div>
                 <!-- main icon -->
-                <fhem-native-icon class="main-icon" [icon]="iconState ? iconOn : iconOff" [style.color]="iconColor"></fhem-native-icon>
+                <fhem-native-icon class="main-icon" [icon]="iconState ? iconOn : iconOff" [style.color]="iconColor" [style.transform]="'rotate('+rotation+'deg)'"></fhem-native-icon>
             </div>
         </fhem-native-component>
     `,
@@ -57,6 +57,8 @@ export class FhemIconComponent{
 
     @Input() min!: string;
     @Input() max!: string;
+
+    @Input() rotation!: number;
 
     // Selections
 	@Input() indicatorPosition!: string;

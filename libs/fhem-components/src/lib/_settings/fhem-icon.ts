@@ -15,9 +15,11 @@ export const Settings: ComponentSettings = {
 
             getOn: {type: 'string', value: 'on'},
             getOff: {type: 'string', value: 'off'},
-
+            
             min: {type: 'string', value: ''},
-            max: {type: 'string', value: ''}
+            max: {type: 'string', value: ''},
+
+            rotation: {type: 'number', value: 0}
 		},
         arr_data: {
             indicatorPosition: {items: ['top-right', 'top-left', 'bottom-right', 'bottom-left'], value: 'top-right'},
