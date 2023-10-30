@@ -6,7 +6,7 @@
         device, reading,
         readingAvailable: true
     }"
-    (resized)="updateScales()"
+    (resized)="updateScales($event)"
     (transformationEnd)="updateScales()"
 
     (initComponent)="onInitComponent()"

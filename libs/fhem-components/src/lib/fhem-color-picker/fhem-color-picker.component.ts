@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
-import { MoverModule, WhileMoveEvent } from '@fhem-native/directives';
+import { MoverModule, ResizedEvent, WhileMoveEvent } from '@fhem-native/directives';
 import { FhemComponent, FhemComponentModule } from '../_fhem-component';
 import { PickerComponent, PopupComponent, TextBlockModule, UI_BoxComponent } from '@fhem-native/components';
 
@@ -101,8 +101,11 @@ export class FhemColorPickerComponent {
 		this.getDeviceState(device);
 	}
 
-	updateScales(): void {
-		if (!this.usePopup || (this.usePopup && this.popupState)) this.drawColorWheel();
+	updateScales(event?: ResizedEvent): void {
+		if (
+			(!event || !event.isFirst) &&
+			(!this.usePopup || (this.usePopup && this.popupState))
+		) this.drawColorWheel();
 	}
 
 	private getDimSize(): void {
