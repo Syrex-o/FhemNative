@@ -1389,6 +1389,10 @@
 						"name": "Get off",
 						"info": "Status des Readings im OFF Zustand"
 					},
+					"rotation":{
+						"name": "Rotation",
+						"info": "Rotation des Icons in Grad"
+					},
 					"min":{
 						"name": "Min Wert",
 						"info": "Minimal Wert (falls benötigt für Min Farbe des Icons)"
@@ -1649,6 +1653,10 @@
 					"size":{
 						"name": "Größe",
 						"info": "Größe des Labels"
+					},
+					"rotation":{
+						"name": "Rotation",
+						"info": "Rotation des Labels in Grad"
 					},
 					"min":{
 						"name": "Min Wert",
