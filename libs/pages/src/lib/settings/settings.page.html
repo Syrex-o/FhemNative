@@ -45,6 +45,26 @@
                 (selectionChanged)="changeLang($event.value)">
             </fhem-native-select>
 
+            <!-- allow enablement -->
+            <fhem-native-switch
+                [boxed]="true"
+                [showInfoBubble]="false"
+                [backgroundColorOff]="primaryColor"
+                [label]="'PAGES.SETTINGS.APP.GRID_STATE.TEXT' | translate" 
+                [info]="'PAGES.SETTINGS.APP.GRID_STATE.INFO' | translate"
+                [(ngModel)]="settings.app.grid.enabled"
+                (clicked)="changeGrid($event)">
+            </fhem-native-switch>
+
+            <!-- grid size -->
+            <fhem-native-select
+                [label]="'PAGES.SETTINGS.APP.GRID_SIZE.TEXT' | translate" 
+                [info]="'PAGES.SETTINGS.APP.GRID_SIZE.INFO' | translate" 
+                [items]="gridSizeOptions" selectionType="action-sheet" 
+                [(ngModel)]="settings.app.grid.gridSize"
+                (selectionChanged)="changeGrid()">
+            </fhem-native-select>
+
             <!-- allow editing -->
             <fhem-native-switch
                 [boxed]="true"

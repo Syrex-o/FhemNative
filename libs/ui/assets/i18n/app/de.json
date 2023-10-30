@@ -51,6 +51,14 @@
 					"TEXT": "Sprache",
 					"INFO": "Sprache der App ändern."
 				},
+				"GRID_STATE":{
+					"TEXT": "Grid verwenden",
+					"INFO": "Grid snapping aktivieren/deaktivieren"
+				},
+				"GRID_SIZE":{
+					"TEXT": "Grid Größe",
+					"INFO": "Größe des Grids ändern."
+				},
 				"EDITING": {
 					"TEXT": "Menü/Räume bearbeiten",
 					"INFO": "Menü- und Raumbearbeitung aktivieren/deaktivieren."

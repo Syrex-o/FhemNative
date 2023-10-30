@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { ImportExportService, LoggerService, SettingsService, StorageService, StructureService, ThemeService, BackButtonService } from '@fhem-native/services';
+import { ImportExportService, LoggerService, SettingsService, StorageService, StructureService, ThemeService } from '@fhem-native/services';
 
 import { getRawVersionCode } from '@fhem-native/utils';
-import { APP_CONFIG, LangOptions, ThemeOptions } from '@fhem-native/app-config';
+import { APP_CONFIG, GridSizeOptions, LangOptions, ThemeOptions } from '@fhem-native/app-config';
 
 // Plugins
 import { Capacitor } from '@capacitor/core';
@@ -21,6 +21,7 @@ import { ThemeName } from '@fhem-native/types/common';
 export class SettingsPageComponent{
 	langOptions = LangOptions;
 	themeOptions = ThemeOptions;
+	gridSizeOptions = GridSizeOptions;
 	currentVersion = getRawVersionCode(this.appConfig.versionCode);
 	primaryColor$ = this.theme.getThemePipe('--primary');
 
@@ -32,7 +33,6 @@ export class SettingsPageComponent{
 		private logger: LoggerService,
 		private storage: StorageService,
 		public settings: SettingsService,
-		private backBtn: BackButtonService,
 		private structure: StructureService,
 		private translate: TranslateService,
 		private importExport: ImportExportService,
@@ -46,6 +46,13 @@ export class SettingsPageComponent{
 	changeLang(lang: string): void{
 		this.changeAppSetting('language', lang);
 		this.translate.use(lang);
+	}
+
+	changeGrid(enabled?: boolean): void{
+		this.changeAppSetting('grid', JSON.stringify({
+			enabled: enabled !== undefined ? enabled : this.settings.app.grid.enabled,
+			gridSize: this.settings.app.grid.gridSize
+		}));
 	}
 
 	changeTheme(theme: ThemeName): void{
