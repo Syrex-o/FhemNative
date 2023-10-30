@@ -5,7 +5,7 @@
 	[fhemDeviceConfig]="{ device, deviceAvailable: true }"
 	(initDevice)="setFhemDevice($event)"
 	(updateDevice)="setFhemDevice($event)"
-	(resized)="updateCharts()">
+	(resized)="updateCharts($event)">
 	<div class="fhem-native-weather" *ngIf="forecast$ | async as forecast">
 		<ng-container [ngSwitch]="displayType">
 			<ng-container *ngSwitchCase="['details', 'only-temp', 'only-rain', 'only-wind'].includes(displayType) ? displayType : !displayType" [ngTemplateOutlet]="DETAILS"/>
