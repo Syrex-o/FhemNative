@@ -1,16 +1,25 @@
 import { Injectable } from '@angular/core';
+import { Subject, filter, map } from 'rxjs';
 
 // Ionic and Electron Storage
 import { Storage } from '@ionic/storage-angular';
 
 // interfaces
-import { StorageSetting } from '@fhem-native/types/storage';
+import { StorageChange, StorageSetting } from '@fhem-native/types/storage';
 
 @Injectable({providedIn: 'root'})
 export class StorageService {
 	// storage handler
 	public _storage: Storage | null = null;
 	protected storagePrefix = '';
+
+	private storageUpdate = new Subject<StorageChange>();
+	public storageValueUpdatePipe(storageName: string){
+		return this.storageUpdate.pipe(
+			filter(x=> x.name === storageName),
+			map(x=> x.change)
+		);
+	}
 
 	constructor(private storage: Storage) {}
 
@@ -35,18 +44,22 @@ export class StorageService {
 	 * @param obj: {name: storage variable name, default: default value of storage variable}
 	 * @returns default or value depending on scenario
 	 */
-	public setAndGetSetting(obj: StorageSetting ): Promise<any> {
+	public setAndGetSetting(obj: StorageSetting): Promise<any> {
 		return new Promise((resolve) => {
 			this._storage?.get( this.getStorageName(obj.name) ).then((value:any) => {
 				if(value === null){
 					// setting is not defined jet
 					// setting gets defined and default is resolved after saving
 					this._storage?.set( this.getStorageName(obj.name), obj.default).then(() => {
-						resolve(this.testJSON(obj.default) ? JSON.parse(obj.default as any) : obj.default);
+						const res = this.testJSON(obj.default) ? JSON.parse(obj.default as any) : obj.default;
+						this.storageUpdate.next(res);
+						resolve(res);
 					});
 				}else{
 					// setting is present and has a value
-					resolve(this.testJSON(value) ? JSON.parse(value) : value);
+					const res = this.testJSON(value) ? JSON.parse(value) : value;
+					this.storageUpdate.next(res);
+					resolve(res);
 				}
 			});
 		});
@@ -60,7 +73,9 @@ export class StorageService {
 	public changeSetting(obj: StorageSetting): Promise<any> {
 		return new Promise((resolve) => {
 			this._storage?.set(this.getStorageName(obj.name), obj.change).then(() => {
-				resolve(this.testJSON(obj.change) ? JSON.parse(obj.change as string) : obj.change);
+				const res = this.testJSON(obj.change) ? JSON.parse(obj.change as string) : obj.change;
+				this.storageUpdate.next(res);
+				resolve(res);
 			});
 		});
 	}
