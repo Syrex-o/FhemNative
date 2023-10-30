@@ -3,15 +3,17 @@ fhem-native-icon{
 	height: 25px;
 	position: relative;
 	ion-icon,
-	fa-icon{
-		width: inherit;
-		height: inherit;
+	fa-icon,
+	mat-icon{
+		width: inherit !important;
+		height: inherit !important;
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}
-	fa-icon svg{
+	fa-icon svg,
+	mat-icon svg{
 		width: inherit !important;
 		height: inherit !important;
 	}

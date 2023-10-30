@@ -43,6 +43,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@ionic/angular": "^7.3.2",
     "@ionic/storage-angular": "^4.0.0",
+    "@mdi/angular-material": "^7.2.96",
     "@ngneat/until-destroy": "^10.0.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",

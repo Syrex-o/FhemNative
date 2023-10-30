@@ -47,6 +47,11 @@
             "glob": "**/*.*",
             "input": "libs/ui/assets/img/web",
             "output": "assets/img/web"
+          },
+          {
+            "glob": "mdi.svg", 
+            "input": "./node_modules/@mdi/angular-material", 
+            "output": "./assets"
           }
         ],
         "styles": ["apps/fhem-native-docs/src/styles.scss"],

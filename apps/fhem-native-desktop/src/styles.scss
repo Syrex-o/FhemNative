@@ -12,6 +12,9 @@
 @import 'libs/ui/styles/app/colors.scss';
 @import 'libs/ui/styles/app/styles.scss';
 
+// Material core
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 
 @import '~@ionic/angular/css/core.css';
 
