@@ -1,4 +1,10 @@
 :host{
+    ion-header{
+        ion-toolbar{
+            --background: var(--secondary);
+        }
+    }
+
     .page-container{
         padding: var(--padding-b);
     }

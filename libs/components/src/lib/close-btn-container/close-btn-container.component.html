@@ -1,11 +1,7 @@
-<ion-header mode="ios">
-	<ion-toolbar>
-        <div class="header">
-            <fhem-native-close-btn (clicked)="closeButtonClicked.emit()"></fhem-native-close-btn>
-            <div class="header-container">
-                <h2 #PAGE_HEADER class="size-c-app color-a-app no-margin">{{pageHeader}}</h2>
-            </div>
-            <ng-content></ng-content>
-        </div>
-    </ion-toolbar>
-</ion-header>
+<div class="header">
+    <fhem-native-close-btn (clicked)="closeButtonClicked.emit()"></fhem-native-close-btn>
+    <div class="header-container">
+        <h2 #PAGE_HEADER class="size-c-app color-a-app no-margin">{{pageHeader}}</h2>
+    </div>
+    <ng-content></ng-content>
+</div>

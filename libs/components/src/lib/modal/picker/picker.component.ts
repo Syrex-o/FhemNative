@@ -24,15 +24,13 @@ import { IonPickerAnimationService } from '@fhem-native/animations';
 			[leaveAnimation]="leaveAnimation">
 			<ng-template>
 				<ion-header>
-					<ion-toolbar class="background-a-ion">
-						<div class="modal-header">
-							<fhem-native-close-btn-container #HEADER [pageHeader]="modalHeader" (closeButtonClicked)="onDismiss()">
-								<ng-content select="[header]"></ng-content>
-							</fhem-native-close-btn-container>
-						</div>
-					</ion-toolbar>
+					<div class="modal-header">
+						<fhem-native-close-btn-container #HEADER [pageHeader]="modalHeader" (closeButtonClicked)="onDismiss()">
+							<ng-content select="[header]"></ng-content>
+						</fhem-native-close-btn-container>
+					</div>
 				</ion-header>
-				<ion-content 
+				<ion-content
 					fhemNativeScrollHeader [header]="headerAnimation ? HEADER.headerEl : undefined"
 					[class.add-padding]="addPaddingToContent" [scrollEvents]="true" class="background-a-ion">
 					<div class="modal-inner-content">

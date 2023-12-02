@@ -1,4 +1,8 @@
-<fhem-native-close-btn-container #HEADER [pageHeader]="('PAGES.SETTINGS.HEAD' | translate)" (closeButtonClicked)="closePage()"></fhem-native-close-btn-container>
+<ion-header>
+    <ion-toolbar>
+        <fhem-native-close-btn-container #HEADER [pageHeader]="('PAGES.SETTINGS.HEAD' | translate)" (closeButtonClicked)="closePage()"></fhem-native-close-btn-container>
+    </ion-toolbar>
+</ion-header>
 
 <ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
     <fhem-native-settings #CORE_SETTINGS>

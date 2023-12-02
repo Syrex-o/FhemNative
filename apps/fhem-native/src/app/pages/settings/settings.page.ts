@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Route } from '@angular/router';
-import { NavController } from '@ionic/angular';
 
 import { SettingsPageComponent, SettingsPageModule } from '@fhem-native/pages';
 
@@ -12,20 +11,20 @@ import { getUID } from '@fhem-native/utils';
 	standalone: true,
 	selector: 'fhem-native-mobile-settings',
 	templateUrl: 'settings.page.html',
+    styleUrls: ['./settings.page.scss'],
 	imports: [ SettingsPageModule ]
 })
 export class MobileSettingsPageComponent implements OnInit, OnDestroy{
     @ViewChild('CORE_SETTINGS', {read: SettingsPageComponent, static: false}) coreSettings: SettingsPageComponent|undefined;
     private handleID = getUID();
 
-    constructor(private navCtrl: NavController, private backBtn: BackButtonService){}
+    constructor(private backBtn: BackButtonService){}
 
     ngOnInit(): void {
 		this.backBtn.handle(this.handleID, ()=> this.closePage());
 	}
 
     closePage(): void{
-        // this.navCtrl.back();
         this.coreSettings?.back();
     }
 

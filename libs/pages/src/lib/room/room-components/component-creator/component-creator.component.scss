@@ -23,6 +23,11 @@
 		position: relative;
 	}
 
+	.header-container{
+		background-color: var(--secondary);
+		border-bottom: 0.55px solid var(--quaternary);
+	}
+
 	.flex-container{
 		padding: var(--padding-a);
 	}

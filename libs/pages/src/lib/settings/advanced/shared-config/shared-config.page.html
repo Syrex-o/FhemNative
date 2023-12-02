@@ -1,4 +1,8 @@
-<fhem-native-close-btn-container #HEADER  pageHeader="Shared Config" (closeButtonClicked)="closePage()"/>
+<ion-header>
+    <ion-toolbar>
+        <fhem-native-close-btn-container #HEADER  pageHeader="Shared Config" (closeButtonClicked)="closePage()"/>
+    </ion-toolbar>
+</ion-header>
 
 <ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
     <div class="auto-container">

@@ -7,13 +7,12 @@
 		[enterAnimation]="enterAnimation"
 		[leaveAnimation]="leaveAnimation">
 		<ng-template>
+
 			<ion-header mode="ios">
-				<ion-toolbar>
-					<div class="header-container flex-container outer spaced centered">
-						<p class="size-c-app no-margin color-a-app">{{ ('MENUS.CREATE_COMPONENT.HEADS.' + (compEditor.componentUID ? 'UPDATE' : 'NEW')) | translate}}</p>
-						<fhem-native-close-btn (clicked)="closeMenu()"></fhem-native-close-btn>
-					</div>
-				</ion-toolbar>
+				<div class="header-container flex-container outer spaced centered">
+					<p class="size-c-app no-margin color-a-app">{{ ('MENUS.CREATE_COMPONENT.HEADS.' + (compEditor.componentUID ? 'UPDATE' : 'NEW')) | translate}}</p>
+					<fhem-native-close-btn (clicked)="closeMenu()"></fhem-native-close-btn>
+				</div>
 			</ion-header>
 
 			<ion-content *ngIf="componentConfigEditor$ | async as compConfigEditor">

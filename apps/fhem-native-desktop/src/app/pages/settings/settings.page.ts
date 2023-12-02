@@ -7,9 +7,8 @@ import { SettingsPageModule } from '@fhem-native/pages';
 	standalone: true,
 	selector: 'fhem-native-desktop-settings',
 	templateUrl: 'settings.page.html',
-    imports: [
-		SettingsPageModule
-	]
+    styleUrls: ['./settings.page.scss'],
+    imports: [ SettingsPageModule ]
 })
 export class DesktopSettingsPageComponent{
     
