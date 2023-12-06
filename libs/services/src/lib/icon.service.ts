@@ -11,8 +11,17 @@ import {
 	faTint, faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 
+// relevant icon categories and references
+export const ICON_CATEGORIES = {
+	ion: { name: 'Ionicons', ref: 'https://ionic.io/ionicons' },
+	fas: { name: 'FontAwesome', ref: 'https://fontawesome.com/search?o=r&m=free&s=solid' },
+	mdi: { name: 'Material Design Icons', ref: 'https://pictogrammers.com/library/mdi/' }
+} as const;
+
+export type IconType = keyof typeof ICON_CATEGORIES;
+
 export interface Icon {
-	type: 'ion'|'fas'|'mdi',
+	type: IconType,
 	icon: string
 }
 

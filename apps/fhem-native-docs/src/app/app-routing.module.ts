@@ -29,6 +29,10 @@ const routes: Routes = [
         loadChildren: ()=> import('./configConverter/configConverter.page').then(mod=> mod.CONFIG_CONVERTER_ROUTES)
     },
     {
+        path: 'icons',
+        loadChildren: ()=> import('./icons/icons.page').then(mod=> mod.ICON_ROUTES)
+    },
+    {
         path: 'rights',
         loadChildren: ()=> import('./rights/rights-routes').then(mod=> mod.RIGHTS_ROUTES)
     },

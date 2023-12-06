@@ -1,0 +1,41 @@
+:host{
+    .icon-map-container{
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        .icon-ref{
+            display: flex;
+            align-items: center;
+            gap: var(--item-spacing-a);
+        }
+        .icons-container{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--item-spacing-a);
+            .icon{
+                width: 60px;
+                height: 60px;
+                position: relative;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: var(--radius-a);
+                padding: var(--padding-a);
+                background-color: var(--secondary);
+                transition: all .2s ease;
+                fhem-native-icon{
+                    width: 30px;
+                    height: 30px;
+                }
+                &:hover{
+                    color: var(--signal-a);
+                    transform: scale(1.2);
+                }
+            }
+        }
+    }
+}
