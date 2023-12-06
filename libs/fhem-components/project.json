@@ -9,12 +9,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/fhem-components"],
       "options": {
-        "jestConfig": "libs/fhem-components/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/fhem-components/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": [
           "libs/fhem-components/src/**/*.ts",
