@@ -97,6 +97,10 @@
 				"NO_COMP_POSITION_PERCENTAGE": "Komponente hat keine prozentuale Position. Es wird die Mindestgröße verwendet."
 			}
 		},
+		"ICONS": {
+			"HEAD": "Icons",
+			"INFO": "FhemNative unterstützt aktuell die folgenden Icon Bibliotheken:"
+		},
 		"DICT": {
 			"PREV": "Zurück",
 			"NEXT": "Weiter"
