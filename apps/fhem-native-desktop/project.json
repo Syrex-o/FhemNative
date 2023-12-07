@@ -46,8 +46,8 @@
             "output": "assets/img/app"
           },
           {
-            "glob": "mdi.svg", 
-            "input": "./node_modules/@mdi/angular-material", 
+            "glob": "mdi.svg",
+            "input": "./node_modules/@mdi/angular-material",
             "output": "./assets"
           }
         ],
@@ -96,10 +96,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "fhem-native-desktop:build:production"
+          "buildTarget": "fhem-native-desktop:build:production"
         },
         "development": {
-          "browserTarget": "fhem-native-desktop:build:development"
+          "buildTarget": "fhem-native-desktop:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -107,11 +107,11 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "fhem-native-desktop:build"
+        "buildTarget": "fhem-native-desktop:build"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": [
           "apps/fhem-native-desktop/src/**/*.ts",
@@ -123,8 +123,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/fhem-native-desktop"],
       "options": {
-        "jestConfig": "apps/fhem-native-desktop/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/fhem-native-desktop/jest.config.ts"
       }
     },
     "cap": {
