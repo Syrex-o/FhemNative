@@ -36,7 +36,6 @@
                     [(ngModel)]="termsAccepted" [showInfoBubble]="false" 
                     [label]="''" [info]="'PAGES.MEMBER.TERMS_SWITCH' | translate">
                 </fhem-native-switch>
-                <a class="size-f-app btn-color-b-app" (click)="showPaymentDetails = !showPaymentDetails">{{'PAGES.MEMBER.LINKS.ONE_TIME' | translate}}</a> <br>
                 <a class="size-f-app btn-color-b-app" (click)="showGuidelines = !showGuidelines">{{'PAGES.MEMBER.LINKS.TERMS' | translate}}</a>
 
                 <button class="app-button pay-btn type-a spacing-a-app bold ion-activatable w-100 mt-2-5" 
@@ -51,30 +50,9 @@
 </ion-content>
 
 <fhem-native-picker
-    [(ngModel)]="showPaymentDetails"
-    [height]="60"
-    [headerAnimation]="false"
-    [modalHeader]="'PAGES.MEMBER.ONE_TIME_PAYMENT.HEAD' | translate">
-    <div content>
-        <p class="size-e-app color-b-app mb-1-5">{{'PAGES.MEMBER.ONE_TIME_PAYMENT.INFO' | translate}}:</p>
-        <h2 class="size-d-app color-a-app">{{'PAGES.MEMBER.ONE_TIME_PAYMENT.HEAD' | translate}}:</h2>
-
-        <div class="background-b-app pad-tb_0-75 pad-lr_0-75 rounded">
-            <p (click)="copytoClip('Slap Apps UG (haftungsbeschränkt)')" class="size-e-app color-a-app"><span class="bold">{{'PAGES.MEMBER.ONE_TIME_PAYMENT.OWNER' | translate}}: </span>Slap Apps UG (haftungsbeschränkt)</p>
-            <p (click)="copytoClip('DE23110101015624826573')" class="size-e-app color-a-app"><span class="bold">IBAN: </span>DE23 1101 0101 5624 8265 73</p>
-            <p (click)="copytoClip('SOBKDEB2XXX')" class="size-e-app color-a-app"><span class="bold">BIC: </span>SOBKDEB2XXX</p>
-            <p class="size-e-app color-a-app"><span class="bold">Bank: </span>Solaris</p>
-            <p class="size-e-app color-a-app"><span class="bold">{{'PAGES.MEMBER.ONE_TIME_PAYMENT.USE' | translate}}: </span>Förderbeitrag "Dein Name"</p>
-        </div>
-
-        <p class="size-e-app color-b-app mt-1-5">{{'PAGES.MEMBER.ONE_TIME_PAYMENT.ENDING.1' | translate}}</p>
-        <p class="size-e-app color-b-app mb-2-5">{{'PAGES.MEMBER.ONE_TIME_PAYMENT.ENDING.2' | translate}}</p>
-    </div>
-</fhem-native-picker>
-
-<fhem-native-picker
     [(ngModel)]="showGuidelines"
-    [height]="60"
+    [height]="100"
+    [width]="100"
     [headerAnimation]="false"
     [modalHeader]="'PAGES.RIGHTS.SUPPORT.HEAD_SHORT' | translate">
     <div content>
