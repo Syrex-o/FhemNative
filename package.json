@@ -41,6 +41,8 @@
     "@fortawesome/angular-fontawesome": "^0.14.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@ionic-native/core": "^5.36.0",
+    "@ionic-native/in-app-purchase-2": "^5.36.0",
     "@ionic/angular": "^7.3.2",
     "@ionic/storage-angular": "^4.0.0",
     "@mdi/angular-material": "^7.2.96",

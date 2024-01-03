@@ -4,7 +4,8 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { CoreServicesModule } from '@fhem-native/modules';
 
 // additional services and platform replacements
-import { ErrorHandlerService, ImportExportService, ImportExportServiceMobile } from '@fhem-native/services';
+import { ErrorHandlerService, ImportExportService, ImportExportServiceMobile, StoreService } from '@fhem-native/services';
+
 
 // env provider
 import { APP_CONFIG } from '@fhem-native/app-config';
@@ -12,7 +13,8 @@ import { environment } from '../../environments/environment';
 
 @NgModule({
 	imports: [ CoreServicesModule ],
-	providers: [ 
+	providers: [
+		StoreService,
 		{ provide: APP_CONFIG, useValue: environment },
 		{ provide: ErrorHandler, useClass: ErrorHandlerService },
 		

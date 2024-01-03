@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Route } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 
+import { TextBlockModule, UI_BoxComponent } from '@fhem-native/components';
 import { SettingsPageComponent, SettingsPageModule } from '@fhem-native/pages';
 
 import { BackButtonService } from '@fhem-native/services';
@@ -12,7 +13,12 @@ import { getUID } from '@fhem-native/utils';
 	selector: 'fhem-native-mobile-settings',
 	templateUrl: 'settings.page.html',
     styleUrls: ['./settings.page.scss'],
-	imports: [ SettingsPageModule ]
+	imports: [ 
+        RouterModule,
+        TextBlockModule,
+        UI_BoxComponent,
+        SettingsPageModule
+    ]
 })
 export class MobileSettingsPageComponent implements OnInit, OnDestroy{
     @ViewChild('CORE_SETTINGS', {read: SettingsPageComponent, static: false}) coreSettings: SettingsPageComponent|undefined;

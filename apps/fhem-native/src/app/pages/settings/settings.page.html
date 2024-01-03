@@ -6,6 +6,9 @@
 
 <ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
     <fhem-native-settings #CORE_SETTINGS>
-        
+        <fhem-native-ui-box mobileSupport [clickable]="true" [routerLink]="['support']">
+            <fhem-native-text-block class="w-100" [label]="'PAGES.SETTINGS.SUPPORT.MEMBER.TEXT' | translate" [info]="'PAGES.SETTINGS.SUPPORT.MEMBER.INFO' | translate"/>
+            <ion-icon class="color-a-app size-b-app" name="heart-outline"></ion-icon>
+        </fhem-native-ui-box>
     </fhem-native-settings>
 </ion-content>

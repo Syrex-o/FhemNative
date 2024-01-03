@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 // Services
-import { FhemService, ThemeService, LoaderService, StorageService, SettingsService, StructureService, BackButtonService } from '@fhem-native/services';
+import { FhemService, ThemeService, LoaderService, StorageService, SettingsService, StructureService, BackButtonService, StoreService } from '@fhem-native/services';
 
 // Plugins
 import { App } from '@capacitor/app';
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit{
 		private fhem: FhemService,
 		private platform: Platform,
 		private theme: ThemeService,
+		private store: StoreService,
 		public loader: LoaderService,
 		private storage: StorageService,
 		public settings: SettingsService,
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit{
 		this.platform.ready().then(()=>{
 			if(Capacitor.isPluginAvailable('StatusBar')) setTimeout(()=> StatusBar.setBackgroundColor({color: this.theme.getThemeColor('--secondary')}), 100);
 			SplashScreen.hide({ fadeOutDuration: 250 });
+			this.store.initialize();
 		});
 		// initialize fhem
 		this.fhem.connect();

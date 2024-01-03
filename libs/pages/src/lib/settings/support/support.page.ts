@@ -3,14 +3,13 @@ import { Route } from "@angular/router";
 import { IonicModule, NavController } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Clipboard } from '@angular/cdk/clipboard';
 import { TranslateModule } from "@ngx-translate/core";
 
 import { ScrollHeaderModule } from "@fhem-native/directives";
 
 import { CloseBtnContainerModule, PickerComponent, SwitchModule } from "@fhem-native/components";
 
-import { BackButtonService, ToastService } from "@fhem-native/services";
+import { BackButtonService, StoreService } from "@fhem-native/services";
 
 import { getUID } from "@fhem-native/utils";
 import { RightsSupportComponent } from "../../rights";
@@ -35,18 +34,16 @@ import { RightsSupportComponent } from "../../rights";
 export class SupportPageComponent implements OnInit, OnDestroy{
     private handleID = getUID();
 
-    showSupport = false;
+    showSupport = true;
     termsAccepted = false;
 
     selectedAmount = 3;
     readonly availableAmounts = [1, 3, 5, 10];
     
     showGuidelines = false;
-    showPaymentDetails = false;
 
     constructor(
-        private toast: ToastService,
-        private clipboard: Clipboard,
+        private store: StoreService,
         private navCtrl: NavController,
         private backBtn: BackButtonService){
     }
@@ -54,13 +51,6 @@ export class SupportPageComponent implements OnInit, OnDestroy{
     ngOnInit(): void {
 		this.backBtn.handle(this.handleID, ()=> this.closePage());
 	}
-
-    copytoClip(data: string): void{
-        // copy to clipboard
-		this.clipboard.copy(data);
-		// toast message
-		this.toast.addToast('Copied', 'Copied to clipboard!', 'info', 2000);
-    }
 
     closePage(): void{
         this.navCtrl.back();
