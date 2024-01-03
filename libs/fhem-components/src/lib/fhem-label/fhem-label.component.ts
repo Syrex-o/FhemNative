@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { FhemComponentModule } from '../_fhem-component/fhem-component.module';
 
 import { TextBlockModule } from '@fhem-native/components';
-import { commaListToArray, getFontStyleFromSelection, getFontWeightFromSelection, TextPosition, TextStyle, IsJsonString } from '@fhem-native/utils';
+import { commaListToArray, getFontStyleFromSelection, getFontWeightFromSelection, TextPosition, TextStyle, IsJsonString, TextPositionVertical } from '@fhem-native/utils';
 
 import { FhemDevice } from '@fhem-native/types/fhem';
 import { ComponentPosition } from '@fhem-native/types/components';
@@ -33,7 +33,8 @@ import { ComponentPosition } from '@fhem-native/types/components';
 						'font-style': labelFontStyle,
 						'text-align': textAlign,
 						'color': fhemDevice ? labelColor : color,
-						'transform': 'rotate('+rotation+'deg)'
+						'top': labelPositionT,
+						'transform': 'rotate('+rotation+'deg) ' + labelPositionTF
 					}">
 						{{_label}}{{labelExtension}}
 					</p>
@@ -79,6 +80,7 @@ export class FhemLabelComponent{
 	// Selections
 	@Input() textStyle!: TextStyle;
 	@Input() textAlign!: TextPosition;
+	@Input() textAlignVert!: TextPositionVertical;
 
 	// Styling
 	@Input() color!: string;
@@ -100,6 +102,9 @@ export class FhemLabelComponent{
 	labelColor: string|undefined;
 	fhemDevice: FhemDevice|undefined;
 
+	labelPositionT: string|undefined;
+	labelPositionTF: string|undefined;
+
 	onInitComponent(): void{
 		this._label = this.label;
 		
@@ -110,6 +115,9 @@ export class FhemLabelComponent{
 
 		this.labelFontStyle = getFontStyleFromSelection(this.textStyle);
 		this.labelFontWeight = getFontWeightFromSelection(this.textStyle);
+
+		this.labelPositionT = `${this.textAlignVert === 'center' ? '50' : (this.textAlignVert === 'bottom' ? '100' : '0')}%`;
+		this.labelPositionTF = `translate3d(0,${this.textAlignVert === 'center' ? '-50' : (this.textAlignVert === 'bottom' ? '-100' : '0')}%,0)`;
 	}
 
 	setFhemDevice(device: FhemDevice): void{

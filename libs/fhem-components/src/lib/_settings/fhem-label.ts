@@ -1,5 +1,5 @@
 import { ComponentSettings } from "@fhem-native/types/components";
-import { componentPositionStyles, componentTextStyles} from './common';
+import { componentPositionStyles, componentPositionStylesVertical, componentTextStyles} from './common';
 
 /*
     Label component
@@ -24,7 +24,8 @@ export const Settings: ComponentSettings = {
 		},
 		arr_data: {
 			textStyle: {items: componentTextStyles, value: 'normal'},
-			textAlign: {items: componentPositionStyles, value: 'left'}
+			textAlign: {items: componentPositionStyles, value: 'left'},
+			textAlignVert: {items: componentPositionStylesVertical, value: 'center'}
 		},
 		style: {
 			color: '#86d993',

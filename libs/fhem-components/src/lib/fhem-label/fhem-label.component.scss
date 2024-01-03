@@ -8,12 +8,10 @@
             pointer-events: all;
         }
         .label{
+            left: 0;
             width: 100%;
 			margin: 0;
 			position: absolute;
-			top: 50%;
-			transform: translate3d(0,-50%,0);
-			left: 0;
 			transition: all .2s ease;
         }
     }
