@@ -93,7 +93,7 @@ function getCompItems(): NavItem[] {
 
     const compNames = Object.values(ComponentCategories)
         .map(x=> x.components)
-        .flat()
+        .reduce((prev, next)=> prev.concat(next))
         .sort();
 
     for(let i = 0; i < compNames.length; i++){
