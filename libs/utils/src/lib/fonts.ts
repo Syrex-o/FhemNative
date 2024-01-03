@@ -23,3 +23,4 @@ export function getFontStyleFromSelection(from: TextStyle): string{
 // font style variations
 export declare type TextStyle = 'normal'|'thin'|'italic'|'bold'|'thin-italic'|'bold-italic';
 export declare type TextPosition = 'left'|'right'|'center';
+export declare type TextPositionVertical = 'top'|'bottom'|'center';
