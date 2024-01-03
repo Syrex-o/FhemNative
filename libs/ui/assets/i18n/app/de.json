@@ -1674,8 +1674,12 @@
 				},
 				"arr_data": {
 					"textAlign": {
-						"name": "Text-Ausrichtung",
-						"info": "Ausrichtung des Label-Text"
+						"name": "Text-Ausrichtung Horizontal",
+						"info": "Ausrichtung des Label-Texts"
+					},
+					"textAlignVert": {
+						"name": "Text-Ausrichtung Vertical",
+						"info": "Ausrichtung des Label-Texts"
 					},
 					"textStyle": {
 						"name": "Text-Style",
