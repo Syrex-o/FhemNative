@@ -81,14 +81,6 @@ export class LoginPageComponent implements OnInit, OnDestroy{
 	async testIPSettings(): Promise<void>{
 		this.loader.showLogoLoader();
 
-		this.settings.connectionProfiles.forEach((x)=>{
-			if(x.basicAuth){
-				x.USER = encodeURIComponent(x.USER);
-				x.PASSW = encodeURIComponent(x.PASSW);
-			}
-		});
-
-
 		if(this.fhem.checkPreConnect()){
 			const testResult = [];
 

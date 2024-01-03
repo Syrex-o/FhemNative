@@ -117,6 +117,13 @@ export class FhemService {
 		return false;
 	}
 
+	/**
+	 * Get currently selected connection profile
+	 */
+	public getCurrentConnectionProfile(): ConnectionProfile{
+		return this.settings.connectionProfiles[this.currConnProfileIndex];
+	}
+
 	/*
 		Create the connection URL of the current Profile
 	*/
@@ -128,7 +135,7 @@ export class FhemService {
 				// Secure / unsecure websocket
 				(connectionProfile.WSS ? 'wss://' : 'ws://') + 
 				// Login data for basicAuth
-				(connectionProfile.basicAuth ? connectionProfile.USER + ':' + connectionProfile.PASSW + '@' : '' );
+				(connectionProfile.basicAuth ? `${encodeURIComponent(decodeURIComponent(connectionProfile.USER))}:${encodeURIComponent(decodeURIComponent(connectionProfile.PASSW))}@` : '' );
 
 			// add ip
 			url += connectionProfile.IP;
@@ -186,7 +193,7 @@ export class FhemService {
         if((!this.socket || this.socket.closed) && this.checkPreConnect()){
             this.connectionInProgress = true;
 
-			const currentConnectionProfile = this.settings.connectionProfiles[this.currConnProfileIndex];
+			const currentConnectionProfile = this.getCurrentConnectionProfile();
 			this.fhemToaster(`Try connecting with profile: ${this.currConnProfileIndex} - trial: ${this.tries}`, 'info');
 
 			// create socket
@@ -313,7 +320,7 @@ export class FhemService {
 	*/
 	private onConnectionData(e: MessageEvent): void{
 		let msg = e.data;
-		const type = this.settings.connectionProfiles[this.currConnProfileIndex].type;
+		const type = this.getCurrentConnectionProfile().type;
 
 		// handle fhemweb
 		if (type === 'fhemweb') {
@@ -426,7 +433,7 @@ export class FhemService {
 					if(!requestArr.length) return;
 
 					// send request
-					const type = this.settings.connectionProfiles[this.currConnProfileIndex].type;
+					const type = this.getCurrentConnectionProfile().type;
 					const deviceList = requestArr.length > 1 ? '('+requestArr.join('|')+')' : requestArr.join();
 
 					if(type === 'fhemweb') this.sendCommand({ command: `jsonlist2 ${deviceList}` });
@@ -460,7 +467,7 @@ export class FhemService {
 					const relDevice = this.deviceExists(deviceName, readingName);
 					if(relDevice){
 						// listen to device changes for type of websocket
-						const type = this.settings.connectionProfiles[this.currConnProfileIndex].type;
+						const type = this.getCurrentConnectionProfile().type;
 						if(type === 'websocket') this.sendCommand({
 							type: '.*',
 							changed: '.*',
@@ -503,7 +510,7 @@ export class FhemService {
 	// device listener
 	// add the device to listen list and call callback, if needed
 	public sendCommand(cmd: any): void{
-		const type = this.settings.connectionProfiles[this.currConnProfileIndex].type;
+		const type = this.getCurrentConnectionProfile().type;
 
 		if(!this.socket) return;
 		if (type === 'websocket') this.socket.next(JSON.stringify({ type: 'command', payload: cmd }));
