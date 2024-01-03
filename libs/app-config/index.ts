@@ -8,7 +8,10 @@ export * from './version';
 export interface AppConfig {
     production: boolean,
     platform: Platform,
-    versionCode: Version
+    versionCode: Version,
+    store: {
+        testMode: boolean
+    }
 }
 
 export type Platform = 'mobile'|'desktop';

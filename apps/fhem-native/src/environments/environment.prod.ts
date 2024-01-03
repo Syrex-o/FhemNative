@@ -1,7 +1,10 @@
-import { MobileVersionCode } from "@fhem-native/app-config";
+import { AppConfig, MobileVersionCode } from "@fhem-native/app-config";
 
-export const environment = {
+export const environment: AppConfig = {
 	production: true,
 	platform: 'mobile',
-	versionCode: MobileVersionCode
+	versionCode: MobileVersionCode,
+	store: {
+        testMode: false
+    }
 };

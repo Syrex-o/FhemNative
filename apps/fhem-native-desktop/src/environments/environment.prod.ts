@@ -1,7 +1,10 @@
-import { DesktopVersionCode } from "@fhem-native/app-config";
+import { AppConfig, DesktopVersionCode } from "@fhem-native/app-config";
 
-export const environment = {
+export const environment: AppConfig = {
 	production: true,
 	platform: 'desktop',
-	versionCode: DesktopVersionCode
+	versionCode: DesktopVersionCode,
+	store: {
+        testMode: false
+    }
 };
