@@ -1,15 +1,36 @@
 :host{
     .price-container{
-        padding-bottom: 0.5rem;
+        padding: 1rem
+    }
+    .active-membership-container{
+        padding: .5rem;
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: space-between;
+        .info-container{
+            display: flex;
+            flex-direction: column;
+        }
+        .price-detail-container{
+            display: flex;
+            align-items: center;
+        }
     }
     .amount-container{
         display: flex;
         gap: 1.5rem;
-        padding: 1.5rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
         overflow-x: auto;
-        border-radius: 8px;
-        justify-content: center;
+        padding: 1.5rem .5rem;
         user-select: none;
+        .amount-select-container:first-child{
+            margin-left: auto;
+        }
+        .amount-select-container:last-child{
+            margin-right: auto;
+        }
         .amount-select-container{
             border-radius: 12px;
             border: 1px solid var(--tertiary);
@@ -18,9 +39,6 @@
             transition: box-shadow .15s ease-out, transform .15s ease-out, background-color .15s ease-out;
             .inner{
                 text-align: center;
-                .decimals{
-                    font-size: 0.7rem;
-                }
                 .currency{
                     margin-top: 0px;
                     font-size: 0.7rem;

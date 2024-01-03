@@ -10,42 +10,66 @@
         <h3 class="size-d-app color-b-app">{{'PAGES.MEMBER.INFO' | translate}}</h3>
         <p class="size-e-app color-a-app mb-2-5">{{'PAGES.MEMBER.TEXT' | translate}}</p>
 
-        <button *ngIf="!showSupport" class="app-button type-a spacing-a-app bold ion-activatable w-100" (click)="showSupport = true">
-            {{'PAGES.MEMBER.BUTTONS.HELP' | translate}}
+        @if ((ownedItems$ | async)?.length){
+            <h3 class="size-d-app color-a-app center">{{'PAGES.MEMBER.ACTIVE' | translate}}:</h3>
+            @for (item of ownedItems$ | async; track item.id; let idx = $index){
+                <div class="active-membership-container mb-0-5 background-b-app">
+                    <div class="info-container">
+                        <p class="size-d-app color-a-app no-margin">{{item.title}}</p>
+                        <p class="size-e-app color-b-app no-margin">{{item.description}}</p>
+                    </div>
+                    <div class="price-detail-container">
+                        <p class="color-a-app size-d-app no-margin"><span class="bold">{{item.pricing?.price}}</span>/{{'PAGES.MEMBER.FREQUENCY.MONTH' | translate }}</p>
+                    </div>
+                </div>
+            }
+        }
+        @else {
+            @if (availableItems$ | async; as availableItems){
+                <h3 class="size-d-app color-a-app center">{{'PAGES.MEMBER.CHOOSE_AMOUNT' | translate}}:</h3>
+                <div class="price-container background-b-app">
+                    @if (availableItems.length){
+                        <div class="amount-container">
+                            @for (item of availableItems; track item.id; let idx = $index){
+                                @if (item.canPurchase && item.pricing){
+                                    <div class="amount-select-container" [class.active]="idx === selectedItem" (click)="selectedItem = idx">
+                                        <div class="inner">
+                                            <p class="color-a-app bold size-d-app no-margin">{{item.pricing.price}}</p>
+                                            <p class="currency color-b-app no-margin">{{item.pricing.currency}}</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <p class="color-a-app size-f-app center spacing-a mt-0-5 mb-0-5">{{'PAGES.MEMBER.FREQUENCY.MONTHLY' | translate | uppercase}}</p>
+                        <div class="mt-0-5 mb-1-5">
+                            <fhem-native-switch 
+                                [(ngModel)]="termsAccepted" [showInfoBubble]="false" 
+                                [label]="''" [info]="'PAGES.MEMBER.TERMS_SWITCH' | translate">
+                            </fhem-native-switch>
+
+                            <a class="size-f-app btn-color-b-app" (click)="showGuidelines = !showGuidelines">{{'PAGES.MEMBER.LINKS.TERMS' | translate}}</a> <br>
+                            <a class="size-f-app btn-color-b-app" target="_blank" href="https://fhemnative.de/rights/datenschutz">{{'PAGES.MEMBER.LINKS.PRIVACY' | translate}}</a>
+            
+                            <button class="app-button pay-btn type-a spacing-a-app bold ion-activatable w-100 mt-2-5" 
+                                [class.disabled]="!termsAccepted || !availableItems[selectedItem]"
+                                (click)="subscribeToProduct(availableItems[selectedItem])">
+                                <ion-icon name="lock-closed-outline"></ion-icon> {{'PAGES.MEMBER.BUTTONS.PAY' | translate}}
+                                <ion-ripple-effect></ion-ripple-effect>
+                            </button>
+                        </div>
+                    }
+                    @else{
+                        <p class="color-a-app size-f-app center spacing-a mt-0-5 mb-0-5">{{'PAGES.MEMBER.NO_ITEMS' | translate}}</p>
+                    }
+                </div>
+            }
+        }
+        <!-- restore -->
+        <button class="app-button type-c spacing-a-app bold ion-activatable w-100 mt-2-5" (click)="store.restorePurchases()">
+            {{'PAGES.MEMBER.BUTTONS.RESTORE' | translate}}
             <ion-ripple-effect></ion-ripple-effect>
         </button>
-
-        <ng-container *ngIf="showSupport">
-            <h3 class="size-d-app color-a-app center">{{'PAGES.MEMBER.CHOOSE_AMOUNT' | translate}}:</h3>
-            <div class="price-container background-b-app">
-                <div class="amount-container">
-                    <ng-container *ngFor="let amount of availableAmounts">
-                        <div class="amount-select-container" [class.active]="amount === selectedAmount" (click)="selectedAmount = amount">
-                            <div class="inner">
-                                <p class="color-a-app bold size-d-app no-margin">{{amount}},<span class="decimals">00</span></p>
-                                <p class="currency color-b-app no-margin">EURO</p>
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
-                <p class="color-a-app size-f-app center spacing-a mt-0-5 mb-0-5">{{'PAGES.MEMBER.FREQUENCY.MONTH' | translate | uppercase}}</p>
-            </div>
-            
-            <div class="mt-0-5 mb-1-5">
-                <fhem-native-switch 
-                    [(ngModel)]="termsAccepted" [showInfoBubble]="false" 
-                    [label]="''" [info]="'PAGES.MEMBER.TERMS_SWITCH' | translate">
-                </fhem-native-switch>
-                <a class="size-f-app btn-color-b-app" (click)="showGuidelines = !showGuidelines">{{'PAGES.MEMBER.LINKS.TERMS' | translate}}</a>
-
-                <button class="app-button pay-btn type-a spacing-a-app bold ion-activatable w-100 mt-2-5" 
-                    [class.disabled]="!termsAccepted"
-                    (click)="showSupport = true">
-                    <ion-icon name="lock-closed-outline"></ion-icon> {{'PAGES.MEMBER.BUTTONS.PAY' | translate}}
-                    <ion-ripple-effect></ion-ripple-effect>
-                </button>
-            </div>
-        </ng-container>
     </div>
 </ion-content>
 

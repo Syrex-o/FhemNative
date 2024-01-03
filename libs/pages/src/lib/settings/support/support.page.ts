@@ -9,10 +9,11 @@ import { ScrollHeaderModule } from "@fhem-native/directives";
 
 import { CloseBtnContainerModule, PickerComponent, SwitchModule } from "@fhem-native/components";
 
-import { BackButtonService, StoreService } from "@fhem-native/services";
+import { BackButtonService, Product, StoreService } from "@fhem-native/services";
 
 import { getUID } from "@fhem-native/utils";
 import { RightsSupportComponent } from "../../rights";
+import { Observable, map } from "rxjs";
 
 @Component({
     standalone: true,
@@ -34,16 +35,15 @@ import { RightsSupportComponent } from "../../rights";
 export class SupportPageComponent implements OnInit, OnDestroy{
     private handleID = getUID();
 
-    showSupport = true;
     termsAccepted = false;
-
-    selectedAmount = 3;
-    readonly availableAmounts = [1, 3, 5, 10];
-    
     showGuidelines = false;
 
+    selectedItem = 1;
+    ownedItems$: Observable<Product[]> = this.store.getProducts().pipe( map(x=> x.filter(y=> y.owned)) );
+    availableItems$: Observable<Product[]> = this.store.getProducts().pipe( map(x=> x.filter(y=> !y.owned)) );
+
     constructor(
-        private store: StoreService,
+        public store: StoreService,
         private navCtrl: NavController,
         private backBtn: BackButtonService){
     }
@@ -51,6 +51,14 @@ export class SupportPageComponent implements OnInit, OnDestroy{
     ngOnInit(): void {
 		this.backBtn.handle(this.handleID, ()=> this.closePage());
 	}
+
+    async subscribeToProduct(product: CdvPurchase.Product){
+        const success = await this.store.purchaseProduct(product);
+        if(success){
+            this.selectedItem = -1;
+            this.closePage();
+        }
+    }
 
     closePage(): void{
         this.navCtrl.back();

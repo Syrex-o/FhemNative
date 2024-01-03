@@ -11,6 +11,6 @@ import { TranslateModule } from "@ngx-translate/core";
     ]
 })
 export class RightsSupportComponent{
-    version = '1.0';
-    versionDate = 'April 2023';
+    version = '1.1';
+    versionDate = 'Januar 2024';
 }

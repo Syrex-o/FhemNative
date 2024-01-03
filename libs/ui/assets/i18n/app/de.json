@@ -102,29 +102,22 @@
 			"HEAD": "Fördermitgliedschaft",
 			"HEAD_SHORT": "Fördern",
 			"INFO": "Open-Source ist nicht selbstverständlich.",
-			"TEXT": "Die Entwicklung von FhemNative ist zeitaufwendig und mit laufenden Kosten verbunden. Damit wir FhemNative auch weiterhin immer up-to-date halten können und mit neuen Features füttern, kannst du uns gern mit einem kleinen Beitrag unterstützen. Schon ab 1€ kannst du uns unterstützen.",
+			"TEXT": "Die Entwicklung von FhemNative ist zeitaufwendig und mit laufenden Kosten verbunden. Damit wir FhemNative auch weiterhin immer up-to-date halten können und mit neuen Features füttern, kannst du uns gern mit einem kleinen Beitrag unterstützen.",
 			"BUTTONS": {
-				"HELP": "Ja, ich helfe gerne",
-				"PAY": "Bezahlen"
+				"PAY": "Bezahlen",
+				"RESTORE": "In-App-Käufe wiederherstellen"
 			},
+			"ACTIVE": "Aktive Mitgliedschaften",
 			"CHOOSE_AMOUNT": "Wähle deinen Betrag",
+			"NO_ITEMS": "Aktuell stehen keine Optionen zur Verfügung.",
 			"FREQUENCY": {
-				"MONTH": "Monatlich"
+				"MONTH": "Monat",
+				"MONTHLY": "Monatlich"
 			},
-			"TERMS_SWITCH": "Ja, ich möchte die Slap Apps UG (haftungsbeschränkt) mit dem oben ausgewählten Betrag in Form einer Schenkung regelmäßig unterstützen. Die Förderung kann ich jederzeit kündigen.",
+			"TERMS_SWITCH": "Ja, ich möchte die Slap Apps UG (haftungsbeschränkt) mit dem oben ausgewählten Betrag in Form einer Schenkung regelmäßig unterstützen. Die Förderung kann jederzeit gekündigt werden.",
 			"LINKS": {
-				"ONE_TIME": "Ich möchte eine einmalige Zahlung leisten.",
-				"TERMS": "Es gelten die Richtlinien für Förderungen."
-			},
-			"ONE_TIME_PAYMENT": {
-				"HEAD": "Bankverbindung",
-				"INFO": "Gerne kannst du uns auch einen Betrag an folgendes Konto einrichten",
-				"OWNER": "Kontoinhaber",
-				"USE": "Verwendungszweck",
-				"ENDING": {
-					"1": "Mit einem regelmäßigen Beitrag kannst du uns besonders nachhaltig unterstützen.",
-					"2": "Vielen Dank für deine Unterstützung!"
-				}
+				"TERMS": "Es gelten die Richtlinien für Förderungen.",
+				"PRIVACY": "Datenschutzerklärung"
 			}
 		},
 		"LOGIN":{
@@ -273,7 +266,7 @@
 				},
 				"3": {
 					"HEAD": "Laufzeit und Kündigung",
-					"1": "Die Fördermitgliedschaft kann ich jederzeit kündigen. Die Kündigung erfolgt in Textform (z.B. per E-Mail)."
+					"1": "Die Fördermitgliedschaft kann ich jederzeit kündigen. Die Kündigung erfolgt in Textform (z.B. per E-Mail) oder über den jeweiligen Store-Betreiber:"
 				},
 				"4": {
 					"HEAD": "Anwendbares Recht; Verhältnis zu den allgemeinen Nutzungsbedingungen von FhemNative",
@@ -465,6 +458,18 @@
 					"name": "Falscher Wert",
 					"info": "Der eingegebene Farbwert scheint fehlerhaft zu sein"
 				}
+			}
+		}
+	},
+	"STORE": {
+		"PURCHASE":{
+			"SUCCESS_TOAST": {
+				"HEAD": "Vielen Dank!",
+				"INFO": "Der Kauf ist erfolgreich abgeschlossen. Vielen Dank für dein Engagement!"
+			},
+			"ERROR_TOAST": {
+				"HEAD": "Whoops",
+				"INFO": "Hier ist wohl etwas schief gelaufen. Bitte versuchen Sie es später erneut."
 			}
 		}
 	},
