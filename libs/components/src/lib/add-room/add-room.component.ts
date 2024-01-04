@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, Input, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 import { CoreExtendedAndTranslateModule } from '@fhem-native/modules';
+
 import { InputModule } from '../input/input.module';
 import { SelectIconModule } from '../select/select-icon/select-icon.module';
 
@@ -11,12 +12,40 @@ import { Room } from '@fhem-native/types/room';
 
 @Component({
     standalone: true,
-    imports: [ CoreExtendedAndTranslateModule, InputModule, SelectIconModule ],
+    imports: [ 
+        InputModule,
+        SelectIconModule,
+        CoreExtendedAndTranslateModule
+    ],
 	selector: 'fhem-native-add-room',
-	templateUrl: './add-room.component.html',
+	template: `
+        <div class="flex-container">
+            <h2 class="center size-b-app color-a-app">{{ ('MENUS.CREATE_ROOM.HEADS.' + (newRoom ? 'NEW' : 'UPDATE')) | translate}}</h2>
+
+            <div class="flex-box col">
+                <fhem-native-input [label]="('MENUS.CREATE_ROOM.INPUTS.ROOM_NAME.TEXT' | translate)" [placeholder]="('MENUS.CREATE_ROOM.INPUTS.ROOM_NAME.PLACEHOLDER' | translate)" [(ngModel)]="room.name"></fhem-native-input>
+                <fhem-native-select-icon [label]="('MENUS.CREATE_ROOM.INPUTS.ROOM_ICON' | translate)" [searchable]="true" [(ngModel)]="room.icon"></fhem-native-select-icon>
+            </div>
+
+
+            <div class="flex-box center">
+                <button class="app-button info ion-activatable" (click)="save()">
+                    {{ 'MENUS.CREATE_ROOM.BUTTONS.'+ (newRoom ? 'CREATE_ROOM' : 'UPDATE_ROOM') | translate }}
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+                <button *ngIf="!newRoom" class="app-button cancel ion-activatable" (click)="deleteRoom()">
+                    {{ 'MENUS.CREATE_ROOM.BUTTONS.DELETE_ROOM' | translate }}
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+                <button class="app-button info inverse ion-activatable" (click)="cancel()">
+                    {{ 'DICT.CANCEL' | translate }}
+                    <ion-ripple-effect></ion-ripple-effect>
+                </button>
+            </div>
+        </div>
+    `,
 	styleUrls: ['./add-room.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AddRoomComponent implements OnInit{
