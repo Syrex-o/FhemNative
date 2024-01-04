@@ -17,7 +17,6 @@ export * from './lib/icon/icon.module';
 export * from './lib/info-btn/info-btn.module';
 export * from './lib/input/input.module';
 export * from './lib/loader/loader.module';
-export * from './lib/popover/popover.component';
 
 export * from './lib/modal';
 
