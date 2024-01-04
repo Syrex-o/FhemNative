@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { UntilDestroy } from '@ngneat/until-destroy';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 	templateUrl: 'sandbox.page.html',
 	styleUrls: ['../pages.style.scss', 'sandbox.page.scss']
 })
-export class SandboxPageComponent implements OnInit{
+export class SandboxPageComponent implements OnInit, OnDestroy{
     demoDeviceState = false;
 
     constructor(
@@ -29,5 +29,9 @@ export class SandboxPageComponent implements OnInit{
         this.structure.rooms = [];
         this.router.navigate([''], {replaceUrl: true});
         this.settings.demoMode.next(false);
+    }
+
+    ngOnDestroy(): void {
+        this.structure.rooms = [];
     }
 }
