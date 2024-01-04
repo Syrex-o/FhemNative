@@ -29,7 +29,7 @@ export class ContextClickDirective implements OnDestroy{
 			const touchEnd = fromEvent<TouchEvent>(elementRef.nativeElement, 'touchend');
 			this.eventSub = fromEvent<TouchEvent>(elementRef.nativeElement, 'touchstart').pipe(
 				switchMap((start)=>{
-					start.preventDefault();
+					//start.preventDefault();
 					return merge(
 						combineLatest([
 							timer(this.threshold),
