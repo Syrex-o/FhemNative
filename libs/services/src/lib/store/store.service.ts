@@ -71,7 +71,7 @@ export class StoreService {
         const {store, LogLevel} = CdvPurchase;
 
         this.store = store;
-        if(this.appConfig.store.testMode) this.store.verbosity = LogLevel.DEBUG;
+        if(this.appConfig.store.debugMode) this.store.verbosity = LogLevel.DEBUG;
 
         this.store.register(this.appConfig.store.testMode ? CdvPurchase.Test.testProductsArray : PRODUCTS);
 
