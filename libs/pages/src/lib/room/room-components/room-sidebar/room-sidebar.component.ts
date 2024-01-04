@@ -77,7 +77,7 @@ export class RoomSidebarComponent {
 	async editRoom(room: Room): Promise<void>{
 		const popover = await this.popoverCtrl.create({
 			component: AddRoomComponent,
-			cssClass: 'add-room-popover',
+			cssClass: 'basic',
 			componentProps: { room }
 		});
 

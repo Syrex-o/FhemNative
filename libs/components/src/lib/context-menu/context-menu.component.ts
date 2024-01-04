@@ -41,7 +41,6 @@ export class ContextMenuComponent implements OnInit{
 		private popoverCtrl: PopoverController,
 		private importExport: ImportExportService,
 		private compLoader: ComponentLoaderService,
-		private popoverController: PopoverController,
 		public selectComponent: SelectComponentService,
 		@Inject(DOCUMENT) private document: Document,
 		@Inject(APP_CONFIG) private appConfig: any){
@@ -70,13 +69,13 @@ export class ContextMenuComponent implements OnInit{
 	 * Allow specialized handling of events from context menu creator
 	 */
 	private dismissInformer(eventName: string, customEvent?: string): void{
-		this.popoverController.dismiss(eventName, customEvent || 'standard');
+		this.popoverCtrl.dismiss(eventName, customEvent || 'standard');
 	}
 
 	async createRoomModal(): Promise<void>{
 		const popover = await this.popoverCtrl.create({
 			component: AddRoomComponent,
-			cssClass: 'add-room-popover',
+			cssClass: 'basic',
 			componentProps: { newRoom: true, room: this.structure.createRoom() }
 		});
 
