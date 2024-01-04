@@ -26,7 +26,8 @@ export class ReleaseInformerService {
 		{type: 'New', text: 'Release Notes page'},
 		{type: 'New', text: 'Label component vertical position option in settings'},
 		{type: 'Fix', text: 'Label component vertical position'},
-		{type: 'Fix', text: 'Scrolling when components are moved outside of view, while editing'}
+		{type: 'Fix', text: 'Scrolling when components are moved outside of view, while editing'},
+		{type: 'Fix', text: 'Component creation blocked during editing'},
 	];
 
 	public getReleaseNotes(){ return this.releaseNotes; }
