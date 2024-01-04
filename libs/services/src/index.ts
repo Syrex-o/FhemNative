@@ -14,6 +14,7 @@ export * from './lib/icon.service';
 export * from './lib/importExport.service';
 export * from './lib/loader.service';
 export * from './lib/logger.service';
+export * from './lib/release-informer.service';
 export * from './lib/select-component.service';
 export * from './lib/settings.service';
 export * from './lib/storage.service';

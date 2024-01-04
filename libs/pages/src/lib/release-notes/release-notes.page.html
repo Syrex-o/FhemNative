@@ -1,0 +1,38 @@
+<ion-header>
+	<ion-toolbar>
+		<fhem-native-close-btn-container #HEADER [pageHeader]="('PAGES.RELEASE_NOTES.HEAD' | translate)" (closeButtonClicked)="back()"></fhem-native-close-btn-container>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" class="background-a-ion" fhemNativeScrollHeader [header]="HEADER.headerEl">
+	<div class="auto-container">
+		<h2 class="size-b-app color-a-app">{{'PAGES.RELEASE_NOTES.HEAD' | translate}}</h2>
+
+		@if (appConfig.platform === 'mobile') {
+			<fhem-native-ui-category>
+				<fhem-native-text-line name [wrap]="false"> {{'PAGES.MEMBER.HEAD' | translate}}</fhem-native-text-line>
+				<div content>
+					<fhem-native-ui-box [column]="true">
+						<fhem-native-text-block class="w-100" [label]="'PAGES.RELEASE_NOTES.SUPPORT.TEXT' | translate"/>
+						<button class="app-button type-b ion-activatable" [routerLink]="['/', 'settings', 'support']">
+							{{ 'PAGES.RELEASE_NOTES.SUPPORT.BUTTON' | translate }}
+							<ion-ripple-effect></ion-ripple-effect>
+						</button>
+					</fhem-native-ui-box>
+				</div>
+			</fhem-native-ui-category>
+		}
+
+		<fhem-native-ui-category>
+			<fhem-native-text-line name [wrap]="false">Version: {{versionString}}</fhem-native-text-line>
+			<div content>
+				@for (item of releaseNotes; track $index) {
+					<fhem-native-ui-box [column]="true">
+						<fhem-native-text-line [color]="getColorVal(item.type)" class="w-100" [text]="item.type+':'"/>
+						<fhem-native-text-line [bold]="true" class="w-100" [text]="item.text"/>
+					</fhem-native-ui-box>
+				}
+			</div>
+		</fhem-native-ui-category>
+	</div>
+</ion-content>
