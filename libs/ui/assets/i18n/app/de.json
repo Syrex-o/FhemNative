@@ -298,6 +298,13 @@
 					"1": "Es gilt deutsches Recht."
 				}
 			}
+		},
+		"RELEASE_NOTES": {
+			"HEAD": "Versionshinweise",
+			"SUPPORT": {
+				"TEXT": "Wenn Du schon lange Nutzer von FhemNative bist oder mehr Unterstützung geben kannst, dann denke bitte über eine Freiwillige Fördermitgliedschaft nach.",
+				"BUTTON": "Unterstützen"
+			}
 		}
 	},
 	"MENUS": {
