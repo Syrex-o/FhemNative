@@ -4,9 +4,9 @@ import { AlertController, ActionSheetController, AlertOptions, ActionSheetOption
 import { ToastrService } from 'ngx-toastr';
 // Services
 import { TranslateService } from '@ngx-translate/core';
-import { clone } from '@fhem-native/utils';
 import { LoggerService } from './logger.service';
 
+import { clone } from '@fhem-native/utils';
 interface NotifyDefaults {
 	tapToDismiss: boolean,
 	timeOut: number,
@@ -43,10 +43,10 @@ export class ToastService {
 
 	constructor(
 		private zone: NgZone,
-		private logger: LoggerService,
 		private toast: ToastrService,
+		private logger: LoggerService,
+		private alertCtrl: AlertController,
 		private translate: TranslateService,
-		private alertCtrl: AlertController, 
 		private actionCtrl: ActionSheetController){
 	}
 
