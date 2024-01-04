@@ -10,7 +10,8 @@ export interface AppConfig {
     platform: Platform,
     versionCode: Version,
     store: {
-        testMode: boolean
+        testMode: boolean,
+        debugMode: boolean
     }
 }
 

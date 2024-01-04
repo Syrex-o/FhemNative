@@ -5,6 +5,7 @@ export const environment: AppConfig = {
 	platform: 'mobile',
 	versionCode: MobileVersionCode,
 	store: {
-        testMode: false
+        testMode: false,
+		debugMode: false
     }
 };

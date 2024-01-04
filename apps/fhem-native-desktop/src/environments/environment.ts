@@ -8,7 +8,8 @@ export const environment: AppConfig = {
 	platform: 'desktop',
 	versionCode: DesktopVersionCode,
 	store: {
-        testMode: false
+        testMode: true,
+		debugMode: false
     }
 };
 

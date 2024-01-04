@@ -5,6 +5,7 @@ export const environment: AppConfig = {
 	platform: 'desktop',
 	versionCode: DesktopVersionCode,
 	store: {
-        testMode: false
+        testMode: false,
+		debugMode: false
     }
 };
