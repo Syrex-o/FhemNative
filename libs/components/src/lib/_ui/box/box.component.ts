@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
     imports: [ IonicModule, CommonModule ],
 	selector: 'fhem-native-ui-box',
     template: `
-        <div class="box-container" [class.ion-activatable]="clickable">
+        <div class="box-container" [class.as-column]="column" [class.ion-activatable]="clickable">
             <ng-content></ng-content>
             <ion-ripple-effect *ngIf="clickable"></ion-ripple-effect>
         </div>
@@ -17,4 +17,5 @@ import { IonicModule } from '@ionic/angular';
 
 export class UI_BoxComponent {
     @Input() clickable = false;
+    @Input() column = false;
 }

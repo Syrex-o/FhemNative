@@ -10,6 +10,9 @@
 		gap: var(--item-spacing-a);
 		padding: var(--item-spacing-a);
 		min-height: var(--item-height-b);
+		&.as-column{
+			flex-direction: column;
+		}
 		&.ion-activatable{
 			overflow: hidden;
 			cursor: pointer;
