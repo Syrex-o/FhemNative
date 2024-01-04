@@ -62,8 +62,8 @@
 <!-- settings -->
 <ion-footer class="ion-no-border">
     <ion-toolbar>
-        <div class="flex-container" *ngIf="(settings.demoMode | async) === false">
-            <button class="menu-btn no-margin ion-activatable" (click)="switchPage(['/', 'settings'])">
+        <div class="flex-container">
+            <button class="menu-btn no-margin ion-activatable" (click)="switchPage(['/', 'settings'], true)">
                 <ion-icon name="settings-outline"></ion-icon>
                 <fhem-native-text-line [text]="'PAGES.SETTINGS.HEAD' | translate" [shorten]="true" [bold]="true"></fhem-native-text-line>
                 <ion-ripple-effect></ion-ripple-effect>

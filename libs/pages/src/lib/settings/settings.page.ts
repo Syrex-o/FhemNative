@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ImportExportService, LoggerService, SettingsService, StorageService, StructureService, ThemeService } from '@fhem-native/services';
 
 import { getRawVersionCode } from '@fhem-native/utils';
-import { APP_CONFIG, GridSizeOptions, LangOptions, ThemeOptions } from '@fhem-native/app-config';
+import { APP_CONFIG, AppConfig, GridSizeOptions, LangOptions, ThemeOptions } from '@fhem-native/app-config';
 
 // Plugins
 import { Capacitor } from '@capacitor/core';
@@ -29,6 +30,8 @@ export class SettingsPageComponent{
 	showTrademarks = false;
 
 	constructor(
+		private router: Router,
+		private route: ActivatedRoute,
 		private theme: ThemeService,
 		private logger: LoggerService,
 		private storage: StorageService,
@@ -36,7 +39,7 @@ export class SettingsPageComponent{
 		private structure: StructureService,
 		private translate: TranslateService,
 		private importExport: ImportExportService,
-		@Inject(APP_CONFIG) public appConfig: any){
+		@Inject(APP_CONFIG) public appConfig: AppConfig){
 	}
 
 	changeAppSetting(setting: string, value: any): void{
@@ -80,6 +83,13 @@ export class SettingsPageComponent{
 	openExternal(link: string){ window.open(link, '_blank'); }
 
 	async back(){
+		const demoMode = this.route.snapshot.queryParamMap.get('demoMode');
+		// Demo Mode is active --> go back to sandbox
+		if(demoMode != null && JSON.parse(demoMode)){
+			this.router.navigate(['/', 'sandbox']);
+			return;
+		}
+		// Normal operating mode
 		if(!this.structure.currentRoom) await this.structure.loadRooms();
 		this.structure.changeRoom( this.structure.currentRoom || this.structure.rooms[0], true );
 	}

@@ -46,14 +46,17 @@ export class RoomSidebarComponent {
 		if(relRoom) this.structure.changeRoom(relRoom);
 	}
 
-	async switchPage(ref: string[]){
+	async switchPage(ref: string[], replaceUrl: boolean){
 		if(this.editor.core.getCurrentMode().editComponents){
 			this.editor.core.switchGridMode(false);
 			await getDelay(10);
 		}
 
 		this.closeMobileMenu();
-		this.router.navigate(ref);
+		this.router.navigate( ref, {
+			replaceUrl,
+			queryParams: { demoMode: this.settings.demoMode.value } 
+		} );
 	}
 
 	toggleMenu(toState?: boolean): void{
