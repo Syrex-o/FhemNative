@@ -11,6 +11,12 @@
 @import 'libs/ui/styles/web/colors.scss';
 @import 'libs/ui/styles/web/styles.scss';
 
+// App specific styles
+@import 'libs/ui/styles/app/editable.scss';
+@import 'libs/ui/styles/app/sizes.scss';
+@import 'libs/ui/styles/app/colors.scss';
+@import 'libs/ui/styles/app/styles.scss';
+
 // Material core
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
