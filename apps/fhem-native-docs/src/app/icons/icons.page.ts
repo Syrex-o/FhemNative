@@ -1,13 +1,15 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
+import { CommonModule } from "@angular/common";
 import { Route, RouterModule } from "@angular/router";
 import { TranslateModule } from "@ngx-translate/core";
+import { BehaviorSubject, map } from "rxjs";
 
-import { IconModule, LoaderModule } from "@fhem-native/components";
+import { IconModule, LoaderModule, PickerComponent } from "@fhem-native/components";
 import { DocItemListComponent } from "@fhem-native/docs";
 
-import { IconService, ICON_CATEGORIES, IconType } from "@fhem-native/services";
-import { CommonModule } from "@angular/common";
+import { IconService, ICON_CATEGORIES, IconType, Icon } from "@fhem-native/services";
 
 @Component({
 	standalone: true,
@@ -18,25 +20,46 @@ import { CommonModule } from "@angular/common";
 				<p class="size-c color-a no-margin center bold">{{ 'WEB.ICONS.HEAD' | translate }}</p>
 				<p class="size-f color-b no-margin center">{{ 'WEB.ICONS.INFO' | translate }}</p>
 			</div>
-			<ng-container *ngFor="let iconMap of iconsMapped">
+			@for (iconMap of iconsMapped; track $index) {
 				<div class="icon-map-container mt-1-5 mb-1-5">
 					<a class="icon-ref" [href]="iconMap.ref" target="_blank">
 						<ion-icon class="color-b size-e" name="link-outline"></ion-icon>
 						<p class="color-a size-e bold center">{{ iconMap.name }}</p>
 					</a>
 					<div class="icons-container">
-						<ng-container *ngFor="let icon of iconMap.icons">
-							<div class="icon">
+						@for (icon of iconMap.icons; track $index) {
+							<div class="icon" (click)="selectedIcon.next({icon: icon, show: true})">
 								<fhem-native-icon [icon]="icon.icon"/>
 							</div>
-						</ng-container>
+						}
 					</div>
 				</div>
-			</ng-container>
+			}
 		</div>
+
+		<fhem-native-picker *ngIf="selectedIconData$ | async as selectedIconData"
+			[(ngModel)]="selectedIcon.value.show"
+			[height]="10"
+			[width]="90"
+			[headerAnimation]="false"
+			cssClass="icon-select-picker"
+			[modalHeader]="selectedIconData.icon?.icon || ''">
+			<div content class="flex-container" *ngIf="selectedIconData.icon">
+				<fhem-native-icon [icon]="selectedIconData.icon.icon"/>
+				<div class="block">
+					<p class="size-e color-a bold no-margin">in FhemNative:</p>
+					<p class="right-side size-e color-a no-margin">{{selectedIconData.icon.icon}}</p>
+				</div>
+				<div class="block">
+					<p class="size-e color-a bold no-margin">Library:</p>
+					<a class="right-side size-e no-margin" [href]="selectedIconData.category.ref" target="_blank">{{selectedIconData.category.name}}</a>
+				</div>
+			</div>
+		</fhem-native-picker>
 	`,
 	styleUrls: ['icons.page.scss'],
 	imports: [
+		FormsModule,
 		IonicModule,
 		CommonModule,
 		RouterModule,
@@ -44,12 +67,19 @@ import { CommonModule } from "@angular/common";
 
 		IconModule,
 		LoaderModule,
+		PickerComponent,
 		DocItemListComponent
-	]
+	],
+	encapsulation: ViewEncapsulation.None
 })
 export class ConfigConverterPageComponent {
 	iconCategories = ICON_CATEGORIES;
 	iconsMapped = this.mapIcons();
+	
+	selectedIcon = new BehaviorSubject<{icon: Icon|null, show: boolean}>({icon: null, show: false});
+	selectedIconData$ = this.selectedIcon.pipe(
+		map(x=> ({ icon: x.icon, category: this.iconCategories[x.icon ? x.icon.type : 'ion'] }))
+	);
 
 	constructor(private icons: IconService){}
 
