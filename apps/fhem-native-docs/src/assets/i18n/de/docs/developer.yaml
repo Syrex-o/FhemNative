@@ -65,6 +65,7 @@ CONTENT:
             - git clone https://github.com/Syrex-o/FhemNative.git
             - cd FhemNative
             - npm install
+            - npm install --global nx@latest
 
         - TEXT:
             - Anschließend könnt ihr in die package.json gehen und euch den "scripts" Teil angucken
