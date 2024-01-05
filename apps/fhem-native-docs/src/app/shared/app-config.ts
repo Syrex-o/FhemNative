@@ -32,6 +32,12 @@ export const DOC_ITEMS: NavItem[] = [
         info: 'WEB.DOCS.ITEMS.SHORTCUTS.INFO',
         icon: 'arrow-redo-outline',
         ref: ['/', 'docs', 'shortcuts']
+    },
+    {   
+        name: 'WEB.DOCS.ITEMS.DEVELOPER.HEAD',
+        info: 'WEB.DOCS.ITEMS.DEVELOPER.INFO',
+        icon: 'code-working-outline',
+        ref: ['/', 'docs', 'developer']
     }
 ];
 

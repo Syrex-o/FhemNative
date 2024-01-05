@@ -1,0 +1,389 @@
+META:
+    HEAD: Developer Guide
+    INFO: Wie entwickelt man eigene Komponenten für FhemNative?
+
+CONTENT:
+    - BLOCK: 
+        - SECTION_HEADER:
+            text: "Vorbereitungen"
+
+        - INNER_HEADER:
+            ID: knowledge
+            text: "Vorwissen"
+
+        - TEXT:
+            - "Eigene Komponenten mit FhemNative zu erstellen ist kein Hexenwerk. Ihr solltet aber ein paar Kenntnisse in den fogenden Bereichen mitbrigen oder sie auf dem Weg erlernen wollen:"
+
+        - LIST:
+            - HTML
+            - CSS / SCSS
+            - JavaScript / TypeScript
+            - Angular
+
+        - INNER_HEADER:
+            ID: groundwork
+            text: "FhemNative lokal ausführen"
+
+        - TEXT:
+            - Damit ihr eigene Komponenten entwickeln könnt, muss FhemNative als erstes lokal auf eurem Rechner laufen. 
+            - "Dafür wird folgendes benötigt:"
+
+        - LINK:
+            type: external
+            text: "Node JS:"
+            linkText: nodejs.org
+            link: https://nodejs.org/en
+
+        - LINK:
+            type: external
+            text: "Git:"
+            linkText: git-scm.com
+            link: https://git-scm.com/
+
+        - LINK:
+            type: external
+            text: "Einen Code-Editor eurer Wahl:"
+            linkText: Visual Studio Code (Empfehlung)
+            link: https://code.visualstudio.com/
+
+        - TEXT:
+            - Nach der Installation der Programme, öffnet die Konsole eures Betriebssystems.
+            - "Auf die folgenden Befehle solltet ihr nun Antworten bekommen (die Versionen sind nur ein Beispiel und können sich bei euch unterscheiden):"
+
+        - CODE:
+            - node -v
+            - v18.10.0
+
+        - CODE:
+            - npm -v
+            - "8.19.2"
+
+        - TEXT:
+            - "Jetzt könnt ihr FhemNative clonen und alle notwendigen Pakete installieren:"
+
+        - CODE:
+            - git clone https://github.com/Syrex-o/FhemNative.git
+            - cd FhemNative
+            - npm install
+
+        - TEXT:
+            - Anschließend könnt ihr in die package.json gehen und euch den "scripts" Teil angucken
+            - "Dort sind alle notwendigen Befehle, um FhemNative auf verschiedene Weisen zu starten:"
+
+        - LIST:
+            - "npm run serve:web:docs - startet die Doku Website von FhemNative im Browser"
+            - "npm run serve:web:mobile - startet die mobile Version von FhemNative im Browser"
+            - "npm run serve:web:desktop - startet die mobile Version von FhemNative im Browser"
+
+    - BLOCK:
+        - SECTION_HEADER:
+            text: "Die Struktur"
+
+        - INNER_HEADER:
+            ID: component-types
+            text: Komponenten Typen
+
+        - TEXT:
+            - "FhemNative unterscheidet Komponenten in folgende Kategorien:"
+
+        - LIST:
+            - "FHEM-Komponenten: Manipulieren und reagieren auf Readings in FHEM (Bsp. Switch)."
+            - "Style-Komponenten: Haben keinen aktivien Einfluss auf FHEM, können aber auf Werte reagieren. Meist werden Sie jedoch als grafische Elemente verwendet, die keine Verbindung zu FHEM benötigen."
+            - "Container-Komponenten: Werden verwendet, um ein Container für andere Komponenten zu sein (Bsp. Popup)."
+        
+        - INNER_HEADER:
+            ID: core-parts
+            text: Haupt-Bestandteile
+
+        - TEXT:
+            - "Damit eine Komponente über Inputs verfügt, müssen sie unter: 'libs/fhem-components/src/lib/_settings/' konfguriert werden."
+            - Dort hat jede Komponente ein Pendant zu einem Ordner. So gehört 'fhem-box.ts' zum Beispiel zu dem Ordner 'fhem-box'
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-settings-reference.png
+            alt: FhemNative Component Reference
+            width: 50px
+
+        - INNER_HEADER:
+            ID: component-inputs
+            text: Komponenten Inputs
+
+        - TEXT:
+            - "Die Einstellungen einer Komponente müssen immer die folgenden Punkte haben:"
+        
+        - IMAGE:
+            ref: assets/img/developer-guide/main-settings.png
+            alt: Main component settings
+            width: 400px
+
+        - LIST:
+            - "name verweist auf die Übersetzung unter: libs/ui/assets/i18n/app/<lang_key>. Innerhalb der Übersetzungsdatei findet ihr unter: MENUS.CREATE_COMPONENT.COMPONENT_NAMES die Namen aller Komponenten. Ihr könnt eure Komponente mit in die Liste eintragen."
+            - "In der gleichen Übersetzungsdatei unter: COMPONENTS.<component_name> findet ihr die Übersetzungen der Einstellungen."
+            - type verweist auf einen der 3 genannten Komponenten-Typen
+            - dimensions geben an, wie klein die Komponenten minimal werden darf, während der User die skaliert.
+            - Unter inputs werden die Einstellungen der Komponente definiert.
+
+        - TEXT_BOLD:
+            - "input Optionen:"
+
+        - TEXT:
+            - "Unter inputs können unterschiedliche Typen von Einstellungen definiert werden:"
+
+        - TEXT_BOLD:
+            - "1. data:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-data.png
+            alt: Component data Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-data-example.png
+            alt: Component data Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'data' Einstellungen werden in Eingabe-Felder transformiert. Ihr könnt dabei definieren, ob die Eingabe als string oder number erfolgen soll. Unter value wird ein Default Wert vorgegeben."
+            
+        - TEXT_BOLD:
+            - "2. arr_data:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_data.png
+            alt: Component arr_data Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_data-example.png
+            alt: Component arr_data Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'arr_data' Einstellungen werden zu Selektions-Boxen transformiert. Ihr könnt eine Liste an Werten definieren und einen Default Wert aus der Liste vorgeben."
+
+        - TEXT_BOLD:
+            - "3. icon:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-icon.png
+            alt: Component icon Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-icon-example.png
+            alt: Component icon Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'icon' Einstellungen werden zu Selektions-Boxen mit Icons transformiert. Ihr gebt lediglich ein Default Icon vor."
+
+        - TEXT_BOLD:
+            - "4. arr_icon:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_icon.png
+            alt: Component arr_icon Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_icon-example.png
+            alt: Component arr_icon Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'arr_icon' Einstellungen werden zu Selektions-Boxen mit Icons transformiert, wobei mehrere Icons ausgewählt werden können. Ihr gebt lediglich eine Liste mit Default Icons vor."
+
+        - TEXT_BOLD:
+            - "5. style:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-style.png
+            alt: Component style Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-style-example.png
+            alt: Component style Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'style' Einstellungen werden zu Selektions-Boxen mit Farben transformiert. Ihr gebt lediglich eine Default Farbe vor."
+
+        - TEXT_BOLD:
+            - "6. arr_style:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_style.png
+            alt: Component arr_icon Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_style-example.png
+            alt: Component arr_style Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'arr_style' Einstellungen werden zu Selektions-Boxen mit Farben transformiert, wobei mehrere Farben ausgewählt werden können. Ihr gebt lediglich eine Liste mit Default Farben vor."
+
+        - TEXT_BOLD:
+            - "7. arr_style_grad:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_style_grad.png
+            alt: Component arr_style_grad Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-arr_style_grad-example.png
+            alt: Component arr_style_grad Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'arr_style_grad' Einstellungen werden zu Selektions-Boxen mit einem Farbverlauf transformiert, wobei mehrere Farben ausgewählt werden können. Ihr gebt lediglich eine Liste mit Default Farben vor."
+
+        - TEXT_BOLD:
+            - "8. bool:"
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-bool.png
+            alt: Component bool Inputs
+            width: 400px
+
+        - IMAGE:
+            ref: assets/img/developer-guide/component-inputs-bool-example.png
+            alt: Component bool Inputs Example
+            width: 250px
+
+        - TEXT:
+            - "'bool' Einstellungen werden zu Schaltern transformiert. Ihr gebt lediglich eine Default Farbe vor."
+
+        - INNER_HEADER:
+            ID: component-dependencies
+            text: Komponenten Abhängigkeiten
+
+        - TEXT:
+            - Abhängikteiten sind optional. Sie bestimmen, welche Einstellungen beim konfigurieren von Komponenten zu sehen sind.
+            - Unter bestimmten Vorraussetzungen benötigt man nicht alle Optionen.
+            - Möchste man bespielsweise einschränken, dass die Farbe der Kopfzeile einer Box nur dann als Option verfügbar ist, wenn auch eine Kopfzeile vorhanden ist, so kann man die beiden Einstellungen verlinken.
+            - "Die dependency dafür sieht dann wie folgt aus:"
+
+        - CODE:
+            - "'style.headerColor': {dependOn: ['bool.showHeader'], value: [true]}"
+        
+        - TEXT:
+            - "Gesprochen besagt die Abhängigkeiten also, dass die style Einstellung 'headerColor' nur dann sichtbar ist, wenn die bool Einstellung 'showHeader' aktiv ist"
+        
+        - TEXT:
+            - "Eine Einstellung kann auch von mehreren anderen bedingt werden. So kann beispielsweise folgende Abhängigkeit erstellt werden:"
+
+        - CODE:
+            - "'data.borderRadius': {dependOn: ['bool.customBorder', 'bool.usePopup'], value: [false, true]}"
+
+        - TEXT:
+            - "Die data Einstellung 'borderRadius' ist in diesem Beispiel davon abhängig, dass 'customBorder' deaktiviert und 'usePopup' aktiviert ist."
+
+    
+    - BLOCK: 
+        - SECTION_HEADER:
+            text: "Erste Komponente anzeigen"
+
+        - INNER_HEADER:
+            ID: component-category
+            text: Kategorie der Komponente
+
+        - TEXT:
+            - "Damit nun nach der Definition der Einstellungen die erste eigene Komponente sichtbar wird, muss die neue Komponente in eine Liste unter: libs/app-config/fhem-components.ts eingetragen werden."
+            - Füge den Namen deiner Komponente einfach in eine für dich logische Kategorie ein.
+            - Anschießend solltest du im Menü für neue Komponenten deine Komponente sehen können.
+
+        - INNER_HEADER:
+            ID: component-files
+            text: Datein der Komponente
+
+        - TEXT:
+            - "Bisher hat die Komponente noch keine Logik. Daher müssen unter: libs/fhem-components/src/lib/fhem-<component_name> folgende Datein erstellt werden:"
+
+        - LIST:
+            - "fhem-<component_name>.html - Definiert die Struktur der Komponente"
+            - "fhem-<component_name>.scss - Definiert den Style der Komponente"
+            - "fhem-<component_name>.ts - Definiert die Logik der Komponente"
+
+        - INNER_HEADER:
+            ID: ts-file
+            text: Die .ts Datei
+
+        - TEXT:
+            - Im folgenden nehmen wir die Button Komponente als Beispiel. Beginnen wir mit der .ts Datei.
+            - Alle Inputs die in der settings Datei der Komponente zu finden sind, lassen sich auch in der .ts Datei finden.
+            - Zusätzlich gibt es lediglich die Inputs für UID und position. Diese Inputs benötigt FhemNative bei allen Komponenten.
+
+        - INNER_HEADER:
+            ID: html-file
+            text: Die .html Datei
+
+        - TEXT:
+            - In der .html Datei können wir nun die Struktur vorgeben.
+            - "Alle Komponenten sind in einem '<fhem-native-component></<fhem-native-component> container'. Dieser übernimmt große Teile der Logik. Brechen wir ihn Stück für Stück auf:"
+
+        - TEXT_BOLD:
+            - "1. [UID]='UID'"
+        - TEXT_BOLD:
+            - "2. [position]='position'"
+        - TEXT_BOLD:
+            - "3. [minDimensions]='{width: 30, height: 30}'"
+
+        - TEXT:
+            - Die Parameter UID und position geben lediglich Informationen an den Container weiter.
+            - Unter minDimensions definiert ihr erneut die minimale Höhe und Breite eurer Komponente.
+
+        - TEXT_BOLD:
+            - "4. [fhemDeviceConfig]"
+
+        - TEXT:
+            - In diesem Objekt kann definiert werden, wann eure Komponente sichtbar sein soll.
+            - Dafür können die Inputs Device und Reading übergeben werden.
+            - "Mit den Optionen: 'connected, deviceAvailable und readingAvailable' kann definiert werden, ab welchem Zustand die Komponente angezeigt wird."
+
+        - TEXT_BOLD:
+            - "(initComponent)='onInitComponent()'"
+        - TEXT:
+            - initComponent ist das erste Event, auf das reagiert werden kann. Es wird ausgelöst, sobald der Container initialisiert wurde.
+            - Zu diese, Zeitpunkt stehen bereits alle Inputs der Komponente zur Verfügung.
+
+        - TEXT_BOLD:
+            - "(initDevice)='getButtonState($event)'"
+        - TEXT:
+            - initDevice ist das Event, welches ausgelöst wird, sobald das Gerät vom Server abgerufen werden konnte.
+
+        - TEXT_BOLD:
+            - "(updateDevice)='getButtonState($event)'"
+        - TEXT:
+            - updateDevice ist das Event, welches ausgelöst wird, sobald es Änderungen am Gerät gibt, auf die man reagieren möchte.
+
+        - TEXT_BOLD:
+            - "(destroyComponent)='onDestroyComponent()'"
+        - TEXT:
+            - destroyComponent ist das Event, welches ausgelöst wird, sobald die Komponente nicht mehr angezeigt wird.
+            - Dieses Event wird beispielsweise bei einem Raumwechsel ausgelöst.
+
+        - TEXT:
+            - "Anschließend findet sich in jeder Komponente ein '<div class='fhem-native-<component_name'></div>' Container."
+            - Dieser wird verwendet, um notwendige Styles zu definieren.
+
+        - INNER_HEADER:
+            ID: scss-file
+            text: Die .scss Datei
+
+        - CODE_RAW: >-
+
+                :host{
+                    .fhem-native-label{
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+                    }
+                }
+
+        - TEXT:
+            - Dieses Beispiel aus der Label Komponente gilt grundsätzlich für alle Komponenten und ist immer notwendig.
+            - Alle anderen Styles können natürlich selbst definiert werden.

@@ -36,6 +36,10 @@
 				"SHORTCUTS": {
 					"HEAD": "Shortcuts",
 					"INFO": "Keyboard shortcuts in FhemNtive"
+				},
+				"DEVELOPER": {
+					"HEAD": "Developer Guide",
+					"INFO": "Eigene Komponenten erstellen"
 				}
 			}
 		},
