@@ -11,4 +11,8 @@
 	<mat-icon *ngSwitchCase="'mdi'" class="ion-activatable" [svgIcon]="icon.icon">
 		<ion-ripple-effect *ngIf="ripple"/>
 	</mat-icon>
+	<!-- KNX -->
+	<div *ngSwitchCase="'knx'" class="knx ion-activatable" [style.backgroundImage]="'url(assets/icons/knx-uf/' + icon.icon + '.svg)'">
+		<ion-ripple-effect *ngIf="ripple"/>
+	</div>
 </ng-container>

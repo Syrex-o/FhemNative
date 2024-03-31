@@ -15,7 +15,8 @@ import {
 export const ICON_CATEGORIES = {
 	ion: { name: 'Ionicons', ref: 'https://ionic.io/ionicons' },
 	fas: { name: 'FontAwesome', ref: 'https://fontawesome.com/search?o=r&m=free&s=solid' },
-	mdi: { name: 'Material Design Icons', ref: 'https://pictogrammers.com/library/mdi/' }
+	mdi: { name: 'Material Design Icons', ref: 'https://pictogrammers.com/library/mdi/' },
+	knx: { name: 'KNX UF Icons', ref: 'https://github.com/OpenAutomationProject/knx-uf-iconset/tree/master' }
 } as const;
 
 export type IconType = keyof typeof ICON_CATEGORIES;
@@ -90,6 +91,33 @@ export class IconService {
 		{type: 'mdi', icon: 'window-open-variant'}, {type: 'mdi', icon: 'window-closed-variant'},
 		{type: 'mdi', icon: 'roller-shade'}, {type: 'mdi', icon: 'roller-shade-closed'},
 		{type: 'mdi', icon: 'curtains'}, {type: 'mdi', icon: 'curtains-closed'},
+
+		// KNX UF
+		{type: 'knx', icon: 'fts_door_locked'}, {type: 'knx', icon: 'fts_door_open'},
+		{type: 'knx', icon: 'fts_door_opener_key'}, {type: 'knx', icon: 'fts_door_slide_open'},
+		{type: 'knx', icon: 'fts_door_slide'}, {type: 'knx', icon: 'fts_door_tilt'},
+		{type: 'knx', icon: 'fts_door_unlocked'}, {type: 'knx', icon: 'fts_door'},
+		{type: 'knx', icon: 'fts_shutter_10'}, {type: 'knx', icon: 'fts_shutter_20'},
+		{type: 'knx', icon: 'fts_shutter_30'}, {type: 'knx', icon: 'fts_shutter_40'},
+		{type: 'knx', icon: 'fts_shutter_50'}, {type: 'knx', icon: 'fts_shutter_60'},
+		{type: 'knx', icon: 'fts_shutter_70'}, {type: 'knx', icon: 'fts_shutter_80'},
+		{type: 'knx', icon: 'fts_shutter_90'}, {type: 'knx', icon: 'fts_shutter_100'},
+		{type: 'knx', icon: 'fts_shutter_attention'}, {type: 'knx', icon: 'fts_shutter_automatic'},
+		{type: 'knx', icon: 'fts_shutter_down'}, {type: 'knx', icon: 'fts_shutter_jam'},
+		{type: 'knx', icon: 'fts_shutter_locked'}, {type: 'knx', icon: 'fts_shutter_manual'},
+		{type: 'knx', icon: 'fts_shutter_stop'}, {type: 'knx', icon: 'fts_shutter_unlocked'},
+		{type: 'knx', icon: 'fts_shutter_up'}, {type: 'knx', icon: 'fts_shutter_vert_automatic'},
+		{type: 'knx', icon: 'fts_shutter_vert_blade_00'}, {type: 'knx', icon: 'fts_shutter_vert_blade_10'},
+		{type: 'knx', icon: 'fts_shutter_vert_blade_20'}, {type: 'knx', icon: 'fts_shutter_vert_blade_30'},
+		{type: 'knx', icon: 'fts_shutter_vert_blade_40'}, {type: 'knx', icon: 'fts_shutter_vert_blade_50'},
+		{type: 'knx', icon: 'fts_shutter_vert_blade_60'}, {type: 'knx', icon: 'fts_shutter_vert_blade_70'},
+		{type: 'knx', icon: 'fts_shutter_vert_blade_80'}, {type: 'knx', icon: 'fts_shutter_vert_blade_90'},
+		{type: 'knx', icon: 'fts_shutter_vert_blade_100'}, {type: 'knx', icon: 'fts_shutter_vert_down'},
+		{type: 'knx', icon: 'fts_shutter_vert_manual'}, {type: 'knx', icon: 'fts_shutter_vert_up'},
+		{type: 'knx', icon: 'fts_shutter_vert'}, {type: 'knx', icon: 'fts_shutter'},
+		{type: 'knx', icon: 'fts_window_1w_locked'}, {type: 'knx', icon: 'fts_window_1w_open'},
+		{type: 'knx', icon: 'fts_window_1w_tilt'}, {type: 'knx', icon: 'fts_window_1w_unlocked'},
+		{type: 'knx', icon: 'fts_window_1w'},
 	];
 	
 	// search for icon
