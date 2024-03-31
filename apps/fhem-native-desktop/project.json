@@ -49,6 +49,11 @@
             "glob": "mdi.svg",
             "input": "./node_modules/@mdi/angular-material",
             "output": "./assets"
+          },
+          {
+            "glob": "**/*.svg",
+            "input": "libs/ui/assets/icons",
+            "output": "assets/icons"
           }
         ],
         "styles": [
