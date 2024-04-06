@@ -13,13 +13,12 @@
 @import 'libs/ui/styles/app/styles.scss';
 
 // Material core
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
-
-@import '~@ionic/angular/css/core.css';
+@import '../../../node_modules/@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import '~@ionic/angular/css/normalize.css';
-@import '~@ionic/angular/css/structure.css';
-@import '~@ionic/angular/css/typography.css';
-@import '~@ionic/angular/css/display.css';
+@import '../../../node_modules/@ionic/angular/css/normalize.css';
+@import '../../../node_modules/@ionic/angular/css/structure.css';
+@import '../../../node_modules/@ionic/angular/css/typography.css';
+@import '../../../node_modules/@ionic/angular/css/display.css';
