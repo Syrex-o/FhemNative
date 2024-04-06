@@ -16,5 +16,6 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FHEMNATIVE_10B33 }}'
-          channelId: live
+          channelId: dev
+          expires: 5d
           projectId: fhemnative-10b33
