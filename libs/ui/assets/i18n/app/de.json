@@ -316,6 +316,12 @@
 					"COMPONENT": "Komponente hinzufügen"
 				}
 			},
+			"IMPORT_EXPORT": {
+				"CONTENT": {
+					"FILE": "Import aus Datei",
+					"PHOTO": "Import von QR-Code"
+				}
+			},
 			"COMPONENT": {
 				"TEXT": "Komponente",
 				"CONTENT": {

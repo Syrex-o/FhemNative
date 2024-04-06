@@ -5,7 +5,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { LoaderService } from "./loader.service";
 
 import { APP_CONFIG, AppConfig } from "@fhem-native/app-config";
-import { jsonImporter, JsonExportData, getRawVersionCode } from "@fhem-native/utils";
+import { jsonImporter, JsonExportData, getRawVersionCode, barcodeImporter } from "@fhem-native/utils";
 
 import { Room } from "@fhem-native/types/room";
 import { FhemComponentSettings } from "@fhem-native/types/components";
@@ -30,15 +30,28 @@ export class ImportExportService {
         return false;
     }
 
+    /**
+     * Prepare data for component export via file or QR
+     * @param componentSettings 
+     * @returns 
+     */
+    public getComponentExportData(componentSettings: FhemComponentSettings[]){
+        return { 
+            type: this.componentExportType, 
+            versionCode: getRawVersionCode(this.appConfig.versionCode), 
+            data: componentSettings 
+        }
+    }
+
     async exportComponents(componentSettings: FhemComponentSettings[]) {
         const success = await this.exportToJson(
-            { type: this.componentExportType, versionCode: getRawVersionCode(this.appConfig.versionCode), data: componentSettings }, 
+            this.getComponentExportData(componentSettings), 
             this.componentExportFileName
         );
         if(!success) this.exportFailedToast();
     }
 
-    async importComponents(): Promise<FhemComponentSettings[]|null>{
+    async importComponentsFromFile(): Promise<FhemComponentSettings[]|null>{
         this.loader.showLogoLoader();
 
         const data = await jsonImporter();
@@ -51,6 +64,24 @@ export class ImportExportService {
                 this.showAlert('MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.TEXT', 'MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.INFO');
             }
         }
+        this.loader.hideLoader();
+        return formattedData;
+    }
+
+    async importComponentsFromPhoto(): Promise<FhemComponentSettings[]|null>{
+        this.loader.showLogoLoader();
+
+        const data = await barcodeImporter();
+        let formattedData: FhemComponentSettings[]|null = null;
+        if(data){
+            const importedData = this.importIsValid(data);
+            if(importedData && importedData.type === this.componentExportType){
+                formattedData = importedData.data;
+            }else{
+                this.showAlert('MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.TEXT', 'MENUS.IMPORT.ERRORS.NO_COMPONENT_CONFIG.INFO');
+            }
+        }
+
         this.loader.hideLoader();
         return formattedData;
     }

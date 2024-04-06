@@ -1,5 +1,6 @@
 // Plugins
 import { FilePicker, PickFilesResult } from '@capawesome/capacitor-file-picker';
+import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 export interface JsonExportData {
     type: string,
@@ -34,3 +35,24 @@ export async function jsonImporter(): Promise<string | null>{
     return null;
 }
 
+/**
+ * Import data from Barcode scanner
+ * @returns string of data or null
+ */
+export async function barcodeImporter(): Promise<string | null>{
+    try{
+        const { supported } = await BarcodeScanner.isSupported();
+        if(!supported) return null;
+
+        // request permission
+        const { camera } = await BarcodeScanner.requestPermissions();
+        const granted = camera === 'granted' || camera === 'limited';
+        if(!granted) return null;
+
+        // scan
+        const { barcodes } = await BarcodeScanner.scan();
+        return barcodes[0].rawValue;
+    }catch(e){
+        return null;
+    }
+}

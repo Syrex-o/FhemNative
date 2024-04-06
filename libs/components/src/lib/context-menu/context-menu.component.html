@@ -100,11 +100,16 @@
         <!-- import/export -->
         <div class="context-menu-block border">
             <h2 class="block-header size-e-app color-a-app">Import/Export</h2>
-            <!-- import -->
-
-            <button class="inner ion-activatable" (click)="importComponents()">
-                <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'cloud-upload-outline', text: 'Import'}"></ng-container>
+            <!-- import from file -->
+            <button class="inner ion-activatable" (click)="importComponentsFromFile()">
+                <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'cloud-upload-outline', text: translate.instant('MENUS.CONTEXT_MENU.IMPORT_EXPORT.CONTENT.FILE')}"></ng-container>
             </button>
+
+            @if (appConfig.platform === 'mobile') {
+                <button class="inner ion-activatable" (click)="importComponentFromPhoto()">
+                    <ng-container *ngTemplateOutlet="BUTTON_TEMPLATE;context:{icon: 'camera-outline', text: translate.instant('MENUS.CONTEXT_MENU.IMPORT_EXPORT.CONTENT.PHOTO')}"></ng-container>
+                </button>
+            }
 
             <!-- export -->
             <ng-container *ngTemplateOutlet="EXPORT_CONTAINER"></ng-container>

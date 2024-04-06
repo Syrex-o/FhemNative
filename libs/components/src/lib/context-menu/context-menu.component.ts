@@ -13,7 +13,8 @@ import { ComponentLoaderService, EditorService, ImportExportService, SelectCompo
 
 import { FhemComponentSettings } from '@fhem-native/types/components';
 import { clone, decimalRounder, getUID } from '@fhem-native/utils';
-import { APP_CONFIG } from '@fhem-native/app-config';
+import { APP_CONFIG, AppConfig } from '@fhem-native/app-config';
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
@@ -36,6 +37,7 @@ export class ContextMenuComponent implements OnInit{
 	
 	constructor(
 		public editor: EditorService,
+		public translate: TranslateService,
 		private structure: StructureService,
 		private undoManager: UndoRedoService,
 		private popoverCtrl: PopoverController,
@@ -43,7 +45,7 @@ export class ContextMenuComponent implements OnInit{
 		private compLoader: ComponentLoaderService,
 		public selectComponent: SelectComponentService,
 		@Inject(DOCUMENT) private document: Document,
-		@Inject(APP_CONFIG) private appConfig: any){
+		@Inject(APP_CONFIG) public appConfig: AppConfig){
 	}
 
 	ngOnInit(): void {
@@ -374,10 +376,14 @@ export class ContextMenuComponent implements OnInit{
 		this.dismissInformer('export');
 	}
 
-	async importComponents(): Promise<void>{
-		const componentSettings = await this.importExport.importComponents();
-		if(!componentSettings) return;
-
+	/**
+	 * Render imported components to container
+	 * 
+	 * Coming from file or QR import
+	 * @param componentSettings 
+	 * @returns 
+	 */
+	private renderImportedComponents(componentSettings: FhemComponentSettings[]){
 		const parentContainer = this.structure.getComponentContainer(this.transformationManager.containerId);
 		const containerRegistry = this.compLoader.getContainerRegistry(this.transformationManager.containerId);
 		if(!parentContainer || !containerRegistry) return;
@@ -394,5 +400,23 @@ export class ContextMenuComponent implements OnInit{
 
 		this.compLoader.loadContainerComponents(componentSettings, containerRegistry);
 		this.undoManager.addChange();
+	}
+
+	/**
+	 * Add multiple components from component file export
+	 * @returns 
+	 */
+	async importComponentsFromFile() {
+		const componentSettings = await this.importExport.importComponentsFromFile();
+		if(componentSettings) this.renderImportedComponents(componentSettings);
+	}
+
+	/**
+	 * Add single component from component details qr import
+	 * @returns 
+	 */
+	async importComponentFromPhoto(){
+		const componentSettings = await this.importExport.importComponentsFromPhoto();
+		if(componentSettings) this.renderImportedComponents(componentSettings);
 	}
 }
