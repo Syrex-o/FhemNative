@@ -1,11 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import { BehaviorSubject, Subject, from, switchMap, tap } from 'rxjs';
+
 import { QRCodeModule } from 'angularx-qrcode';
 
 import { CoreExtendedAndTranslateModule } from '@fhem-native/modules';
-import { ComponentLoaderService, StructureService } from '@fhem-native/services';
+import { ComponentLoaderService, ImportExportService, StructureService } from '@fhem-native/services';
 
-import { FhemComponentSettings } from '@fhem-native/types/components';
 import { clone } from '@fhem-native/utils';
 
 @Component({
@@ -24,37 +25,37 @@ import { clone } from '@fhem-native/utils';
 export class ComponentDetailsComponent implements OnInit{
     @Input() componentUID!: string;
 
-    componentSettings!: FhemComponentSettings;
-    componentSettingsString!: string;
+    private _componentUID = new BehaviorSubject(this.componentUID);
+    componentSettingsString$ = this._componentUID.pipe(
+        switchMap(async (componentUID)=>{
+            const compSettings = this.structure.getComponent(componentUID);
+            if(!compSettings) return;
+            // clone, to prevent overwrite
+            const componentSettings = clone( compSettings );
+
+            //compress nested components, if present
+            if(componentSettings.components){
+                const nestedComponents = this.structure.getAllComponents(componentSettings.components);
+                for(let i = 0; i < nestedComponents.length; i++){
+                    nestedComponents[i] = await this.compLoader.getCompressedFhemComponentConfig(nestedComponents[i]);
+                }
+            }
+
+            // compress main component
+            const compressedSettings = await this.compLoader.getCompressedFhemComponentConfig(componentSettings);
+            return JSON.stringify(this.importExport.getComponentExportData([ compressedSettings ]));
+        })
+    )
 
     constructor(
-        private cdr: ChangeDetectorRef,
         private structure: StructureService, 
         private popoverCtrl: PopoverController,
+        private importExport: ImportExportService,
         private compLoader: ComponentLoaderService){
     }
 
-    async ngOnInit(): Promise<void> {
-        const compSettings = this.structure.getComponent(this.componentUID);
-        if(!compSettings) return;
-        // clone, to prevent overwrite
-        this.componentSettings = clone( compSettings );
-
-        //compress nested components, if present
-        if(this.componentSettings.components){
-            const nestedComponents = this.structure.getAllComponents(this.componentSettings.components);
-            for(let i = 0; i < nestedComponents.length; i++){
-                nestedComponents[i] = await this.compLoader.getCompressedFhemComponentConfig(nestedComponents[i]);
-            }
-        }
-
-        // compress main component
-        const compressedSettings = await this.compLoader.getCompressedFhemComponentConfig(this.componentSettings);
-        this.componentSettingsString = JSON.stringify({
-            versionCode: '1.0.0',
-            settings: compressedSettings
-        });
-        this.cdr.detectChanges();
+    ngOnInit(): void {
+        this._componentUID.next(this.componentUID);
     }
 
     close(): void{

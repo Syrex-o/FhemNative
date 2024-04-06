@@ -1,11 +1,11 @@
 ion-popover.component-details-popover{
     --background: var(--secondary);
 
-    --width: 50%;
+    --width: 80%;
     --min-width: 300px;
     --max-width: 600px;
 
-    --height: 50%;
+    --height: 80%;
     --min-height: 300px;
     --max-height: 600px;
     &::part(content){

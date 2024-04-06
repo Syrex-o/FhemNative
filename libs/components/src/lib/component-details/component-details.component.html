@@ -1,11 +1,10 @@
 <div class="flex-container">
     <h2 class="center size-b-app color-a-app">{{ 'MENUS.COMPONENT_DETAILS.HEAD' | translate}}</h2>
 
-    <div class="flex-box center" *ngIf="componentSettingsString">
-
+    <div class="flex-box center">
         <h3 class="size-d-app color-a-app no-margin">{{ 'MENUS.COMPONENT_DETAILS.CONTENT.QR.HEAD' | translate}}</h3>
         <p class="size-e-app color-b-app">{{ 'MENUS.COMPONENT_DETAILS.CONTENT.QR.INFO' | translate}}</p>
-        <qrcode
+        <qrcode *ngIf="componentSettingsString$ | async as componentSettingsString"
             [qrdata]="componentSettingsString"
             [width]="280"
             colorDark="#313131"
