@@ -9,10 +9,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { LoaderModule } from '@fhem-native/components';
 
-// Environment
-import { APP_CONFIG } from '@fhem-native/app-config';
-import { environment } from '../environments/environment';
-
 // Modules
 import { ToastrModule } from 'ngx-toastr';
 import { HotkeyModule } from 'angular2-hotkeys';
