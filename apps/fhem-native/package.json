@@ -1,18 +1,19 @@
 {
   "name": "fhem-native",
   "dependencies": {
-    "@capacitor/app": "^5.0.6",
-    "@capacitor/core": "^5.5.1",
-    "@capacitor/filesystem": "^5.1.4",
-    "@capacitor/haptics": "^5.0.6",
-    "@capacitor/keyboard": "^5.0.6",
-    "@capacitor/splash-screen": "^5.0.6",
-    "@capacitor/status-bar": "^5.0.6",
-    "@capawesome/capacitor-file-picker": "^5.1.1",
-    "cordova-plugin-purchase": "^13.10.0"
+    "@capacitor/app": "^5.0.7",
+    "@capacitor/core": "^5.7.4",
+    "@capacitor/filesystem": "^5.2.1",
+    "@capacitor/haptics": "^5.0.7",
+    "@capacitor/keyboard": "^5.0.8",
+    "@capacitor/splash-screen": "^5.0.7",
+    "@capacitor/status-bar": "^5.0.7",
+    "@capawesome/capacitor-file-picker": "^5.3.0",
+    "@capacitor-mlkit/barcode-scanning": "^5.4.0",
+    "cordova-plugin-purchase": "^13.10.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^5.5.1",
+    "@capacitor/cli": "^5.7.4",
     "@capacitor/ios": "../../node_modules/@capacitor/ios",
     "@capacitor/android": "../../node_modules/@capacitor/android"
   }
